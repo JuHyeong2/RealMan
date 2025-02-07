@@ -14,7 +14,7 @@
     <th><a href="https://github.com/desertdevv"/>수유 황토주먹</br>Desert</th>
     <th><a href="https://github.com/yoon-jeong-ho15"/>도봉산 수도승</br>Philip</th>
     <th><a href="https://github.com/user0214125"/>은평구 검은마스크</br>Andy Polo</th>
-    <th><a href="https://github.com/JuHyeong2"/>상봉 핵주먹</br>Jonathan</th>
+    <th><a href="https://github.com/JuHyeong2"/>상봉 취권마스터</br>Jonathan</th>
     <th><a href="https://github.com/castleBell0921"/>봉천동 총잡이</br>Maddie</th>
   </tr>
 </table>
