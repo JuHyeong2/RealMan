@@ -1,5 +1,5 @@
 # RealMan(상남자) Project
-<b>진짜 상남자들만 모인 프로젝트
+<b>진짜 상남자들만 모인 프로젝트 <br>
 리얼맨은 유명한 상남자들임</b></br>
 ## Real Men 💪💪💪
 <table>
@@ -11,11 +11,11 @@
     <td><a href="https://github.com/castleBell0921"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjTjdSvlIR9qcHeo3AlQveFTUD_TLkIH8leA&s" width="150px"/></a></td>
   </tr>
   <tr>
-    <th><a href="https://github.com/desertdevv"/>Desert</th>
-    <th><a href="https://github.com/yoon-jeong-ho15"/>Philip</th>
-    <th><a href="https://github.com/user0214125"/>Andy Polo</th>
-    <th><a href="https://github.com/JuHyeong2"/>Jonathan</th>
-    <th><a href="https://github.com/castleBell0921"/>Maddie</th>
+    <th><a href="https://github.com/desertdevv"/>수유 황토주먹</br>Desert</th>
+    <th><a href="https://github.com/yoon-jeong-ho15"/>도봉산 수도승</br>Philip</th>
+    <th><a href="https://github.com/user0214125"/>은평구 검은마스크</br>Andy Polo</th>
+    <th><a href="https://github.com/JuHyeong2"/>상봉 취권마스터</br>Jonathan</th>
+    <th><a href="https://github.com/castleBell0921"/>봉천동 총잡이</br>Maddie</th>
   </tr>
 </table>
 
@@ -46,7 +46,7 @@
 
 ## Getting Started
 ### RealMan's UseCaseDiagram
-<img src="https://i.ibb.co/LDTth2tR/UML.png">
+<img src="https://i.ibb.co/FkBdv5wX/UML-1.png">
 
 
 
