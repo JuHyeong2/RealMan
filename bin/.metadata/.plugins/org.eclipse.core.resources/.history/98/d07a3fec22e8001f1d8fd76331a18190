@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>RealMan</title>
+	<link rel="stylesheet" href="/css/index.css" />
+</head>
+<body>
+	<div class="maintop">
+		<img class="topimage" src="/image/RealManLogo.png" width="50">
+		<button class="topbtn">Sign in</button>
+		<button class="topbtn">Sign up</button>
+	</div>
+	
+	<div class="maincontent">
+		<div class="maintitle">
+			<h1>Introducing RealMan</h1>
+		</div>
+		<h3>RealMan에 오신 것을 환영합니다!</h3>
+		<p><b>RealMan</b>은 실시간 텍스트, 음성, 화상 채팅을 지원하는 웹 서비스입니다. 친구들과 언제 어디서나 소통하고, 중요한 일정을 함께 공유할 수 있습니다.</p>
+		
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>
+	</div>
+	
+</body>
+</html>
