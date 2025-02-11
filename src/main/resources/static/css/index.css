@@ -15,6 +15,7 @@ body {
 	height: 50px;
 	display: flex;
 	align-items: center;
+	justify-content: flex-start;
 	gap: 5px;
 }
 
@@ -28,20 +29,27 @@ body {
 	cursor: pointer;
 }
 
+#signinbtn {
+	margin-left: auto;
+}
+
+#signupbtn {
+	margin-right: 1rem;
+}
+
 .topbtn:hover {
 	color: #FFFFFF ;
 	border: 1px solid #FFFFFF ;
 }
 
 .topimage {
-	margin-right: 89%;
 	margin-left: 1rem;
 	cursor: pointer;
 }
 
 .maincontent {
-	margin-left: 40rem;
-	margin-right: 40rem;
+	width: 40rem;
+	margin: auto;
 }
 
 .maintitle {
@@ -71,4 +79,68 @@ h1 {
 .btndiv img {
 	margin-top: 1px;
 	cursor: pointer;
+}
+
+/* 앱버전 */
+@media screen and (max-width: 1000px){
+	body {
+		background-color: var(--color-background);
+		margin: 0;
+	}
+	
+	.topimage {
+		margin-left: 1rem;
+		cursor: pointer;
+		width: 100px;
+	}
+	
+	h1 {
+		font-size: 6rem;
+	}
+	
+	.maincontent {
+		width: 40rem;
+		margin: auto;
+	}
+	
+	.maintop {
+		background-color: var(--color-top);
+		height: 200px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 20px;
+	}
+	
+	.topbtn {
+		color: #373737;
+		background-color: transparent;
+		border: 5px solid #373737;
+		border-radius: 5px;
+		height: 70%;
+		width: 10rem;
+		font-size: 2rem;
+/* 		padding: 5rem; */
+		cursor: pointer;
+	}
+	
+	.btndiv button{
+		display: flex;
+		align-items: flex-end;
+		font-size: 30px;
+	}
+	
+	.btndiv img{
+		display: flex;
+		align-items: flex-end;
+		width: 40px;
+	}
+	
+	h3 {
+		font-size: 2rem;
+	}
+	
+	.maincontent p, ul li {
+		font-size: 2rem;
+	}
 }
