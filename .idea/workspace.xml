@@ -5,8 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1468c365-ac23-44ed-a88f-4bb4b90900d6" name="변경" comment="사이드바 천국">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RealMan/src/main/resources/templates/voice/voice.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealMan/src/main/resources/templates/voice/voice.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.12.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.12.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.12.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.12.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/8.12.1/checksums/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/8.12.1/checksums/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/8.12.1/checksums/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/8.12.1/executionHistory/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/8.12.1/fileChanges/last-build.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/8.12.1/fileHashes/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/8.12.1/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/.gradle/vcs-1/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/out/production/resources/templates/chatting/chatting.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/out/production/resources/templates/main/main.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/out/production/resources/templates/voice/voice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/src/main/resources/templates/chatting/chatting.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/chat/chatting.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/src/main/resources/templates/main/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealMan/src/main/resources/templates/voice/voice.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/voice/voice.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/chat/chat.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/common/chattingSidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/common/chattingSidebar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,12 +74,22 @@
     &quot;assignee&quot;: &quot;desertdevv&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/JuHyeong2/RealMan.git&quot;,
-    &quot;accountId&quot;: &quot;1ff015ba-4b43-4284-9023-e197439922a3&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/JuHyeong2/RealMan.git",
+    "accountId": "1ff015ba-4b43-4284-9023-e197439922a3"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "JuHyeong2",
+    "repository": "RealMan"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -75,11 +105,16 @@
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "DefaultHtmlFileTemplate": "HTML File",
+    "Gradle.GitRealMan 빌드.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.RealManApplication.executor": "Run",
-    "git-widget-placeholder": "main 병합 중",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/GitRealMan",
@@ -94,11 +129,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\GitRealMan\src\main\resources\templates\chat" />
+      <recent name="D:\GitRealMan\src\main\resources\templates" />
       <recent name="D:\GitRealMan\RealMan\src\main\resources\templates\common" />
       <recent name="D:\GitRealMan\RealMan\src\main\resources\templates" />
       <recent name="D:\GitRealMan\RealMan\src\main\resources\static" />
-      <recent name="D:\GitRealMan\RealMan\src\main\resources\templates\common\chat" />
-      <recent name="D:\GitRealMan\RealMan\src\main\resources" />
     </key>
   </component>
   <component name="RunManager">
@@ -120,6 +155,7 @@
       <method v="2">
         <option name="Make" enabled="true" />
         <option name="LaunchBrowser.Before.Run" url="http://localhost:9999/" />
+        <option name="LaunchBrowser.Before.Run" url="http://localhost:8080" />
       </method>
     </configuration>
   </component>
@@ -143,7 +179,7 @@
       <workItem from="1739093840523" duration="10000" />
       <workItem from="1739177253263" duration="39000" />
       <workItem from="1739235973255" duration="3484000" />
-      <workItem from="1739242088018" duration="9541000" />
+      <workItem from="1739242088018" duration="13223000" />
     </task>
     <task id="LOCAL-00001" summary="사이드바 천국">
       <option name="closed" value="true" />
@@ -153,7 +189,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739255936952</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="사이드바 천국">
+      <option name="closed" value="true" />
+      <created>1739257842185</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1739257842185</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
