@@ -1,8 +1,0 @@
-package com.realman.chat.model.mapper;
-
-import org.apache.ibatis.annotations.Mapper;
-
-@Mapper
-public class ChatMapper {
-
-}
