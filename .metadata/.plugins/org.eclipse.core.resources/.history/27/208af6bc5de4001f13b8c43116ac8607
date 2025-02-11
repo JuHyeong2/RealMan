@@ -1,0 +1,5 @@
+package com.realman.member.model.exception;
+
+public class MemberException {
+
+}
