@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RealMan</title>
+</head>
+<body>
+	<div>
+		<img src="/image/RealManLogo.png">
+		<button>Sign in</button>
+		<button>Sign up</button>
+	</div>
+	<h1>Introducing RealMan</h1>
+	
+</body>
+</html>
