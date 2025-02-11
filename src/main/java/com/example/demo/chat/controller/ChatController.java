@@ -11,5 +11,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class ChatController {
-	private final ChatService cService;
+	private final ChatService cService;    
 }
