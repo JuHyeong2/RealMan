@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>RealMan</title>
+	<link rel="stylesheet" href="/css/index.css" />
+</head>
+<body>
+	<div class="maintop">
+		<img class="topimage" src="/image/RealManLogo.png" width="50">
+		<button class="topbtn">Sign in</button>
+		<button class="topbtn">Sign up</button>
+	</div>
+	
+	<div class="maintitle">
+		<h1>Introducing RealMan</h1>
+	</div>
+	
+</body>
+</html>
