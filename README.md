@@ -48,6 +48,9 @@
 ### RealMan's UseCaseDiagram
 <img src="https://i.ibb.co/FkBdv5wX/UML-1.png">
 
+### RealMan's ERD
+<img src="https://i.ibb.co/chkCYsn1/RealMan.png">
+
 
 
 
