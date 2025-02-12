@@ -1,0 +1,8 @@
+/bin/
+/src/main/resources/application.properties 
+/.gradle/
+/.metadata/
+/.settings/
+/.classpath
+/.project
+/build
