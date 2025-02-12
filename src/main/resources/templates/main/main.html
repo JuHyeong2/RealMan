@@ -1,31 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>main</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link href="/css/main.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 
-    <div th:replace="~{/common/directMassage.html :: directMassage}"></div>
+<div th:replace="~{/common/directMassage.html :: directMassage}"></div>
 
-    <div class ="friends">
-        <button class="all">모두</button>
-        <button class="online">온라인</button>
-        <button class="wait">대기 중</button>
-        <button class="addFriend">친구 추가하기</button>
-    </div>
-    <input type="text" id="searchInput" name="searchInput" placeholder="검색어를 입력하세요">
-
-
-
-    <button id="searchButton">검색</button>
-
-    친구목록
+<div class ="friends">
+    <button class="all">모두</button>
+    <button class="online">온라인</button>
+    <button class="wait">대기 중</button>
+    <button class="addFriend">친구 추가하기</button>
+</div>
+<input type="text" id="searchInput" name="searchInput" placeholder="검색어를 입력하세요">
 
 
 
+<button id="searchButton">검색</button>
+
+<h3 id="statusTitle">모두</h3>
+<div id="friendList">
+    강백호<br>
+    김창섭<br>
+    강원기<br>
+    금강선<br>
+    전재학
+    <tr th:each="f : ${list}">
+        <td><strong th:text="${f.memberNickname}"></strong></td>
+        <td th:text="${f.memberId}"></td>
+    </tr>
+</div>
 
 
+
+    <script>
+        // 친구 목록을 가져오는 함수
+        const loadFriends = (status) => {
+            // 동적으로 URL 생성
+            const url = `/friends/${status}`;
+
+            $.get(url, function(friends) {
+                const friendList = $('#friendList');
+                friendList.empty();  // 기존 목록 비우기
+
+                friends.forEach((friend) => {
+                    // 각 친구를 div로 표시
+                    const friendDiv = $('<div>').addClass('friend').text(friend.name);
+                    friendList.append(friendDiv);  // 친구 div를 목록에 추가
+                });
+            }).fail(() => {
+                console.error('친구 목록을 불러오는 데 실패했습니다.');
+            });
+        };
+
+        // 각 버튼 클릭 시 친구 목록을 가져오는 이벤트 설정
+        const allButton = $('.all');
+        const onlineButton = $('.online');
+        const waitButton = $('.wait');
+
+        allButton.click(() => {
+            $('#statusTitle').text('모두');
+            loadFriends('all');
+        });
+
+        onlineButton.click(() => {
+            $('#statusTitle').text('온라인');
+            loadFriends('online');
+        });
+
+        waitButton.click(() => {
+            $('#statusTitle').text('대기 중');
+            loadFriends('waiting');
+        });
+
+        // 페이지가 로드될 때 기본적으로 '모두' 목록을 가져오기
+        loadFriends('all');
+    </script>
 
 
 

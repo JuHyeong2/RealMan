@@ -1,26 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<style>
-  .sidebar{
-    width: 80px;
-    background-color: #F2F6F9;
-    padding: 5px;
-  }
-  .mainLogo{
-    width:60px;
-    height:60px;
-    padding: 5px;
-    cursor: pointer;
-
-  }
-  .mainLogo img {
-    width: 100%;
-    height: auto;
-  }
-</style>
 <head>
     <meta charset="UTF-8">
     <title>sidebar</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link href="/css/sidebar.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div class="sidebar">
@@ -28,8 +12,10 @@
       <img src="image/RealManLogo.png">
     </div>
 
-    <ul id="serverlList" class="serverlList"></ul>
-
+    <div  id="serverlList" class="serverlList"></div>
+      <div serverNo="1"><img src="image/RealManLogo.png"></div>
+      <div serverNo="2"><img src="image/RealManLogo.png"></div>
+      <div serverNo="3">채팅방</div>
     <ul class="addServer">+</ul>
 
 
@@ -55,12 +41,12 @@
 
                 data.forEach(server => {
                     // 같은 ID의 채널이 이미 있으면 추가하지 않음 find는 없으면 0 있으면 1이상이므로 length를사용.
-                    if (!serverList.find(`li[dataServerNo="${server.serverNo}"]`).length) {
-                        let li = $("<li>")
-                            .attr("dataServerNo", server.serverNo) // 채널 ID 저장
+                    if (!serverList.find(`div[serverNo="${server.serverNo}"]`).length) {
+                        let serverDiv = $("<div>")
+                            .attr("serverNo", server.serverNo) // 채널 ID 저장
                             .text(server.serverName);
 
-                        serverList.append(li);
+                        serverList.append(serverDiv);
                     }
                 });
             },
