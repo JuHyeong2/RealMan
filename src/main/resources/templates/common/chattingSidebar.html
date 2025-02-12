@@ -3,24 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>chattingSidebar</title>
+    <link rel="stylesheet" href="/css/common/chattingSidebar.css" />
 </head>
 <body>
-    <div class="chattingSidebar" th:fragment="chattingSidebar">
-         <div class="channel">
-             <div class="chattingChannel">
-                <p>채팅 채널</p>
-                <button class="plus-button" onclick="addChatChannel()">+</button>
-             </div>
-             <ul id="chattingChannelList" class="channelList"></ul>
-
-             <div class="voiceChannel">
-                 <p>음성 채널</p>
-                 <button class="plus-button" onclick="addVoiceChannel()">+</button>
-             </div>
-             <ul id="voiceChannelList" class="channelList"></ul>
-
-         </div>
+    <div class="sidebar">
+    	<nav>
+    		<ul>
+    			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h1>
+    			<li><a href="#"><img src="/image/Voice.png">롤토체스 음성방</a></li>
+    			<ul>
+    				<li><img src="/image/profile.png">&nbsp이주형</li>
+    			</ul>
+    		</ul>
+    		<ul>
+    			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h1>
+    			<li><a href="#"><img src="/image/chat.png">롤토체스 채팅방</a></li>
+    			<ul>
+    				<li></li>
+    			</ul>
+    			<li><a href="#"><img src="/image/chat.png">수다떠는 채팅방</a></li>
+    			<ul>
+    				<li></li>
+    			</ul>
+    		</ul>
+    	</nav>
     </div>
+	
+	<script>
+		// 음성 채팅방 드롭다운
+		document.querySelectorAll('.channel')[0].addEventListener('click', ()=>{
+			const chatRoom = document.querySelector('nav ul li');
+			const people = document.querySelector('nav ul ul li');
+			
+			if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
+				chatRoom.style.display = 'block';
+				people.style.display = 'block';	
+			}else{
+				chatRoom.style.display = 'none';
+				people.style.display = 'none';
+			}
+		})
+		
+		// 채팅 채팅방 드롭다운
+		document.querySelectorAll('.channel')[1].addEventListener('click', ()=>{
+			const chatRoom = document.querySelector('nav > ul:nth-of-type(2) li');
+			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
+			
+			if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
+				chatRoom.style.display = 'block';
+				people.style.display = 'block';	
+			}else{
+				chatRoom.style.display = 'none';
+				people.style.display = 'none';
+			}
+		})
+	</script>
 
 </body>
 </html>
