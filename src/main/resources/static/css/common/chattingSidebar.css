@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+html, body {
+	height: calc(100vh - 97px);
+}
+
+.chatsidebar {
+	width: 360px;
+/* 	margin-left: 100px; */
+	background-color: #f2f6f9;
+/* 	position: fixed; */
+	left: 0;
+	height: calc(100vh - 97px);
+	padding: 2rem 0; 
+	overflow-y: auto;
+	z-index: 5;
+}
+
+.chatsidebar nav ul {
+	list-style: none;
+	padding: 0;
+	margin-left: 5px;
+	font-size: 25px;
+}
+
+.chatsidebar nav ul li {
+	list-style: none;
+	padding: 10px;
+	margin: 1rem;
+	font-size: 20px;
+	background-color: #bdd3e2;
+	border-radius: 10px;
+}
+
+.chatsidebar nav ul ul li{
+	list-style: none;
+	padding: 0;
+	margin-left: 30px;
+	font-size: 20px;
+	background-color: transparent;
+	border-radius: 10px;
+}
+
+.chatsidebar nav ul li {
+	display: none;
+}
+
+.channel {
+	cursor: pointer;
+}

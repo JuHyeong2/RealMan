@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+.sidebarDiv {
+	display: flex;
+	width: 100%;
+}
+
+.sidebarDiv {
+	flex: 1 0 auto;
+}
+
+.chatContent {
+	height: 53rem;
+	background-color: gray;
+}
+
+.inputChat {
+	height: 2rem;
+	display: flex;
+}
+
