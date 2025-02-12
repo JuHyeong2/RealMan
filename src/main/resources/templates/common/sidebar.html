@@ -1,31 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<style>
-  .sidebar{
-    width: 80px;
-    background-color: #F2F6F9;
-    padding: 5px;
-  }
-  .mainLogo{
-    width:60px;
-    height:60px;
-    padding: 5px;
-    cursor: pointer;
-
-  }
-  .mainLogo img {
-    width: 100%;
-    height: auto;
-  }
-</style>
 <head>
     <meta charset="UTF-8">
     <title>sidebar</title>
+    <link rel="stylesheet" href="/css/common/sidebar.css" />
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="sidebar">
     <div class="mainLogo" onclick="location.href='';">
-      <img src="image/RealManLogo.png">
+      <img src="/image/RealManLogo.png">
     </div>
 
     <ul id="serverlList" class="serverlList"></ul>
@@ -46,33 +30,33 @@
 
 
 <script>
-    function loadServer() {
-        $.ajax({
-            url: "",
-            method: "GET",
-            success: function (data) {
-                let serverList = $("#serverList");
+//     function loadServer() {
+//         $.ajax({
+//             url: "",
+//             method: "GET",
+//             success: function (data) {
+//                 let serverList = $("#serverList");
 
-                data.forEach(server => {
-                    // 같은 ID의 채널이 이미 있으면 추가하지 않음 find는 없으면 0 있으면 1이상이므로 length를사용.
-                    if (!serverList.find(`li[dataServerNo="${server.serverNo}"]`).length) {
-                        let li = $("<li>")
-                            .attr("dataServerNo", server.serverNo) // 채널 ID 저장
-                            .text(server.serverName);
+//                 data.forEach(server => {
+//                     // 같은 ID의 채널이 이미 있으면 추가하지 않음 find는 없으면 0 있으면 1이상이므로 length를사용.
+//                     if (!serverList.find(`li[dataServerNo="${server.serverNo}"]`).length) {
+//                         let li = $("<li>")
+//                             .attr("dataServerNo", server.serverNo) // 채널 ID 저장
+//                             .text(server.serverName);
 
-                        serverList.append(li);
-                    }
-                });
-            },
-            error: function () {
-                console.error("채널 목록을 불러오는데 실패했습니다.");
-            }
-        });
-    }
+//                         serverList.append(li);
+//                     }
+//                 });
+//             },
+//             error: function () {
+//                 console.error("채널 목록을 불러오는데 실패했습니다.");
+//             }
+//         });
+//     }
 
-    $(function () {
-        loadServer();
-    });
+//     $(function () {
+//         loadServer();
+//     });
 </script>
 
 </body>

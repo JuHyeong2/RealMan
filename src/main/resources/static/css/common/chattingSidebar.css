@@ -1,25 +1,29 @@
 @charset "UTF-8";
 
-.sidebar {
+html, body {
+	height: calc(100vh - 97px);
+}
+
+.chatsidebar {
 	width: 360px;
+/* 	margin-left: 100px; */
 	background-color: #f2f6f9;
-	position: fixed;
+/* 	position: fixed; */
 	left: 0;
-	top: 64px;
-	height: calc(100vh - 64px);
+	height: calc(100vh - 97px);
 	padding: 2rem 0; 
 	overflow-y: auto;
 	z-index: 5;
 }
 
-.sidebar nav ul {
+.chatsidebar nav ul {
 	list-style: none;
 	padding: 0;
 	margin-left: 5px;
 	font-size: 25px;
 }
 
-.sidebar nav ul li {
+.chatsidebar nav ul li {
 	list-style: none;
 	padding: 10px;
 	margin: 1rem;
@@ -28,7 +32,7 @@
 	border-radius: 10px;
 }
 
-.sidebar nav ul ul li{
+.chatsidebar nav ul ul li{
 	list-style: none;
 	padding: 0;
 	margin-left: 30px;
@@ -37,7 +41,7 @@
 	border-radius: 10px;
 }
 
-.sidebar nav ul li {
+.chatsidebar nav ul li {
 	display: none;
 }
 
