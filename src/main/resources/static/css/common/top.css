@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+body {
+	margin: 0;
+}
+
+.topDiv {
+	background-color: #e4edf3;
+}
+
+b {
+	margin-left: 5px;
+	font-size: 25px;
+}
