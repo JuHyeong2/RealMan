@@ -1,22 +1,24 @@
-<!DOCTYPE html>
+<!DOCTYPE html xlmns:th="http://www.thymeleaf.org">
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login Interface</title>
+        <title>아이디 찾기</title>
+        <link rel="stylesheet" href="/css/findMyId.css">
+        <!-- 서버 켜지면 <style> 지우겠습니다. -->
         <style>
             * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
             }
-    
+
             body {
                 font-family: Arial, sans-serif;
                 height: 100vh;
                 background-color: #f5f5f5;
             }
-    
+
             .container {
                 height: 100%;
                 display: flex;
@@ -24,48 +26,50 @@
                 padding: 2rem;
                 gap: 2rem;
             }
-    
+
             .left-section {
                 flex: 1;
                 display: flex;
                 justify-content: center;
                 align-items: end;
                 position: relative;
-                
                 min-width: 500px;
             }
-    
+
             .message-bubble {
                 background-color: #b8c1ff;
                 padding: 30px;
-                border-radius: 164px 230px 130px 176px;
+                border-radius: 50% 71% 50% 53%;
                 position: absolute;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                left: 130px;
-                top: 100px;
+                left: 35%;
+                top: 140px;
                 width: 360px;
                 height: 300px;
                 text-shadow: 3px 3px 2px #49494980;
             }
-    
+
             .message-text {
                 color: black;
                 font-size: 200%;
                 font-weight: bold;
             }
-    
+
             .character {
-                height: 580px;
-                bottom: 100px;
+                position: absolute;
+                height:60%;
+                min-height: 400px;
+                top: 35%; 
+                left: 20%;
                 z-index: 1;
             }
 
             #findMyIdCharacter1{
                 height: 100%;
             }
-    
+
             .right-section {
                 flex: 1;
                 display: flex;
@@ -73,7 +77,7 @@
                 align-items: center;
                 min-width: 400px;
             }
-    
+
             .info-form {
                 background: white;
                 padding: 2rem;
@@ -87,11 +91,14 @@
             .input-form{
                 margin-top: 220px;
             }
-    
+
             .form-group {
                 margin-bottom: 1.5rem;
+                position: relative;
+                display: flex;
+                flex-direction: column;
             }
-    
+
             .form-group input {
                 width: 100%;
                 padding: 1rem;
@@ -99,8 +106,9 @@
                 border-radius: 25px;
                 background-color: #f5f5f5;
                 margin-top: 0.5rem;
+                box-shadow: inset 0px 0px 10px rgb(212, 211, 211);
             }
-    
+
             .find-id-btn {
                 width: 100%;
                 padding: 1rem;
@@ -110,16 +118,56 @@
                 margin-top: 1rem;
                 cursor: pointer;
             }
-    
+            .find-id-btn:hover {
+                background-color: #b8c1ff;
+            }
+            .find-id-btn:active{
+                background-color: #8a93d3;
+            }
+
+            .send-btn{
+                position: absolute;
+                float: right;
+                right: 8px;
+                top: 14px;
+                border-radius: 50%;
+                width: 35px;
+                height: 35px;
+                background-color: rgb(240, 240, 240);
+                border: none;
+                box-shadow: 0px 0px 8px rgb(54, 54, 54);
+            }
+            .send-btn:hover{
+                background-color: #e6e6e6;
+            }
+            .send-btn:active{
+                background-color: #dadada;
+            }
+
             .footer-links {
                 text-align: center;
                 margin-top: 2rem;
             }
-    
+
             .footer-links a {
                 color: #666;
                 text-decoration: none;
                 margin: 0 0.5rem;
+            }
+            .verification-msg{
+                position: absolute;
+                top: 63px;
+                left: 65px;
+                font-size: 80%;
+                letter-spacing: 2px;
+            }
+            .msg-yes{
+                color: rgb(18, 167, 25);
+                display: block;
+            }
+            .msg-no{
+                color: rgb(255, 3, 45);
+                display: block;
             }
         </style>
     </head>
@@ -127,7 +175,8 @@
         <div class="container">
             <div class="left-section">
                 <div class="character">
-                    <img id="findMyIdCharacter1" src="/image/findMyIdCharacter1.png">
+                    <!-- <img id="findMyIdCharacter1" src="/image/findMyIdCharacter1.png"> -->
+                    <img id="findMyIdCharacter1" src="http://127.0.0.1:3000/src/main/resources/static/image/findMyIdCharacter1.png">
                 </div>
                 <div class="message-bubble">
                     <div class="message-text">Be careful.<br>Your boss is <br> watching.</div>
@@ -138,13 +187,15 @@
                     <form>
                     <div class="input-form">
                         <div class="form-group">
-                            <input type="text" placeholder="이름">
+                            <input id="name" type="text" placeholder="이름">
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="이메일">
+                            <input id="email" type="email" placeholder="이메일">
+                            <button class="send-btn">send</button>
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="인증번호">
+                            <input id="code" type="text" placeholder="인증번호">
+                            <label class="verification-msg"></label>
                         </div>
                     </div>
                     <button class="find-id-btn">아이디 찾기</button>
@@ -158,5 +209,51 @@
                 </div>
             </div>
         </div>
+        <script>
+            const findIdBtn = document.querySelector(".find-id-btn");
+            const sendBtn = document.querySelector(".send-btn");
+            const form = document.querySelector("form");
+            const name = document.querySelector("#name");
+            const email = document.querySelector('#email');
+            const code = document.querySelector('#code');
+            let verified = false;
+            let verificationCode = '123';
+            window.onload = () =>{
+                code.addEventListener('keyup', function(){
+                    const msg = document.querySelector(".verification-msg");
+                    if(code.value == ''){
+                        msg.classList.remove('msg-yes');
+                        msg.classList.remove('msg-no');
+                        msg.innerText='';
+                        verified = false;
+                    }else if(code.value != verificationCode){
+                        msg.classList.remove('msg-yes');
+                        msg.classList.add('msg-no');
+                        msg.innerText='인증번호가 일치 합니다.'
+                        verified = false;
+                    }else{
+                        msg.classList.remove('msg-no');
+                        msg.classlist.add('msg-yes');
+                        msg.innerText='인증번호가 일치하지 않습니다.'
+                        verified = true;
+                    }
+                });
+
+                sendBtn.addEventListener('click', async function(e){
+                    
+                });
+
+                findIdBtn.addEventListener('click', async function(e){
+                    e.preventDefault();
+                    if(verified){
+                        const response = await fetch({
+                            
+                        })
+                    }  
+                });
+                }
+            
+            
+        </script>
     </body>
     </html>
