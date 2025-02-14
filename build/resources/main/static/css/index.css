@@ -1,0 +1,146 @@
+@charset "UTF-8";
+:root {
+	--color-background: white;
+	--color-top: #E4EDF3;
+}
+
+body {
+	background-color: var(--color-background);
+	margin: 0;
+}
+
+.maintop {
+	background-color: var(--color-top);
+/* 	position: relative; */
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 5px;
+}
+
+.topbtn {
+	color: #373737;
+	background-color: transparent;
+	border: 1px solid #373737;
+	border-radius: 5px;
+/* 	padding: 10px; */
+	height: 70%;
+	cursor: pointer;
+}
+
+#signinbtn {
+	margin-left: auto;
+}
+
+#signupbtn {
+	margin-right: 1rem;
+}
+
+.topbtn:hover {
+	color: #FFFFFF ;
+	border: 1px solid #FFFFFF ;
+}
+
+.topimage {
+	margin-left: 1rem;
+	cursor: pointer;
+}
+
+.maincontent {
+	width: 40rem;
+	margin: auto;
+}
+
+.maintitle {
+	text-align: center;
+	border-bottom: solid 1px lightgray;
+}
+
+h1 {
+	font-size: 4rem;
+	font-weight: normal;
+}
+
+.btndiv {
+	display: flex;
+	align-items: flex-end;
+}
+
+.gitbtn {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	font-size: 1rem;
+	margin-left: auto;
+/* 	padding: 1rem; */
+}
+
+.btndiv img {
+	margin-top: 1px;
+	cursor: pointer;
+}
+
+/* 앱버전 */
+@media screen and (max-width: 1000px){
+	body {
+		background-color: var(--color-background);
+		margin: 0;
+	}
+	
+	.topimage {
+		margin-left: 1rem;
+		cursor: pointer;
+		width: 100px;
+	}
+	
+	h1 {
+		font-size: 6rem;
+	}
+	
+	.maincontent {
+		width: 40rem;
+		margin: auto;
+	}
+	
+	.maintop {
+		background-color: var(--color-top);
+		height: 200px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 20px;
+	}
+	
+	.topbtn {
+		color: #373737;
+		background-color: transparent;
+		border: 5px solid #373737;
+		border-radius: 5px;
+		height: 70%;
+		width: 10rem;
+		font-size: 2rem;
+/* 		padding: 5rem; */
+		cursor: pointer;
+	}
+	
+	.btndiv button{
+		display: flex;
+		align-items: flex-end;
+		font-size: 30px;
+	}
+	
+	.btndiv img{
+		display: flex;
+		align-items: flex-end;
+		width: 40px;
+	}
+	
+	h3 {
+		font-size: 2rem;
+	}
+	
+	.maincontent p, ul li {
+		font-size: 2rem;
+	}
+}

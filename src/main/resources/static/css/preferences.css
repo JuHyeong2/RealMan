@@ -1,0 +1,86 @@
+@charset "UTF-8";
+body {
+    background-color: white;
+}
+.container {
+    max-width: 512px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 24px;
+}
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+.section-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.button-group {
+    display: flex;
+    gap: 8px;
+}
+.theme-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+
+.theme-button.active{
+    border: 2px solid rgb(0, 179, 0);
+}
+
+.select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d2d6dc;
+    border-radius: 4px;
+}
+.text-size-group {
+    display: flex;
+    gap: 8px;
+}
+.text-size-button {
+    padding: 8px 16px;
+    border: 1px solid #d2d6dc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.text-size-button.active {
+    background-color: #f56565;
+    color: white;
+}
+.menu-group, .menu-list{
+    padding: 16px;
+    border: 1px solid #d2d6dc;
+    border-radius: 4px;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+.menu-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.menu-button .material-icons {
+    color: #475974;
+}
+.menu-button .indicator {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    color: #f56565;
+    font-size: 14px;
+    line-height: 20px;
+}
+.menu-button.not-added .indicator {
+    color: #48bb78;
+}
