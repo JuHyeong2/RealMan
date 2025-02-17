@@ -6,6 +6,7 @@
 /.classpath
 /.project
 /build
+/.vscode
 /.idea/.gitignore
 /.idea/.name
 /.idea/compiler.xml
