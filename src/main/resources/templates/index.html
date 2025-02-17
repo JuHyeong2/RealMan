@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<title>RealMan</title>
 	<link rel="stylesheet" href="/css/index.css" />
 </head>
 <body>
+
+	<div th:insert="common/chattingSidebar.html"></div>
+
 	<div class="maintop">
 		<img class="topimage" src="/image/RealManLogo.png" width="50" onclick="location.href='home'">
 		<button id="signinbtn" class="topbtn" onclick="location.href='#'">Sign in</button>
@@ -35,6 +38,6 @@
 			<b>RealMan</b>으로 연결된 세상을 만나보세요! <b>상남자들만의 선택, RealMan!</b>
 		</p>
 	</div>
-	
+
 </body>
 </html>
