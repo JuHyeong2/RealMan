@@ -25,20 +25,20 @@ body {
     align-items: end;
     position: relative;
     min-width: 500px;
+    height: 100%;
 }
 
 .message-bubble {
     background-color: #b8c1ff;
     padding: 30px;
     border-radius: 50% 71% 50% 53%;
-    position: absolute;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    left: 35%;
-    top: 140px;
-    width: 360px;
-    height: 300px;
+    min-width: 430px;
+    height: 330px;
+    transform: translate(-20%, -130%);
     text-shadow: 3px 3px 2px #49494980;
 }
 
@@ -49,11 +49,10 @@ body {
 }
 
 .character {
-    position: absolute;
+    position: relative;
     height:60%;
-    min-height: 400px;
-    top: 35%; 
-    left: 20%;
+    min-height: 600px;
+    transform: translate(40%, -5%);
     z-index: 1;
 }
 
@@ -97,8 +96,11 @@ body {
     margin-top: 0.5rem;
     box-shadow: inset 0px 0px 10px rgb(212, 211, 211);
 }
+.form-group input:focus{
+    background-color: #e4e7fc;
+}
 
-.find-id-btn {
+.find-btn {
     width: 100%;
     padding: 1rem;
     border: none;
@@ -107,10 +109,10 @@ body {
     margin-top: 1rem;
     cursor: pointer;
 }
-.find-id-btn:hover {
+.find-btn:hover {
     background-color: #b8c1ff;
 }
-.find-id-btn:active{
+.find-btn:active{
     background-color: #8a93d3;
 }
 
@@ -139,7 +141,24 @@ body {
 }
 
 .footer-links a {
-    color: #666;
+    color:#646efa;
     text-decoration: none;
     margin: 0 0.5rem;
+}
+
+.verification-msg{
+    position: absolute;
+    display: none;
+    top: 63px;
+    left: 65px;
+    font-size: 80%;
+    letter-spacing: 2px;
+}
+.msg-yes{
+    color: rgb(18, 167, 25);
+    display: block;
+}
+.msg-no{
+    color: rgb(255, 3, 45);
+    display: block;
 }
