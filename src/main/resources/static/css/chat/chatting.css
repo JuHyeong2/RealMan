@@ -9,13 +9,41 @@
 	flex: 1 0 auto;
 }
 
+.chattingPage {
+	width: 100%;
+}
+
 .chatContent {
-	height: 53rem;
-	background-color: gray;
+	height: 53.5rem;
+	background-color: white;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-start;
+	position: relative;
+	overflow-y: auto; 
 }
 
 .inputChat {
+	width: 100%;
 	height: 2rem;
 	display: flex;
+}
+
+.inputChat textarea {
+	width: 100%;
+	resize: none;
+}
+
+.inputChat button {
+	width: 5%;
+}
+
+.textArea {
+	display: flex;
+	justify-content: space-between;
+	position: relative;
+	bottom: 50px;
+	z-index: 1;
+	width: 100%;
 }
 
