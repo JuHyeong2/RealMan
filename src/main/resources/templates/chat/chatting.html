@@ -1,18 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>chatting</title>
+    <link rel="stylesheet" href="/css/chat/chatting.css" />
 </head>
 <body>
-    <div th:replace="~{/common/chattingSidebar.html :: chattingSidebar}"></div>
-chattingsidebar에서 누른 채널 명이이 #채널명 으로 들어오게하기    채널 내에서 검색할수 있는 검색 바 만들기   알람 설정 할수있는 버튼 만들기
+<!--     <div th:replace="~{/common/chattingSidebar.html :: chattingSidebar}"></div> -->
 
-
-
-    <div th:replace="~{/common/friendSidebar.html :: friendSidebar}"></div>
-chattingsidebar에서 누르면 채널로 들어와지고 화면에는
-배경 + 프사나오게하기
-
+	<div th:insert="common/top.html"></div>
+	
+	<div class="sidebarDiv">
+		<div th:insert="common/sidebar.html"></div>
+		
+	    <div th:insert="common/chattingSidebar.html"></div>
+	    
+	    <div class="chattingPage">
+	    	<div class="chatContent">
+	    	
+	    	</div>
+	    	<div class="inputChat">
+	    		<textarea></textarea>
+	    		<button>입력</button>
+	    	</div>
+	    </div>
+	</div>
+	
+	
+	
 </body>
 </html>

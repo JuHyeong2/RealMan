@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+html, body {
+	height: calc(100vh - 43px);
+}
+
+.sidebar{
+	width: 80px;
+	background-color: #e5ecf3;
+	padding: 5px;
+	height: calc(100vh - 43px);
+}
+.mainLogo{
+	width:60px;
+	height:60px;
+	padding: 5px;
+	cursor: pointer;
+
+}
+.mainLogo img {
+	width: 100%;
+	height: auto;
+}
