@@ -10,4 +10,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberMapper mapper;
+
+	public int checkEmail(String email) {
+		int result = mapper.checkEmail(email);
+		return result;
+	}
 }
