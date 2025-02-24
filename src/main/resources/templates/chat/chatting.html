@@ -16,17 +16,107 @@
 	    <div th:insert="common/chattingSidebar.html"></div>
 	    
 	    <div class="chattingPage">
+	    	<input type="hidden" th:value=${ip}>
 	    	<div class="chatContent">
 	    	
 	    	</div>
 	    	<div class="inputChat">
 	    		<textarea></textarea>
-	    		<button>입력</button>
+	    		<button id="button-send">입력</button>
 	    	</div>
 	    </div>
 	</div>
 	
-	
+	<script>
+		onload=()=>{
+			const username = document.querySelector('input[type="hidden"]').value;
+			
+			const websocket = new WebSocket("ws://192.168.40.6:9090/ws/chat");
+			
+			const send=()=>{
+				let msg = document.querySelector('textarea');
+				
+				console.log(username + ":" + msg.value);
+				websocket.send(username + ":" + msg.value);
+				msg.value = '';
+			}
+			
+			document.querySelector('#button-send').addEventListener('click', ()=>{
+				send();
+			});
+			
+			const onMessage=(msg)=>{
+				let data = msg.data;
+				let sessionId = null;
+				
+				let message = null;
+				let arr = data.split(":");
+				
+				for(let i=0; i<arr.length; i++){
+					console.log('arr[' + i + '] : ' + arr[i]);
+				}
+				
+				let cur_session = username;
+				
+				sessionId = arr[0];
+				message = arr[1];
+				
+				console.log("sessionID : " + sessionId);
+	            console.log("cur_session : " + cur_session);
+	            
+	            let today = new Date();
+	            
+	            let hour = String(today.getHours());
+	            let minute = String(today.getMinutes());
+	            let second = String(today.getSeconds());
+	            
+	            if(hour.length == 1){
+	            	hour = '0' + hour;
+	            }
+	            
+	            if(minute.length == 1){
+	            	minute = '0' + minute;
+	            }
+	            
+	            if(second.length == 1){
+	            	second = '0' + second;
+	            }
+	            
+	            
+	            let HMS = hour + ':' + minute + ':' + second;
+	            
+	            let str = "<div class='textArea'>";
+	            str += "<b>" + sessionId + " : " + message + "</b>" + "<p>" + HMS + "</p>";
+	            str += "</div>";
+	            document.querySelector('.chatContent').insertAdjacentHTML("afterbegin", str);
+			}
+			
+			//채팅창에 들어왔을 때
+	        const onOpen=(e) => {
+	            let str = username + ": 님이 입장하셨습니다.";
+	            console.log(str);
+	            websocket.send(str);
+	        }
+			
+	      	//채팅창에서 나갔을 때
+	        const onClose=(e)=> {
+	            let str = username + ": 님이 방을 나가셨습니다.";
+	            console.log(str);
+	            websocket.send(str);
+	        }
+			
+			websocket.onmessage = onMessage;
+			websocket.onopen = onOpen;
+			websocket.onclose = onClose;
+			
+			document.querySelector('textarea').addEventListener('keydown', (e)=>{
+				if(e.keyCode == 13){
+					e.preventDefault();
+					document.querySelector('#button-send').click();
+				}
+			});
+		}
+	</script>
 	
 </body>
 </html>

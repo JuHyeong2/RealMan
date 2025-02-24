@@ -15,8 +15,8 @@
     </div>
 
     <div  id="serverlList" class="serverlList"></div>
-      <div serverNo="1"><img src="image/RealManLogo.png"></div>
-      <div serverNo="2"><img src="image/RealManLogo.png"></div>
+      <div serverNo="1"><img src="/image/RealManLogo.png"></div>
+      <div serverNo="2"><img src="/image/RealManLogo.png"></div>
       <div serverNo="3">채팅방</div>
     <ul class="addServer">+</ul>
 
@@ -35,27 +35,27 @@
 
 <script>
     function loadServer() {
-        $.ajax({
-            url: "",
-            method: "GET",
-            success: function (data) {
-                let serverList = $("#serverList");
+//         $.ajax({
+//             url: "",
+//             method: "GET",
+//             success: function (data) {
+//                 let serverList = $("#serverList");
 
-                data.forEach(server => {
-                    // 같은 ID의 채널이 이미 있으면 추가하지 않음 find는 없으면 0 있으면 1이상이므로 length를사용.
-                    if (!serverList.find(`div[serverNo="${server.serverNo}"]`).length) {
-                        let serverDiv = $("<div>")
-                            .attr("serverNo", server.serverNo) // 채널 ID 저장
-                            .text(server.serverName);
+//                 data.forEach(server => {
+//                     // 같은 ID의 채널이 이미 있으면 추가하지 않음 find는 없으면 0 있으면 1이상이므로 length를사용.
+//                     if (!serverList.find(`div[serverNo="${server.serverNo}"]`).length) {
+//                         let serverDiv = $("<div>")
+//                             .attr("serverNo", server.serverNo) // 채널 ID 저장
+//                             .text(server.serverName);
 
-                        serverList.append(serverDiv);
-                    }
-                });
-            },
-            error: function () {
-                console.error("채널 목록을 불러오는데 실패했습니다.");
-            }
-        });
+//                         serverList.append(serverDiv);
+//                     }
+//                 });
+//             },
+//             error: function () {
+//                 console.error("채널 목록을 불러오는데 실패했습니다.");
+//             }
+//         });
     }
 
     $(function () {
