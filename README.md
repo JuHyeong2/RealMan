@@ -1,6 +1,5 @@
 # RealMan(상남자) Project
 <b>진짜 상남자들만 모인 프로젝트 <br>
-리얼맨은 유명한 상남자들임</b></br>
 ## Real Men 💪💪💪
 <table>
   <tr>
@@ -11,17 +10,17 @@
     <td><a href="https://github.com/castleBell0921"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjTjdSvlIR9qcHeo3AlQveFTUD_TLkIH8leA&s" width="150px"/></a></td>
   </tr>
   <tr>
-    <th><a href="https://github.com/desertdevv"/>수유 황토주먹</br>Desert</th>
-    <th><a href="https://github.com/yoon-jeong-ho15"/>도봉산 수도승</br>Philip</th>
-    <th><a href="https://github.com/user0214125"/>은평구 검은마스크</br>Andy Polo</th>
-    <th><a href="https://github.com/JuHyeong2"/>상봉 취권마스터</br>Jonathan</th>
-    <th><a href="https://github.com/castleBell0921"/>봉천동 총잡이</br>Maddie</th>
+    <th><a href="https://github.com/desertdevv"/>Desert</th>
+    <th><a href="https://github.com/yoon-jeong-ho15"/>Philip</th>
+    <th><a href="https://github.com/user0214125"/>Andy Polo</th>
+    <th><a href="https://github.com/JuHyeong2"/>Jonathan</th>
+    <th><a href="https://github.com/castleBell0921"/>Maddie</th>
   </tr>
 </table>
 
 ## Project description 🏋🏋🏋
 <b>✔ 프로젝트 명 :</b> RealMan </br>
-<b>✔ 목적 :</b> 상남자 개발자 5명이서 상남자다운 프로젝트를 진행해보자! </br>
+<b>✔ 목적 :</b> 상남자 개발자 5명이서 실시간 텍스트, 음성, 화상채팅이 가능한 웹서비스를 개발하자! </br>
 
 ## Stacks 👊👊👊
 ### Enviroment 

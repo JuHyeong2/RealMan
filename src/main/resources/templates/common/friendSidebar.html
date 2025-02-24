@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<style>
-    .friendSidebar{
-        width: 360px;
-    }
-</style>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>friendSidebar</title>
 </head>
 <body>
-    <div class="friendSidebar">
+    <div class="friend">
         <div class="friendSidebar" th:fragment="friendSidebar">
-          <table>
-              <tr>
+          <table class="friendTable" th:each="f:${friend}">
+              <tr id="on">
                   <td>온라인</td>
-                  <td>몇명있는지 카운트</td>
-                  인원리스트
+                  <td>카운트</td>
+                  <td th:checked="${f.friendOn=='O'}"></td>
               </tr>
-              <tr>
+              <tr id="off">
                   <td>오프라인</td>
-                  <td>몇명있는지 카운트</td>
-                  인원리스트
+                  <td>카운트</td>
+                  <td th:checked="${f.friendOn=='F'}"></td>
               </tr>
           </table>
+
+            <div>
+                <h3>친구 목록</h3>
+                <div th:each="f: ${friend}" class="friends">
+                    <div class="profile" th:text="${f.profile}"></div>
+                    <div class="nickname" th:text="${f.nickname}"></div>
+                    <div class="friendButtons">
+                        <button class="dmButton">DM</button>
+                        <button class="settingsButton">⚙</button>
+                    </div>
+                </div>
+            </div>
+
+
 
 
         </div>
