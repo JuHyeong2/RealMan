@@ -6,11 +6,13 @@ const nameInput = document.querySelector("#name");
 const idInput = document.querySelector("#id");
 const email = document.querySelector('#email');
 const code = document.querySelector('#code');
+let verified = false;
+let verificationCode = '123';
+let randomPwd = '';
 
 window.onload = () => {
     //인증번호 확인 함수
-    let verified = false;
-    let verificationCode = '123';
+
 
     code.addEventListener('keyup', function () {
         const msg = document.querySelector(".verification-msg");
@@ -47,7 +49,7 @@ window.onload = () => {
                 const formData = new FormData();
                 formData.append("email", email.value);
 
-                const resopnse = await fetch('member/sendEmail', {
+                const resopnse = await fetch('/member/sendEmail', {
                     method: 'GET',
                     body: formData
                 });
@@ -64,16 +66,20 @@ window.onload = () => {
     //아이디 찾기 버튼
     findIdBtn.addEventListener('click', async function (e) {
         e.preventDefault();
-        if (nameInput.value == '' || emailInput.value == '' || code.value == '') {
+        if (nameInput.value == '' || email.value == '' || code.value == '') {
             alert('비어있는 항목이 있습니다.');
         } else {
             if (verified) {
                 const formData = new FormData();
                 formData.append('email', email.value)
-                const response = await fetch('member/findId', {
+                const response = await fetch('/member/findId', {
                     method: 'GET',
-
+                    body: formData
                 });
+
+                const id = await response.text();
+
+                alert("아이디 찾기에 성공했습니다 : " + id);
             } else {
                 alert('인증번호가 일치하지 않습니다.');
             }
@@ -87,11 +93,18 @@ window.onload = () => {
             alert('비어있는 항목이 있습니다.');
         } else {
             if (verified) {
-                const response = await fetch({
+                const formData = new FormData();
+                formData.append("memberId", idInput.value);
 
+                const response = await fetch('/member/getTempPwd', {
+                    method: "POST",
+                    body: formData
                 });
+
+                randomPwd = await response.text();
+                alert("비밀번호 찾기에 성공했습니다 : " + randomPwd);
             } else {
-                alert('인증번호가 일치하지 않습니다.')
+                alert('인증번호가 일치하지 않습니다.');
             }
         }
     });

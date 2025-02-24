@@ -1,7 +1,10 @@
 package com.example.demo.member.controller;
 
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,7 +19,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/member")
 public class MemberController {
 	private final MemberService mService;
-	//private final JavaMailSender mailSender;
+	private final JavaMailSender mailSender;
+	private final BCryptPasswordEncoder bcrypt;
 	
 	@GetMapping("/findMyId")
 	public String findMyId() {
@@ -50,5 +54,17 @@ public class MemberController {
 		return random;
 	}
 	
+	@GetMapping("/findId")
+	@ResponseBody
+	public String findId(@RequestParam("email") String email) {
+		String memberId = mService.findId(email);
+		return memberId;
+	}
+	
+	@PostMapping("/getTempPwd")
+	@ResponseBody
+	public String getTempPwd(@RequestParam("memberId") String memberId) {
+		return "";
+	}
 	
 }

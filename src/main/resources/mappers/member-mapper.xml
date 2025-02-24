@@ -6,4 +6,10 @@
 		select count(*) from member
 		where member_email = #{email}
 	</select>
+	
+	<select id="findId" resultType="_string">
+		select member_id
+		from member
+		where member_email = #{email}
+	</select>
 </mapper>

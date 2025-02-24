@@ -11,8 +11,11 @@ import lombok.RequiredArgsConstructor;
 public class MemberService {
 	private final MemberMapper mapper;
 
-	public int checkEmail(String email) {
-		int result = mapper.checkEmail(email);
-		return result;
+	public int checkEmail(String email) { 
+		return mapper.checkEmail(email);
+	}
+
+	public String findId(String email) {
+		return mapper.findId(email);
 	}
 }

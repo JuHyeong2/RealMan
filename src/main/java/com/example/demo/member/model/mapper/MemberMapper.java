@@ -7,4 +7,6 @@ public interface MemberMapper {
 
 	int checkEmail(String email);
 
+	String findId(String email);
+
 }
