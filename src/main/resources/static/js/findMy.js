@@ -2,8 +2,8 @@ const findIdBtn = document.querySelector("#findIdBtn");
 const findPwdBtn = document.querySelector("#findPwdBtn");
 const sendBtn = document.querySelector(".send-btn");
 const form = document.querySelector("form");
-const name = document.querySelector("#name");
-const id = document.querySelector("#id");
+const nameInput = document.querySelector("#name");
+const idInput = document.querySelector("#id");
 const email = document.querySelector('#email');
 const code = document.querySelector('#code');
 
@@ -64,24 +64,35 @@ window.onload = () => {
     //아이디 찾기 버튼
     findIdBtn.addEventListener('click', async function (e) {
         e.preventDefault();
-        if (verified) {
-            const response = await fetch({
-
-            });
+        if (nameInput.value == '' || emailInput.value == '' || code.value == '') {
+            alert('비어있는 항목이 있습니다.');
         } else {
-            alert('인증번호가 일치하지 않습니다.')
+            if (verified) {
+                const formData = new FormData();
+                formData.append('email', email.value)
+                const response = await fetch('member/findId', {
+                    method: 'GET',
+
+                });
+            } else {
+                alert('인증번호가 일치하지 않습니다.');
+            }
         }
     });
 
     //비밀번호 찾기 버튼
     findPwdBtn.addEventListener('click', async function (e) {
         e.preventDefault();
-        if (verified) {
-            const response = await fetch({
-
-            });
+        if (idInput.value == '' || emailInput == '' || code.value == '') {
+            alert('비어있는 항목이 있습니다.');
         } else {
-            alert('인증번호가 일치하지 않습니다.')
+            if (verified) {
+                const response = await fetch({
+
+                });
+            } else {
+                alert('인증번호가 일치하지 않습니다.')
+            }
         }
     });
 
