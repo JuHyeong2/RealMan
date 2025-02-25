@@ -43,6 +43,7 @@ public class MemberController {
 		String random = "";
 		//1. 가입된 이메일인지 확인
 		int emailchecked = mService.checkEmail(email);
+		
 		if (emailchecked == 1) {
 			//2. 코드 생성
 			for (int i=0;i<6;i++) {
@@ -72,7 +73,7 @@ public class MemberController {
 		return memberId;
 	}
 	
-	@PostMapping("/getTempPwd")
+	@PostMapping("/updatePwd")
 	@ResponseBody
 	public String getTempPwd(@RequestParam("memberId") String memberId) {
 		return "";

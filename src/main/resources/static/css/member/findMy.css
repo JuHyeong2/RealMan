@@ -171,3 +171,15 @@ body {
     color: rgb(255, 3, 45);
     display: block;
 }
+
+.reset-pwd {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+    padding: 0;
+}
+
+.reset-pwd-show {
+    max-height: 300px;
+    transition: max-height 0.5s ease-in;
+}
