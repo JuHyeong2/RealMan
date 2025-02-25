@@ -31,4 +31,16 @@ public class TemplateResolverConfig {
 		cResolver.setCheckExistence(true);
 		return cResolver;
 	}
+
+	@Bean
+	public ClassLoaderTemplateResolver prefsResolver() {
+		ClassLoaderTemplateResolver pResolver = new ClassLoaderTemplateResolver();
+		pResolver.setPrefix("templates/preferences/");
+		pResolver.setSuffix(".html");
+		pResolver.setTemplateMode(TemplateMode.HTML);
+		pResolver.setCharacterEncoding("UTF-8");
+		pResolver.setCacheable(false);
+		pResolver.setCheckExistence(true);
+		return pResolver;
+	}
 }
