@@ -61,14 +61,19 @@ window.onload = () => {
     const coolDown = () => {
         sendBtn.disabled = true;
         let sec = 60;
-        setInterval(() => {
-            sendBtn.innerText = sec;
-            sendBtn.classList.add('send-btn-disabled');
-            sendBtn.disabled = true;
-            sec--;
-        }, 1000)
-        sendBtn.classList.remove('send-btn-disabled');
-        sendBtn.disabled = false;
+        const interval = setInterval(() => {
+            if (sec > 0) {
+                sendBtn.innerText = sec;
+                sendBtn.classList.add('send-btn-disabled');
+                sendBtn.disabled = true;
+                sec--;
+            } else {
+                clearInterval(interval);
+                sendBtn.innerText = 'send';
+                sendBtn.classList.remove('send-btn-disabled');
+                sendBtn.disabled = false;
+            }
+        }, 1000);
     };
 
 
