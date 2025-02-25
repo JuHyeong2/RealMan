@@ -3,14 +3,12 @@ package com.example.demo.member.controller;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.member.model.exception.MemberException;
 import com.example.demo.member.model.service.MemberService;
+import com.example.demo.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,53 +16,83 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
-	private final MemberService mService;
-	private final JavaMailSender mailSender;
-	private final BCryptPasswordEncoder bcrypt;
-	
-	@GetMapping("/findMyId")
-	public String findMyId() {
-		return "/findMyId";
-	}
-	
-	@GetMapping("/findMyPwd")
-	public String findMyPwd() {
-		return "/findMyPwd";
-	}
-	
-	//(아이디찾기, 비밀번호찾기)이메일 보내기
-	@GetMapping("/sendEmail")
-	@ResponseBody
-	public String sendEmail(@RequestParam("eamil") String email) {
-		String random = "";
-		//1. 가입된 이메일인지 확인
-		int emailchecked = mService.checkEmail(email);
-		if (emailchecked == 1) {
-			//2. 이메일 전송
-			//mailSender.createMimeMessage()로 MimeMessage객체 만들고
-			//제목, 내용(html 형식) 작성
-			//random 생성.
-			//MimeMessageHelper() 객체 생성
-			//setTo, setSubject, setText(body, true)로 이메일 정보 담아서
-			//mailSender.send()
-		}else {
-		 throw new MemberException("해당 이메일 주소로 가입된 회원이 없습니다.");
-		}
-		
-		return random;
-	}
-	
-	@GetMapping("/findId")
-	@ResponseBody
-	public String findId(@RequestParam("email") String email) {
-		String memberId = mService.findId(email);
-		return memberId;
-	}
-	
-	@PostMapping("/getTempPwd")
-	@ResponseBody
-	public String getTempPwd(@RequestParam("memberId") String memberId) {
-		return "";
-	}
-	
+    private final MemberService mService;
+    private final JavaMailSender mailSender;
+    private final BCryptPasswordEncoder bcrypt;
+
+    @GetMapping("/findMyId")
+    public String findMyId() {
+        return "/findMyId";
+    }
+
+    @GetMapping("/findMyPwd")
+    public String findMyPwd() {
+        return "/findMyPwd";
+    }
+
+    @GetMapping("/sendEmail")
+    @ResponseBody
+    public String sendEmail(@RequestParam("email") String email) {
+        String random = "";
+        int emailChecked = mService.checkEmail(email);
+        if (emailChecked == 1) {
+        } else {
+            throw new MemberException("해당 이메일 주소로 가입된 회원이 없습니다.");
+        }
+        return random;
+    }
+  
+    @GetMapping("/findId")
+    @ResponseBody
+    public String findId(@RequestParam("email") String email) {
+        return mService.findId(email);
+    }
+    
+    @PostMapping("/getTempPwd")
+    @ResponseBody
+    public String getTempPwd(@RequestParam("memberId") String memberId) {
+        return "";
+    }
+
+    // 회원가입 페이지로 이동
+    @GetMapping("/signup")
+    public String showSignupForm() {
+        return "member/signup"; 
+    }
+
+    @PostMapping("/signup")
+    public String signup(@ModelAttribute Member member, Model model) {
+        try {
+            if (member.getMemberBirth() == 0) {
+                throw new IllegalArgumentException("생년월일을 입력해주세요.");
+            }
+
+            mService.signup(member);
+            model.addAttribute("message", "회원가입 성공");
+            return "redirect:/member/signin";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "회원가입 중 오류가 발생했습니다: " + e.getMessage());
+            return "signup";
+        }
+    }
+
+    //  로그인 페이지로 이동
+    @GetMapping("/signin")
+    public String signin() {
+        return "member/signin";
+    }
+
+    // 로그인 처리
+    @PostMapping("/signin")
+    public String processSignin(@RequestParam("memberEmail") String memberEmail,
+                                @RequestParam("memberPwd") String memberPwd,
+                                Model model) {
+        Member member = mService.login(memberEmail, memberPwd);
+        if (member != null) {
+            return "redirect:/home";
+        } else {
+            model.addAttribute("errorMessage", "이메일 또는 비밀번호가 잘못되었습니다.");
+            return "member/signin";
+        }
+    }
 }
