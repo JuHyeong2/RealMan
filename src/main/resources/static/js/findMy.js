@@ -1,9 +1,9 @@
-const findIdBtn = document.querySelector("#findIdBtn");
-const findPwdBtn = document.querySelector("#findPwdBtn");
-const sendBtn = document.querySelector(".send-btn");
-const form = document.querySelector("form");
-const nameInput = document.querySelector("#name");
-const idInput = document.querySelector("#id");
+const findIdBtn = document.querySelector('#findIdBtn');
+const findPwdBtn = document.querySelector('#findPwdBtn');
+const sendBtn = document.querySelector('.send-btn');
+const form = document.querySelector('form');
+const nameInput = document.querySelector('#name');
+const idInput = document.querySelector('#id');
 const email = document.querySelector('#email');
 const code = document.querySelector('#code');
 let verified = false;
@@ -11,11 +11,70 @@ let verificationCode = '123';
 let randomPwd = '';
 
 window.onload = () => {
+
+    //이메일 전송 버튼
+    let lastRequestTime = 0;
+
+    sendBtn.addEventListener('click', async function () {
+        console.log('이메일 전송 버튼 클릭');
+
+        if (validateEmail(email.value)) {
+            if (Date.now() - lastRequestTime > 60000) {
+                console.log(email.value + ' 로 이메일 전송 시작');
+
+                const response = await fetch('/member/sendEmail?email=' + email.value);
+                const data = await response.text();
+
+                console.log('data : ' + data);
+                switch (data) {
+                    case 'EmailNotFound':
+                        alert('해당 이메일로 가입된 회원이 존재하지 않습니다.');
+                        email.focus();
+                        break;
+                    case 'MailException':
+                        alert('이메일 전송 과정중 오류가 발생했습니다 잠시 후에 다시 시도해주세요.');
+                        break;
+                    case 'MessagingException':
+                        alert('이메일 형식 오류(사실상 일어날 일 없음)');
+                        break;
+                    default:
+                        alert('이메일이 전송되었습니다.');
+                        verificationCode = data;
+                        console.log('verificationCode : ' + verificationCode);
+                        coolDown();
+                        break;
+                }
+            }
+        } else {
+            alert('올바른 형식의 이메일 주소를 입력해주세요.');
+            email.focus();
+        }
+    });
+
+    //이메일 형식 검증
+    const validateEmail = str => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(str);
+    };
+
+    //타이머
+    const coolDown = () => {
+        sendBtn.disabled = true;
+        let sec = 60;
+        setInterval(() => {
+            sendBtn.innerText = sec;
+            sendBtn.classList.add('send-btn-disabled');
+            sendBtn.disabled = true;
+            sec--;
+        }, 1000)
+        sendBtn.classList.remove('send-btn-disabled');
+        sendBtn.disabled = false;
+    };
+
+
     //인증번호 확인 함수
-
-
     code.addEventListener('keyup', function () {
-        const msg = document.querySelector(".verification-msg");
+        const msg = document.querySelector('.verification-msg');
         if (code.value == '') {
             msg.classList.remove('msg-yes');
             msg.classList.remove('msg-no');
@@ -39,75 +98,39 @@ window.onload = () => {
         }
     });
 
-    //이메일 전송 버튼
-    sendBtn.addEventListener('click', async function (e) {
-        e.preventDefault();
-        if (email.value == '') {
-            alert('이메일을 입력해주세요.');
-        } else {
-            if (confirm('입력하신 이메일 주소가"' + email.value + '"이 맞습니까?')) {
-                console.log("메일 보내기 시작")
-                const formData = new FormData();
-                formData.append("email", email.value);
-
-                const resopnse = await fetch('/member/sendEmail', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                verificationCode = await response.text();
-                alert('인증번호가 전송되었습니다.');
-            } else {
-                email.value = '';
-                email.focus();
-            }
-        }
-    });
-
     //아이디 찾기 버튼
-    findIdBtn.addEventListener('click', async function (e) {
-        e.preventDefault();
-        if (nameInput.value == '' || email.value == '' || code.value == '') {
-            alert('비어있는 항목이 있습니다.');
-        } else {
-            if (verified) {
-                const formData = new FormData();
-                formData.append('email', email.value)
-                const response = await fetch('/member/findId', {
-                    method: 'GET',
-                    body: formData
-                });
-
-                const id = await response.text();
-
-                alert("아이디 찾기에 성공했습니다 : " + id);
+    if (findIdBtn) {
+        findIdBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            if (nameInput.value == '' || email.value == '' || code.value == '') {
+                alert('비어있는 항목이 있습니다.');
             } else {
-                alert('인증번호가 일치하지 않습니다.');
+                if (verified) {
+
+                    alert('아이디 찾기에 성공했습니다 : ' + id);
+                } else {
+                    alert('인증번호가 일치하지 않습니다.');
+                }
             }
-        }
-    });
+        });
+    }
 
     //비밀번호 찾기 버튼
-    findPwdBtn.addEventListener('click', async function (e) {
-        e.preventDefault();
-        if (idInput.value == '' || emailInput == '' || code.value == '') {
-            alert('비어있는 항목이 있습니다.');
-        } else {
-            if (verified) {
-                const formData = new FormData();
-                formData.append("memberId", idInput.value);
-
-                const response = await fetch('/member/getTempPwd', {
-                    method: "POST",
-                    body: formData
-                });
-
-                randomPwd = await response.text();
-                alert("비밀번호 찾기에 성공했습니다 : " + randomPwd);
+    if (findPwdBtn) {
+        findPwdBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            if (idInput.value == '' || email.value == '' || code.value == '') {
+                alert('비어있는 항목이 있습니다.');
             } else {
-                alert('인증번호가 일치하지 않습니다.');
+                if (verified) {
+
+
+                    alert('비밀번호 찾기에 성공했습니다 : ' + randomPwd);
+                } else {
+                    alert('인증번호가 일치하지 않습니다.');
+                }
             }
-        }
-    });
+        });
+    }
 
 }  

@@ -38,7 +38,7 @@ public class MemberController {
 	//(아이디찾기, 비밀번호찾기)이메일 보내기
 	@GetMapping("/sendEmail")
 	@ResponseBody
-	public String sendEmail(@RequestParam("eamil") String email) {
+	public String sendEmail(@RequestParam("email") String email) {
 		System.out.println("user email : "+email);
 		String random = "";
 		//1. 가입된 이메일인지 확인
@@ -56,12 +56,12 @@ public class MemberController {
 				emailUtil.sendEmail(email, random);
 				return random;
 			} catch (MailException e) {
-				throw new MemberException("이메일 전송 과정에서 오류가 발생했습니다. 다시 시도해주세요.");
+				return "MailException";
 			} catch (MessagingException e) {
-				throw new MemberException("이메일 형식 오류");
+				return "MessagingException";
 			}
 		}else {
-		 throw new MemberException("해당 이메일 주소로 가입된 회원이 없습니다.");
+			return "EmailNotFound";
 		}
 	}
 	

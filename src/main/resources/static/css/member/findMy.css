@@ -134,7 +134,16 @@ body {
 .send-btn:active{
     background-color: #dadada;
 }
-
+.send-btn-disabled{
+    background: rgb(200,200,200);
+}
+.send-btn-disabled:hover{
+    background: rgb(200,200,200);
+    cursor: wait;
+}
+.send-btn-disabled:active{
+    background: rgb(200,200,200);
+}
 .footer-links {
     text-align: center;
     margin-top: 2rem;
