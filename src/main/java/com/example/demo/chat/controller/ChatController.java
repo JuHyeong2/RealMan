@@ -1,5 +1,6 @@
 package com.example.demo.chat.controller;
 
+import com.example.demo.chat.model.vo.Chat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,9 @@ import com.example.demo.chat.model.service.ChatService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,6 +43,18 @@ public class ChatController {
 		model.addAttribute("ip", ip);
 		return "/chat/chatting";
 	}
-	
+
+
+	@GetMapping("/chattingSidebar")
+	@ResponseBody
+	public String chattingSidebar(HttpServletRequest request, Model model) {
+		String id = request.getParameter("id");
+		ArrayList<Chat> voiceChannel= cService.chattingSidebar("V");
+		ArrayList<Chat> chatChannel= cService.chattingSidebar("T");
+		model.addAttribute("id", id);
+		model.addAttribute("chatList", voiceChannel);
+		model.addAttribute("chatList", chatChannel);
+		return "chattingSidebar";
+	}
 	
 }
