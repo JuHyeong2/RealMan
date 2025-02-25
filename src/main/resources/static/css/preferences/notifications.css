@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+.main {
+	display: flex;
+}
+
+.container {
+	width: 1024px;
+	margin-left: 50px;
+	background-color: white;
+	padding: 24px;
+}
+.title {
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 16px;
+}
+.section-title {
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+.notification-permission{
+	background-color: white;
+	border: 1px solid black;
+	font-size: 14px;
+	padding: 1rem;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 50px;
+	height: 24px;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	transition: 0.4s;
+	border-radius: 24px;
+}
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 20px;
+	width: 20px;
+	left: 2px;
+	bottom: 2px;
+	background-color: white;
+	transition: 0.4s;
+	border-radius: 50%;
+}
+input:checked + .slider {
+	background-color: #74baff;
+}
+input:checked + .slider:before {
+	transform: translateX(26px);
+}
+
+/* :has()로 .radio-container 내부의 체크 상태를 감지 */
+.radio-container:has(> input[type="radio"]:checked) {
+	background-color: #f0f2f5;
+	border: 1px solid #d2d6dc;
+	border-radius: 4px;
+}
+
+.radio-container {
+	padding: 12px;
+	margin-bottom: 8px;
+	cursor: pointer;
+	display: flex;
+
+}
+.radio-label {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 12px;
+	box-sizing: border-box;
+}
+/* 라디오 버튼을 눈에 보이게 할 수도 있고, 숨길 수도 있음 */
+.radio-container input[type="radio"] {
+	margin-right: 8px;
+}
+
+/* 라벨도 클릭 시 라디오가 선택되도록 */
+.radio-container .radio-label {
+	cursor: pointer;
+}
+

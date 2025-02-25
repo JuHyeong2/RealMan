@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+.main {
+	display: flex;
+}
+
+.profile-main {
+	width: 100%;
+}
+
+.profile-container {
+	margin: 0 auto auto 3rem;
+	width: 60rem;
+	border-bottom-color: #557DA5;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+}
+
+.profile-container h1 {
+	margin-bottom: 10px;
+}
+
+.profile-top {
+	display: flex;
+	width: 100%;
+}
+
+.profile-top img {
+	margin-right: 30rem;
+	margin-top: 1rem;
+	cursor: pointer;
+}
+
+.myProfile {
+	margin-left: 3rem;
+	margin-top: 2rem;
+	width: 45rem;
+	position: absolute;
+	z-index: 1;
+}
+
+.circle {
+	border-radius: 100px;
+	width: 75px;
+	height: 75px;
+	position: absolute;
+	z-index: 2;
+	background-color: #E5ECF3;
+	margin-left: 5.8rem;
+	margin-top: 4.6rem;
+}
+
+.profilePicture {
+	position: absolute;
+	width: 60px;
+	z-index: 2;
+	margin-left: 6.3rem;
+	margin-top: 5rem;
+	cursor: pointer;
+}
+
+.profileInfo {
+	position: absolute;
+	z-index: 2;
+	margin-left: 6.3rem;
+	margin-top: 12rem;
+}
+
+.profileInfo-2 {
+	position: absolute;
+	z-index: 2;
+	margin-left: 40rem;
+	margin-top: 13rem;
+}
+
+.profileInfo-2 button {
+	width: 60px;
+	height: 40px;
+	font-size: 15px;
+	margin-bottom: 30px;
+	background-color: #557DA5;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+}
+
+h2 {
+	margin: 0 0 20px 0;
+}
+
+.changePassword {
+	margin-left: 3rem;
+	margin-top: 33rem;
+}
+
+.changePassword h2 {
+	margin-bottom: 10px;
+}
+
+.changePassword button {
+	background-color: #7184FF;
+	border: none;
+	border-radius: 5px;
+	width: 180px;
+	height: 30px;
+	color: white;
+	font-size: 15px;
+	cursor: pointer;
+}
+
+.deleteAccount {
+	margin-left: 3rem;
+	margin-top: 3rem;
+}
+
+.deleteAccount h2 {
+	margin-bottom: 10px;
+}
+
+#deactivateBtn {
+	background-color: #FF0000;
+	border: none;
+	border-radius: 5px;
+	width: 180px;
+	height: 30px;
+	color: white;
+	font-size: 15px;
+	cursor: pointer;
+}
+
+#deleteBtn {
+	margin-left: 10px;
+	background-color: transparent;
+	border: solid 2px;
+	border-color: #FF0000;
+	border-radius: 5px;
+	width: 180px;
+	height: 30px;
+	color: black;
+	font-size: 15px;
+	cursor: pointer;
+}

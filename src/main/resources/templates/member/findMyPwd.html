@@ -1,68 +1,77 @@
 <!DOCTYPE html>
 <html xlmns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>비밀번호 찾기</title>
-        <link rel="stylesheet" href="/css/findMyId.css">
-        <style>
-            .character {
-                height: 70%;
-                min-height: 500px; 
-                z-index: 1;
-                transform: translate(15%, 0);
-            }
-            #findMyPwdCharacter1{
-                height: 100%;
-            }
-            .message-bubble {
-                border-radius: 50% 71% 50% 53%;
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-width: 430px;
-                height: 330px;
-                transform: translate(-40%, -140%);
-                text-shadow: 3px 3px 2px #49494980;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="left-section">
-                <div class="character">
-                    
-                    <img id="findMyPwdCharacter1" src="/image/findMyPwdCharacter1.png">
-                </div>
-                <div class="message-bubble">
-                    <div class="message-text">If you forget<br>again, I'll kick you<br>in the ass.</div>
-                </div>
+
+<head>
+    <meta charset="UTF-8">
+    <title>비밀번호 찾기</title>
+    <link rel="stylesheet" href="/css/member/findMy.css">
+    <style>
+        .character {
+            height: 70%;
+            min-height: 500px;
+            z-index: 1;
+            transform: translate(15%, 0);
+        }
+
+        #findMyPwdCharacter1 {
+            height: 100%;
+        }
+
+        .message-bubble {
+            border-radius: 50% 71% 50% 53%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 430px;
+            height: 330px;
+            transform: translate(-40%, -140%);
+            text-shadow: 3px 3px 2px #49494980;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-section">
+            <div class="character">
+
+                <img id="findMyPwdCharacter1" src="/image/findMyPwdCharacter1.png">
             </div>
-            <div class="right-section">
-                <div class="info-form">
-                    <form>
-                        <div class="input-form">
-                            <div class="form-group">
-                                <input id="id" type="text" placeholder="아이디">
-                            </div>
-                            <div class="form-group">
-                                <input id="email" type="email" placeholder="이메일 example@realman.com">
-                                <button class="send-btn">send</button>
-                            </div>
-                            <div class="form-group">
-                                <input id="code" type="text" placeholder="인증번호">
-                                <label class="verification-msg">인증번호 문구(안보여야 함)</label>
-                            </div>
+            <div class="message-bubble">
+                <div class="message-text">If you forget<br>again, I'll kick you<br>in the ass.</div>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="info-form">
+                <form>
+                    <div class="input-form">
+                        <div class="form-group">
+                            <input id="id" type="text" placeholder="아이디">
                         </div>
-                        <button class="find-btn" id="findPwdBtn">비밀번호 찾기</button>
-                    </form>
-                    <div class="footer-links">
-                        <span>계정이 없으신가요?</span>
-                        <a href="#">회원가입</a>
+                        <div class="form-group">
+                            <input id="email" type="email" placeholder="이메일 example@realman.com">
+                            <button class="send-btn" type="button">send</button>
+                        </div>
+                        <div class="form-group">
+                            <input id="code" type="text" placeholder="인증번호">
+                            <label class="verification-msg"></label>
+                        </div>
+                        <div class="form-group reset-pwd">
+                            <input id="newPwd" type="password" placeholder="새로운 비밀번호">
+                            <button class="find-btn">확인</button>
+                        </div>
                     </div>
+                    <button class="find-btn" id="findPwdBtn" type="button">비밀번호 재설정</button>
+                </form>
+                <div class="footer-links">
+                    <span>계정이 없으신가요?</span>
+                    <a href="#">회원가입</a>
                 </div>
             </div>
         </div>
-        <script src="/js/findMy.js"></script>
-    </body>
+    </div>
+    <script src="/js/findMy.js"></script>
+</body>
+
 </html>

@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberMapper mapper;
-
+	
+	//이메일 중복확인
 	public int checkEmail(String email) { 
 		return mapper.checkEmail(email);
 	}

@@ -2,9 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/preferences/notifications.css" />
     <title>Title</title>
 </head>
 <body>
+	<div class="main">
+		<div th:insert="preferences/preferencesSidebar.html"></div>
+		<div class="container">
+			<h2 class="title">알림</h2>
+			<hr>
+			<div class="section">
+				<h3 class="section-title">알림 권한 설정</h3>
+				<br/>
+				<button class="notification-permission">브라우저 알림 권한 요청</button>
+			</div>
+			<br/><br/><br/>
 
+			<div class="section">
+				<h3 class="section-title">푸시 알림</h3>
+				<br/>
+				<span>끄기 / 켜기 </span>
+				<label class="switch">
+					<input type="checkbox" checked>
+					<span class="slider"></span>
+				</label>
+
+			</div>
+			<br/><br/><br/>
+
+			<div class="section">
+				<h3 class="section-title">표시할 알람 범위</h3>
+				<br/>
+				<div class="radio-container">
+					<input type="radio" id="option1" name="alertRange" checked>
+					<label for="option1" class="radio-label">모든 메시지</label>
+				</div>
+
+				<div class="radio-container">
+					<input type="radio" id="option2" name="alertRange">
+					<label for="option2" class="radio-label">다이렉트 메시지만</label>
+				</div>
+
+				<div class="radio-container">
+					<input type="radio" id="option3" name="alertRange">
+					<label for="option3" class="radio-label">사용 안 함</label>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
 </body>
 </html>
