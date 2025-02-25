@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>설정 - UI 및 테마</title>
-    <link rel="stylesheet" href="/css/preferences.css" />
+    <link rel="stylesheet" href="/css/preferences/ui-theme.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 <body>
 <div>
     <!--탑바-->
-    <div>
+    
+    <div class="main">
         <!-- 사이드바 -->
+	    <div th:insert="preferences/preferencesSidebar.html"></div>
         <div class="container">
             <h2 class="title">UI 및 테마</h2>
 

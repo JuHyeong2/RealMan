@@ -14,4 +14,34 @@ public class PrefsController {
     public String preferences() {
         return "ui-theme";
     }
+    
+    @GetMapping("/myProfile")
+    public String myProfileView() {
+    	return "myProfile";
+    }
+    
+    @GetMapping("/uiTheme")
+    public String uiThemeView() {
+    	return "ui-theme";
+    }
+    
+    @GetMapping("/notifications")
+    public String notificationsView() {
+    	return "notifications";
+    }
+    
+    @GetMapping("/messages")
+    public String messagesView() {
+    	return "messages";
+    }
+    
+    @GetMapping("/audio")
+    public String audioView() {
+    	return "audio";
+    }
+    
+    @GetMapping("/video")
+    public String videoView() {
+    	return "video";
+    }
 }

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/preferences/myProfile.css" />
     <title>Title</title>
 </head>
 <body>
-
+	<div class="main">
+		<div th:insert="preferences/preferencesSidebar.html"></div>
+		<h1>myProfile임</h1>
+	</div>
 </body>
 </html>
