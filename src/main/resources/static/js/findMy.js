@@ -46,11 +46,12 @@ window.onload = () => {
             alert('이메일을 입력해주세요.');
         } else {
             if (confirm('입력하신 이메일 주소가"' + email.value + '"이 맞습니까?')) {
+                console.log("메일 보내기 시작")
                 const formData = new FormData();
                 formData.append("email", email.value);
 
                 const resopnse = await fetch('/member/sendEmail', {
-                    method: 'GET',
+                    method: 'POST',
                     body: formData
                 });
 

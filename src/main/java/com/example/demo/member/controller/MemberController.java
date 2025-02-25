@@ -1,5 +1,6 @@
 package com.example.demo.member.controller;
 
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import com.example.demo.common.util.EmailCertificationUtil;
 import com.example.demo.member.model.exception.MemberException;
 import com.example.demo.member.model.service.MemberService;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -21,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberService mService;
 	private final BCryptPasswordEncoder bcrypt;
-//	private final EmailCertificationUtil emailUtil;
+	private final EmailCertificationUtil emailUtil;
 	
 	@GetMapping("/findMyId")
 	public String findMyId() {
@@ -37,6 +39,7 @@ public class MemberController {
 	@GetMapping("/sendEmail")
 	@ResponseBody
 	public String sendEmail(@RequestParam("eamil") String email) {
+		System.out.println("user email : "+email);
 		String random = "";
 		//1. 가입된 이메일인지 확인
 		int emailchecked = mService.checkEmail(email);
@@ -49,14 +52,17 @@ public class MemberController {
 				random += c;
 			}
 			//3. 이메일 전송
-//			emailUtil.sendEmail(email, random);
-			
-			
+			try {
+				emailUtil.sendEmail(email, random);
+				return random;
+			} catch (MailException e) {
+				throw new MemberException("이메일 전송 과정에서 오류가 발생했습니다. 다시 시도해주세요.");
+			} catch (MessagingException e) {
+				throw new MemberException("이메일 형식 오류");
+			}
 		}else {
 		 throw new MemberException("해당 이메일 주소로 가입된 회원이 없습니다.");
 		}
-		
-		return random;
 	}
 	
 	@GetMapping("/findId")
