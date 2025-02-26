@@ -47,7 +47,9 @@ public class ChatController {
 		System.out.println(ip);
 		
 		Server server = new Server();
-		server.setServerNo(1);
+		server.setServerNo(server.getServerNo());
+
+		System.out.println(server.getServerNo());
 		
 		model.addAttribute("ip", ip);
 		model.addAttribute("server", server);
