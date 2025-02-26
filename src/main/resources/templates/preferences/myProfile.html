@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/preferences/myProfile.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <title>Title</title>
 </head>
 <body>
@@ -22,18 +23,15 @@
 			<div class="profileInfo">
 				<b>별명</b>
 				<h2>이주형</h2>
-				<b>사용자명</b>
-				<h2>wngud1023</h2>
 				<b>이메일</b>
 				<h2>******@naver.com</h2>
 				<b>전화번호</b>
 				<h2>*******8846</h2>
 			</div>
 			<div class="profileInfo-2">
-				<button>수정</button><br>
-				<button>수정</button><br>
-				<button>수정</button><br>
-				<button>수정</button>
+				<button id="nickNameBtn">수정</button><br>
+				<button id="emailBtn">수정</button><br>
+				<button id="phoneBtn">수정</button>
 			</div>
 			
 			<div class="changePassword">
@@ -48,6 +46,27 @@
 		</div>
 	</div>
 	
+	<div class="modal" id="nickNameModal">
+		<div class="modal-content"></div>
+			<form>
+				<b>별명 변경하기</b>
+				<p>새 별명과 기존 비밀번호를 입력하세요.</p>
+				<b>별명</b>
+				<input type="text" name="memberNickname">
+				<b>현재 비밀번호</b>
+				<input type="password" name="memberPwd">
+			</form>
+		</div>
+	</div>
+	
+	<script>
+		onload=()=>{
+			document.querySelector("#nickNameBtn").addEventListener('click', ()=>{
+// 				$('#nickNameModal').modal("show");
+				$('#nickNameModal').modal("show");
+			})
+		}
+	</script>
 	
 </body>
 </html>
