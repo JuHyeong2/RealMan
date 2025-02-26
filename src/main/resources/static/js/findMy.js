@@ -6,6 +6,8 @@ const form = document.querySelector('form');
 const idInput = document.querySelector('#id');
 const email = document.querySelector('#email');
 const code = document.querySelector('#code');
+const newPwd = document.querySelector('#newPwd');
+const resetPwdBtn = document.querySelector('#resetPwdBtn');
 let verified = false;
 let verificationCode = '123';
 
@@ -117,20 +119,51 @@ window.onload = () => {
     //비밀번호 찾기 버튼
     if (findPwdBtn) {
         findPwdBtn.addEventListener('click', async function (e) {
-            // e.preventDefault();
-            // if (idInput.value == '' || email.value == '' || code.value == '') {
-            //     alert('비어있는 항목이 있습니다.');
-            // } else {
-            //     if (verified) {
-
-            //     } else {
-            //         alert('인증번호가 일치하지 않습니다.');
-            //     }
-            // }
-            console.log(document.querySelector('.reset-pwd'));
-            document.querySelector('.reset-pwd').classList.add('reset-pwd-show');
-            findPwdBtn.style = 'overflow: hidden; height : 0; padding:0; margin:0; transition: all 0.5s ease;';
+            e.preventDefault();
+            if (idInput.value == '' || email.value == '' || code.value == '') {
+                alert('비어있는 항목이 있습니다.');
+            } else {
+                if (verified) {
+                    console.log(document.querySelector('.reset-pwd'));
+                    document.querySelector('.reset-pwd').classList.add('reset-pwd-show');
+                    findPwdBtn.style = 'overflow: hidden; height : 0; padding:0; margin:0; transition: all 0.3s ease;';
+                } else {
+                    alert('인증번호가 일치하지 않습니다.');
+                }
+            }
         });
     }
 
+    if (resetPwdBtn) {
+        resetPwdBtn.addEventListener('click', async () => {
+            console.log(verified);
+            if (verified) {
+                const formData = new FormData();
+                formData.append('memberId', idInput.value);
+                formData.append('memberEmail', email.value);
+                formData.append('newPwd', newPwd.value);
+
+                const response = await fetch('/member/resetPwd', {
+                    method: 'POST',
+                    body: formData,
+                })
+
+                const data = await response.text();
+                switch (data) {
+                    case "MemberNotFound":
+                        alert("해당 이메일과 아이디를 가진 회원이 없습니다."
+                            + "아이디를 모르시는경우 아이디찾기를 먼저 진행해주세요.");
+                        break;
+                    case "success":
+                        alert("비밀번호 변경 성공");
+                        resetPwdBtn.innerText = '로그인';
+                        resetPwdBtn.classList.add('to-login');
+                        resetPwdBtn.onclick = () => window.location.href = '/';
+                        break;
+                    default:
+                        console.log(data);
+                }
+            }
+        });
+    }
 }  

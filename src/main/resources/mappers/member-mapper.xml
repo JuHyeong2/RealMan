@@ -3,19 +3,34 @@
 	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.demo.member.model.mapper.MemberMapper">
-
-    <!-- 이메일 중복 체크 -->
+	<!-- 이메일 중복 체크 -->
     <select id="checkEmail">
-        SELECT COUNT(*) FROM MEMBER
-        WHERE MEMBER_EMAIL = #{email}
-    </select>
+		select count(*)
+		from member
+		where member_email = #{email}
+	</select>
+	<!-- 이메일로 아이디 찾기 -->
+	<select id="findId" resultType="string">
+		select member_id
+		from member
+		where member_email = #{email}
+	</select>
 
-    <!-- 이메일로 아이디 찾기 -->
-    <select id="findId" resultType="string">
-        SELECT MEMBER_ID
-        FROM MEMBER
-        WHERE MEMBER_EMAIL = #{email}
-    </select>
+    <!-- 아이디 이메일 일치여부 확인 -->
+    <select id="confirmIdEmail" resultType="_int">
+		select count(*)
+		from member
+		where member_email = #{memberEmail}
+			and member_id = #{memberId}
+	</select>
+	
+    <!-- 비밀번호 재설정 -->
+	<update id="resetPwd">
+		update member
+		set member_pwd = #{memberPwd}
+		where member_email = #{memberEmail}
+			and member_id = #{memberId}
+	</update>
 
     <!-- 로그인 처리 -->
     <select id="login" parameterType="map" resultType="com.example.demo.member.model.vo.Member">
@@ -35,5 +50,4 @@
         #{memberId}, #{memberPwd}, #{memberGender}, #{memberPhone}, #{memberEmail}, #{memberNickname}, #{memberStatus}, #{memberIsAdmin}, #{memberBirth}, SYSDATE)
         )
     </insert>
-
 </mapper>

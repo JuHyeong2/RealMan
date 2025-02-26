@@ -26,6 +26,16 @@ public class MemberService {
         return mapper.findId(email);
     }
 
+    // 이메일 아이디 일치 여부 확인
+    public int confirmIdEmail(Member m) {
+        return mapper.confirmIdEmail(m);
+    }
+
+    // 비밀번호 재설정
+    public int resetPwd(Member m) {
+        return mapper.resetPwd(m);
+    }
+
     // 로그인 처리
     public Member login(String memberEmail, String memberPwd) {
         return mapper.login(memberEmail, memberPwd);
@@ -36,10 +46,5 @@ public class MemberService {
         if (member.getMemberBirth() == 0) {  
             throw new IllegalArgumentException("생년월일은 필수 입력 값입니다.");
         }
-
-        member.setMemberStatus("A"); 
-        member.setMemberIsAdmin("N"); 
-
-        mapper.insertMember(member);
     }
 }
