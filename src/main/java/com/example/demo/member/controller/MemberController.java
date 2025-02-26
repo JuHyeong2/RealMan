@@ -1,15 +1,18 @@
 package com.example.demo.member.controller;
 
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.common.util.EmailCertificationUtil;
 import com.example.demo.member.model.exception.MemberException;
 import com.example.demo.member.model.service.MemberService;
 import com.example.demo.member.model.vo.Member;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @Controller
