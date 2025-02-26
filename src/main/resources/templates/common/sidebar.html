@@ -13,14 +13,20 @@
       <div class="mainLogo" onclick="location.href='#';">
          <img src="/image/RealManLogo.png">
       </div>
-
-      <th:block th:each = "s : ${Server}">
-         <table class="serverList">
+      
+      <table class="serverList">
             <tr>
-                <td width="20px" height="20px" th:${s.serverNo}></td>
+                <td width="20px" height="20px" >[[${server.serverNo}]]</td>
             </tr>
          </table>
-      </th:block>
+
+<!--       <th:block th:each = "s : ${Server}"> -->
+<!--          <table class="serverList"> -->
+<!--             <tr> -->
+<!--                 <td width="20px" height="20px" th:${s.serverNo}></td> -->
+<!--             </tr> -->
+<!--          </table> -->
+<!--       </th:block> -->
 
 
       <div class="addServer">+</div>

@@ -2,6 +2,8 @@ package com.example.demo.chat.controller;
 
 import com.example.demo.chat.model.vo.Chat;
 import com.example.demo.member.model.vo.Member;
+import com.example.demo.server.model.vo.Server;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,9 +43,14 @@ public class ChatController {
 	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
 	        ip = request.getRemoteAddr();
 	    }
-
+	    
 		System.out.println(ip);
+		
+		Server server = new Server();
+		server.setServerNo(1);
+		
 		model.addAttribute("ip", ip);
+		model.addAttribute("server", server);
 		return "chat/chatting";
 	}
 
