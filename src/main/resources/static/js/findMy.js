@@ -19,6 +19,7 @@ window.onload = () => {
 
         if (validateEmail(email.value)) {
             console.log(email.value + ' 로 이메일 전송 시작');
+            document.querySelector('.modal-container').style.display = 'flex';
             const response = await fetch('/member/sendEmail?email=' + email.value);
             const data = await response.text();
             console.log('data : ' + data);
@@ -34,7 +35,7 @@ window.onload = () => {
                     alert('이메일 형식 오류(사실상 일어날 일 없음)');
                     break;
                 default:
-                    alert('이메일이 전송되었습니다.');
+                    document.querySelector('.modal-container').style.display = 'none';
                     verificationCode = data;
                     console.log('verificationCode : ' + verificationCode);
                     timer();
