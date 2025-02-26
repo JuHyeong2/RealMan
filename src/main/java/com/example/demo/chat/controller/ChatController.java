@@ -44,7 +44,7 @@ public class ChatController {
 
 		System.out.println(ip);
 		model.addAttribute("ip", ip);
-		return "/chat/chatting";
+		return "chat/chatting";
 	}
 
 
