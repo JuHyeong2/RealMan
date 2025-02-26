@@ -12,9 +12,8 @@ body {
 
 /* ========================= 상단바 ========================= */
 .topbar {
-    background-color: #dbe9f4;
     padding: 10px 20px;
-    position: fixed;
+   	position : absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -22,15 +21,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-/* "REAL MAN" 텍스트 스타일 */
-.topbar-text {
-    font-family: 'Bungee Shade', cursive;
-    font-size: 24px;
-    color: black;
-    text-transform: uppercase;
-    letter-spacing: 2px;
 }
 
 /* ========================= Sign up 버튼 (탑바 우측 상단) ========================= */

@@ -7,19 +7,16 @@
 
     <!-- CSS 파일 연결 -->
     <link rel="stylesheet" href="/css/member/signin.css">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet">
+    
 </head>
 <body>
 
     <!-- 상단바 -->
     <header class="topbar">
-        <div class="topbar-text">REAL MAN</div>
-        <a href="/member/signup" class="signup">Sign up</a>
-    </header>
+	    <div th:insert="common/top.html"></div> <!-- 🔥 상단바 불러오기 -->
+	    <a href="/member/signup" class="signup">Sign up</a> <!-- 🔥 Sign up 버튼 추가 -->
+	</header>
+    
 
     <div class="container">
         <!-- 왼쪽 섹션 -->
