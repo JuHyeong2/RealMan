@@ -3,3 +3,73 @@
 .main {
 	display: flex;
 }
+
+.container {
+	width: 1024px;
+	margin-left: 50px;
+	background-color: white;
+	padding: 24px;
+}
+.title {
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 16px;
+}
+.section-title {
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+
+.radio-group {
+	margin-bottom: 20px;
+}
+
+.radio-option {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 15px;
+	padding: 10px;
+	border-radius: 8px;
+	transition: background-color 0.3s ease;
+	cursor: pointer;
+}
+
+.radio-option input[type="radio"] {
+	margin-right: 10px;
+	margin-top: 3px;
+}
+
+.profile-info {
+	display: flex;
+	align-items: center;
+	margin-top: 5px;
+}
+
+.profile-image {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	margin-right: 8px;
+	object-fit: cover;
+}
+
+.profile-name {
+	font-size: 13px;
+	color: #666;
+}
+
+.time-info {
+	font-size: 13px;
+	color: #666;
+	margin-top: 5px;
+	margin-left: 24px;
+}
+
+.radio-option:has(input:checked) {
+	background-color: #e3f2fd;
+	border: 1px solid #2196f3;
+}
+
+.radio-option:hover {
+	background-color: #f1f8fe;
+}

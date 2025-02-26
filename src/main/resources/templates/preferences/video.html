@@ -8,7 +8,49 @@
 <body>
 	<div class="main">
 		<div th:insert="preferences/preferencesSidebar.html"></div>
-		<h1>video임</h1>
+		<div class="container">
+			<h2 class="title">비디오</h2>
+			<hr><br/>
+
+			<div class="section">
+				<h3 class="section-title">카메라 연결</h3>
+				<div class="camera-controls">
+					<select>
+						<option>연결된 카메라 보기</option>
+						<option>기본 장치</option>
+					</select>
+					<button class="connect-button">연결 하기</button>
+				</div>
+			</div>
+			<br/><br/>
+
+			<div class="section">
+				<h3 class="section-title">비디오 연결 테스트</h3>
+				<div class="video-test">
+					<div class="video-preview"></div>
+					<button class="test-button">확인하기</button>
+				</div>
+			</div>
+			<br/><br/>
+		</div>
 	</div>
+	<script>
+		document.querySelector('.connect-button').addEventListener('click', function() {
+			// 카메라 연결을 처리하는 코드 (현재는 콘솔 출력)
+			console.log('Connect');
+		});
+
+		document.querySelector('.test-button').addEventListener('click', function() {
+			// 비디오 테스트를 실행하는 코드 (현재는 콘솔 출력)
+			console.log('Test');
+		});
+
+		// 카메라 선택 드롭다운(`select` 요소)에서 변경이 발생할 때 실행되는 이벤트 리스너
+		document.querySelector('select').addEventListener('change', function() {
+			// 사용자가 선택한 카메라에 대한 동작 코드 (현재는 콘솔 출력)
+			console.log('Camera selected:', this.value);
+		});
+	</script>
+
 </body>
 </html>
