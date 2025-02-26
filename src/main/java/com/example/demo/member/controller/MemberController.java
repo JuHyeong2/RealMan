@@ -1,18 +1,20 @@
 package com.example.demo.member.controller;
 
 import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.example.demo.common.util.EmailCertificationUtil;
-import com.example.demo.member.model.exception.MemberException;
 import com.example.demo.member.model.service.MemberService;
+import com.example.demo.member.model.vo.Member;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@SessionAttributes("loginUser")
 public class MemberController {
 	private final MemberService mService;
 	private final BCryptPasswordEncoder bcrypt;
@@ -39,7 +42,7 @@ public class MemberController {
 	@GetMapping("/sendEmail")
 	@ResponseBody
 	public String sendEmail(@RequestParam("email") String email) {
-		System.out.println("user email : "+email);
+		System.out.println("sendEmail : "+email);
 		String random = "";
 		//1. 가입된 이메일인지 확인
 		int emailchecked = mService.checkEmail(email);
@@ -73,10 +76,33 @@ public class MemberController {
 		return memberId;
 	}
 	
-	@PostMapping("/updatePwd")
+	@PostMapping("/resetPwd")
 	@ResponseBody
-	public String getTempPwd(@RequestParam("memberId") String memberId) {
-		return "";
+	public String resetPwd(@ModelAttribute Member m, 
+			@RequestParam("newPwd") String newPwd,
+			Model model) {
+		System.out.println("memberId : "+m.getMemberId());
+		System.out.println("memberEmail : "+m.getMemberEmail());
+		System.out.println("newPwd : "+newPwd);
+		
+		//1. 사용자가 입력한 아이디와 - 이메일이 일치하는지 조회
+		int check = mService.confirmIdEmail(m);
+		System.out.println("confirmIdEmail : "+check);
+		
+		if (check == 1) {
+			m.setMemberPwd(bcrypt.encode(newPwd));
+			
+			int result = mService.resetPwd(m);
+			System.out.println("resetPwd : "+result);
+			
+			if (result == 1) {
+				//model.addAttribute("loginUser", m);
+				return "success";
+			}
+		}else {
+			return "MemberNotFound";
+		}
+		return "?";
 	}
 	
 }
