@@ -6,17 +6,19 @@
     <link rel="stylesheet" href="/css/chat/chatting.css" />
 </head>
 <body>
-<!--     <div th:replace="~{/common/chattingSidebar.html :: chattingSidebar}"></div> -->
+<!--     <div th:replace="~{/common/sidebar.html :: sidebar}"></div> -->
+<!--     <div th:replace="~{/chat/chattingSidebar.html :: chattingSidebar}"></div> -->
+<!--     <div th:replace="~{/chat/friendSidebar.html :: friendSidebar}"></div> -->
 
 	<div th:insert="common/top.html"></div>
 	
 	<div class="sidebarDiv">
 		<div th:insert="common/sidebar.html"></div>
 		
-	    <div th:insert="common/chattingSidebar.html"></div>
+	    <div th:insert="chat/chattingSidebar.html"></div>
 	    
 	    <div class="chattingPage">
-	    	<input type="hidden" th:value=${ip}>
+	    	<input type="hidden" th:value="${ip}">
 	    	<div class="chatContent">
 	    	
 	    	</div>
@@ -56,7 +58,7 @@
 					console.log('arr[' + i + '] : ' + arr[i]);
 				}
 				
-				let cur_session = username;
+				let cur_session = username;  
 				
 				sessionId = arr[0];
 				message = arr[1];

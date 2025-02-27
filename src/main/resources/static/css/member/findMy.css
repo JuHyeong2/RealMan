@@ -115,6 +115,10 @@ body {
 .find-btn:active{
     background-color: #8a93d3;
 }
+.to-login{
+    background-color: #5ea4ff; @!important
+}
+
 
 .send-btn{
     position: absolute;
@@ -134,7 +138,16 @@ body {
 .send-btn:active{
     background-color: #dadada;
 }
-
+.send-btn-disabled{
+    background: rgb(200,200,200);
+}
+.send-btn-disabled:hover{
+    background: rgb(200,200,200);
+    cursor: wait;
+}
+.send-btn-disabled:active{
+    background: rgb(200,200,200);
+}
 .footer-links {
     text-align: center;
     margin-top: 2rem;
@@ -161,4 +174,16 @@ body {
 .msg-no{
     color: rgb(255, 3, 45);
     display: block;
+}
+
+.reset-pwd {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 1s ease;
+    padding: 0;
+}
+
+.reset-pwd-show {
+    max-height: 300px;
+    transition: max-height 1s ease;
 }

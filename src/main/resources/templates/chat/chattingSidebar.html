@@ -3,46 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>chattingSidebar</title>
-    <link rel="stylesheet" href="/css/chat/chattingSidebar.css" />
+    <link rel="stylesheet" href="/css/chat/chattingSidebar.css"/>
 </head>
 <body>
-    <div class="chatsidebar">
+    <div class="chatSidebar">
     	<nav>
     		<ul>
     			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
-					<th:block th:each="channel : ${voiceChannel}">
-						<li><a href="#"><img src="/image/Voice.png">롤토체스 음성방</a></li>
-						<ul>
-							<li><img src="/image/profile.png">&nbsp이주형</li>
-						</ul>
+					<th:block th:each="c : ${Chat}">
+						<table class ="voice">
+							<tr>
+								<td width="20px" height="20px"><img src="/image/Voice.png"></td>
+								<td width="40px" height="20px">
+								</td>
+							</tr>
+						</table>
 					</th:block>
-<!--				<table class ="voice">-->
-<!--					<tr>-->
-<!--						<th width="20px" height="20px"><img src="/image/Voice.png"></th>-->
-<!--						<th id="voiceRoom" width="40px" height="20px"></th>-->
-<!--					</tr>-->
-<!--				</table>-->
-
     		</ul>
     		<ul>
     			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
-				<th:block th:each="channel : ${chatChannel}">
+					<th:block th:each="c : ${chat}">
 
-					<li><a href="#"><img src="/image/chat.png">롤토체스 채팅방</a></li>
-					<ul>
-						<li></li>
-					</ul>
-					<li><a href="#"><img src="/image/chat.png">수다떠는 채팅방</a></li>
-					<ul>
-						<li></li>
-					</ul>
-				</th:block>
-<!--				<table class ="chat">-->
-<!--					<tr>-->
-<!--						<th width="20px" height="20px"><img src="/image/Voice.png"></th>-->
-<!--						<th id="chatRoom" width="40px" height="20px"></th>-->
-<!--					</tr>-->
-<!--				</table>-->
+						<table class ="chat">
+							<tr>
+								<td width="20px" height="20px"><img src="/image/chat.png"></td>
+								<td width="40px" height="20px">
+									<a href="/chatting/${no}/${c.channelNo}"></a>
+								</td>
+							</tr>
+						</table>
+					</th:block>
     		</ul>
     	</nav>
     </div>
@@ -50,8 +40,8 @@
 	<script>
 		// 음성 채팅방 드롭다운
 		document.querySelectorAll('.channel')[0].addEventListener('click', ()=>{
-			const chatRoom = document.querySelector('nav ul li');
-			const people = document.querySelector('nav ul ul li');
+			const chatRoom = document.querySelector('nav ul th li');
+			const people = document.querySelector('nav ul ul th li');
 			
 			if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
 				chatRoom.style.display = 'block';
@@ -67,7 +57,7 @@
 			const chatRoom = document.querySelector('nav > ul:nth-of-type(2) li');
 			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
 			
-			if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
+			if(chatRoom.style.display === '' || chatRoom.style.display === 'none'){
 				chatRoom.style.display = 'block';
 				people.style.display = 'block';	
 			}else{

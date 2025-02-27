@@ -1,9 +1,14 @@
 package com.example.demo.chat.controller;
 
 import com.example.demo.chat.model.vo.Chat;
+import com.example.demo.member.model.vo.Member;
+import com.example.demo.server.model.vo.Server;
+
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.chat.model.service.ChatService;
@@ -18,7 +23,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class ChatController {
-	private final ChatService cService;    
+	private final ChatService cService;
 	
 	@GetMapping("main")
 	public String mainView(HttpServletRequest request, Model model) {
@@ -38,23 +43,58 @@ public class ChatController {
 	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
 	        ip = request.getRemoteAddr();
 	    }
-
+	    
 		System.out.println(ip);
+		
+		Server server = new Server();
+		server.setServerNo(server.getServerNo());
+
+		System.out.println(server.getServerNo());
+		
 		model.addAttribute("ip", ip);
-		return "/chat/chatting";
+		model.addAttribute("server", server);
+		return "chat/chatting";
 	}
 
 
-	@GetMapping("/chattingSidebar")
-	@ResponseBody
-	public String chattingSidebar(HttpServletRequest request, Model model) {
-		String id = request.getParameter("id");
+	@GetMapping("/chatting/{no}")
+	public String chatting(@PathVariable("no") int no, Model model, HttpSession session) {
+		Member loginMember = (Member)session.getAttribute("loginMember");
+
+		model.addAttribute("no", no);
+
 		ArrayList<Chat> voiceChannel= cService.chattingSidebar("V");
+		model.addAttribute("voiceChannel", voiceChannel);
+
 		ArrayList<Chat> chatChannel= cService.chattingSidebar("T");
-		model.addAttribute("id", id);
-		model.addAttribute("chatList", voiceChannel);
-		model.addAttribute("chatList", chatChannel);
-		return "chattingSidebar";
+		model.addAttribute("chatChannel", chatChannel);
+
+		return "redirect:/chatting/" + no;
+
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+// chattingSidebar 할떄 쓸것
+//	public String chattingSidebar(HttpServletRequest request, Model model) {
+//		ArrayList<Chat> voiceChannel= cService.chattingSidebar("V");
+//		ArrayList<Chat> chatChannel= cService.chattingSidebar("T");
+//		model.addAttribute("chatList", voiceChannel);
+//		model.addAttribute("chatList", chatChannel);
+//		return "chattingSidebar";
+//	}
 	
 }

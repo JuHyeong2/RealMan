@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+
+    <link rel="stylesheet" href="/css/member/signup.css">
+</head>
+<body>
+
+    <header class="topbar">
+       <div th:insert="common/top.html"></div>
+    </header>
+
+    <div class="container">
+        <div class="image-container">
+	    	<img src="/image/member/signup1.png" class="background-shape">
+			<img src="/image/member/signup2.png" class="character">
+            <div class="text-overlay">
+                <p>Start testing in minutes!</p>
+                <div class="login-text">
+                    Already have an account? <a href="/member/signin">Log in</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="signUp-box">
+            <form th:action="@{/member/signup}" method="post">
+                <div class="input-box">
+                    <input type="text" id="memberId" name="memberId" placeholder=" " required>
+                    <label for="memberId">ID</label>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" id="memberPwd" name="memberPwd" placeholder=" " required>
+                    <label for="memberPwd">Password</label>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required>
+                    <label for="confirmPassword">Confirm Password</label>
+                </div>
+
+                <div class="input-box">
+                    <input type="text" id="memberNickname" name="memberNickname" placeholder=" " required>
+                    <label for="memberNickname">Nickname</label>
+                </div>
+
+                <div class="input-box">
+				    <input type="text" name="memberPhone" pattern="[0-9]{10,11}" placeholder=" " required />
+				    <label>전화번호</label>
+				</div>
+
+                <div class="input-box">
+                    <input type="email" id="memberEmail" name="memberEmail" placeholder=" " required>
+                    <label for="memberEmail">Email</label>
+                </div>
+                
+                <div class="input-box">
+				    <input type="date" id="memberBirthDate" name="memberBirthDate" required>
+					<input type="hidden" id="memberBirth" name="memberBirth"> 
+				    <label for="memberBirth">Date of Birth</label>
+				</div>
+				                
+               <div class="gender-checkbox-group">
+				   <label class="gender-checkbox">
+				       <input type="radio" name="memberGender" value="M" required>
+				       <span class="gender-label">Male</span>
+				   </label>
+				   <label class="gender-checkbox">
+				       <input type="radio" name="memberGender" value="F" required>
+				       <span class="gender-label">Female</span>
+				   </label>
+				</div>
+
+                <button type="submit" class="btn">Create Account</button>
+            </form>
+        </div>
+    </div>
+	<script>
+	    document.querySelector('form').addEventListener('submit', function(event) {
+	        const birthInput = document.getElementById('memberBirthDate');
+	        const hiddenBirthInput = document.getElementById('memberBirth');
+	
+	        if (!birthInput.value) {
+	            event.preventDefault();
+	            alert("생년월일을 입력해주세요.");
+	            return;
+	        }
+	
+	        const birthDate = new Date(birthInput.value);
+	        const year = birthDate.getFullYear();
+	        const month = String(birthDate.getMonth() + 1).padStart(2, '0');
+	        const day = String(birthDate.getDate()).padStart(2, '0');
+	
+	        hiddenBirthInput.value = `${year}${month}${day}`;
+	    });
+	</script>
+</body>
+</html>
