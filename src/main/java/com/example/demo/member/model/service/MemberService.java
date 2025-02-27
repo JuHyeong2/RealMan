@@ -37,8 +37,8 @@ public class MemberService {
     }
 
     // 로그인 처리
-    public Member login(String memberEmail, String memberPwd) {
-        return mapper.login(memberEmail, memberPwd);
+    public Member login(String memberId, String memberPwd) {
+        return mapper.login(memberId, memberPwd);
     }
 
     // 회원가입 처리

@@ -34,11 +34,11 @@
 
     <!-- 로그인 처리 -->
     <select id="login" parameterType="map" resultType="com.example.demo.member.model.vo.Member">
-        SELECT * FROM MEMBER
-        WHERE MEMBER_EMAIL = #{memberEmail} 
-          AND MEMBER_PWD = #{memberPwd} 
-          AND MEMBER_STATUS = 'A'
-    </select>
+	    select * from member
+	    where member_id = #{memberId} 
+	      and member_pwd = #{memberPwd} 
+	      and member_status = 'A'
+	</select>
 
     <!-- 회원가입 쿼리 -->
     <insert id="insertMember" parameterType="com.example.demo.member.model.vo.Member">

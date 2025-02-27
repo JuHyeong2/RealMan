@@ -23,7 +23,7 @@ public interface MemberMapper {
     String findId(String email);
 
     // 로그인 처리
-    Member login(@Param("memberEmail") String memberEmail, @Param("memberPwd") String memberPwd);
+    Member login(@Param("memberId") String memberId, @Param("memberPwd") String memberPwd);
 
     // 회원가입 처리
     void insertMember(Member member);

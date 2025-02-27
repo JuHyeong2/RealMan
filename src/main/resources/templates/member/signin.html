@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+    <!-- CSS 파일 연결 -->
+    <link rel="stylesheet" href="/css/member/signin.css">
+    
+</head>
+<body>
+
+    <!-- 상단바 -->
+    <header class="topbar">
+	    <div th:insert="common/top.html"></div> 
+	    <a href="/member/signup" class="signup">Sign up</a>
+	</header>
+    
+
+    <div class="container">
+        <!-- 왼쪽 섹션 -->
+        <div class="left-section">
+            <div class="image-container">
+                <img src="/image/member/signin1.png" alt="Login Image">
+            </div>
+        </div>
+
+        <!-- 오른쪽 섹션 -->
+        <div class="right-section">
+            <form class="login-form" th:action="@{/member/signin}" method="post">
+			 	<input type="text" name="memberId" placeholder="Enter ID" required>
+			   	<input type="password" name="memberPwd" placeholder="Password" required>
+	            <div class="forgot-links">
+                    <a href="/member/findMyId">Forgot ID?</a> 
+                    <a href="/member/findMyPwd">Forgot Password?</a> 
+                </div>
+                <button type="submit" class="sign-in">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

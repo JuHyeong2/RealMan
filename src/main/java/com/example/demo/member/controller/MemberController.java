@@ -140,15 +140,17 @@ public class MemberController {
 
 	// 로그인 처리
 	@PostMapping("/signin")
-	public String processSignin(@RequestParam("memberEmail") String memberEmail,
-			@RequestParam("memberPwd") String memberPwd,
-			Model model) {
-		Member member = mService.login(memberEmail, memberPwd);
-		if (member != null) {
-			return "redirect:/home";
-		} else {
-			model.addAttribute("errorMessage", "이메일 또는 비밀번호가 잘못되었습니다.");
-			return "member/signin";
-		}
+	public String processSignin(@RequestParam("memberId") String memberId,
+	                            @RequestParam("memberPwd") String memberPwd,
+	                            Model model) {
+	    Member member = mService.login(memberId, memberPwd);
+	    
+	    if (member != null && bcrypt.matches(memberPwd, member.getMemberPwd())) {
+	        model.addAttribute("loginUser", member);
+	        return "redirect:/home";
+	    } else {
+	        model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
+	        return "member/signin";
+	    }
 	}
 }
