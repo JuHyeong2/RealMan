@@ -1,6 +1,7 @@
 package com.example.demo.server.controller;
 
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.demo.member.model.service.MemberService;
 import com.example.demo.member.model.vo.Member;
 import com.example.demo.server.model.service.ServerService;
@@ -25,7 +26,7 @@ public class ServerController {
 
 
 
-    @GetMapping("/server/{no}")
+    @GetMapping("/")
     public String server(Member m ,@PathVariable("no") int no,
                          Model model, HttpSession session){
         Member loginMember = (Member) session.getAttribute("loginMember");
@@ -35,7 +36,8 @@ public class ServerController {
         ArrayList<Server> serverList = new ArrayList<Server>(sService.serverList(loginMember.getMemberNo()));
         model.addAttribute("serverList", serverList);
 
-        return "redirect:/server/" + no;
+        System.out.println(serverList);
+        return "/common/sidebar";
     }
 
 

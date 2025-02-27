@@ -6,28 +6,6 @@
     padding: 0;
 }
 
-/* 🔝 최상단 헤더 스타일 */
-.topbar {
-    background-color: #dbe9f4; 
-    padding: 10px 20px; 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%; 
-    height: 20px;
-    display: flex;
-    align-items: center; 
-    z-index: 5;
-}
-
-/* 📝 헤더 내부 텍스트 스타일 */
-.topbar-text {
-    font-family: 'Bungee Shade', sans-serif;
-    font-size: 24px;
-    color: black;
-    text-transform: uppercase; 
-    letter-spacing: 2px; 
-}
 
 /* 📦 메인 컨테이너 스타일 */
 .container {

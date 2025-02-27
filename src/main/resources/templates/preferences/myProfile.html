@@ -2,8 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/preferences/myProfile.css" />
+    
     <title>Title</title>
+    
 </head>
 <body>
 	<div class="main">
@@ -22,18 +25,15 @@
 			<div class="profileInfo">
 				<b>별명</b>
 				<h2>이주형</h2>
-				<b>사용자명</b>
-				<h2>wngud1023</h2>
 				<b>이메일</b>
 				<h2>******@naver.com</h2>
 				<b>전화번호</b>
 				<h2>*******8846</h2>
 			</div>
 			<div class="profileInfo-2">
-				<button>수정</button><br>
-				<button>수정</button><br>
-				<button>수정</button><br>
-				<button>수정</button>
+				<button id="nickNameBtn">수정</button><br>
+				<button id="emailBtn">수정</button><br>
+				<button id="phoneBtn">수정</button>
 			</div>
 			
 			<div class="changePassword">
@@ -47,5 +47,65 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal" id="nickNameModal">
+		<div class="modal-content">
+			<form action="/">
+				<div class="modalTitle">
+					<b>별명 변경하기</b>
+					<p>새 별명과 기존 비밀번호를 입력하세요.</p>
+				</div>
+				<b>별명</b></br>
+				<input type="text" name="memberNickname"></br>
+				<b>현재 비밀번호</b></br>
+				<input type="password" name="memberPwd">
+				<div class="modal-btn">
+					<button id="cancelBtn" type="button">취소</button>
+					<button id="completeBtn">완료</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<div class="modal" id="emailModal">
+		<div class="modal-content">
+			<div class="modalTitle">
+				<img alt="email" src="/image/preferences/Mail.png"></br>
+				<b>이메일 주소를 인증하세요</b>
+				<p>
+					이메일 주소를 변경하려면 이전 이메일 주소
+					wngud1023@naver.com부터 인증해야 해요. </br>
+					해당 이메일에 엑세스할 수 없나요? 다시 엑세스하려면 </br>
+					이메일 제공업체에 문의하세요.
+				</p>
+				<div class="modal-btn">
+					<button id="cancelBtn2" type="button">취소</button>
+					<button id="sendBtn">인증코드 전송</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		onload=()=>{
+			// 별명 수정하기
+			document.querySelector("#nickNameBtn").addEventListener('click', ()=>{
+				document.querySelector('#nickNameModal').style.display = 'flex';
+			})
+			
+			document.querySelector("#cancelBtn").addEventListener('click', ()=>{
+				document.querySelector('#nickNameModal').style.display = 'none';
+			})
+			
+			document.querySelector("#emailBtn").addEventListener('click', ()=>{
+				document.querySelector('#emailModal').style.display = 'flex';
+			})
+			
+			document.querySelector("#cancelBtn2").addEventListener('click', ()=>{
+				document.querySelector('#emailModal').style.display = 'none';
+			})
+		}
+	</script>
+	
 </body>
 </html>
