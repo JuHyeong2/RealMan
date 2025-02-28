@@ -8,7 +8,91 @@
 <body>
 	<div class="main">
 		<div th:insert="preferences/preferencesSidebar.html"></div>
-			<h1>audio임</h1>
+		<div class="container">
+			<h2 class="title">음성</h2>
+			<hr><br/>
+			<div class="section">
+				<h3 class="section-title">장치 설정</h3>
+				<div class="device-row">
+					<div style="width: 48%;">
+						<div class="device-label">녹음 장치</div>
+						<select>
+							<option>기본 장치(Realtek(R) Audio)</option>
+						</select>
+						<div class="slider-container">
+							<input type="range" min="1" max="100" value="70" class="slider" id="inputVolume">
+						</div>
+					</div>
+
+					<div style="width: 48%;">
+						<div class="device-label">출력 장치</div>
+						<select>
+							<option>스피커(Realtek(R) Audio)</option>
+						</select>
+						<div class="slider-container">
+							<input type="range" min="1" max="100" value="70" class="slider" id="outputVolume">
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<br/><br/>
+
+			<div class="section">
+				<h3 class="section-title">마이크 테스트</h3>
+				<div class="mic-text">
+					마이크 테스트<br>
+					마이크로 음성이 잘 나오는지 테스트를 시작하고 싶으시다면 "테스트 시작"을 눌러주세요.
+				</div>
+				<button class="test-button">테스트시작</button>
+				<div class="waveform"></div>
+
+			</div>
+			<br/><br/>
+
+			<div class="section">
+				<h3 class="section-title">입력 방식</h3>
+				<div class="radio-group">
+					<label class="radio-option selected" onclick="selectOption(this)">
+						<input type="radio" name="mode" checked> 음성 감지
+					</label>
+					<label class="radio-option" onclick="selectOption(this)">
+						<input type="radio" name="mode"> 눌러서 말하기
+					</label>
+				</div>
+
+			</div>
+			<br/><br/>
+		</div>
 	</div>
+	<script>
+		function selectOption(element) {
+			// 모든 옵션에서 'selected' 클래스를 제거하여 선택 효과 초기화
+			document.querySelectorAll('.radio-option').forEach(option => {
+				option.classList.remove('selected');
+			});
+
+			// 클릭한 옵션에 'selected' 클래스 추가 (선택된 상태로 표시)
+			element.classList.add('selected');
+
+			// 클릭한 옵션의 라디오 버튼을 체크 상태로 변경
+			element.querySelector('input[type="radio"]').checked = true;
+		}
+
+		// 슬라이더의 값이 변경될 때 슬라이더 바의 배경 색을 업데이트하는 이벤트 리스너 추가
+		document.querySelectorAll('.slider').forEach(slider => {
+			slider.addEventListener('input', function() {
+				const value = this.value; // 현재 슬라이더 값 가져오기
+
+				// 슬라이더의 진행된 부분(#7c3aed: 보라색)과 남은 부분(#e9ecef: 회색)의 색상을 동적으로 변경
+				this.style.background = `linear-gradient(to right, #bed3e2 0%, #bed3e2 ${value}%, #e9ecef ${value}%, #e9ecef 100%)`;
+			});
+
+			// 페이지가 로드될 때 초기 슬라이더 값에 맞춰 배경 색을 설정
+			const value = slider.value;
+			slider.style.background = `linear-gradient(to right, #bed3e2 0%, #bed3e2 ${value}%, #e9ecef ${value}%, #e9ecef 100%)`;
+		});
+	</script>
+
 </body>
 </html>
