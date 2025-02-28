@@ -39,6 +39,10 @@
             </form>
         </div>
     </div>
+    
+    <script th:if="${loginUser}">
+	    window.location.href = "/main/main";
+	</script>
 
 </body>
 </html>

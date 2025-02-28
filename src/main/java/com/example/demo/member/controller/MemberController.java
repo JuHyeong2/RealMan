@@ -4,20 +4,15 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.common.util.EmailCertificationUtil;
+import com.example.demo.member.model.exception.MemberException;
 import com.example.demo.member.model.service.MemberService;
 import com.example.demo.member.model.vo.Member;
 
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -112,45 +107,57 @@ public class MemberController {
 
 	// 회원가입 페이지로 이동
 	@GetMapping("/signup")
-	public String showSignupForm() {
-		return "member/signup";
-	}
-
+    public String signup() {
+        return "signup";
+    }
+	
+	//회원가입 처리
 	@PostMapping("/signup")
-	public String signup(@ModelAttribute Member member, Model model) {
-		try {
-			if (member.getMemberBirth() == 0) {
-				throw new IllegalArgumentException("생년월일을 입력해주세요.");
-			}
+	public String signup(@ModelAttribute Member m,
+	                     @RequestParam("emailId") String emailId,
+	                     @RequestParam("emailDomain") String emailDomain,
+	                     @RequestParam(value = "customEmailDomain", required = false) String customEmailDomain) {
 
-			mService.signup(member);
-			model.addAttribute("message", "회원가입 성공");
-			return "redirect:/member/signin";
-		} catch (Exception e) {
-			model.addAttribute("errorMessage", "회원가입 중 오류가 발생했습니다: " + e.getMessage());
-			return "signup";
-		}
+	    if ("custom".equals(emailDomain) && customEmailDomain != null && !customEmailDomain.trim().isEmpty()) {
+	        m.setMemberEmail(emailId + "@" + customEmailDomain);
+	    } else {
+	        m.setMemberEmail(emailId + "@" + emailDomain);
+	    }
+
+	    if (m.getMemberStatus() == null) {
+	        m.setMemberStatus("Y"); // 기본값 'Y' 설정
+	    }
+	    if (m.getMemberIsAdmin() == null) {
+	        m.setMemberIsAdmin("N"); // 기본값 'N' 설정
+	    }
+
+	    int result = mService.insertMember(m);
+	    if (result > 0) {
+	        return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동
+	    } else {
+	        throw new MemberException("회원가입을 실패하였습니다.");
+	    }
 	}
 
 	// 로그인 페이지로 이동
-	@GetMapping("/signin")
-	public String signin() {
-		return "member/signin";
-	}
+	 @GetMapping("/signin")
+	 public String signIn() {
+		 return "member/signin";
+	 }
 
 	// 로그인 처리
-	@PostMapping("/signin")
-	public String processSignin(@RequestParam("memberId") String memberId,
-	                            @RequestParam("memberPwd") String memberPwd,
-	                            Model model) {
-	    Member member = mService.login(memberId, memberPwd);
-	    
-	    if (member != null && bcrypt.matches(memberPwd, member.getMemberPwd())) {
-	        model.addAttribute("loginUser", member);
-	        return "redirect:/home";
-	    } else {
-	        model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
-	        return "member/signin";
-	    }
-	}
+	 @PostMapping("/signin")
+	 public String login(@RequestParam("memberId") String memberId,
+	                     @RequestParam("memberPwd") String memberPwd,
+	                     Model model, HttpSession session) {
+	     Member loginUser = mService.login(memberId, memberPwd);
+
+	     if (loginUser != null) {
+	         session.setAttribute("loginUser", loginUser);
+	         return "redirect:/main/main"; 
+	     } else {
+	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
+	         return "member/signin"; // 로그인 실패 시 다시 로그인 페이지로 이동
+	     }
+	 }
 }
