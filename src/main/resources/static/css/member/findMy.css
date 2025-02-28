@@ -215,12 +215,23 @@ body {
 }
 
 .loading-modal {
-    width: 600px;
-    height: 400px;
+    width: 450px;
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10%;
-    background: rgba(255, 255, 255, 0.685);
+    background: rgba(255, 255, 255, 0.521);
     font-size: xx-large;
+    animation: glow 0.8s infinite;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px white;
+    }
+
+    to {
+        box-shadow: 0 0 55px white;
+    }
 }
