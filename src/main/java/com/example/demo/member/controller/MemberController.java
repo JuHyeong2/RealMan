@@ -43,12 +43,16 @@ public class MemberController {
 	}
 	
 	//친구목록 페이지로
+//	@GetMapping("/friends")
+//	public String friends(Model model) {
+//		Member loginMember = (Member) model.getAttribute("loginMember");
+//		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
+//		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+//		model.addAttribute("list", list);
+//		return "/friends";
+//	}
 	@GetMapping("/friends")
-	public String friends(Model model) {
-		Member loginMember = (Member) model.getAttribute("loginMember");
-		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-		ArrayList<Member> list = mService.selectFriends(friendNumberList);
-		model.addAttribute("list", list);
+	public String friends() {
 		return "/friends";
 	}
 
