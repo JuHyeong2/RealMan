@@ -26,8 +26,8 @@ body {
 	gap: 8px;
 }
 .theme-button {
-	width: 5rem;
-	height: 5rem;
+	width: 4rem;
+	height: 4rem;
 	border-radius: 10px;
 	border: 1px solid transparent;
 	cursor: pointer;
@@ -51,9 +51,10 @@ body {
 }
 .text-size-button {
 	padding: 8px 16px;
-	border: 1px solid #d2d6dc;
+	border: 1px solid #c7605c;
 	border-radius: 4px;
 	cursor: pointer;
+	background-color: #ffffff;
 }
 .text-size-button.active {
 	background-color: #f56565;
