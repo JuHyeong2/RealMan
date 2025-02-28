@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 @Mapper
 public interface ServerMapper {
-    ArrayList<Server> serverList(int
-                                         memberNo);
+    ArrayList<Server> serverList(int memberNo);
+
+    ArrayList<Server> selectServerList();
 }

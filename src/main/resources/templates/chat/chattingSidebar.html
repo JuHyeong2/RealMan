@@ -10,59 +10,70 @@
     	<nav>
     		<ul>
     			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
-					<th:block th:each="c : ${Chat}">
-						<table class ="voice">
-							<tr>
-								<td width="20px" height="20px"><img src="/image/Voice.png"></td>
-								<td width="40px" height="20px">
-								</td>
-							</tr>
-						</table>
-					</th:block>
+					<div class="voiceList">
+						<td>test</td>
+						<th:block th:each="c : ${Chat}">
+							<table class ="voice">
+								<tr>
+									<td width="20px" height="20px"><img src="/image/Voice.png"></td>
+									<td width="40px" height="20px" th:text="${c.channelName}"></td>
+								</tr>
+							</table>
+						</th:block>
+					</div>
     		</ul>
     		<ul>
     			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
-					<th:block th:each="c : ${chat}">
-
-						<table class ="chat">
-							<tr>
-								<td width="20px" height="20px"><img src="/image/chat.png"></td>
-								<td width="40px" height="20px">
-									<a href="/chatting/${no}/${c.channelNo}"></a>
-								</td>
-							</tr>
-						</table>
-					</th:block>
+					<div class="chatList">
+						<th:block th:each="c : ${Chat}">
+							<td>test</td>
+							<td>test</td>
+							<table class ="chat">
+								<tr>
+									<td>test</td>
+									<td>test</td>
+									<td width="20px" height="20px"><img src="/image/chat.png"></td>
+									<td width="40px" height="20px">
+										<a href="/chatting/${no}/${c.channelNo}"></a>
+									</td>
+								</tr>
+							</table>
+						</th:block>
+					</div>
     		</ul>
     	</nav>
     </div>
 	
 	<script>
+
+		console.log("챗사이드바임");
 		// 음성 채팅방 드롭다운
 		document.querySelectorAll('.channel')[0].addEventListener('click', ()=>{
-			const chatRoom = document.querySelector('nav ul th li');
-			const people = document.querySelector('nav ul ul th li');
+			const chatRoom = document.querySelector('.voiceList');
+			// const people = document.querySelector('nav ul ul th li');
+			console.log("음성 채널 클릭됨!");
 			
-			if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
+			if(chatRoom.style.display === 'none' || chatRoom.style.display === ''){
 				chatRoom.style.display = 'block';
-				people.style.display = 'block';	
+				// people.style.display = 'block';
 			}else{
 				chatRoom.style.display = 'none';
-				people.style.display = 'none';
+				// people.style.display = 'none';
 			}
 		})
 		
 		// 채팅 채팅방 드롭다운
 		document.querySelectorAll('.channel')[1].addEventListener('click', ()=>{
-			const chatRoom = document.querySelector('nav > ul:nth-of-type(2) li');
-			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
-			
-			if(chatRoom.style.display === '' || chatRoom.style.display === 'none'){
+			const chatRoom = document.querySelector('.chatList');
+			// const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
+			console.log("채팅 채널 클릭됨!");
+
+			if(chatRoom.style.display === 'none' || chatRoom.style.display === ''){
 				chatRoom.style.display = 'block';
-				people.style.display = 'block';	
+				// people.style.display = 'block';
 			}else{
 				chatRoom.style.display = 'none';
-				people.style.display = 'none';
+				// people.style.display = 'none';
 			}
 		})
 	</script>

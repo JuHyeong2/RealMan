@@ -26,7 +26,7 @@ public class ServerController {
 
 
 
-    @GetMapping("/")
+    @GetMapping("/server")
     public String server(Member m ,@PathVariable("no") int no,
                          Model model, HttpSession session){
         Member loginMember = (Member) session.getAttribute("loginMember");

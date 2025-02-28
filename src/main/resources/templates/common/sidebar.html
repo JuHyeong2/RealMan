@@ -13,10 +13,10 @@
       <div class="mainLogo" onclick="location.href='#';">
          <img src="/image/RealManLogo.png">
       </div>
-      
       <table class="serverList">
-            <tr th:each="s:${server}">
-                <td width="20px" height="20px" >[[${s.serverNo}]]</td>
+            <tr th:each="s:${selectServerList}">
+                <td width="100px" height="100px" >[[${s.serverName}]]</td>
+                <input type="hidden" th:value="${s.serverNo}">
             </tr>
      </table>
 
@@ -37,6 +37,16 @@
 
 
 <script>
+    console.log('안녕');
+    const tds = document.querySelectorAll("td");
+    for (const td of tds){
+        console.log(td);
+        td.addEventListener('click',(e)=>{
+            console.log('크릭함');
+            location.href='/chat/main/' + e.target.nextElementSibling.value;
+        })
+    }
+
 
 
 </script>
