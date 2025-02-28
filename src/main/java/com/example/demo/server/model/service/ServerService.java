@@ -16,4 +16,8 @@ public class ServerService {
     public ArrayList<Server> serverList(int memberNo) {
         return mapper.serverList(memberNo);
     }
+
+    public ArrayList<Server> selectServerList() {
+        return mapper.selectServerList();
+    }
 }

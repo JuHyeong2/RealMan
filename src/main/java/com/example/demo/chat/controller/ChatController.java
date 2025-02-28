@@ -2,6 +2,7 @@ package com.example.demo.chat.controller;
 
 import com.example.demo.chat.model.vo.Chat;
 import com.example.demo.member.model.vo.Member;
+import com.example.demo.server.model.service.ServerService;
 import com.example.demo.server.model.vo.Server;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 @RequestMapping("/chat")
 public class ChatController {
 	private final ChatService cService;
+	private final ServerService sService;
 	
 	@GetMapping("main")
 	public String mainView(HttpServletRequest request, Model model) {
@@ -47,17 +49,21 @@ public class ChatController {
 		System.out.println(ip);
 		
 		Server server = new Server();
-		server.setServerNo(server.getServerNo());
+//		server.setServerNo(server.getServerNo());
+//
+//		System.out.println(server.getServerNo());
 
-		System.out.println(server.getServerNo());
+		ArrayList<Server> selectServerList = sService.selectServerList();
 		
 		model.addAttribute("ip", ip);
 		model.addAttribute("server", server);
+		model.addAttribute("selectServerList", selectServerList);
+
 		return "chat/chatting";
 	}
 
 
-	@GetMapping("/chatting/{no}")
+	@GetMapping("/chat/main/{no}")
 	public String chatting(@PathVariable("no") int no, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
 
