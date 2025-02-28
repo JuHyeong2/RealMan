@@ -155,6 +155,7 @@ h2 {
     align-items: center;
 }
 
+/* 모달창 */
 .modal-content {
 	background-color: #A7B3BF;
     padding: 10px 30px;
@@ -176,15 +177,31 @@ h2 {
 	margin-bottom: 10px;
 }
 
+#clickP{
+	color: #008CFF;
+	cursor: pointer;
+	
+}
+
 .modal-btn {
 	text-align: right;
 }
 
-#cancelBtn, #cancelBtn2 {
+#cancelBtn, #cancelBtn2, #canclePhoneBtn, #cancelDeleteBtn{
 	background-color: transparent;
 	border: none;
 	color: white;
 	width: 50px;
+	height: 30px;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+#backBtn {
+	background-color: transparent;
+	border: none;
+	color: white;
+	width: 100px;
 	height: 30px;
 	cursor: pointer;
 	margin-right: 10px;
@@ -208,15 +225,81 @@ h2 {
 	cursor: pointer;
 }
 
+#nextBtn {
+	background-color: #7184FF;
+	border: none;
+	color: white;
+	width: 50px;
+	height: 30px;
+	cursor: pointer;
+}
+
+#deleteBtn2 {
+	background-color: #7184FF;
+	border: none;
+	color: white;
+	width: 130px;
+	height: 30px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
 .modalTitle {
 	text-align: center;
 	margin-top: 0; 
 }
 
 .modalTitle b{
-	font-size: 25px;
+	font-size: 20px;
 }
 
 .modalTitle p{
-	font-size: 15px;
+	font-size: 13px;
+}
+
+.input-container {
+	position: relative;
+    display: flex;
+}
+
+.input-container input{
+    width: 100%;
+    border-radius: 5px;
+    height: 40px;
+}
+
+#sendPhoneBtn{
+	background-color: #7184FF;
+    position: absolute;
+    top: 10px;
+    bottom: 5px;
+    right: 5px;
+    width: 80px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.input-container2 {
+	display: flex;
+	gap: 20px;
+}
+
+.input-container2 input{
+	text-align: center;
+	height: 50px;
+	font-size: 30px;
+	color: white;
+}
+
+#deleteP {
+	background-color: #F2C340;
+	color: white;
+	text-align: left;
+	padding: 5px;
 }
