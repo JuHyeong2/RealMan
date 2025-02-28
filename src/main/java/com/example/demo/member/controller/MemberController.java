@@ -1,5 +1,7 @@
 package com.example.demo.member.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.common.util.EmailCertificationUtil;
 import com.example.demo.member.model.service.MemberService;
@@ -23,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
-@SessionAttributes("loginUser")
+@SessionAttributes("loginMember")
 public class MemberController {
 	private final MemberService mService;
 	private final BCryptPasswordEncoder bcrypt;
@@ -39,6 +40,20 @@ public class MemberController {
 	@GetMapping("/findMyPwd")
 	public String findMyPwd() {
 		return "/findMyPwd";
+	}
+	
+	//친구목록 페이지로
+//	@GetMapping("/friends")
+//	public String friends(Model model) {
+//		Member loginMember = (Member) model.getAttribute("loginMember");
+//		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
+//		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+//		model.addAttribute("list", list);
+//		return "/friends";
+//	}
+	@GetMapping("/friends")
+	public String friends() {
+		return "/friends";
 	}
 
 	// (아이디찾기, 비밀번호찾기)이메일 보내기
@@ -101,7 +116,7 @@ public class MemberController {
 			System.out.println("resetPwd : " + result);
 
 			if (result == 1) {
-				// model.addAttribute("loginUser", m);
+				// model.addAttribute("loginMember", m);
 				return "success";
 			}
 		} else {

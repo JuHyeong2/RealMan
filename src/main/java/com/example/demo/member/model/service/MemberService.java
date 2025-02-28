@@ -1,8 +1,7 @@
 package com.example.demo.member.model.service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.stereotype.Service;
 
@@ -47,4 +46,14 @@ public class MemberService {
             throw new IllegalArgumentException("생년월일은 필수 입력 값입니다.");
         }
     }
+    
+    //친구 목록 가져오기(번호만)
+	public ArrayList<Integer> selectFriendNumbers(Member loginMember) {
+		return mapper.selectFriendNumbers(loginMember);
+	}
+	
+	//친구 목록 조회
+	public ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList) {
+		return mapper.selectFriends(friendNumberList);
+	}
 }

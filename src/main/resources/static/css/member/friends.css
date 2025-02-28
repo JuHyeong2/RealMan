@@ -1,0 +1,14 @@
+tr {
+    height: 4rem;
+    background-color: rgb(231, 231, 231);
+}
+
+.nicknameTd {
+    width: 18rem;
+}
+
+.profilePicTd,
+.dmTd,
+.etcTd {
+    width: 4rem;
+}
