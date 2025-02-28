@@ -1,5 +1,8 @@
 package com.example.demo.member.model.mapper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,4 +30,11 @@ public interface MemberMapper {
 
     // 회원가입 처리
     void insertMember(Member member);
+
+	//친구 목록 가져오기(번호만)
+    ArrayList<Integer> selectFriendNumbers(Member loginMember);
+    
+    //친구 목록 조회
+	ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList);
+	
 }
