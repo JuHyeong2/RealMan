@@ -1,11 +1,20 @@
+# 그래들
 /bin/
-/src/main/resources/application.properties 
+/build/
 /.gradle/
+
+#os별
+.DS_Store
+Thumbs.db
+
+#설정
+/src/main/resources/application.properties 
+
+#IDE
 /.metadata/
 /.settings/
 /.classpath
 /.project
-/build
 /.vscode
 /.idea/.gitignore
 /.idea/.name
