@@ -28,7 +28,8 @@
   height: 90%;
 }
 
-.svg {
+.svg,
+.profile {
   width: 100%;
   height: 100%;
 }
