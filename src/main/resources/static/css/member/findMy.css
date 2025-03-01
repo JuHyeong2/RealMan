@@ -50,13 +50,13 @@ body {
 
 .character {
     position: relative;
-    height:60%;
+    height: 60%;
     min-height: 600px;
     transform: translate(40%, -5%);
     z-index: 1;
 }
 
-#findMyIdCharacter1{
+#findMyIdCharacter1 {
     height: 100%;
 }
 
@@ -78,7 +78,8 @@ body {
     max-width: 400px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.input-form{
+
+.input-form {
     margin-top: 220px;
 }
 
@@ -96,7 +97,8 @@ body {
     margin-top: 0.5rem;
     box-shadow: inset 0px 0px 10px rgb(212, 211, 211);
 }
-.form-group input:focus{
+
+.form-group input:focus {
     background-color: #e4e7fc;
 }
 
@@ -109,18 +111,21 @@ body {
     margin-top: 1rem;
     cursor: pointer;
 }
+
 .find-btn:hover {
     background-color: #b8c1ff;
 }
-.find-btn:active{
+
+.find-btn:active {
     background-color: #8a93d3;
 }
-.to-login{
-    background-color: #5ea4ff; @!important
+
+.to-login {
+    background-color: #5ea4ff;
 }
 
 
-.send-btn{
+.send-btn {
     position: absolute;
     float: right;
     right: 8px;
@@ -132,34 +137,40 @@ body {
     border: none;
     box-shadow: 0px 0px 8px rgb(54, 54, 54);
 }
-.send-btn:hover{
+
+.send-btn:hover {
     background-color: #e6e6e6;
 }
-.send-btn:active{
+
+.send-btn:active {
     background-color: #dadada;
 }
-.send-btn-disabled{
-    background: rgb(200,200,200);
+
+.send-btn-disabled {
+    background: rgb(200, 200, 200);
 }
-.send-btn-disabled:hover{
-    background: rgb(200,200,200);
+
+.send-btn-disabled:hover {
+    background: rgb(200, 200, 200);
     cursor: wait;
 }
-.send-btn-disabled:active{
-    background: rgb(200,200,200);
+
+.send-btn-disabled:active {
+    background: rgb(200, 200, 200);
 }
+
 .footer-links {
     text-align: center;
     margin-top: 2rem;
 }
 
 .footer-links a {
-    color:#646efa;
+    color: #646efa;
     text-decoration: none;
     margin: 0 0.5rem;
 }
 
-.verification-msg{
+.verification-msg {
     position: absolute;
     display: none;
     top: 63px;
@@ -167,11 +178,13 @@ body {
     font-size: 80%;
     letter-spacing: 2px;
 }
-.msg-yes{
+
+.msg-yes {
     color: rgb(18, 167, 25);
     display: block;
 }
-.msg-no{
+
+.msg-no {
     color: rgb(255, 3, 45);
     display: block;
 }
@@ -186,4 +199,39 @@ body {
 .reset-pwd-show {
     max-height: 300px;
     transition: max-height 1s ease;
+}
+
+.modal-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
+    background-color: rgba(187, 187, 187, 0.363);
+}
+
+.loading-modal {
+    width: 450px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10%;
+    background: rgba(255, 255, 255, 0.521);
+    font-size: xx-large;
+    animation: glow 0.8s infinite;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px white;
+    }
+
+    to {
+        box-shadow: 0 0 55px white;
+    }
 }

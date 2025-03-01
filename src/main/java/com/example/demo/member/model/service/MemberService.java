@@ -1,6 +1,9 @@
 package com.example.demo.member.model.service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.member.model.mapper.MemberMapper;
@@ -72,4 +75,14 @@ public class MemberService {
         // 회원 정보 DB 저장 후 결과 반환
         return mapper.insertMember(member);
     }
+    
+    //친구 목록 가져오기(번호만)
+	public ArrayList<Integer> selectFriendNumbers(Member loginMember) {
+		return mapper.selectFriendNumbers(loginMember);
+	}
+	
+	//친구 목록 조회
+	public ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList) {
+		return mapper.selectFriends(friendNumberList);
+	}
 }

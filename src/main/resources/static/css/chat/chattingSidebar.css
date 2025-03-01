@@ -44,3 +44,7 @@ html, body {
 .channel {
 	cursor: pointer;
 }
+
+.voiceList, .chatList {
+	display: none !important; /* 처음에는 숨김 */
+}
