@@ -9,4 +9,5 @@
         where channel_separator = #{channelSeparator}
     </select>
 
+
 </mapper>
