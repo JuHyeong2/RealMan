@@ -1,5 +1,6 @@
 const nicknames = document.querySelectorAll(".nickname");
-const svgs = document.querySelectorAll(".svg");
+const dmsvgs = document.querySelectorAll(".dm-svg");
+const etcsvgs = document.querySelectorAll(".etc-svg");
 const profiles = document.querySelectorAll(".profile");
 
 window.onload = () => {
@@ -14,22 +15,35 @@ window.onload = () => {
     });
   }
 
-  //dm, etc 아이콘 이벤트 핸들러
-  for (const svg of svgs) {
+  //dm 아이콘 이벤트 핸들러
+  for (const svg of dmsvgs) {
     //mouse enter/leave
     svg.addEventListener("mouseenter", function (e) {
-      const type = svg.classList.contains("dm") ? "dm" : "etc";
-      console.log("mouse enter : " + type);
+      console.log("mouse enter : " + this);
     });
     svg.addEventListener("mouseleave", function (e) {
-      const type = svg.classList.contains("dm") ? "dm" : "etc";
-      console.log("mouse leave : " + type);
+      console.log("mouse leave : " + this);
     });
 
     //click
     svg.addEventListener("click", function (e) {
-      const type = svg.classList.contains("dm") ? "dm" : "etc";
-      console.log("click : " + type);
+      console.log("click : " + this);
+    });
+  }
+
+  //etc 아이콘 이벤트 핸들러
+  for (const svg of etcsvgs) {
+    //mouse enter/leave
+    svg.addEventListener("mouseenter", function (e) {
+      console.log("mouse enter : " + this);
+    });
+    svg.addEventListener("mouseleave", function (e) {
+      console.log("mouse leave : " + this);
+    });
+
+    //click
+    svg.addEventListener("click", function (e) {
+      console.log("click : " + this);
     });
   }
 

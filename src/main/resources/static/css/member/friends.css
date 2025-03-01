@@ -31,7 +31,8 @@
   position: relative;
 }
 
-.svg,
+.dm-svg,
+.etc-svg,
 .profile {
   width: 100%;
   height: 100%;
@@ -53,10 +54,16 @@
 
 .etc-menu {
   position: absolute;
+  display: none;
   z-index: 1;
   left: 4.5rem;
   top: 1rem;
   width: 7rem;
   background-color: beige;
   font-size: 0.8rem;
+}
+
+.menu-show {
+  display: flex;
+  flex-direction: column;
 }
