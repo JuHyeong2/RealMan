@@ -1,5 +1,6 @@
 package com.example.demo.member.model.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberMapper mapper;
+    private final BCryptPasswordEncoder bcrypt;
 
     // 이메일 중복 확인
     public int checkEmail(String email) {
@@ -36,15 +38,42 @@ public class MemberService {
     }
 
     // 로그인 처리
-    public Member login(String memberEmail, String memberPwd) {
-        return mapper.login(memberEmail, memberPwd);
+//    public Member login(String memberId, String memberPwd) {
+//        Member member = mapper.login(memberId); // 비밀번호는 따로 비교
+//        if (member != null && bcrypt.matches(memberPwd, member.getMemberPwd())) {
+//            return member;
+//        }
+//        return null;
+//    }
+    public Member login(String memberId, String memberPwd) {
+        Member member = mapper.login(memberId); // DB에서 회원 조회
+        if (member != null) {
+            System.out.println("✅ 로그인 시도: " + memberId);
+            System.out.println("✅ DB 저장 비밀번호: " + member.getMemberPwd());
+
+            if (bcrypt.matches(memberPwd, member.getMemberPwd())) {
+                System.out.println("✅ 비밀번호 일치");
+                return member;
+            } else {
+                System.out.println("❌ 비밀번호 불일치");
+            }
+        } else {
+            System.out.println("❌ 존재하지 않는 회원");
+        }
+        return null;
     }
 
-    // 회원가입 처리
-    public void signup(Member member) {
+    // 회원가입 처리 (성공 여부 반환)
+    public int insertMember(Member member) {
         if (member.getMemberBirth() == 0) {  
             throw new IllegalArgumentException("생년월일은 필수 입력 값입니다.");
         }
+
+        // 비밀번호 암호화 후 저장
+        member.setMemberPwd(bcrypt.encode(member.getMemberPwd()));
+
+        // 회원 정보 DB 저장 후 결과 반환
+        return mapper.insertMember(member);
     }
     
     //친구 목록 가져오기(번호만)

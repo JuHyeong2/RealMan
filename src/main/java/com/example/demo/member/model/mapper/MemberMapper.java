@@ -8,8 +8,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.example.demo.member.model.vo.Member;
 
-import com.example.demo.member.model.vo.Member;
-
 @Mapper
 public interface MemberMapper {
 
@@ -26,10 +24,10 @@ public interface MemberMapper {
     String findId(String email);
 
     // 로그인 처리
-    Member login(@Param("memberEmail") String memberEmail, @Param("memberPwd") String memberPwd);
+    Member login(@Param("memberId") String memberId);
 
     // 회원가입 처리
-    void insertMember(Member member);
+    int insertMember(Member member);
 
 	//친구 목록 가져오기(번호만)
     ArrayList<Integer> selectFriendNumbers(Member loginMember);

@@ -9,4 +9,11 @@ public class HomeController {
 	public String home() {
 		return "index";
 	}
+	
+	 @GetMapping("/main/main")
+	    public String mainPage() {
+		 System.out.println("✅ main.html 페이지 요청됨!");
+	        return "main/main"; 
+	    }
+	
 }
