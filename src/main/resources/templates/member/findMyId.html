@@ -1,57 +1,65 @@
 <!DOCTYPE html>
 <html xlmns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>아이디 찾기</title>
-    <link rel="stylesheet" href="/css/member/findMy.css">
-</head>
+    <link rel="stylesheet" href="/css/member/findMy.css" />
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <div class="left-section">
-            <div class="character">
-                <img id="findMyIdCharacter1" src="/image/findMyIdCharacter1.png">
-            </div>
-            <div class="message-bubble">
-                <div class="message-text">Be careful.<br>Your boss is <br> watching.</div>
-            </div>
+      <div class="left-section">
+        <div class="character">
+          <img
+            id="findMyIdCharacter1"
+            src="/image/member/findMyIdCharacter1.png"
+          />
         </div>
-        <div class="right-section">
-            <div class="info-form">
-                <form>
-                    <div class="input-form">
-                        <!-- <div class="form-group">
+        <div class="message-bubble">
+          <div class="message-text">
+            Be careful.<br />Your boss is <br />
+            watching.
+          </div>
+        </div>
+      </div>
+      <div class="right-section">
+        <div class="info-form">
+          <form>
+            <div class="input-form">
+              <!-- <div class="form-group">
                             <input id="name" type="text" placeholder="이름">
                         </div> -->
-                        <div class="form-group">
-                            <input id="email" type="email" placeholder="이메일 example@realman.com">
-                            <button class="send-btn" type="button">send</button>
-                        </div>
-                        <div class="form-group">
-                            <input id="code" type="text" placeholder="인증번호">
-                            <label class="verification-msg">인증번호 문구(안보여야 함)</label>
-                        </div>
-                    </div>
-                    <button class="find-btn" id="findIdBtn">아이디 찾기</button>
-                </form>
-                <div class="footer-links">
-                    <a href="">로그인</a>
-                    <br>
-                    <a href="/member/findMyPwd">비밀번호 찾기</a>
-                    <br>
-                    <span>계정이 없으신가요? </span>
-                    <a href="#">회원가입</a>
-                </div>
+              <div class="form-group">
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="이메일 example@realman.com"
+                />
+                <button class="send-btn" type="button">send</button>
+              </div>
+              <div class="form-group">
+                <input id="code" type="text" placeholder="인증번호" />
+                <label class="verification-msg"
+                  >인증번호 문구(안보여야 함)</label
+                >
+              </div>
             </div>
+            <button class="find-btn" id="findIdBtn">아이디 찾기</button>
+          </form>
+          <div class="footer-links">
+            <a href="">로그인</a>
+            <br />
+            <a href="/member/findMyPwd">비밀번호 찾기</a>
+            <br />
+            <span>계정이 없으신가요? </span>
+            <a href="#">회원가입</a>
+          </div>
         </div>
+      </div>
     </div>
     <div class="modal-container">
-        <div class="loading-modal">
-            이메일 전송중
-        </div>
+      <div class="loading-modal">이메일 전송중</div>
     </div>
-    <script src="/js/findMy.js"></script>
-</body>
-
+    <script src="/js/member/findMy.js"></script>
+  </body>
 </html>

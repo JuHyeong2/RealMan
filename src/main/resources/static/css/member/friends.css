@@ -1,14 +1,69 @@
-tr {
-    height: 4rem;
-    background-color: rgb(231, 231, 231);
+.friend-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 4rem;
+  background-color: rgb(189, 219, 209);
+  margin-bottom: 0.5rem;
 }
 
-.nicknameTd {
-    width: 18rem;
+.profile-div {
+  width: 4rem;
+}
+.other-div {
+  width: 8rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+.dm-div {
+  width: 2rem;
+}
+.etc-div {
+  width: 2rem;
+  position: relative;
 }
 
-.profilePicTd,
-.dmTd,
-.etcTd {
-    width: 4rem;
+.svg-container {
+  width: 90%;
+  height: 90%;
+  position: relative;
+}
+
+.dm-svg,
+.etc-svg,
+.profile {
+  width: 100%;
+  height: 100%;
+}
+.nickname-div {
+  display: flex;
+  align-items: center;
+  min-width: 18rem;
+  margin-left: 1rem;
+  margin-right: 2rem;
+}
+.nickname {
+  letter-spacing: 15%;
+}
+.id {
+  padding-left: 1rem;
+  letter-spacing: 15%;
+}
+
+.etc-menu {
+  position: absolute;
+  display: none;
+  z-index: 1;
+  left: 4.5rem;
+  top: 1rem;
+  width: 7rem;
+  background-color: beige;
+  font-size: 0.8rem;
+}
+
+.menu-show {
+  display: flex;
+  flex-direction: column;
 }

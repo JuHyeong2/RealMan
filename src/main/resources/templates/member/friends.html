@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html xlmns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>친구 목록</title>
-    <link rel="stylesheet" href="/css/member/friends.css">
-</head>
-
-<body>
+    <link rel="stylesheet" href="/css/member/friends.css" />
+  </head>
+  <body>
     <div>
-        <div>
-        </div>
-        <div>
-            <table>
-                <tr>
-                    <td class="profilePicTd">
-                        <img src="/image/profile.png">
-                    </td>
-                    <td class="nicknameTd">
-                        <label class="nickname">닉네임</label>
-                        <label class="id">아이디</label>
-                    </td>
-                    <td class="dmTd">
-
-                    </td>
-                    <td class="etcTd">
-
-                    </td>
-                </tr>
-            </table>
-        </div>
+      <ul>
+        <li>
+          <div class="friend-row">
+            <div class="profile-div">
+              <div class="svg-container">
+                <img class="profile" src="/image/no-profile.svg" />
+              </div>
+            </div>
+            <div class="nickname-div">
+              <label class="nickname">닉네임123</label>
+              <label class="id">userid1234567</label>
+            </div>
+            <div class="other-div">
+              <div class="dm-div">
+                <div class="svg-container">
+                  <img class="dm-svg" src="/image/message.svg" />
+                </div>
+              </div>
+              <div class="etc-div">
+                <div class="svg-container">
+                  <img class="etc-svg" src="/image/more.svg" />
+                </div>
+              </div>
+              <div class="etc-menu">여기에 메뉴바 들어감</div>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
-</body>
-
+    <script src="/js/member/friends.js"></script>
+  </body>
 </html>
