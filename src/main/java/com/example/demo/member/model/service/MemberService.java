@@ -75,4 +75,5 @@ public class MemberService {
 	public ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList) {
 		return mapper.selectFriends(friendNumberList);
 	}
+	
 }
