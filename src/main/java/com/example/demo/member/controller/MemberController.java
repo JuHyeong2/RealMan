@@ -168,10 +168,11 @@ public class MemberController {
 	 public String login(@RequestParam("memberId") String memberId,
 	                     @RequestParam("memberPwd") String memberPwd,
 	                     Model model, HttpSession session) {
-	     Member loginUser = mService.login(memberId, memberPwd);
-
-	     if (loginUser != null) {
-	         session.setAttribute("loginUser", loginUser);
+	     Member loginMember = mService.login(memberId, memberPwd);
+	     
+	     if (loginMember != null) {
+		     System.out.println("loginMember : "+loginMember.getMemberId());
+	         model.addAttribute("loginMember", loginMember);
 	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
