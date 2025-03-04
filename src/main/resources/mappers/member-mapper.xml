@@ -48,7 +48,7 @@
         )
         VALUES (
         #{memberId}, #{memberPwd}, #{memberGender}, #{memberPhone}, #{memberEmail}, #{memberNickname}, #{memberStatus}, #{memberIsAdmin}, #{memberBirth}, SYSDATE)
-        )
+
     </insert>
     
     <!-- 친구 목록 가져오기 (번호만) -->
