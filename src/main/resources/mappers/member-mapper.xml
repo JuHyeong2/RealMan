@@ -55,7 +55,7 @@
     <select id="selectFriendNumbers">
     	select friend_member_no
     	from friend
-    	where member_no = {memberNo}
+    	where member_no = #{memberNo}
     	union
     	select member_no
     	from friend

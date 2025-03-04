@@ -38,19 +38,21 @@ public class MemberController {
 		return "/findMyPwd";
 	}
 	
-	//친구목록 페이지로
-//	@GetMapping("/friends")
-//	public String friends(Model model) {
-//		Member loginMember = (Member) model.getAttribute("loginMember");
-//		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-//		ArrayList<Member> list = mService.selectFriends(friendNumberList);
-//		model.addAttribute("list", list);
-//		return "/friends";
-//	}
+//	친구목록 페이지로
 	@GetMapping("/friends")
-	public String friends() {
+	public String friends(Model model) {
+		Member loginMember = (Member) model.getAttribute("loginMember");
+		System.out.println("loginMember : "+loginMember.getMemberId());
+		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
+		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+		model.addAttribute("list", list);
 		return "/friends";
 	}
+	
+//	@GetMapping("/friends")
+//	public String friends() {
+//		return "/friends";
+//	}
 
 	// (아이디찾기, 비밀번호찾기)이메일 보내기
 	@GetMapping("/sendEmail")
