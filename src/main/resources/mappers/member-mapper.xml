@@ -54,7 +54,7 @@
     <select id="selectFriendNumbers">
     	select friend_member_no
     	from friend
-    	where member_no = {memberNo}
+    	where member_no = #{memberNo}
     	union
     	select member_no
     	from friend
@@ -63,10 +63,11 @@
     
     <!-- 친구 목록 조회  -->
     <select id="selectFriends" resultType="Member">
-    	select * from member where member_no in
-    	<foreach collection="list" item="number" separator=" " index="i">
+    	select * from member where member_no in(
+    	<foreach collection="list" item="number" separator="," index="i">
     		#{number}
     	</foreach>
+    	)
     </select>
     
 </mapper>

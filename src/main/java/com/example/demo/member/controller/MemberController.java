@@ -38,19 +38,21 @@ public class MemberController {
 		return "/findMyPwd";
 	}
 	
-	//친구목록 페이지로
-//	@GetMapping("/friends")
-//	public String friends(Model model) {
-//		Member loginMember = (Member) model.getAttribute("loginMember");
-//		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-//		ArrayList<Member> list = mService.selectFriends(friendNumberList);
-//		model.addAttribute("list", list);
-//		return "/friends";
-//	}
+//	친구목록 페이지로
 	@GetMapping("/friends")
-	public String friends() {
+	public String friends(Model model) {
+		Member loginMember = (Member) model.getAttribute("loginMember");
+		System.out.println("loginMember : "+loginMember.getMemberId());
+		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
+		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+		model.addAttribute("list", list);
 		return "/friends";
 	}
+	
+//	@GetMapping("/friends")
+//	public String friends() {
+//		return "/friends";
+//	}
 
 	// (아이디찾기, 비밀번호찾기)이메일 보내기
 	@GetMapping("/sendEmail")
@@ -166,10 +168,11 @@ public class MemberController {
 	 public String login(@RequestParam("memberId") String memberId,
 	                     @RequestParam("memberPwd") String memberPwd,
 	                     Model model, HttpSession session) {
-	     Member loginUser = mService.login(memberId, memberPwd);
-
-	     if (loginUser != null) {
-	         session.setAttribute("loginUser", loginUser);
+	     Member loginMember = mService.login(memberId, memberPwd);
+	     
+	     if (loginMember != null) {
+		     System.out.println("loginMember : "+loginMember.getMemberId());
+	         model.addAttribute("loginMember", loginMember);
 	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
