@@ -46,19 +46,9 @@ public class MemberService {
 //        return null;
 //    }
     public Member login(String memberId, String memberPwd) {
-        Member member = mapper.login(memberId); // DB에서 회원 조회
-        if (member != null) {
-            System.out.println("✅ 로그인 시도: " + memberId);
-            System.out.println("✅ DB 저장 비밀번호: " + member.getMemberPwd());
-
-            if (bcrypt.matches(memberPwd, member.getMemberPwd())) {
-                System.out.println("✅ 비밀번호 일치");
-                return member;
-            } else {
-                System.out.println("❌ 비밀번호 불일치");
-            }
-        } else {
-            System.out.println("❌ 존재하지 않는 회원");
+        Member member = mapper.login(memberId); 
+        if (member != null && bcrypt.matches(memberPwd, member.getMemberPwd())) {
+            return member;
         }
         return null;
     }
@@ -85,4 +75,5 @@ public class MemberService {
 	public ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList) {
 		return mapper.selectFriends(friendNumberList);
 	}
+	
 }

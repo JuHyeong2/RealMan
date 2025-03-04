@@ -172,7 +172,7 @@ public class MemberController {
 
 	     if (loginUser != null) {
 	         session.setAttribute("loginUser", loginUser);
-	         return "redirect:/main/main"; 
+	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
 	         return "member/signin"; // 로그인 실패 시 다시 로그인 페이지로 이동
