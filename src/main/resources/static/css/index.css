@@ -24,8 +24,9 @@ body {
     background-color: white;
     color: #6a6fa3;
     border: none; 
-    border-radius: 8px; 
+    border-radius: 10px; 
     cursor: pointer;
+    margin-right: 10px;
 }
 
 .logo-container {
@@ -33,20 +34,12 @@ body {
     align-items: center;
 }
 
-#signinbtn {
-	margin-left: auto;
-}
-
-#signupbtn {
-	margin-right: 1rem;
-}
-
 .topbtn:hover {
     background-color: black; 
 }
 
 .topimage {
-	margin-left: 1rem;
+	margin-left: 10px;
 	cursor: pointer;
 }
 
@@ -137,14 +130,14 @@ h1 {
 		margin: auto;
 	}
 	
-.maintop {
-    background-color: var(--color-top);
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    padding: 0 1rem;
-}
+	.maintop {
+	    background-color: var(--color-top);
+	    height: 50px;
+	    display: flex;
+	    align-items: center;
+	    justify-content: space-between; 
+	    padding: 0 1rem;
+	}
 	
 	.topbtn {
 		color: #373737;
