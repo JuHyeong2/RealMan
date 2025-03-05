@@ -7,11 +7,24 @@
 </head>
 <body>
 
-
 	<div class="maintop">
-		<img class="topimage" src="/image/RealManLogo.png" width="50" onclick="location.href='home'">
-		<button id="signinbtn" class="topbtn" onclick="location.href='/member/signin'">Sign in</button>
-		<button id="signupbtn" class="topbtn" onclick="location.href='/member/signup'">Sign up</button>
+	    <div class="logo-container">
+	        <img class="topimage" src="/image/RealManLogo.png" width="50" onclick="location.href='home'">
+	    </div>
+	
+	    <div class="right-container">
+	        <th:block th:if="${session.loginMember != null}">
+	            <div class="welcome-container">
+	                <span class="welcome-text" th:text="${session.loginMember.memberNickname} + '님, 환영합니다!'"></span>
+	                <button id="logoutbtn" class="topbtn">Logout</button>
+	            </div>
+	        </th:block>
+	
+	        <th:block th:unless="${session.loginMember != null}">
+	            <button id="signinbtn" class="topbtn" onclick="location.href='/member/signin'">Sign in</button>
+	            <button id="signupbtn" class="topbtn" onclick="location.href='/member/signup'">Sign up</button>
+	        </th:block>	
+	    </div>
 	</div>
 	
 	<div class="maincontent">
@@ -37,6 +50,24 @@
 			<b>RealMan</b>으로 연결된 세상을 만나보세요! <b>상남자들만의 선택, RealMan!</b>
 		</p>
 	</div>
+
+	<script>
+		document.getElementById("logoutbtn").addEventListener("click", function() {
+		    fetch('/member/logout', { method: 'GET' })
+		        .then(response => {
+		            if (response.redirected) {
+		                window.location.href = response.url; // 로그아웃 후 메인 페이지로 이동
+		            } else {
+		                alert("로그아웃 실패. 다시 시도해주세요.");
+		            }
+		        })
+		        .finally(() => {
+		            setTimeout(() => {
+		                location.reload(); // 강제 새로고침하여 세션 반영 확인
+		            }, 500);
+		        });
+		});
+	</script>
 
 </body>
 </html>
