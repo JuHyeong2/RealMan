@@ -33,7 +33,8 @@
 				<button class="stop-button">끄기</button>
 			</div>
 		</div>
-		<br/><br/>
+		<br/>
+		<button class="request-permission">비디오 권한 요청</button>
 	</div>
 </div>
 
@@ -43,6 +44,7 @@
 		const connectButton = document.querySelector(".connect-button");
 		const testButton = document.querySelector(".test-button");
 		const videoElement = document.getElementById("videoElement");
+		const requestPermissionButton = document.querySelector(".request-permission");
 		let selectedDeviceId = null;
 		let stream = null;
 
@@ -141,13 +143,39 @@
 		// 6. 브라우저에서 카메라 권한 요청
 		async function requestCameraPermission() {
 			try {
+				// 카메라 권한 상태 확인
+				const permissionStatus = await navigator.permissions.query({ name: "camera" });
+				if (permissionStatus.state === "granted") {
+					return; // 새로고침하지 않음
+				}
+				// 권한이 없거나 요청이 필요한 경우에만 실행
 				await navigator.mediaDevices.getUserMedia({ video: true });
 				console.log("카메라 권한 요청 성공");
+				location.reload(); // 권한을 새로 허용한 경우에만 새로고침
 			} catch (error) {
 				console.error("카메라 권한 요청 실패:", error);
 				alert("카메라 권한을 허용해주세요.");
 			}
 		}
+
+		// 수동 카메라 권한 요청 버튼 기능
+		requestPermissionButton.addEventListener("click", async function () {
+			try {
+				// 카메라 권한 상태 확인
+				const permissionStatus = await navigator.permissions.query({ name: "camera" });
+				if (permissionStatus.state === "granted") {
+					alert("카메라 권한이 이미 허용되어 있습니다.");
+					return; // 새로고침하지 않음
+				}
+				// 권한이 없거나 요청이 필요한 경우에만 실행
+				await navigator.mediaDevices.getUserMedia({ video: true });
+				alert("카메라 권한 요청 성공");
+				location.reload(); // 권한을 새로 허용한 경우에만 새로고침
+			} catch (error) {
+				console.error("카메라 권한 요청 실패:", error);
+				alert("카메라 권한을 허용해주세요.");
+			}
+		});
 
 		// 6. 초기 로드 시 카메라 장치 가져오기 & 권한 요청
 		fetchCameraDevices();
