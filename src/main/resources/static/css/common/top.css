@@ -1,5 +1,8 @@
 @charset "UTF-8";
-
+*{
+    margin: 0;
+    padding: 0;
+}
 .topDiv {
 	background-color: #dbe9f4;
     padding: 10px 20px;

@@ -1,8 +1,18 @@
-
+.sidebar_wrap {
+    width: 20%;
+    display: flex;
+    top:40px;
+    background: #f2f6f9;
+    flex-direction: row;
+    justify-content: flex-start;
+}
 .sidebar{
     width: 80px;
     background-color: #dbe9f4;
-    padding: 10px;
+    padding: 40px 10px 10px;
+    /*position: absolute;*/
+    /*top: 20px;*/
+    /*left: 0;*/
 }
 .mainLogo{
     width:60px;
@@ -13,6 +23,8 @@
 
 
 }
+
+
 .mainLogo img {
     width: 100%;
     height: 100%;
@@ -38,7 +50,7 @@ div[serverNo] img {
 }
 
 .addServer{
-    /*width: 60px;*/
+    width: 60px;
     height: 60px;
     background-color: #BDD3E2;
     cursor: pointer;
