@@ -20,14 +20,17 @@ body {
 }
 
 .topbtn {
-    font-size: 16px; 
-    background-color: white;
-    color: #6a6fa3;
-    border: none; 
-    border-radius: 10px; 
-    cursor: pointer;
-    margin-right: 10px;
+	color: #373737;
+	background-color: transparent;
+	border: 3px solid #373737;
+	border-radius: 8px;
+	height: 30px;
+	width: 65px;
+	font-size: 14px;
+	cursor: pointer;
+	margin-right: 10px;
 }
+
 
 .logo-container {
     display: flex;
@@ -35,7 +38,7 @@ body {
 }
 
 .topbtn:hover {
-    background-color: black; 
+    background-color: white; 
 }
 
 .topimage {
@@ -96,16 +99,18 @@ h1 {
 	}
 	
 	#logoutbtn {
-		font-size: 16px; 
-	    background-color: white;
-	    color: red;
-	    border: none; 
-	    border-radius: 8px; 
+		font-size: 14px;
+	    background-color: transparent;
+	    border: 3px solid #373737;
+		border-radius: 8px;
+		height: 30px;
+		width: 65px;
 	    cursor: pointer;
+	    color: #373737;
 	}
 	
 	#logoutbtn:hover {
-		background-color: black;
+		background-color: white;
 	}
 
 /* 앱버전 */
