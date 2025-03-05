@@ -9,17 +9,23 @@
 
 .profile-div {
   width: 4rem;
+  padding-left: 0.5rem;
 }
+
 .other-div {
   width: 8rem;
+  height: 4rem;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
   position: relative;
 }
+
 .dm-div {
   width: 2rem;
 }
+
 .etc-div {
   width: 2rem;
   position: relative;
@@ -50,6 +56,15 @@
 .id {
   padding-left: 1rem;
   letter-spacing: 15%;
+  font-size: 0.8rem;
+  color: rgb(68, 68, 68);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.id-show {
+  max-height: 100px;
+  transition: all 0.3s ease;
 }
 
 .etc-menu {
@@ -61,6 +76,9 @@
   width: 7rem;
   background-color: beige;
   font-size: 0.8rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease;
 }
 
 .menu-show {
