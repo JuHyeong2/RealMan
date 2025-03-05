@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.demo.common.util.EmailCertificationUtil;
 import com.example.demo.member.model.exception.MemberException;
@@ -169,6 +170,7 @@ public class MemberController {
 	                     @RequestParam("memberPwd") String memberPwd,
 	                     Model model, HttpSession session) {
 	     Member loginMember = mService.login(memberId, memberPwd);
+
 	     
 	     if (loginMember != null) {
 		     System.out.println("loginMember : "+loginMember.getMemberId());
@@ -176,7 +178,17 @@ public class MemberController {
 	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
-	         return "member/signin"; // 로그인 실패 시 다시 로그인 페이지로 이동
+	         return "member/signin";
 	     }
 	 }
+	 
+	 //로그 아웃 처리
+	 @GetMapping("/logout")
+	 public String logout(HttpSession session, SessionStatus status) {
+
+	     session.removeAttribute("loginMember");
+	     status.setComplete();
+	     return "redirect:/";
+	 }
+
 }
