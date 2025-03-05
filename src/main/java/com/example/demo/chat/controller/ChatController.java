@@ -49,9 +49,9 @@ public class ChatController {
 	    
 	    
 //		System.out.println(ip);
-		Member m = (Member) session.getAttribute("loginUser");
+		Member m = (Member) session.getAttribute("loginMember");
 		System.out.println(m.toString());
-		Server server = new Server();
+//		Server server = new Server();
 //		server.setServerNo(server.getServerNo());
 //
 //		System.out.println(server.getServerNo());
@@ -62,7 +62,7 @@ public class ChatController {
 		}
 		
 //		model.addAttribute("ip", ip);
-		model.addAttribute("server", server);
+//		model.addAttribute("server", server);
 		
 		model.addAttribute("member", m);
 
@@ -70,11 +70,18 @@ public class ChatController {
 	}
 
 
-	@GetMapping("/server/{no}")
+
+	@GetMapping("/main/{no}")
 	public String chatting(@PathVariable("no") int no, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
+		
+		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
 
-		model.addAttribute("no", no);
+		if(selectServerList != null || !selectServerList.isEmpty()) {
+			model.addAttribute("selectServerList", selectServerList);
+		}
+		
+		model.addAttribute("no", no).addAttribute("member", loginMember);
 
 		ArrayList<Chat> voiceChannel= cService.chattingSidebar("V");
 		model.addAttribute("voiceChannel", voiceChannel);

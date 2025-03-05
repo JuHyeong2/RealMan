@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
-@SessionAttributes("loginUser")
+@SessionAttributes("loginMember")
 public class MemberController {
 	private final MemberService mService;
 	private final BCryptPasswordEncoder bcrypt;

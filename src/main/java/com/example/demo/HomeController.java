@@ -35,7 +35,7 @@ public class HomeController {
 	@GetMapping("/main")
 	public String mainPage(Model model, HttpSession session) {
 		System.out.println("✅ main.html 페이지 요청됨!");
-		Member m = (Member) session.getAttribute("loginUser");
+		Member m = (Member) session.getAttribute("loginMember");
 		System.out.println(m.toString());
 		ArrayList<Server> selectServerList = sService.selectServerList(m);
 		if(selectServerList != null || !selectServerList.isEmpty()) {
