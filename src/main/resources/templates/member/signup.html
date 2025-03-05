@@ -58,17 +58,19 @@
                 </div>
 
                 <!-- 이메일 입력 -->
-                <div class="input-box">
-                    <input type="text" id="emailId" name="emailId" placeholder="이메일 아이디" required>
-                    @
-                    <select id="emailDomainSelect" name="emailDomain">
-                        <option value="gmail.com">gmail.com</option>
-                        <option value="naver.com">naver.com</option>
-                        <option value="daum.net">daum.net</option>
-                        <option value="nate.com">nate.com</option>
-                        <option value="custom">직접 입력</option>
-                    </select>
-                    <input type="text" id="customEmailDomain" name="customEmailDomain" placeholder="직접 입력" style="display:none;">
+                <div class="input-box" >
+                	<div style="display:flex;">
+	                    <input type="text" id="emailId" name="emailId" placeholder="이메일 아이디" required>
+	                    <p style= "font-size:14px;">@</p>
+	                    <select id="emailDomainSelect" name="emailDomain">
+	                        <option value="gmail.com">gmail.com</option>
+	                        <option value="naver.com">naver.com</option>
+	                        <option value="daum.net">daum.net</option>
+	                        <option value="nate.com">nate.com</option>
+	                        <option value="custom">직접 입력</option>
+	                    </select>
+	                    <input type="text" id="customEmailDomain" name="customEmailDomain" placeholder="직접 입력" style="display:none; margin-left: 5px;">
+	            	</div>
                 </div>
 
                 <!-- 생년월일 입력 -->
