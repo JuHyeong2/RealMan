@@ -1,11 +1,16 @@
 package com.example.demo.chat.controller;
 
 import com.example.demo.chat.model.vo.Chat;
+import com.example.demo.chat.model.vo.ChatMessage;
 import com.example.demo.member.model.vo.Member;
 import com.example.demo.server.model.service.ServerService;
 import com.example.demo.server.model.vo.Server;
 
 import jakarta.servlet.http.HttpSession;
+
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +32,8 @@ public class ChatController {
 	private final ChatService cService;
 	private final ServerService sService;
 	
+
+	private final SimpMessagingTemplate messagingTemplate;
 
 	@GetMapping("main")
 	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
@@ -74,6 +81,7 @@ public class ChatController {
 	@GetMapping("/main/{no}")
 	public String chatting(@PathVariable("no") int no, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
+		System.out.println(no);
 		
 		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
 
@@ -91,6 +99,14 @@ public class ChatController {
 
 		return "chat/chatting";
 
+	}
+	
+	@MessageMapping("/chat/{serverNo}")
+	public void sendMessage(@DestinationVariable("serverNo") String serverNo, ChatMessage message) {
+		// 특정  채팅방(roomId)에 메시지를 전송
+		System.out.println("serverNo : " + serverNo);
+		System.out.println("message : " + message);
+		messagingTemplate.convertAndSend("/sub/chatroom/" + serverNo, message);
 	}
 	
 	
