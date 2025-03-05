@@ -13,5 +13,6 @@
         select *
         from server
         where server_status = 'Y'
+        order by server_no asc
     </select>
 </mapper>

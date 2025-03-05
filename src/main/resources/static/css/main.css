@@ -1,0 +1,29 @@
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar_wrap {
+    width: 100%;
+    height: 40px; /* 원하는 높이 설정 */
+    background-color: #f8f9fa; /* 예제 색상 */
+}
+
+.square {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar_wrap {
+    width: 250px; /* 사이드바 너비 */
+    display: flex;
+    flex-direction: column;
+    background-color: #e9ecef; /* 예제 색상 */
+}
+
+.fd {
+    top: 40px;
+    background-color: #ffffff; /* 예제 색상 */
+}

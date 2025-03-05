@@ -22,12 +22,11 @@ import java.util.ArrayList;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/chat")
 public class ChatController {
 	private final ChatService cService;
 	private final ServerService sService;
 	
-	@GetMapping("main")
+	@GetMapping("/chat/main")
 	public String mainView(HttpServletRequest request, Model model) {
 		String ip = request.getHeader("X-Forwarded-For");
 	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
@@ -63,7 +62,7 @@ public class ChatController {
 	}
 
 
-	@GetMapping("/chat/main/{no}")
+	@GetMapping("/server/{no}")
 	public String chatting(@PathVariable("no") int no, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
 
@@ -75,7 +74,7 @@ public class ChatController {
 		ArrayList<Chat> chatChannel= cService.chattingSidebar("T");
 		model.addAttribute("chatChannel", chatChannel);
 
-		return "redirect:/chatting/" + no;
+		return "chat/chatting";
 
 	}
 	

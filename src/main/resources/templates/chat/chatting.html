@@ -10,25 +10,28 @@
 <!--     <div th:replace="~{/chat/chattingSidebar.html :: chattingSidebar}"></div> -->
 <!--     <div th:replace="~{/chat/friendSidebar.html :: friendSidebar}"></div> -->
 
+<div class="all">
 	<div th:insert="common/top.html"></div>
-	
-	<div class="sidebarDiv">
-		<div th:insert="common/sidebar.html"></div>
-		
-	    <div th:insert="chat/chattingSidebar.html"></div>
-	    
-	    <div class="chattingPage">
-	    	<input type="hidden" th:value="${ip}">
-	    	<div class="chatContent">
-	    	
-	    	</div>
-	    	<div class="inputChat">
-	    		<textarea></textarea>
-	    		<button id="button-send">입력</button>
-	    	</div>
-	    </div>
+
+	<div class="sidebar_wrap">
+		<div th:insert="common/sidebar.html" class="server_sidebar_wrap"></div>
+		<div th:insert="chat/chattingSidebar.html"></div>
 	</div>
-	
+
+		<div class="chatSidebarDiv">
+
+			<div class="chattingPage">
+				<input type="hidden" th:value="${ip}">
+				<div class="chatContent">
+
+				</div>
+				<div class="inputChat">
+					<textarea></textarea>
+					<button id="button-send">입력</button>
+				</div>
+			</div>
+		</div>
+</div>
 	<script>
 		onload=()=>{
 			const username = document.querySelector('input[type="hidden"]').value;

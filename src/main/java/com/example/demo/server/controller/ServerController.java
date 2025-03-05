@@ -31,12 +31,10 @@ public class ServerController {
                          Model model, HttpSession session){
         Member loginMember = (Member) session.getAttribute("loginMember");
         m.setMemberNo(loginMember.getMemberNo());
-        model.addAttribute("no", no);
-
         ArrayList<Server> serverList = new ArrayList<Server>(sService.serverList(loginMember.getMemberNo()));
+        model.addAttribute("no", no);
         model.addAttribute("serverList", serverList);
 
-        System.out.println(serverList);
         return "/common/sidebar";
     }
 
