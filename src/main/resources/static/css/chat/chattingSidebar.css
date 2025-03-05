@@ -36,7 +36,6 @@ html, body {
 	font-size: 20px;
 	background-color: transparent;
 	border-radius: 10px;
-	position: relative;
 }
 
 .chatSidebar nav ul li {
@@ -86,4 +85,26 @@ html, body {
 .chatSidebar nav ul li.channel:hover + .voiceList,
 .chatSidebar nav ul li.channel:hover + .chatList {
 	display: block;
+}
+
+.profile {
+	display: flex;
+  	align-items: center; /* 수직 중앙 정렬 */
+  	gap: 5px;
+  	position: absolute;
+  	width: 350px;
+  	bottom: 0px; 
+}
+
+.profile b{
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.profile img {
+	cursor: pointer;
+}
+
+#micImg {
+	margin-left: auto;
 }

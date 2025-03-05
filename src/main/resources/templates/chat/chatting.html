@@ -12,23 +12,28 @@
 <!--     <div th:replace="~{/chat/chattingSidebar.html :: chattingSidebar}"></div> -->
 <!--     <div th:replace="~{/chat/friendSidebar.html :: friendSidebar}"></div> -->
 
-	<div th:insert="common/top.html"></div>
-	
-	<div class="sidebarDiv">
-		<div th:insert="common/sidebar.html"></div>
+	<div class="all">
+		<div th:insert="common/top.html"></div>
 		
-	    <div th:insert="chat/chattingSidebar.html"></div>
-	    
-	    <div class="chattingPage">
-	    	<input type="hidden" th:value="${no}">
-	    	<div class="chatContent">
-	    	
-	    	</div>
-	    	<div class="inputChat">
-	    		<textarea></textarea>
-	    		<button id="button-send">입력</button>
-	    	</div>
-	    </div>
+		<div class="sidebar_wrap">
+			<div th:insert="common/sidebar.html" class="server_siderbar_wrap"></div>
+			
+		    <div th:insert="chat/chattingSidebar.html"></div>
+		</div>
+		
+		<div class="chatSidebarDiv">
+		  
+		    <div class="chattingPage">
+		    	<input type="hidden" th:value="${no}">
+		    	<div class="chatContent">
+		    	
+		    	</div>
+		    	<div class="inputChat">
+		    		<textarea></textarea>
+		    		<button id="button-send">입력</button>
+		    	</div>
+		    </div>
+		</div>
 	</div>
 	
 	<script th:inline="javascript">
@@ -54,13 +59,6 @@
 				stompClient.subscribe('/sub/chatroom/' + serverNo, (message)=>{
 					const chatMessage =JSON.parse(message.body);
 					console.log("새 메시지:" + chatMessage.sender + ": " + chatMessage.message);
-				});
-				
-				// 메시지 전송 함수
-				const sendMessage=(sender, message)=>{
-					console.log('여긴가');
-					stompClient.send('/pub/chat/' + serverNo, {}, JSON.stringify({ sender, message }));
-					console.log('여긴가');
 					let today = new Date();
 		            
 	 	            let hour = String(today.getHours());
@@ -83,14 +81,22 @@
 	 	            let HMS = hour + ':' + minute + ':' + second;
 		            
 	 	            let str = "<div class='textArea'>";
-	 	            str += "<b>" + sender + " : " + message + "</b>" + "<p>" + HMS + "</p>";
+	 	            str += "<b>" + chatMessage.sender + " : " + chatMessage.message + "</b>" + "<p>" + HMS + "</p>";
 	 	            str += "</div>";
 	 	            document.querySelector('.chatContent').insertAdjacentHTML("afterbegin", str);
+				});
+				
+				// 메시지 전송 함수
+				const sendMessage=(sender, message, roomId)=>{
+					console.log('여긴가');
+					stompClient.send('/pub/chat/' + serverNo, {}, JSON.stringify({ roomId, sender, message }));
+					console.log('여긴가');
 				}
 				
 				document.querySelector('#button-send').addEventListener('click', ()=>{
-					let msg = document.querySelector('textarea').value;
-					sendMessage(username, msg);
+					let msg = document.querySelector('textarea');
+					sendMessage(username, msg.value, serverNo);
+					msg.value = '';
 				});
 			})
 			

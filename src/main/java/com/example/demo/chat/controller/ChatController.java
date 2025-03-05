@@ -21,13 +21,13 @@ import com.example.demo.chat.model.service.ChatService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+
 
 import java.util.ArrayList;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/chat")
 public class ChatController {
 	private final ChatService cService;
 	private final ServerService sService;
@@ -105,7 +105,9 @@ public class ChatController {
 	public void sendMessage(@DestinationVariable("serverNo") String serverNo, ChatMessage message) {
 		// 특정  채팅방(roomId)에 메시지를 전송
 		System.out.println("serverNo : " + serverNo);
-		System.out.println("message : " + message);
+		System.out.println("message : " + message.getSender());
+		System.out.println("message : " + message.getMessage());
+		message.setRoomId(serverNo);
 		messagingTemplate.convertAndSend("/sub/chatroom/" + serverNo, message);
 	}
 	
