@@ -8,7 +8,7 @@ body {
 	background-color: var(--color-background);
 	margin: 0;
 }
-
+	
 .maintop {
 	background-color: var(--color-top);
 /* 	position: relative; */
@@ -20,13 +20,17 @@ body {
 }
 
 .topbtn {
-	color: #373737;
-	background-color: transparent;
-	border: 1px solid #373737;
-	border-radius: 5px;
-/* 	padding: 10px; */
-	height: 70%;
-	cursor: pointer;
+    font-size: 16px; 
+    background-color: white;
+    color: #6a6fa3;
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
 }
 
 #signinbtn {
@@ -38,8 +42,7 @@ body {
 }
 
 .topbtn:hover {
-	color: #FFFFFF ;
-	border: 1px solid #FFFFFF ;
+    background-color: black; 
 }
 
 .topimage {
@@ -81,6 +84,37 @@ h1 {
 	cursor: pointer;
 }
 
+.right-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+.right-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+	
+	.welcome-text {
+		font-size: 1rem;
+		color: #333;
+	}
+	
+	#logoutbtn {
+		font-size: 16px; 
+	    background-color: white;
+	    color: red;
+	    border: none; 
+	    border-radius: 8px; 
+	    cursor: pointer;
+	}
+	
+	#logoutbtn:hover {
+		background-color: black;
+	}
+
 /* 앱버전 */
 @media screen and (max-width: 1000px){
 	body {
@@ -103,14 +137,14 @@ h1 {
 		margin: auto;
 	}
 	
-	.maintop {
-		background-color: var(--color-top);
-		height: 200px;
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		gap: 20px;
-	}
+.maintop {
+    background-color: var(--color-top);
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 0 1rem;
+}
 	
 	.topbtn {
 		color: #373737;
@@ -143,4 +177,5 @@ h1 {
 	.maincontent p, ul li {
 		font-size: 2rem;
 	}
+	
 }
