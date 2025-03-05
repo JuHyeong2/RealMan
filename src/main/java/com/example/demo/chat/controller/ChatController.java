@@ -17,6 +17,7 @@ import com.example.demo.chat.model.service.ChatService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.ArrayList;
 
@@ -26,37 +27,44 @@ public class ChatController {
 	private final ChatService cService;
 	private final ServerService sService;
 	
-	@GetMapping("/chat/main")
-	public String mainView(HttpServletRequest request, Model model) {
-		String ip = request.getHeader("X-Forwarded-For");
-	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-	        ip = request.getHeader("Proxy-Client-IP");
-	    }
-	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-	        ip = request.getHeader("WL-Proxy-Client-IP");
-	    }
-	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-	        ip = request.getHeader("HTTP_CLIENT_IP");
-	    }
-	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-	        ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-	    }
-	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-	        ip = request.getRemoteAddr();
-	    }
+
+	@GetMapping("main")
+	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
+//		String ip = request.getHeader("X-Forwarded-For");
+//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+//	        ip = request.getHeader("Proxy-Client-IP");
+//	    }
+//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+//	        ip = request.getHeader("WL-Proxy-Client-IP");
+//	    }
+//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+//	        ip = request.getHeader("HTTP_CLIENT_IP");
+//	    }
+//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+//	        ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+//	    }
+//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+//	        ip = request.getRemoteAddr();
+//	    }
 	    
-		System.out.println(ip);
-		
+	    
+//		System.out.println(ip);
+		Member m = (Member) session.getAttribute("loginUser");
+		System.out.println(m.toString());
 		Server server = new Server();
 //		server.setServerNo(server.getServerNo());
 //
 //		System.out.println(server.getServerNo());
 
-		ArrayList<Server> selectServerList = sService.selectServerList();
+		ArrayList<Server> selectServerList = sService.selectServerList(m);
+		if(selectServerList != null || !selectServerList.isEmpty()) {
+			model.addAttribute("selectServerList", selectServerList);
+		}
 		
-		model.addAttribute("ip", ip);
+//		model.addAttribute("ip", ip);
 		model.addAttribute("server", server);
-		model.addAttribute("selectServerList", selectServerList);
+		
+		model.addAttribute("member", m);
 
 		return "chat/chatting";
 	}

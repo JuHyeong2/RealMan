@@ -16,7 +16,7 @@
       </div>
       <table class="serverList">
             <tr th:each="s:${selectServerList}">
-                <td width="100px" height="100px" >[[${s.serverName}]]</td>
+                <td width="100px" height="100px">[[${s.serverName}]]</td>
                 <input type="hidden" th:value="${s.serverNo}">
             </tr>
      </table>
@@ -25,7 +25,6 @@
 
 
 <script>
-    console.log('안녕');
     const tds = document.querySelectorAll("td");
     for (const td of tds){
         console.log(td);
