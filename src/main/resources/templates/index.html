@@ -7,6 +7,7 @@
 </head>
 <body>
 
+
 	<div class="maintop">
 	    <div class="logo-container">
 	        <img class="topimage" src="/image/RealManLogo.png" width="50" onclick="location.href='home'">
@@ -25,6 +26,12 @@
 	            <button id="signupbtn" class="topbtn" onclick="location.href='/member/signup'">Sign up</button>
 	        </th:block>	
 	    </div>
+
+	</div>
+	
+	<div class="maintop" th:if="${session.loginUser != null}">
+		<img class="topimage" src="/image/RealManLogo.png" width="50" onclick="location.href='home'">
+		<b>000님 환영합니다.</b>
 	</div>
 	
 	<div class="maincontent">

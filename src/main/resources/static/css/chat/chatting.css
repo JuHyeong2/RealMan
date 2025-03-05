@@ -7,13 +7,10 @@
 	display: flex;
 	width: 100%;
 	/*height: 20px; *//* 높이 20px 설정 */
-	top: 20px; /* 위쪽 20px 띄움 */
-	left: 160px; /* 80px짜리 사이드바와 80px 떨어지게 위치 설정 */
+	top: 40px; /* 위쪽 20px 띄움 */
+	left: 320px; /* 80px짜리 사이드바와 80px 떨어지게 위치 설정 */
 }
 
-.chatSidebarDiv {
-	flex: 1 0 auto;
-}
 
 .chattingPage {
 	width: 100%;
@@ -25,7 +22,6 @@
 	display: flex;
 	flex-direction: column-reverse;
 	align-items: flex-start;
-	position: relative;
 	overflow-y: auto; 
 }
 

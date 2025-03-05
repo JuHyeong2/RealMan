@@ -12,7 +12,7 @@
     <select id="selectServerList">
         select *
         from server
-        where server_status = 'Y'
-        order by server_no asc
+        	join server_member using(server_no)
+        where server_status = 'Y' and member_no = #{memberNo}
     </select>
 </mapper>

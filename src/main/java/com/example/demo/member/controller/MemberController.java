@@ -149,7 +149,7 @@ public class MemberController {
 	    if (m.getMemberIsAdmin() == null) {
 	        m.setMemberIsAdmin("N"); // 기본값 'N' 설정
 	    }
-
+	    System.out.println(m.toString());
 	    int result = mService.insertMember(m);
 	    if (result > 0) {
 	        return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동

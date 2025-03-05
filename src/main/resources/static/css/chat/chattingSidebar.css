@@ -7,7 +7,7 @@ html, body {
 .chatSidebar {
 	width: 360px;
 	background-color: #f2f6f9;
-	height: 100vh;
+	height: 90vh;
 	padding: 2rem 0;
 	box-sizing: border-box;
 	overflow-y: auto;
@@ -85,4 +85,26 @@ html, body {
 .chatSidebar nav ul li.channel:hover + .voiceList,
 .chatSidebar nav ul li.channel:hover + .chatList {
 	display: block;
+}
+
+.profile {
+	display: flex;
+  	align-items: center; /* 수직 중앙 정렬 */
+  	gap: 5px;
+  	position: absolute;
+  	width: 350px;
+  	bottom: 0px; 
+}
+
+.profile b{
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.profile img {
+	cursor: pointer;
+}
+
+#micImg {
+	margin-left: auto;
 }
