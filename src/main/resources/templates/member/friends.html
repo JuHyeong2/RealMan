@@ -1,50 +1,120 @@
 <!DOCTYPE html>
 <html xlmns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>친구 목록</title>
+    <link rel="stylesheet" href="/css/member/friends.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>친구 목록</title>
-  <link rel="stylesheet" href="/css/member/friends.css" />
-</head>
-
-<body>
-  <div>
-    <ul>
-      <li th:each="f:${list}">
-        <div class="friend-row">
-          <form>
-            <input type="hidden" th:value="${f.memberNo}">
-          </form>
-          <div class="profile-div">
-            <div class="svg-container">
-              <img class="profile" src="/image/no-profile.svg" />
-            </div>
-          </div>
-          <div class="nickname-div">
-            <label class="nickname">[[${f.MemberNickname}]]</label>
-            <label class="id">[[${f.memberId}]]</label>
-          </div>
-          <div class="other-div">
-            <div class="dm-div">
+  <body>
+    <div>
+      <ul>
+        <li th:each="f:${list}">
+          <div class="friend-row">
+            <form>
+              <input type="hidden" th:value="${f.memberNo}" />
+            </form>
+            <div class="profile-div">
               <div class="svg-container">
-                <img class="dm-svg qq" src="/image/message.svg" />
+                <img class="profile" src="/image/no-profile.svg" />
               </div>
             </div>
-            <div class="etc-div">
-              <div class="svg-container">
-                <img class="etc-svg qq" src="/image/more.svg" />
+            <div class="nickname-div">
+              <label class="nickname">[[${f.MemberNickname}]]</label>
+              <label class="id">[[${f.memberId}]]</label>
+            </div>
+            <div class="other-div">
+              <div class="dm-div">
+                <div class="svg-container">
+                  <img class="dm-svg qq" src="/image/message.svg" />
+                </div>
               </div>
-              <div class="etc-menu">
-                <div class="qq">친구 삭제</div>
-                <div class="qq">회원 차단</div>
+              <div class="etc-div">
+                <div class="svg-container">
+                  <img class="etc-svg qq" src="/image/more.svg" />
+                </div>
+                <div class="etc-menu">
+                  <div class="qq">친구 삭제</div>
+                  <div class="qq">회원 차단</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-  <script src="/js/member/friends.js"></script>
-</body>
-
+        </li>
+      </ul>
+      <br /><br />
+      <ul>
+        <h1>보낸 요청</h1>
+        <li th:each="w:${wlist}">
+          <div class="friend-row wlist">
+            <form>
+              <input type="hidden" th:value="${w.memberNo}" />
+            </form>
+            <div class="profile-div">
+              <div class="svg-container">
+                <img class="profile" src="/image/no-profile.svg" />
+              </div>
+            </div>
+            <div class="nickname-div">
+              <label class="nickname">[[${w.MemberNickname}]]</label>
+              <label class="id">[[${w.memberId}]]</label>
+            </div>
+            <div class="other-div">
+              <div class="dm-div">
+                <div class="svg-container">
+                  <img class="dm-svg qq" src="/image/message.svg" />
+                </div>
+              </div>
+              <div class="etc-div">
+                <div class="svg-container">
+                  <img class="etc-svg qq" src="/image/more.svg" />
+                </div>
+                <div class="etc-menu">
+                  <div class="qq">친구 삭제</div>
+                  <div class="qq">회원 차단</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <br /><br />
+      <ul>
+        <h1>받은 요청</h1>
+        <li th:each="r:${rlist}">
+          <div class="friend-row rlist">
+            <form>
+              <input type="hidden" th:value="${r.memberNo}" />
+            </form>
+            <div class="profile-div">
+              <div class="svg-container">
+                <img class="profile" src="/image/no-profile.svg" />
+              </div>
+            </div>
+            <div class="nickname-div">
+              <label class="nickname">[[${r.MemberNickname}]]</label>
+              <label class="id">[[${r.memberId}]]</label>
+            </div>
+            <div class="other-div">
+              <div class="dm-div">
+                <div class="svg-container">
+                  <img class="dm-svg qq" src="/image/message.svg" />
+                </div>
+              </div>
+              <div class="etc-div">
+                <div class="svg-container">
+                  <img class="etc-svg qq" src="/image/more.svg" />
+                </div>
+                <div class="etc-menu">
+                  <div class="qq">친구 삭제</div>
+                  <div class="qq">회원 차단</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <script src="/js/member/friends.js"></script>
+  </body>
 </html>

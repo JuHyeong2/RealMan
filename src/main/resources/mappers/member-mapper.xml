@@ -1,79 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.demo.member.model.mapper.MemberMapper">
-	<!-- 이메일 중복 체크 -->
+    <!-- 이메일 중복 체크 -->
     <select id="checkEmail">
-		select count(*)
-		from member
-		where member_email = #{email}
-	</select>
-	<!-- 이메일로 아이디 찾기 -->
-	<select id="findId" resultType="string">
-		select member_id
-		from member
-		where member_email = #{email}
-	</select>
+        select count(*)
+        from member
+        where member_email = #{email}
+    </select>
+    <!-- 이메일로 아이디 찾기 -->
+    <select id="findId" resultType="string">
+        select member_id
+        from member
+        where member_email = #{email}
+    </select>
 
     <!-- 아이디 이메일 일치여부 확인 -->
     <select id="confirmIdEmail" resultType="_int">
-		select count(*)
-		from member
-		where member_email = #{memberEmail}
-			and member_id = #{memberId}
-	</select>
-	
+        select count(*)
+        from member
+        where member_email = #{memberEmail}
+        and member_id = #{memberId}
+    </select>
+
     <!-- 비밀번호 재설정 -->
-	<update id="resetPwd">
-		update member
-		set member_pwd = #{memberPwd}
-		where member_email = #{memberEmail}
-			and member_id = #{memberId}
-	</update>
+    <update id="resetPwd">
+        update member
+        set member_pwd = #{memberPwd}
+        where member_email = #{memberEmail}
+        and member_id = #{memberId}
+    </update>
 
     <!-- 로그인 처리 -->
     <select id="login" parameterType="map" resultType="com.example.demo.member.model.vo.Member">
-	    select *
-	    from member
-	    where member_id = #{memberId}
-	      and member_status = 'Y'
-	</select>
+        select *
+        from member
+        where member_id = #{memberId}
+        and member_status = 'Y'
+    </select>
 
     <!-- 회원가입 쿼리 -->
     <insert id="insertMember" parameterType="com.example.demo.member.model.vo.Member">
         INSERT INTO MEMBER (
-            MEMBER_ID, MEMBER_PWD, MEMBER_GENDER, MEMBER_PHONE, MEMBER_EMAIL, 
-            MEMBER_NICKNAME, MEMBER_STATUS, IS_ADMIN, MEMBER_BIRTH, MEMBER_CREATEDATE
+        MEMBER_ID, MEMBER_PWD, MEMBER_GENDER, MEMBER_PHONE, MEMBER_EMAIL,
+        MEMBER_NICKNAME, MEMBER_STATUS, IS_ADMIN, MEMBER_BIRTH, MEMBER_CREATEDATE
         )
         VALUES (
-        #{memberId}, #{memberPwd}, #{memberGender}, #{memberPhone}, #{memberEmail}, #{memberNickname}, #{memberStatus}, #{memberIsAdmin}, #{memberBirth}, SYSDATE)
+        #{memberId}, #{memberPwd}, #{memberGender}, #{memberPhone}, #{memberEmail}, #{memberNickname}, #{memberStatus},
+        #{memberIsAdmin}, #{memberBirth}, SYSDATE)
     </insert>
-    
+
     <!-- 친구 목록 가져오기 (번호만) -->
     <select id="selectFriendNumbers">
-    	select friend_member_no
-    	from friend
-    	where member_no = #{memberNo}
-    	union
-    	select member_no
-    	from friend
-    	where friend_member_no = #{memberNo}
-    </select>
-    
-    <!-- 친구 목록 조회  -->
-    <select id="selectFriends" resultType="Member">
-    	select * from member where member_no in(
-    	<foreach collection="list" item="number" separator="," index="i">
-    		#{number}
-    	</foreach>
-    	)
+        select friend_member_no
+        from friend
+        where member_no = #{memberNo} and friend_status='A'
+        union
+        select member_no
+        from friend
+        where friend_member_no = #{memberNo} and friend_status='A'
     </select>
 
-	<!-- 친구 거절, 삭제 -->
+    <!-- 내가 보낸 친구 요청 목록 가져오기 (번호만)-->
+    <select id="selectRequestSent">
+        select friend_member_no
+        from friend
+        where member_no = #{memberNo}
+        and friend_status = 'W'
+    </select>
+
+    <!-- 내가 받은 친구 요청 목록 가져오기(번호만)-->
+    <select id="selectRequestReceived">
+        select member_no
+        from friend
+        where friend_member_no = #{memberNo}
+        and friend_status = 'W'
+    </select>
+
+    <!-- 친구 목록 조회  -->
+    <select id="selectFriends" resultType="Member">
+        select * from member where member_no in(
+        <foreach collection="list" item="number" separator="," index="i">
+            #{number}
+        </foreach>
+        )
+    </select>
+
+    <!-- 친구 거절, 삭제 -->
     <delete id="deleteFriend">
-		delete from friend
-		where (member_no = #{myMemberNo} and friend_member_no = #{friendMemberNo})
-			or (member_no = #{friendMemberNo} and friend_member_no = #{myMemberNo})
-	</delete>
+        delete from friend
+        where (member_no = #{myMemberNo} and friend_member_no = #{friendMemberNo})
+        or (member_no = #{friendMemberNo} and friend_member_no = #{myMemberNo})
+    </delete>
+
+
 </mapper>

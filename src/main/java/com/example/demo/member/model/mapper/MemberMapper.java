@@ -29,12 +29,19 @@ public interface MemberMapper {
     // 회원가입 처리
     int insertMember(Member member);
 
-	//친구 목록 가져오기(번호만)
+    //친구 목록 가져오기(번호만)
     ArrayList<Integer> selectFriendNumbers(Member loginMember);
-    
+
+    //내가 보낸 친구 요청 목록 가져오기(번호만)
+    ArrayList<Integer> selectRequestSent(int memberNo);
+
+    //내가 받은 친구 요청 목록 가져오기(번호만)
+    ArrayList<Integer> selectRequestReceived(int memberNo);
+
     //친구 목록 조회
-	ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList);
+    ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList);
 
     //친구 삭제, 거절
     int deleteFriend(HashMap<String, Integer> map);
+    
 }
