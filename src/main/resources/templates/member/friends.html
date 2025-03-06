@@ -12,6 +12,9 @@
     <ul>
       <li th:each="f:${list}">
         <div class="friend-row">
+          <form>
+            <input type="hidden" th:value="${f.memberNo}">
+          </form>
           <div class="profile-div">
             <div class="svg-container">
               <img class="profile" src="/image/no-profile.svg" />
@@ -31,7 +34,10 @@
               <div class="svg-container">
                 <img class="etc-svg qq" src="/image/more.svg" />
               </div>
-              <div class="etc-menu">여기에 메뉴바 들어감</div>
+              <div class="etc-menu">
+                <div class="qq">친구 삭제</div>
+                <div class="qq">회원 차단</div>
+              </div>
             </div>
           </div>
         </div>

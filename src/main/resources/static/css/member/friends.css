@@ -6,6 +6,9 @@
   background-color: rgb(189, 219, 209);
   margin-bottom: 0.5rem;
 }
+.friend-row:hover{
+  background-color: rgb(182, 212, 202);
+}
 
 .profile-div {
   width: 4rem;
@@ -53,6 +56,11 @@
   height: 100%;
 }
 
+.dm-svg:hover,
+.etc-svg:hover,
+.profile:hover{
+  cursor: pointer;
+}
 .nickname-div {
   display: flex;
   align-items: center;
@@ -92,7 +100,20 @@
   font-size: 0.8rem;
   max-height: 0;
   overflow: hidden;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+.etc-menu>div{
+  display: flex;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.etc-menu>div:hover{
+  background-color: rgb(218, 218, 181);
+}
+.etc-menu>div:active{
+  background-color: rgb(168, 168, 134);
 }
 
 .menu-show {

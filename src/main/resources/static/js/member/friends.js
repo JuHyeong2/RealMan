@@ -1,10 +1,7 @@
-const nicknames = document.querySelectorAll(".nickname");
-const dmsvgs = document.querySelectorAll(".dm-svg");
-const etcsvgs = document.querySelectorAll(".etc-svg");
-const profiles = document.querySelectorAll(".profile");
 
 window.onload = () => {
   //닉네임 이벤트 핸들러
+  const nicknames = document.querySelectorAll(".nickname");
   for (const label of nicknames) {
     //mouse enter/leave
     label.addEventListener("mouseenter", function () {
@@ -16,15 +13,8 @@ window.onload = () => {
   }
 
   //dm 아이콘 이벤트 핸들러
+  const dmsvgs = document.querySelectorAll(".dm-svg");
   for (const svg of dmsvgs) {
-    //mouse enter/leave
-    svg.addEventListener("mouseenter", function () {
-      this.style = "cursor : pointer;";
-    });
-    svg.addEventListener("mouseleave", function () {
-
-    });
-
     //click
     svg.addEventListener("click", function () {
       // window.location = "";
@@ -32,49 +22,51 @@ window.onload = () => {
   }
 
   //etc 아이콘 이벤트 핸들러
+  const etcsvgs = document.querySelectorAll(".etc-svg");
+  let friendrow = null;
   for (const svg of etcsvgs) {
-    //mouse enter/leave
-    svg.addEventListener("mouseenter", function () {
-      this.style = "cursor : pointer;";
-    });
-    svg.addEventListener("mouseleave", function () {
-      this.parentElement.parentElement.querySelector(".etc-menu").classList.remove("menu-show");
-      this.parentElement.parentElement.querySelector(".etc-menu").addEventListener(
-        "mouseleave", function () {
-          this.parentElement.parentElement.querySelector(".etc-menu").classList.remove("menu-show");
-        }
-      )
-    });
-
     //click
     svg.addEventListener("click", function () {
-      this.parentElement.parentElement.querySelector(".etc-menu").classList.toggle("menu-show");
+      const etcMenu = this.parentElement.parentElement.querySelector(".etc-menu");
+      //다른 etc메뉴 닫음 + 해당 etc 메뉴 엶
+      if(!etcMenu.classList.contains("menu-show") && document.querySelector(".menu-show")){
+        document.querySelector(".menu-show").classList.remove("menu-show");
+      }
+      etcMenu.classList.toggle("menu-show");
+
+      //etc메뉴 이벤트 핸들러
+      friendrow = etcMenu.parentElement.parentElement.parentElement;
+      const friendMemberNo = friendrow.querySelector("form>input[type=hidden]").value;
+      const [menu1, menu2] = etcMenu.querySelectorAll("div");
+      menu1.onclick= function(){
+        if(confirm("정말로 친구 삭제를 진행하시겠습니까?")){
+           console.log(friendMemberNo,"친구 삭제");
+        }
+      }
+      menu2.onclick= function(){
+        if(confirm("정말로 회원을 차단하시겠습니까?")){
+          console.log(friendMemberNo,"친구 삭제");
+          console.log(friendMemberNo,"회원 차단");
+       }
+      }
     });
   }
 
+
   //프사 이벤트 핸들러
+  const profiles = document.querySelectorAll(".profile");
   for (img of profiles) {
-    //mouse enter/leave
-    img.addEventListener("mouseenter", function () {
-      this.style = "cursor : pointer;";
-    });
-    img.addEventListener("mouseleave", function () {
-
-    });
-
     //click
     img.addEventListener("click", function () {
 
     });
   }
 
-  //클리하면 나오는 메뉴들 해제하는 이벤트 핸들러
+  //etc메뉴 안보이게하는 이벤트 핸들러
   document.querySelector("body").addEventListener("click", function (e) {
-    console.log("e.target : ", e.target);
-    if (!e.target.classList.contains("qq")) {
-      console.log("여기 누르면 메뉴 닫음");
+    if (!e.target.classList.contains("qq") && document.querySelector(".menu-show")) {
+      document.querySelector(".menu-show").classList.remove("menu-show");
     }
   });
-
 
 }
