@@ -22,174 +22,169 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/member")
 @SessionAttributes("loginMember")
 public class MemberController {
-    private final MemberService mService;
-    private final BCryptPasswordEncoder bcrypt;
-    private final EmailCertificationUtil emailUtil;
+	private final MemberService mService;
+	private final BCryptPasswordEncoder bcrypt;
+	private final EmailCertificationUtil emailUtil;
 
-    // 아이디찾기 페이지로
-    @GetMapping("/findMyId")
-    public String findMyId() {
-        return "/findMyId";
-    }
+	// 아이디찾기 페이지로
+	@GetMapping("/findMyId")
+	public String findMyId() {
+		return "/findMyId";
+	}
 
-    // 비번찾기 페이지로
-    @GetMapping("/findMyPwd")
-    public String findMyPwd() {
-        return "/findMyPwd";
-    }
+	// 비번찾기 페이지로
+	@GetMapping("/findMyPwd")
+	public String findMyPwd() {
+		return "/findMyPwd";
+	}
 
-    //	친구목록 페이지로
-    @GetMapping("/friends")
-    public String friends(Model model) {
-        Member loginMember = (Member) model.getAttribute("loginMember");
+	// 친구목록 페이지로
+	@GetMapping("/friends")
+	public String friends(Model model) {
+		Member loginMember = (Member) model.getAttribute("loginMember");
 
-        //친구목록
-        ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-        ArrayList<Member> list = mService.selectFriends(friendNumberList);
-        //내가 보낸 요청 목록
-        ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
-        ArrayList<Member> wlist = sentRequestList.isEmpty() ?
-                null : mService.selectFriends(sentRequestList);
-        //나한테 온 요청 목록
-        ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
-        ArrayList<Member> rlist = receivedRequestList.isEmpty() ?
-                null : mService.selectFriends(receivedRequestList);
+		// 친구목록
+		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
+		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+		// 내가 보낸 요청 목록
+		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
+		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
+		// 나한테 온 요청 목록
+		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
+		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
 
-        model.addAttribute("list", list);
-        model.addAttribute("wlist", wlist);
-        model.addAttribute("rlist", rlist);
+		model.addAttribute("list", list);
+		model.addAttribute("wlist", wlist);
+		model.addAttribute("rlist", rlist);
 
-        return "/friends";
-    }
+		return "/friends";
+	}
 
 //	@GetMapping("/friends")
 //	public String friends() {
 //		return "/friends";
 //	}
 
-    // (아이디찾기, 비밀번호찾기)이메일 보내기
-    @GetMapping("/sendEmail")
-    @ResponseBody
-    public String sendEmail(@RequestParam("email") String email) {
-        System.out.println("sendEmail : " + email);
-        String random = "";
-        // 1. 가입된 이메일인지 확인
-        int emailchecked = mService.checkEmail(email);
+	// (아이디찾기, 비밀번호찾기)이메일 보내기
+	@GetMapping("/sendEmail")
+	@ResponseBody
+	public String sendEmail(@RequestParam("email") String email) {
+		System.out.println("sendEmail : " + email);
+		String random = "";
+		// 1. 가입된 이메일인지 확인
+		int emailchecked = mService.checkEmail(email);
 
-        if (emailchecked == 1) {
-            // 2. 코드 생성
-            for (int i = 0; i < 6; i++) {
-                String pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                int r = (int) (Math.random() * (pool.length() + 1));
-                char c = pool.charAt(r);
-                random += c;
-            }
-            // 3. 이메일 전송
-            try {
-                emailUtil.sendEmail(email, random);
-                return random;
-            } catch (MailException e) {
-                return "MailException";
-            } catch (MessagingException e) {
-                return "MessagingException";
-            }
-        } else {
-            return "EmailNotFound";
-        }
-    }
+		if (emailchecked == 1) {
+			// 2. 코드 생성
+			for (int i = 0; i < 6; i++) {
+				String pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+				int r = (int) (Math.random() * (pool.length() + 1));
+				char c = pool.charAt(r);
+				random += c;
+			}
+			// 3. 이메일 전송
+			try {
+				emailUtil.sendEmail(email, random);
+				return random;
+			} catch (MailException e) {
+				return "MailException";
+			} catch (MessagingException e) {
+				return "MessagingException";
+			}
+		} else {
+			return "EmailNotFound";
+		}
+	}
 
-    // 아이디 보여주기
-    @GetMapping("/findId")
-    @ResponseBody
-    public String findId(@RequestParam("email") String email) {
-        String memberId = mService.findId(email);
-        return memberId;
-    }
+	// 아이디 보여주기
+	@GetMapping("/findId")
+	@ResponseBody
+	public String findId(@RequestParam("email") String email) {
+		String memberId = mService.findId(email);
+		return memberId;
+	}
 
-    // 비밀번호 재설정하기
-    @PostMapping("/resetPwd")
-    @ResponseBody
-    public String resetPwd(@ModelAttribute Member m,
-                           @RequestParam("newPwd") String newPwd,
-                           Model model) {
-        System.out.println("memberId : " + m.getMemberId());
-        System.out.println("memberEmail : " + m.getMemberEmail());
-        System.out.println("newPwd : " + newPwd);
+	// 비밀번호 재설정하기
+	@PostMapping("/resetPwd")
+	@ResponseBody
+	public String resetPwd(@ModelAttribute Member m, @RequestParam("newPwd") String newPwd, Model model) {
+		System.out.println("memberId : " + m.getMemberId());
+		System.out.println("memberEmail : " + m.getMemberEmail());
+		System.out.println("newPwd : " + newPwd);
 
-        // 1. 사용자가 입력한 아이디와 - 이메일이 일치하는지 조회
-        int check = mService.confirmIdEmail(m);
-        System.out.println("confirmIdEmail : " + check);
+		// 1. 사용자가 입력한 아이디와 - 이메일이 일치하는지 조회
+		int check = mService.confirmIdEmail(m);
+		System.out.println("confirmIdEmail : " + check);
 
-        if (check == 1) {
-            m.setMemberPwd(bcrypt.encode(newPwd));
+		if (check == 1) {
+			m.setMemberPwd(bcrypt.encode(newPwd));
 
-            int result = mService.resetPwd(m);
-            System.out.println("resetPwd : " + result);
+			int result = mService.resetPwd(m);
+			System.out.println("resetPwd : " + result);
 
-            if (result == 1) {
-                // model.addAttribute("loginMember", m);
-                return "success";
-            }
-        } else {
-            return "MemberNotFound";
-        }
-        return "?";
-    }
+			if (result == 1) {
+				// model.addAttribute("loginMember", m);
+				return "success";
+			}
+		} else {
+			return "MemberNotFound";
+		}
+		return "?";
+	}
 
-    // 회원가입 페이지로 이동
-    @GetMapping("/signup")
+	// 회원가입 페이지로 이동
+	@GetMapping("/signup")
     public String signup() {
         return "signup";
     }
+	
+	//회원가입 처리
+	@PostMapping("/signup")
+	public String signup(@ModelAttribute Member m,
+	                     @RequestParam("emailId") String emailId,
+	                     @RequestParam("emailDomain") String emailDomain,
+	                     @RequestParam(value = "customEmailDomain", required = false) String customEmailDomain) {
 
-    //회원가입 처리
-    @PostMapping("/signup")
-    public String signup(@ModelAttribute Member m,
-                         @RequestParam("emailId") String emailId,
-                         @RequestParam("emailDomain") String emailDomain,
-                         @RequestParam(value = "customEmailDomain", required = false) String customEmailDomain) {
+	    if ("custom".equals(emailDomain) && customEmailDomain != null && !customEmailDomain.trim().isEmpty()) {
+	        m.setMemberEmail(emailId + "@" + customEmailDomain);
+	    } else {
+	        m.setMemberEmail(emailId + "@" + emailDomain);
+	    }
 
-        if ("custom".equals(emailDomain) && customEmailDomain != null && !customEmailDomain.trim().isEmpty()) {
-            m.setMemberEmail(emailId + "@" + customEmailDomain);
-        } else {
-            m.setMemberEmail(emailId + "@" + emailDomain);
-        }
+	    if (m.getMemberStatus() == null) {
+	        m.setMemberStatus("Y"); // 기본값 'Y' 설정
+	    }
+	    if (m.getMemberIsAdmin() == null) {
+	        m.setMemberIsAdmin("N"); // 기본값 'N' 설정
+	    }
+	    System.out.println(m.toString());
+	    int result = mService.insertMember(m);
+	    if (result > 0) {
+	        return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동
+	    } else {
+	        throw new MemberException("회원가입을 실패하였습니다.");
+	    }
+	}
 
-        if (m.getMemberStatus() == null) {
-            m.setMemberStatus("Y"); // 기본값 'Y' 설정
-        }
-        if (m.getMemberIsAdmin() == null) {
-            m.setMemberIsAdmin("N"); // 기본값 'N' 설정
-        }
+	// 로그인 페이지로 이동
+	 @GetMapping("/signin")
+	 public String signIn() {
+		 return "member/signin";
+	 }
 
-        int result = mService.insertMember(m);
-        if (result > 0) {
-            return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동
-        } else {
-            throw new MemberException("회원가입을 실패하였습니다.");
-        }
-    }
+	// 로그인 처리
+	@PostMapping("/signin")
+	public String login(@RequestParam("memberId") String memberId, @RequestParam("memberPwd") String memberPwd,
+			Model model, HttpSession session) {
+		Member loginMember = mService.login(memberId, memberPwd);
 
-    // 로그인 페이지로 이동
-    @GetMapping("/signin")
-    public String signIn() {
-        return "member/signin";
-    }
-
-    // 로그인 처리
-    @PostMapping("/signin")
-    public String login(@RequestParam("memberId") String memberId,
-                        @RequestParam("memberPwd") String memberPwd,
-                        Model model, HttpSession session) {
-        Member loginMember = mService.login(memberId, memberPwd);
-
-        if (loginMember != null) {
-            System.out.println("loginMember : " + loginMember.getMemberId());
-            model.addAttribute("loginMember", loginMember);
-            return "redirect:/main";
-        } else {
-            model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
-            return "member/signin"; // 로그인 실패 시 다시 로그인 페이지로 이동
-        }
-    }
+		if (loginMember != null) {
+			System.out.println("loginMember : " + loginMember.getMemberId());
+			model.addAttribute("loginMember", loginMember);
+			return "redirect:/main";
+		} else {
+			model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
+			return "member/signin"; // 로그인 실패 시 다시 로그인 페이지로 이동
+		}
+	}
 }
