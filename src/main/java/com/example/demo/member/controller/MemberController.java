@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.demo.common.util.EmailCertificationUtil;
 import com.example.demo.member.model.exception.MemberException;
@@ -60,10 +61,10 @@ public class MemberController {
 		return "/friends";
 	}
 
-//	@GetMapping("/friends")
-//	public String friends() {
-//		return "/friends";
-//	}
+	// @GetMapping("/friends")
+	// public String friends() {
+	// return "/friends";
+	// }
 
 	// (아이디찾기, 비밀번호찾기)이메일 보내기
 	@GetMapping("/sendEmail")
@@ -134,47 +135,48 @@ public class MemberController {
 
 	// 회원가입 페이지로 이동
 	@GetMapping("/signup")
-    public String signup() {
-        return "signup";
-    }
-	
-	//회원가입 처리
+	public String signup() {
+		return "signup";
+	}
+
+	// 회원가입 처리
 	@PostMapping("/signup")
 	public String signup(@ModelAttribute Member m,
-	                     @RequestParam("emailId") String emailId,
-	                     @RequestParam("emailDomain") String emailDomain,
-	                     @RequestParam(value = "customEmailDomain", required = false) String customEmailDomain) {
+			@RequestParam("emailId") String emailId,
+			@RequestParam("emailDomain") String emailDomain,
+			@RequestParam(value = "customEmailDomain", required = false) String customEmailDomain) {
 
-	    if ("custom".equals(emailDomain) && customEmailDomain != null && !customEmailDomain.trim().isEmpty()) {
-	        m.setMemberEmail(emailId + "@" + customEmailDomain);
-	    } else {
-	        m.setMemberEmail(emailId + "@" + emailDomain);
-	    }
+		if ("custom".equals(emailDomain) && customEmailDomain != null && !customEmailDomain.trim().isEmpty()) {
+			m.setMemberEmail(emailId + "@" + customEmailDomain);
+		} else {
+			m.setMemberEmail(emailId + "@" + emailDomain);
+		}
 
-	    if (m.getMemberStatus() == null) {
-	        m.setMemberStatus("Y"); // 기본값 'Y' 설정
-	    }
-	    if (m.getMemberIsAdmin() == null) {
-	        m.setMemberIsAdmin("N"); // 기본값 'N' 설정
-	    }
-	    System.out.println(m.toString());
-	    int result = mService.insertMember(m);
-	    if (result > 0) {
-	        return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동
-	    } else {
-	        throw new MemberException("회원가입을 실패하였습니다.");
-	    }
+		if (m.getMemberStatus() == null) {
+			m.setMemberStatus("Y"); // 기본값 'Y' 설정
+		}
+		if (m.getMemberIsAdmin() == null) {
+			m.setMemberIsAdmin("N"); // 기본값 'N' 설정
+		}
+		System.out.println(m.toString());
+		int result = mService.insertMember(m);
+		if (result > 0) {
+			return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동
+		} else {
+			throw new MemberException("회원가입을 실패하였습니다.");
+		}
 	}
 
 	// 로그인 페이지로 이동
-	 @GetMapping("/signin")
-	 public String signIn() {
-		 return "member/signin";
-	 }
+	@GetMapping("/signin")
+	public String signIn() {
+		return "member/signin";
+	}
 
 	// 로그인 처리
 	@PostMapping("/signin")
-	public String login(@RequestParam("memberId") String memberId, @RequestParam("memberPwd") String memberPwd,
+	public String login(@RequestParam("memberId") String memberId,
+			@RequestParam("memberPwd") String memberPwd,
 			Model model, HttpSession session) {
 		Member loginMember = mService.login(memberId, memberPwd);
 
@@ -184,7 +186,17 @@ public class MemberController {
 			return "redirect:/main";
 		} else {
 			model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
-			return "member/signin"; // 로그인 실패 시 다시 로그인 페이지로 이동
+			return "member/signin";
 		}
 	}
+
+	// 로그 아웃 처리
+	@GetMapping("/logout")
+	public String logout(HttpSession session, SessionStatus status) {
+
+		session.removeAttribute("loginMember");
+		status.setComplete();
+		return "redirect:/";
+	}
+
 }

@@ -1,5 +1,8 @@
 @charset "UTF-8";
-
+*{
+    margin: 0;
+    padding: 0;
+}
 .topDiv {
 	background-color: #dbe9f4;
     padding: 10px 20px;
@@ -17,6 +20,7 @@
     color: black;
     text-transform: uppercase;
     letter-spacing: 2px;
+    cursor: pointer;
 }
 
 

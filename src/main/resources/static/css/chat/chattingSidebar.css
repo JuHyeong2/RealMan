@@ -7,8 +7,9 @@ html, body {
 .chatSidebar {
 	width: 360px;
 	background-color: #f2f6f9;
-	height: 100vh;
+	height: 90vh;
 	padding: 2rem 0;
+	box-sizing: border-box;
 	overflow-y: auto;
 }
 
@@ -46,5 +47,64 @@ html, body {
 }
 
 .voiceList, .chatList {
-	display: none !important; /* 처음에는 숨김 */
+	display: none;  /* 기본적으로 숨김 */
+	padding: 0;
+}
+
+.voiceList table, .chatList table {
+	width: 100%;
+}
+
+.voiceList td, .chatList td {
+	padding: 8px;
+}
+
+.voiceList td img, .chatList td img {
+	width: 20px;
+	height: 20px;
+}
+
+.voiceList th, .chatList th {
+	text-align: left;
+}
+
+.chatList a {
+	text-decoration: none;
+	color: inherit; /* 링크 색상 상속 */
+}
+
+.chatList table {
+	border-spacing: 0;
+	width: 100%;
+}
+
+.chatList td {
+	text-align: center;
+}
+
+.chatSidebar nav ul li.channel:hover + .voiceList,
+.chatSidebar nav ul li.channel:hover + .chatList {
+	display: block;
+}
+
+.profile {
+	display: flex;
+  	align-items: center; /* 수직 중앙 정렬 */
+  	gap: 5px;
+  	position: absolute;
+  	width: 350px;
+  	bottom: 0px; 
+}
+
+.profile b{
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.profile img {
+	cursor: pointer;
+}
+
+#micImg {
+	margin-left: auto;
 }

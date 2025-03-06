@@ -9,35 +9,22 @@
 
 </head>
 <body>
-  <div class="sidebar">
-      <div class="mainLogo" onclick="location.href='#';">
+
+  <div class="sidebar" th:fragment="sidebar">
+      <div class="mainLogo" onclick="location.href='/main';">
          <img src="/image/RealManLogo.png">
       </div>
       <table class="serverList">
             <tr th:each="s:${selectServerList}">
-                <td width="100px" height="100px" >[[${s.serverName}]]</td>
+                <td width="100px" height="100px">[[${s.serverName}]]</td>
                 <input type="hidden" th:value="${s.serverNo}">
             </tr>
      </table>
-
-<!--       <th:block th:each = "s : ${Server}"> -->
-<!--          <table class="serverList"> -->
-<!--             <tr> -->
-<!--                 <td width="20px" height="20px" th:${s.serverNo}></td> -->
-<!--             </tr> -->
-<!--          </table> -->
-<!--       </th:block> -->
-
-
       <div class="addServer">+</div>
-
-
-
   </div>
 
 
 <script>
-    console.log('안녕');
     const tds = document.querySelectorAll("td");
     for (const td of tds){
         console.log(td);

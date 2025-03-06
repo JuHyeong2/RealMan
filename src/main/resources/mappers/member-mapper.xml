@@ -46,9 +46,7 @@
         MEMBER_ID, MEMBER_PWD, MEMBER_GENDER, MEMBER_PHONE, MEMBER_EMAIL,
         MEMBER_NICKNAME, MEMBER_STATUS, IS_ADMIN, MEMBER_BIRTH, MEMBER_CREATEDATE
         )
-        VALUES (
-        #{memberId}, #{memberPwd}, #{memberGender}, #{memberPhone}, #{memberEmail}, #{memberNickname}, #{memberStatus},
-        #{memberIsAdmin}, #{memberBirth}, SYSDATE)
+        VALUES (#{memberId}, #{memberPwd}, #{memberGender}, #{memberPhone}, #{memberEmail}, #{memberNickname}, #{memberStatus}, #{memberIsAdmin}, #{memberBirth}, SYSDATE)
     </insert>
 
     <!-- 친구 목록 가져오기 (번호만) -->

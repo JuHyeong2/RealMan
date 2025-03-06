@@ -1,82 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/preferences/audio.css" />
-    <title>Title</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/css/preferences/audio.css" />
+	<title>오디오 설정</title>
 </head>
 <body>
-	<div class="main">
-		<div th:insert="preferences/preferencesSidebar.html"></div>
-		<div class="container">
-			<h2 class="title">음성</h2>
-			<hr><br/>
-			<div class="section">
-				<h3 class="section-title">장치 설정</h3>
-				<div class="device-row">
-					<div style="width: 48%;">
-						<div class="device-label">녹음 장치</div>
-						<select>
-							<option>기본 장치(Realtek(R) Audio)</option>
-						</select>
-						<div class="slider-container">
-							<input type="range" min="1" max="100" value="70" class="slider" id="inputVolume">
-						</div>
-					</div>
+<div class="main">
+	<div th:insert="preferences/preferencesSidebar.html"></div>
+	<div class="container">
+		<h2 class="title">음성</h2>
+		<hr><br/>
 
-					<div style="width: 48%;">
-						<div class="device-label">출력 장치</div>
-						<select>
-							<option>스피커(Realtek(R) Audio)</option>
-						</select>
-						<div class="slider-container">
-							<input type="range" min="1" max="100" value="70" class="slider" id="outputVolume">
-						</div>
+		<!-- 🔹 장치 설정 -->
+		<div class="section">
+			<h3 class="section-title">장치 설정</h3>
+			<div class="device-row">
+				<div style="width: 48%;">
+					<div class="device-label">녹음 장치</div>
+					<select id="micSelect"></select>
+					<div class="slider-container">
+						<input type="range" min="1" max="100" value="70" class="slider" id="inputVolume">
 					</div>
 				</div>
 
-			</div>
-			<br/><br/>
-
-			<div class="section">
-				<h3 class="section-title">마이크 테스트</h3>
-				<div class="mic-text">
-					마이크 테스트<br>
-					마이크로 음성이 잘 나오는지 테스트를 시작하고 싶으시다면 "테스트 시작"을 눌러주세요.
+				<div style="width: 48%;">
+					<div class="device-label">출력 장치</div>
+					<select id="speakerSelect"></select>
+					<div class="slider-container">
+						<input type="range" min="1" max="100" value="70" class="slider" id="outputVolume">
+					</div>
 				</div>
-				<button class="test-button">테스트시작</button>
-				<div class="waveform"></div>
-
 			</div>
-			<br/><br/>
-
-			<div class="section">
-				<h3 class="section-title">입력 방식</h3>
-				<div class="radio-group">
-					<label class="radio-option selected" onclick="selectOption(this)">
-						<input type="radio" name="mode" checked> 음성 감지
-					</label>
-					<label class="radio-option" onclick="selectOption(this)">
-						<input type="radio" name="mode"> 눌러서 말하기
-					</label>
-				</div>
-
-			</div>
-			<br/><br/>
 		</div>
+		<br/><br/>
+
+		<!-- 🔹 마이크 테스트 -->
+		<div class="section">
+			<h3 class="section-title">마이크 테스트</h3>
+			<div class="mic-text">마이크 테스트를 시작하려면 "테스트 시작"을 누르세요.</div>
+			<button class="test-button">테스트 시작</button>
+			<button class="stop-button">테스트 중지</button>
+			<div class="waveform"></div>
+		</div>
+		<br/><br/>
+
+		<!-- 🔹 입력 방식 -->
+		<div class="section">
+			<h3 class="section-title">입력 방식</h3>
+			<div class="radio-group">
+				<label class="radio-option selected">
+					<input type="radio" name="mode" checked> 음성 감지
+				</label>
+				<label class="radio-option">
+					<input type="radio" name="mode"> 눌러서 말하기
+				</label>
+			</div>
+		</div>
+		<br/><br/>
+
+		<!-- 🔹 권한 요청 버튼 -->
+		<button class="request-permission">마이크 & 스피커 권한 요청</button>
 	</div>
-	<script>
-		function selectOption(element) {
-			// 모든 옵션에서 'selected' 클래스를 제거하여 선택 효과 초기화
-			document.querySelectorAll('.radio-option').forEach(option => {
-				option.classList.remove('selected');
+</div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const micSelect = document.getElementById("micSelect");
+		const speakerSelect = document.getElementById("speakerSelect");
+		const testButton = document.querySelector(".test-button");
+		const stopButton = document.querySelector(".stop-button");
+		const requestPermissionButton = document.querySelector(".request-permission");
+		const inputVolumeSlider = document.getElementById("inputVolume");
+		const outputVolumeSlider = document.getElementById("outputVolume");
+		const waveform = document.querySelector(".waveform");
+
+		let micStream = null;
+		let audioContext = null;
+		let analyser = null;
+		let source = null;
+
+		// 오디오 장치 목록을 가져오는 함수
+		async function getAudioDevices() {
+			const devices = await navigator.mediaDevices.enumerateDevices();
+			micSelect.innerHTML = "";
+			speakerSelect.innerHTML = "";
+
+			// 장치 목록에서 입력 장치와 출력 장치를 구분하여 추가
+			devices.forEach(device => {
+				const option = document.createElement("option");
+				option.value = device.deviceId;
+				option.textContent = device.label || "알 수 없는 장치";
+
+				if (device.kind === "audioinput") {
+					micSelect.appendChild(option);
+				} else if (device.kind === "audiooutput") {
+					speakerSelect.appendChild(option);
+				}
 			});
-
-			// 클릭한 옵션에 'selected' 클래스 추가 (선택된 상태로 표시)
-			element.classList.add('selected');
-
-			// 클릭한 옵션의 라디오 버튼을 체크 상태로 변경
-			element.querySelector('input[type="radio"]').checked = true;
 		}
 
 		// 슬라이더의 값이 변경될 때 슬라이더 바의 배경 색을 업데이트하는 이벤트 리스너 추가
@@ -92,7 +113,109 @@
 			const value = slider.value;
 			slider.style.background = `linear-gradient(to right, #bed3e2 0%, #bed3e2 ${value}%, #e9ecef ${value}%, #e9ecef 100%)`;
 		});
-	</script>
+
+		// 마이크 테스트 시작 함수
+		testButton.addEventListener("click", async function () {
+			try {
+				// 기존 마이크 스트림이 있으면 중지
+				if (micStream) stopMicTest();
+
+				// 선택한 마이크 장치를 사용하여 스트림 가져오기
+				micStream = await navigator.mediaDevices.getUserMedia({
+					audio: { deviceId: micSelect.value ? { exact: micSelect.value } : undefined }
+				});
+
+				// 오디오 컨텍스트 및 분석기 생성
+				audioContext = new AudioContext();
+				analyser = audioContext.createAnalyser();
+				source = audioContext.createMediaStreamSource(micStream);
+				source.connect(analyser);
+
+				// 마이크 테스트 시각화 시작
+				drawWaveform();
+				console.log("마이크 테스트 시작!");
+			} catch (error) {
+				console.error("마이크 테스트 실패:", error);
+				alert("마이크 테스트 중 오류가 발생했습니다.");
+			}
+		});
+
+		// 마이크 테스트 중지 함수
+		stopButton.addEventListener("click", function () {
+			stopMicTest();
+		});
+
+		// 마이크 테스트를 중지하는 함수
+		function stopMicTest() {
+			if (micStream) {
+				micStream.getTracks().forEach(track => track.stop());
+				micStream = null;
+			}
+			console.log("마이크 테스트 중지됨.");
+		}
+
+		// 마이크 입력을 시각화하는 함수
+		function drawWaveform() {
+			// 캔버스 요소 생성 및 설정
+			const canvas = document.createElement("canvas");
+			canvas.width = 1024;
+			canvas.height = 40;
+			waveform.innerHTML = "";
+			waveform.appendChild(canvas);
+			const ctx = canvas.getContext("2d");
+
+			// 실시간 파형 업데이트 함수
+			function update() {
+				requestAnimationFrame(update);
+				let dataArray = new Uint8Array(analyser.frequencyBinCount); // 입력된 소리를 주파수별로 나눠 배열로 저장
+				analyser.getByteFrequencyData(dataArray);
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.fillStyle = "#7c3aed";
+
+				// dataArray[i] 는 0(저음 영역)부터 음역대별 주파수가 따로 저장되어있기 때문에
+				// total에 사람 음성을 잡기 적합한(5~40 = 300Hz ~ 3kHz ) 주파수값을 합쳐 평균값 생성
+				let volumeMin = 5; // 저음 주파수 영역
+				let volumeMax = 40 // 고음 영역
+				let total = 0;
+				for (let i = volumeMin; i <= volumeMax; i++) {
+					total += dataArray[i];
+				}
+				let average = total / (volumeMax - volumeMin + 1);
+				ctx.fillRect(0, 0, average*4, 100);
+			}
+			update();
+		}
+
+		// 마이크 및 스피커 권한 요청 버튼 기능
+		requestPermissionButton.addEventListener("click", async function () {
+			try {
+				await navigator.mediaDevices.getUserMedia({ audio: true });
+				alert("마이크 및 스피커 권한이 허용되었습니다!");
+			} catch (error) {
+				console.error("권한 요청 실패:", error);
+				alert("마이크 및 스피커 권한을 허용해주세요.");
+			}
+		});
+
+		// '입력 방식'의 라디오 버튼 div 효과
+		function selectOption(element) {
+			// 모든 옵션에서 'selected' 클래스를 제거하여 선택 효과 초기화
+			document.querySelectorAll('.radio-option').forEach(option => {
+				option.classList.remove('selected');
+			});
+
+			// 클릭한 옵션에 'selected' 클래스 추가 (선택된 상태로 표시)
+			element.classList.add('selected');
+
+			// 클릭한 옵션의 라디오 버튼을 체크 상태로 변경
+			element.querySelector('input[type="radio"]').checked = true;
+		}
+
+		// 페이지 로드 시 오디오 장치 목록 가져오기
+		getAudioDevices();
+	});
+
+</script>
 
 </body>
 </html>
