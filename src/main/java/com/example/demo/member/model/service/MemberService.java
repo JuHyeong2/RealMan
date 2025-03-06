@@ -75,5 +75,9 @@ public class MemberService {
 	public ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList) {
 		return mapper.selectFriends(friendNumberList);
 	}
-	
+
+    //친구 삭제, 거절
+    public int deleteFriend(HashMap<String, Integer> map) {
+        return mapper.deleteFriend(map);
+    }
 }

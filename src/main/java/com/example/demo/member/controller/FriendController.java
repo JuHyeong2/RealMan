@@ -1,13 +1,15 @@
 package com.example.demo.member.controller;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.member.model.vo.Member;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.member.model.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.support.SessionStatus;
+
+import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,9 +18,15 @@ public class FriendController {
 	
 	//친구 삭제, 거절 (friend 테이블에 행 제거)
 	@DeleteMapping("/friend")
-	public int delteFriend() {
-		System.out.println();
-		int result = 0;
+	public int deleteFriend(@RequestParam("fmn") int friendMemberNo,
+							HttpSession session) {
+		Member loginMember = (Member)session.getAttribute("loginMember");
+		System.out.println("friend member no : "+friendMemberNo);
+		System.out.println("my member no : "+loginMember.getMemberNo());
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("myMemberNo", loginMember.getMemberNo());
+		map.put("friendMemberNo", friendMemberNo);
+		int result = mService.deleteFriend(map);
 		System.out.println("deleteFriend result : "+result);
 		return result;
 	}

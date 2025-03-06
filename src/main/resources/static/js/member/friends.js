@@ -41,12 +41,19 @@ window.onload = () => {
       menu1.onclick= function(){
         if(confirm("정말로 친구 삭제를 진행하시겠습니까?")){
            console.log(friendMemberNo,"친구 삭제");
+           fetch("/friend?fmn="+friendMemberNo,{
+            method: "delete",
+           }).then(response=>response.json())
+           .then(data=>{
+            if(data==1){
+              alert("친구삭제가 완료되었습니다.");
+            }
+           })
         }
       }
       menu2.onclick= function(){
         if(confirm("정말로 회원을 차단하시겠습니까?")){
-          console.log(friendMemberNo,"친구 삭제");
-          console.log(friendMemberNo,"회원 차단");
+          console.log(friendMemberNo,"친구 삭제 + 회원 차단");
        }
       }
     });

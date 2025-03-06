@@ -34,5 +34,7 @@ public interface MemberMapper {
     
     //친구 목록 조회
 	ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList);
-	
+
+    //친구 삭제, 거절
+    int deleteFriend(HashMap<String, Integer> map);
 }

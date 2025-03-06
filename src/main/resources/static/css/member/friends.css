@@ -6,7 +6,7 @@
   background-color: rgb(189, 219, 209);
   margin-bottom: 0.5rem;
 }
-.friend-row:hover{
+.friend-row:hover {
   background-color: rgb(182, 212, 202);
 }
 
@@ -58,7 +58,7 @@
 
 .dm-svg:hover,
 .etc-svg:hover,
-.profile:hover{
+.profile:hover {
   cursor: pointer;
 }
 .nickname-div {
@@ -103,16 +103,19 @@
   transition: all 0.3s ease;
   padding: 0;
 }
-.etc-menu>div{
+
+.etc-menu > div {
   display: flex;
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.etc-menu>div:hover{
+
+.etc-menu > div:hover {
   background-color: rgb(218, 218, 181);
 }
-.etc-menu>div:active{
+
+.etc-menu > div:active {
   background-color: rgb(168, 168, 134);
 }
 
