@@ -43,7 +43,8 @@
     	</nav>
     	
     	<div class="profile">
-    		<img src="/image/no-profile.svg" width="50px" onclick="goToMyAccount()">
+    		<!--  <img src="/image/no-profile.svg" width="50px" onclick="goToMyAccount()">-->
+    		<img src="/image/no-profile.svg" width="50px" onclick="ProfileModal()">
     		<b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b>
     		<img id="micImg" src="/image/preferences/mic.png" width="30px">
     		<img src="/image/preferences/Headphones.png" width="30px">
@@ -51,9 +52,20 @@
     	</div>
     </div>
 
-	<script>
 
-		
+	<!-- 프로필 모달 -->
+	<div id="profileModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close" onclick="closeProfileModal()">&times;</span>
+	        <h2>프로필 설정</h2>
+	        <button onclick="goToMyAccount()">내 정보 수정</button>
+	        <textarea id="statusMessage" placeholder="상태 메시지를 입력하세요."></textarea>
+	        <button onclick="saveStatusMessage()">저장</button>
+	    </div>
+	</div>
+	
+	
+	<script>
 		// 음성 채팅방 드롭다운
 		document.querySelectorAll('.channel')[0].addEventListener('click', ()=>{
 			const chatRoom = document.querySelector('.voiceList');
@@ -89,6 +101,8 @@
 			location.href = '/prefs/myProfile';
 		}
 	</script>
+	
+	<script src="/js/chat/chattingSidebar.js"></script>
 
 </body>
 </html>
