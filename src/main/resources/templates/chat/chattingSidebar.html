@@ -11,23 +11,20 @@
     		<ul>
     			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
 					<div class="voiceList">
-						<td>test</td>
-						<th:block th:each="c : ${Chat}">
-							<table class ="voice">
-								<tr>
-									<td width="20px" height="20px"><img src="/image/Voice.png"></td>
-									<td width="40px" height="20px" th:text="${c.channelName}"></td>
-								</tr>
-							</table>
-						</th:block>
+						<table class ="voice">
+							<tr th:each="c : ${channel}" th:if="${c.channelSeparator == 'V'}">
+								<td width="20px" height="20px"><img src="/image/Voice.png"></td>
+								<td width="40px" height="20px" th:text="${c.channelName}"></td>
+							</tr>
+						</table>
 					</div>
     			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
 					<div class="chatList">
 						<td>test</td>
 						<td>test</td>
-						<th:block th:each="c : ${Chat}">
+						<th:block th:each="c : ${channel}">
 
-							<table class ="chat">
+							<table class ="chat" th:if="${c.channelSeparator == 'T'}">
 								<tr>
 									<td>test</td>
 									<td>test</td>

@@ -1,5 +1,6 @@
 package com.example.demo.chat.controller;
 
+import com.example.demo.chat.model.vo.Channel;
 import com.example.demo.chat.model.vo.Chat;
 import com.example.demo.chat.model.vo.ChatMessage;
 import com.example.demo.member.model.vo.Member;
@@ -91,11 +92,14 @@ public class ChatController {
 		
 		model.addAttribute("no", no).addAttribute("member", loginMember);
 
-		ArrayList<Chat> voiceChannel= cService.chattingSidebar("V");
-		model.addAttribute("voiceChannel", voiceChannel);
+//		Channel channel = new Channel();
+//		channel.setServerNo(no);
+//		channel.se
+		ArrayList<Channel> channel= cService.chattingSidebar(no);
+		model.addAttribute("channel", channel);
 
-		ArrayList<Chat> chatChannel= cService.chattingSidebar("T");
-		model.addAttribute("chatChannel", chatChannel);
+//		ArrayList<Chat> chatChannel= cService.chattingSidebar(no);
+//		model.addAttribute("chatChannel", chatChannel);
 
 		return "chat/chatting";
 

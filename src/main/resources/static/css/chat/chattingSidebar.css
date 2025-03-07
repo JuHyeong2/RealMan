@@ -52,11 +52,17 @@ html, body {
 }
 
 .voiceList table, .chatList table {
+	table-layout: auto;
 	width: 100%;
 }
 
 .voiceList td, .chatList td {
 	padding: 8px;
+	width: auto;
+}
+
+td {
+	width: auto;
 }
 
 .voiceList td img, .chatList td img {

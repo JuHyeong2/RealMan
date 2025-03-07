@@ -1,0 +1,19 @@
+package com.example.demo.chat.model.vo;
+
+import java.sql.Date;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class Channel {
+	private int channelNo;
+	private int serverNo;
+	private String channelName;
+	private Date channelCreatedate;
+	private String channelSeparator;
+	private String channelStatus;
+}
