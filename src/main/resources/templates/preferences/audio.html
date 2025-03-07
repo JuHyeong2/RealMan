@@ -185,12 +185,38 @@
 			}
 			update();
 		}
-
-		// 마이크 및 스피커 권한 요청 버튼 기능
-		requestPermissionButton.addEventListener("click", async function () {
+		// 브라우저에서 권한 요청
+		async function requestAudioPermission() {
 			try {
+				// 마이크 권한 상태 확인
+				const permissionStatus = await navigator.permissions.query({ name: "microphone" }); // 권한 상태 가져오기
+				if (permissionStatus.state === "granted") { //  "granted"(허용됨), "denied"(거부됨), "prompt"(요청 가능)
+					return;
+				}
+				// 권한이 허용되지 않은 경우 권한 요청
 				await navigator.mediaDevices.getUserMedia({ audio: true });
 				alert("마이크 및 스피커 권한이 허용되었습니다!");
+				location.reload(); // 권한을 새로 허용한 경우에만 새로고침
+			} catch (error) {
+				console.error("권한 요청 실패:", error);
+				alert("마이크 및 스피커 권한을 허용해주세요.");
+			}
+		}
+
+		// 마이크 및 스피커 권한 수동 요청 버튼 기능
+		requestPermissionButton.addEventListener("click", async function () {
+			try {
+				// 마이크 권한 상태 확인
+				const permissionStatus = await navigator.permissions.query({ name: "microphone" }); // 권한 상태 가져오기
+				if (permissionStatus.state === "granted") { //  "granted"(허용됨), "denied"(거부됨), "prompt"(요청 가능)
+					// 이미 권한이 허용된 경우 새로고침하지 않음
+					alert("마이크 및 스피커 권한이 이미 허용되어 있습니다.");
+					return;
+				}
+				// 권한이 허용되지 않은 경우 권한 요청
+				await navigator.mediaDevices.getUserMedia({ audio: true });
+				alert("마이크 및 스피커 권한이 허용되었습니다!");
+				location.reload(); // 권한을 새로 허용한 경우에만 새로고침
 			} catch (error) {
 				console.error("권한 요청 실패:", error);
 				alert("마이크 및 스피커 권한을 허용해주세요.");
@@ -211,7 +237,8 @@
 			element.querySelector('input[type="radio"]').checked = true;
 		}
 
-		// 페이지 로드 시 오디오 장치 목록 가져오기
+		// 페이지 로드 시 오디오 장치 목록 가져오기; 오디오장치 권한 요청;
+		requestAudioPermission();
 		getAudioDevices();
 	});
 
