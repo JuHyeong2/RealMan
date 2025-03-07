@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class FriendController {
 	private final MemberService mService;
 
-	// 친구 삭제, 거절 (friend 테이블에 행 제거)
+	// 친구 삭제, 거절, 요청 취소 (friend 테이블에 행 제거)
 	@DeleteMapping("/friend")
 	public int deleteFriend(@RequestBody HashMap<String, Integer> map2,
 			HttpSession session) {

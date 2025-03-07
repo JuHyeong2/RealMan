@@ -87,7 +87,7 @@ public class MemberService {
 		return mapper.selectFriends(friendNumberList);
 	}
 
-	// 친구 삭제, 거절
+	// 친구 삭제, 거절, 요청 취소
 	public int deleteFriend(HashMap<String, Integer> map) {
 		return mapper.deleteFriend(map);
 	}

@@ -57,6 +57,7 @@ window.onload = () => {
             .then((data) => {
               if (data == 1) {
                 alert("친구삭제가 완료되었습니다.");
+                location.reload();
               }
             });
         }
@@ -88,7 +89,10 @@ window.onload = () => {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
+            if (data == 1) {
+              alert("친구 요청을 수락하셨습니다.");
+              location.reload();
+            }
           });
       }
     });
@@ -98,6 +102,34 @@ window.onload = () => {
   const denySvgs = document.querySelectorAll(".deny-svg");
   for (svg of denySvgs) {
     svg.addEventListener("click", function () {});
+  }
+
+  //요청 취소
+  const cancleSvgs = document.querySelectorAll(".cancle-svg");
+  for (svg of cancleSvgs) {
+    svg.addEventListener("click", function () {
+      const thisRow =
+        this.parentElement.parentElement.parentElement.parentElement;
+      const friendMemberNo = thisRow.querySelector(
+        "form>input[type=hidden]"
+      ).value;
+      if (confirm("보낸 요청을 취소하시겠습니까?")) {
+        fetch("/friend", {
+          method: "delete",
+          headers: { "content-type": "application/json; charset=UTF-8" },
+          body: JSON.stringify({
+            fnm: friendMemberNo,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data == 1) {
+              alert("친구 요청이 취소되었습니다.");
+              location.reload();
+            }
+          });
+      }
+    });
   }
 
   //프사 이벤트 핸들러
