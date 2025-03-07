@@ -13,14 +13,14 @@ html, body {
 	overflow-y: auto;
 }
 
-.chatSidebar nav ul {
+nav ul {
 	list-style: none;
 	padding: 0;
 	margin-left: 5px;
 	font-size: 25px;
 }
 
-.chatSidebar nav ul li {
+nav ul li {
 	list-style: none;
 	padding: 10px;
 	margin: 1rem;
@@ -29,7 +29,7 @@ html, body {
 	border-radius: 10px;
 }
 
-.chatSidebar nav ul ul li{
+nav ul ul li{
 	list-style: none;
 	padding: 0;
 	margin-left: 30px;
@@ -38,7 +38,7 @@ html, body {
 	border-radius: 10px;
 }
 
-.chatSidebar nav ul li {
+nav ul li {
 	display: none;
 }
 
@@ -51,36 +51,7 @@ html, body {
 	padding: 0;
 }
 
-.voiceList table, .chatList table {
-	width: 100%;
-}
 
-.voiceList td, .chatList td {
-	padding: 8px;
-}
-
-.voiceList td img, .chatList td img {
-	width: 20px;
-	height: 20px;
-}
-
-.voiceList th, .chatList th {
-	text-align: left;
-}
-
-.chatList a {
-	text-decoration: none;
-	color: inherit; /* 링크 색상 상속 */
-}
-
-.chatList table {
-	border-spacing: 0;
-	width: 100%;
-}
-
-.chatList td {
-	text-align: center;
-}
 
 .chatSidebar nav ul li.channel:hover + .voiceList,
 .chatSidebar nav ul li.channel:hover + .chatList {
@@ -106,5 +77,5 @@ html, body {
 }
 
 #micImg {
-	margin-left: auto;
+	margin-left: 50px;
 }
