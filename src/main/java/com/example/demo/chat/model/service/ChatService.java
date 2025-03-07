@@ -1,5 +1,6 @@
 package com.example.demo.chat.model.service;
 
+import com.example.demo.chat.model.vo.Channel;
 import com.example.demo.chat.model.vo.Chat;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class ChatService {
 	private final ChatMapper mapper;
 
-    public ArrayList<Chat> chattingSidebar(String channelSeparator) {
-        return mapper.chattingSidebar(channelSeparator);
+    public ArrayList<Channel> chattingSidebar(int no) {
+        return mapper.chattingSidebar(no);
     }
 }

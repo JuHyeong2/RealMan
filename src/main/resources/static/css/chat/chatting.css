@@ -7,8 +7,9 @@
 	display: flex;
 	width: 100%;
 	/*height: 20px; *//* 높이 20px 설정 */
-	top: 40px; /* 위쪽 20px 띄움 */
-	left: 320px; /* 80px짜리 사이드바와 80px 떨어지게 위치 설정 */
+	position: relative;
+	top: 20px; /* 위쪽 20px 띄움 */
+	left: 220px; /* 80px짜리 사이드바와 80px 떨어지게 위치 설정 */
 }
 
 
@@ -16,23 +17,31 @@
 	width: 100%;
 }
 
-.chatContent {
-	height: 53.5rem;
-	background-color: white;
-	display: flex;
-	flex-direction: column-reverse;
-	align-items: flex-start;
-	overflow-y: auto; 
+#button-send {
+	width: 70px;
 }
 
+/* .chatContent { */
+/* 	height: 53.5rem; */
+/* 	background-color: white; */
+/* 	display: flex; */
+/* 	flex-direction: column-reverse; */
+/* 	align-items: flex-start; */
+/* 	overflow-y: auto;  */
+/* } */
+
 .inputChat {
-	width: 100%;
+/* 	width: 100%; */
 	height: 2rem;
 	display: flex;
 }
 
-.inputChat textarea {
-	width: 100%;
+.p-3 {
+	gap: 10px;
+}
+
+.p-3 textarea {
+/* 	width: 90%; */
 	resize: none;
 }
 

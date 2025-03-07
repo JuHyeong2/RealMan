@@ -1,5 +1,6 @@
 package com.example.demo.chat.controller;
 
+import com.example.demo.chat.model.vo.Channel;
 import com.example.demo.chat.model.vo.Chat;
 import com.example.demo.chat.model.vo.ChatMessage;
 import com.example.demo.member.model.vo.Member;
@@ -91,11 +92,14 @@ public class ChatController {
 		
 		model.addAttribute("no", no).addAttribute("member", loginMember);
 
-		ArrayList<Chat> voiceChannel= cService.chattingSidebar("V");
-		model.addAttribute("voiceChannel", voiceChannel);
+//		Channel channel = new Channel();
+//		channel.setServerNo(no);
+//		channel.se
+		ArrayList<Channel> channel= cService.chattingSidebar(no);
+		model.addAttribute("channel", channel);
 
-		ArrayList<Chat> chatChannel= cService.chattingSidebar("T");
-		model.addAttribute("chatChannel", chatChannel);
+//		ArrayList<Chat> chatChannel= cService.chattingSidebar(no);
+//		model.addAttribute("chatChannel", chatChannel);
 
 		return "chat/chatting";
 
@@ -105,7 +109,7 @@ public class ChatController {
 	public void sendMessage(@DestinationVariable("serverNo") String serverNo, ChatMessage message) {
 		// 특정  채팅방(roomId)에 메시지를 전송
 		System.out.println("serverNo : " + serverNo);
-		System.out.println("message : " + message.getSender());
+		System.out.println("nickName : " + message.getSender());
 		System.out.println("message : " + message.getMessage());
 		message.setRoomId(serverNo);
 		messagingTemplate.convertAndSend("/sub/chatroom/" + serverNo, message);
