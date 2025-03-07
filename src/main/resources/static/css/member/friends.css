@@ -3,6 +3,7 @@
   flex-direction: row;
   align-items: center;
   height: 4rem;
+  border-radius: 0.8rem;
   background-color: rgb(189, 219, 209);
   margin-bottom: 0.5rem;
 }
@@ -66,18 +67,17 @@
   position: relative;
 }
 
-.dm-svg,
-.etc-svg,
+.icon,
 .profile {
   width: 100%;
   height: 100%;
 }
 
-.dm-svg:hover,
-.etc-svg:hover,
+.icon:hover,
 .profile:hover {
   cursor: pointer;
 }
+
 .nickname-div {
   display: flex;
   align-items: center;

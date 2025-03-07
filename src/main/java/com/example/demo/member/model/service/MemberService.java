@@ -76,6 +76,11 @@ public class MemberService {
 	public ArrayList<Integer> selectRequestSent(int memberNo) {
 		return mapper.selectRequestSent(memberNo);
 	}
+	
+	// 내가 받은 친구 요청 목록 가져오기(번호만)
+	public ArrayList<Integer> selectRequestReceived(int memberNo) {
+		return mapper.selectRequestReceived(memberNo);
+	}
 
 	// 친구 목록 조회
 	public ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList) {
@@ -86,9 +91,10 @@ public class MemberService {
 	public int deleteFriend(HashMap<String, Integer> map) {
 		return mapper.deleteFriend(map);
 	}
-
-	// 내가 받은 친구 요청 목록 가져오기(번호만)
-	public ArrayList<Integer> selectRequestReceived(int memberNo) {
-		return mapper.selectRequestReceived(memberNo);
+	
+	// 친구 수락
+	public int approveRequest(HashMap<String, Integer> map) {
+		return mapper.approveRequest(map);
 	}
+
 }

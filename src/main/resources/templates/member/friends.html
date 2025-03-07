@@ -9,6 +9,7 @@
   <body>
     <div>
       <ul>
+        <h1>친구 목록</h1>
         <li th:each="f:${list}">
           <div class="friend-row">
             <form>
@@ -16,7 +17,7 @@
             </form>
             <div class="profile-div">
               <div class="svg-container">
-                <img class="profile" src="/image/no-profile.svg" />
+                <img class="profile" src="/image/friend/no-profile.svg" />
               </div>
             </div>
             <div class="nickname-div">
@@ -26,12 +27,12 @@
             <div class="other-div">
               <div class="dm-div">
                 <div class="svg-container">
-                  <img class="dm-svg qq" src="/image/message.svg" />
+                  <img class="icon dm-svg qq" src="/image/friend/message.svg" />
                 </div>
               </div>
               <div class="etc-div">
                 <div class="svg-container">
-                  <img class="etc-svg qq" src="/image/more.svg" />
+                  <img class="icon etc-svg qq" src="/image/friend/more.svg" />
                 </div>
                 <div class="etc-menu">
                   <div class="qq">친구 삭제</div>
@@ -42,7 +43,9 @@
           </div>
         </li>
       </ul>
+
       <br /><br />
+
       <ul>
         <h1>보낸 요청</h1>
         <li th:each="w:${wlist}">
@@ -52,7 +55,7 @@
             </form>
             <div class="profile-div">
               <div class="svg-container">
-                <img class="profile" src="/image/no-profile.svg" />
+                <img class="profile" src="/image/friend/no-profile.svg" />
               </div>
             </div>
             <div class="nickname-div">
@@ -62,23 +65,21 @@
             <div class="other-div">
               <div class="dm-div">
                 <div class="svg-container">
-                  <img class="dm-svg qq" src="/image/message.svg" />
+                  <img class="icon dm-svg qq" src="/image/friend/message.svg" />
                 </div>
               </div>
               <div class="etc-div">
                 <div class="svg-container">
-                  <img class="etc-svg qq" src="/image/more.svg" />
-                </div>
-                <div class="etc-menu">
-                  <div class="qq">친구 삭제</div>
-                  <div class="qq">회원 차단</div>
+                  <img class="icon etc-svg qq" src="/image/friend/cancle.svg" />
                 </div>
               </div>
             </div>
           </div>
         </li>
       </ul>
+
       <br /><br />
+
       <ul>
         <h1>받은 요청</h1>
         <li th:each="r:${rlist}">
@@ -88,7 +89,7 @@
             </form>
             <div class="profile-div">
               <div class="svg-container">
-                <img class="profile" src="/image/no-profile.svg" />
+                <img class="profile" src="/image/friend/no-profile.svg" />
               </div>
             </div>
             <div class="nickname-div">
@@ -98,16 +99,12 @@
             <div class="other-div">
               <div class="dm-div">
                 <div class="svg-container">
-                  <img class="dm-svg qq" src="/image/message.svg" />
+                  <img class="icon check-svg" src="/image/friend/check.svg" />
                 </div>
               </div>
               <div class="etc-div">
                 <div class="svg-container">
-                  <img class="etc-svg qq" src="/image/more.svg" />
-                </div>
-                <div class="etc-menu">
-                  <div class="qq">친구 삭제</div>
-                  <div class="qq">회원 차단</div>
+                  <img class="icon deny-svg" src="/image/friend/deny.svg" />
                 </div>
               </div>
             </div>

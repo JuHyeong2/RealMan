@@ -43,5 +43,8 @@ public interface MemberMapper {
 
     //친구 삭제, 거절
     int deleteFriend(HashMap<String, Integer> map);
+
+    //친구 수락
+	int approveRequest(HashMap<String, Integer> map);
     
 }
