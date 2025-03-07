@@ -38,22 +38,33 @@ public class MemberController {
 	public String findMyPwd() {
 		return "/findMyPwd";
 	}
-	
-//	친구목록 페이지로
+
+	// 친구목록 페이지로
 	@GetMapping("/friends")
 	public String friends(Model model) {
 		Member loginMember = (Member) model.getAttribute("loginMember");
-		System.out.println("loginMember : "+loginMember.getMemberId());
+
+		// 친구목록
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
 		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+		// 내가 보낸 요청 목록
+		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
+		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
+		// 나한테 온 요청 목록
+		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
+		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
+
 		model.addAttribute("list", list);
+		model.addAttribute("wlist", wlist);
+		model.addAttribute("rlist", rlist);
+
 		return "/friends";
 	}
-	
-//	@GetMapping("/friends")
-//	public String friends() {
-//		return "/friends";
-//	}
+
+	// @GetMapping("/friends")
+	// public String friends() {
+	// return "/friends";
+	// }
 
 	// (아이디찾기, 비밀번호찾기)이메일 보내기
 	@GetMapping("/sendEmail")
@@ -97,9 +108,7 @@ public class MemberController {
 	// 비밀번호 재설정하기
 	@PostMapping("/resetPwd")
 	@ResponseBody
-	public String resetPwd(@ModelAttribute Member m,
-			@RequestParam("newPwd") String newPwd,
-			Model model) {
+	public String resetPwd(@ModelAttribute Member m, @RequestParam("newPwd") String newPwd, Model model) {
 		System.out.println("memberId : " + m.getMemberId());
 		System.out.println("memberEmail : " + m.getMemberEmail());
 		System.out.println("newPwd : " + newPwd);
@@ -126,69 +135,68 @@ public class MemberController {
 
 	// 회원가입 페이지로 이동
 	@GetMapping("/signup")
-    public String signup() {
-        return "signup";
-    }
-	
-	//회원가입 처리
+	public String signup() {
+		return "signup";
+	}
+
+	// 회원가입 처리
 	@PostMapping("/signup")
 	public String signup(@ModelAttribute Member m,
-	                     @RequestParam("emailId") String emailId,
-	                     @RequestParam("emailDomain") String emailDomain,
-	                     @RequestParam(value = "customEmailDomain", required = false) String customEmailDomain) {
+			@RequestParam("emailId") String emailId,
+			@RequestParam("emailDomain") String emailDomain,
+			@RequestParam(value = "customEmailDomain", required = false) String customEmailDomain) {
 
-	    if ("custom".equals(emailDomain) && customEmailDomain != null && !customEmailDomain.trim().isEmpty()) {
-	        m.setMemberEmail(emailId + "@" + customEmailDomain);
-	    } else {
-	        m.setMemberEmail(emailId + "@" + emailDomain);
-	    }
+		if ("custom".equals(emailDomain) && customEmailDomain != null && !customEmailDomain.trim().isEmpty()) {
+			m.setMemberEmail(emailId + "@" + customEmailDomain);
+		} else {
+			m.setMemberEmail(emailId + "@" + emailDomain);
+		}
 
-	    if (m.getMemberStatus() == null) {
-	        m.setMemberStatus("Y"); // 기본값 'Y' 설정
-	    }
-	    if (m.getMemberIsAdmin() == null) {
-	        m.setMemberIsAdmin("N"); // 기본값 'N' 설정
-	    }
-	    System.out.println(m.toString());
-	    int result = mService.insertMember(m);
-	    if (result > 0) {
-	        return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동
-	    } else {
-	        throw new MemberException("회원가입을 실패하였습니다.");
-	    }
+		if (m.getMemberStatus() == null) {
+			m.setMemberStatus("Y"); // 기본값 'Y' 설정
+		}
+		if (m.getMemberIsAdmin() == null) {
+			m.setMemberIsAdmin("N"); // 기본값 'N' 설정
+		}
+		System.out.println(m.toString());
+		int result = mService.insertMember(m);
+		if (result > 0) {
+			return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동
+		} else {
+			throw new MemberException("회원가입을 실패하였습니다.");
+		}
 	}
 
 	// 로그인 페이지로 이동
-	 @GetMapping("/signin")
-	 public String signIn() {
-		 return "member/signin";
-	 }
+	@GetMapping("/signin")
+	public String signIn() {
+		return "member/signin";
+	}
 
 	// 로그인 처리
-	 @PostMapping("/signin")
-	 public String login(@RequestParam("memberId") String memberId,
-	                     @RequestParam("memberPwd") String memberPwd,
-	                     Model model, HttpSession session) {
-	     Member loginMember = mService.login(memberId, memberPwd);
+	@PostMapping("/signin")
+	public String login(@RequestParam("memberId") String memberId,
+			@RequestParam("memberPwd") String memberPwd,
+			Model model, HttpSession session) {
+		Member loginMember = mService.login(memberId, memberPwd);
 
-	     
-	     if (loginMember != null) {
-		     System.out.println("loginMember : "+loginMember.getMemberId());
-	         model.addAttribute("loginMember", loginMember);
-	         return "redirect:/main";
-	     } else {
-	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
-	         return "member/signin";
-	     }
-	 }
-	 
-	 //로그 아웃 처리
-	 @GetMapping("/logout")
-	 public String logout(HttpSession session, SessionStatus status) {
+		if (loginMember != null) {
+			System.out.println("loginMember : " + loginMember.getMemberId());
+			model.addAttribute("loginMember", loginMember);
+			return "redirect:/main";
+		} else {
+			model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
+			return "member/signin";
+		}
+	}
 
-	     session.removeAttribute("loginMember");
-	     status.setComplete();
-	     return "redirect:/";
-	 }
+	// 로그 아웃 처리
+	@GetMapping("/logout")
+	public String logout(HttpSession session, SessionStatus status) {
+
+		session.removeAttribute("loginMember");
+		status.setComplete();
+		return "redirect:/";
+	}
 
 }
