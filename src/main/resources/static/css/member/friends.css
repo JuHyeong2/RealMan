@@ -1,6 +1,13 @@
 #friend-container {
   display: flex;
   flex-direction: column;
+  background-color: rgb(245, 245, 245);
+  width: 36rem;
+}
+
+#friend-container > div:last-child {
+  display: flex;
+  justify-content: center;
 }
 
 #filter-search-bar {
@@ -37,7 +44,7 @@
   flex-direction: row;
   justify-content: center;
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
   background-color: rgb(240, 240, 240);
 }
 
@@ -72,6 +79,7 @@
 ul {
   display: flex;
   flex-direction: column;
+  padding-left: 0 !important;
 }
 
 li {
@@ -79,8 +87,12 @@ li {
 }
 
 #wait-list,
-#request-list {
+#request-list,
+#search-list {
   display: none;
+}
+#search-list {
+  display: flex;
 }
 
 .friend-row {

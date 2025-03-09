@@ -11,7 +11,7 @@
           <button class="selected">모두</button>
           <button>대기중</button>
           <button>친구 요청</button>
-          <button>친구 찾기</button>
+          <button>친구 추가</button>
         </div>
         <div id="search-div">
           <input type="text" />
@@ -19,9 +19,12 @@
         </div>
       </div>
       <div>
-        <ul id="friend-list">
-          <!-- <li>
-            <div class="friend-row">
+        <ul id="friend-list"></ul>
+        <ul id="wait-list"></ul>
+        <ul id="request-list"></ul>
+        <ul id="search-list">
+          <li>
+            <div class="friend-row slist">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
@@ -52,69 +55,7 @@
                 </div>
               </div>
             </div>
-          </li> -->
-        </ul>
-        <ul id="wait-list">
-          <!-- <li>
-            <div class="friend-row wlist">
-              <input type="hidden" />
-              <div class="profile-div">
-                <div class="svg-container">
-                  <img class="profile" src="/image/friend/no-profile.svg" />
-                </div>
-              </div>
-              <div class="nickname-div">
-                <label class="nickname"></label>
-                <label class="id"></label>
-              </div>
-              <div class="other-div">
-                <div class="dm-div">
-                  <div class="svg-container">
-                    <img
-                      class="icon dm-svg qq"
-                      src="/image/friend/message.svg"
-                    />
-                  </div>
-                </div>
-                <div class="etc-div">
-                  <div class="svg-container">
-                    <img
-                      class="icon cancle-svg qq"
-                      src="/image/friend/cancle.svg"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li> -->
-        </ul>
-        <ul id="request-list">
-          <!-- <li>
-            <div class="friend-row rlist">
-              <input type="hidden" />
-              <div class="profile-div">
-                <div class="svg-container">
-                  <img class="profile" src="/image/friend/no-profile.svg" />
-                </div>
-              </div>
-              <div class="nickname-div">
-                <label class="nickname"></label>
-                <label class="id"></label>
-              </div>
-              <div class="other-div">
-                <div class="dm-div">
-                  <div class="svg-container">
-                    <img class="icon check-svg" src="/image/friend/check.svg" />
-                  </div>
-                </div>
-                <div class="etc-div">
-                  <div class="svg-container">
-                    <img class="icon deny-svg" src="/image/friend/deny.svg" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li> -->
+          </li>
         </ul>
       </div>
     </div>

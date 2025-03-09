@@ -1,9 +1,6 @@
 let fLi = document.createElement("li");
-fLi.innerHTML = `
-            <div class="friend-row">
-              <form>
-                <input type="hidden" />
-              </form>
+fLi.innerHTML = `<div class="friend-row">
+              <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
                   <img class="profile" src="/image/friend/no-profile.svg" />
@@ -34,11 +31,8 @@ fLi.innerHTML = `
               </div>
             </div>`;
 let wLi = document.createElement("li");
-wLi.innerHTML = `
-            <div class="friend-row wlist">
-              <form>
-                <input type="hidden" />
-              </form>
+wLi.innerHTML = `<div class="friend-row wlist">
+              <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
                   <img class="profile" src="/image/friend/no-profile.svg" />
@@ -69,9 +63,7 @@ wLi.innerHTML = `
             </div>`;
 let rLi = document.createElement("li");
 rLi.innerHTML = `<div class="friend-row rlist">
-              <form>
                 <input type="hidden" />
-              </form>
               <div class="profile-div">
                 <div class="svg-container">
                   <img class="profile" src="/image/friend/no-profile.svg" />
@@ -94,6 +86,7 @@ rLi.innerHTML = `<div class="friend-row rlist">
                 </div>
               </div>
             </div>`;
+let sLi = document.createElement("li");
 
 const flist = document.querySelector("#friend-list"); //친구 목록
 const wlist = document.querySelector("#wait-list"); //대기중
@@ -150,7 +143,7 @@ const getFriendList = () => {
 };
 
 function setupEventHandlers() {
-  //모두/대기중/요청 버튼 이벤트 핸들러
+  //====================필터 버튼
   const filterDiv = document.querySelector("#filter-div");
   filterDiv.querySelectorAll("button").forEach((filter) => {
     filter.addEventListener("click", function () {
@@ -177,10 +170,29 @@ function setupEventHandlers() {
           flist.style.display = "none";
           rlist.style.display = "flex";
           break;
+        case "친구 추가":
+          wlist.style.display = "none";
+          flist.style.display = "none";
+          rlist.style.display = "none";
+          slist.style.display = "flex";
+          break;
       }
     });
   });
 
+  //==================== 검색창
+  const searchButton = document.querySelector("#search-button");
+  const searchInput = searchButton.previousElementSibling;
+  searchInput.addEventListener("focus", function () {
+    const filterChecked = document.querySelector("#filter-div > .selected");
+    if (filterChecked.innerText == "친구 추가") {
+      searchInput.classList.add("full-search");
+    } else {
+      searchInput.classList.remove("full-search");
+    }
+  });
+
+  //==================== 친구 목록 리스트
   //닉네임 이벤트 핸들러
   const nicknames = document.querySelectorAll(".nickname");
   for (const label of nicknames) {
@@ -252,7 +264,7 @@ function setupEventHandlers() {
     });
   }
 
-  //==================친구 요청
+  //==================친구 요청 리스트
   //친구 수락
   const checkSvgs = document.querySelectorAll(".check-svg");
   for (svg of checkSvgs) {
@@ -287,7 +299,7 @@ function setupEventHandlers() {
     svg.addEventListener("click", function () {});
   }
 
-  //==================대기중
+  //==================대기중 리스트
   //요청 취소
   const cancleSvgs = document.querySelectorAll(".cancle-svg");
   for (svg of cancleSvgs) {
