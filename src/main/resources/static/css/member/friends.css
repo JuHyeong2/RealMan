@@ -1,3 +1,88 @@
+#friend-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#filter-search-bar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+#filter-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem;
+  background-color: rgb(240, 240, 240);
+}
+
+#filter-div > button {
+  width: 20%;
+  margin-left: 1rem;
+  border: 0;
+  padding: 0.5rem 0;
+  border-radius: 2rem;
+  background-color: rgb(230, 240, 250);
+}
+
+#filter-div > .selected {
+  background-color: rgb(110, 190, 220);
+}
+
+#search-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem;
+  background-color: rgb(240, 240, 240);
+}
+
+#search-div > input {
+  height: 2rem;
+  border: 0;
+  border-radius: 1rem 0 0 1rem;
+  outline: none;
+  padding-left: 2rem;
+}
+
+#search-div > input:focus {
+  background-color: rgb(238, 242, 250);
+}
+
+#search-div > button {
+  background-color: white;
+  width: 6rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 0 1rem 1rem 0;
+}
+
+#search-div > button:hover {
+  background-color: rgb(238, 242, 250);
+}
+
+#search-div > button:active {
+  background-color: rgb(233, 237, 245);
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+}
+
+li {
+  list-style-type: none;
+}
+
+#wait-list,
+#request-list {
+  display: none;
+}
+
 .friend-row {
   display: flex;
   flex-direction: row;

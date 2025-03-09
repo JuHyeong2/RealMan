@@ -1,12 +1,15 @@
 package com.example.demo.member.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.member.model.service.MemberService;
@@ -19,6 +22,33 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FriendController {
 	private final MemberService mService;
+	
+	//친구 목록 가져오기
+	@GetMapping("/friend")
+	public Map<String, ArrayList<Member>> friends(HttpSession session) {
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		Map<String, ArrayList<Member>> map = new HashMap<String, ArrayList<Member>>();
+		System.out.println("loginMember : "+loginMember.getMemberId());
+		
+		// 친구목록
+		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
+		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+		// 내가 보낸 요청 목록
+		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
+		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
+		// 나한테 온 요청 목록
+		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
+		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
+		
+		System.out.println("list : "+list);
+		System.out.println("wlist : "+wlist);
+		System.out.println("lrist : "+rlist);
+		map.put("list", list);
+		map.put("wlist", wlist);
+		map.put("rlist", rlist);
+
+		return map;
+	}
 
 	// 친구 삭제, 거절, 요청 취소 (friend 테이블에 행 제거)
 	@DeleteMapping("/friend")
