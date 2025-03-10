@@ -24,6 +24,15 @@
 }
 
 
+.flex-grow-1 d-flex justify-content-center{
+	font-family: 'Bungee Shade', cursive;
+    font-size: 24px;
+    color: black;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
 
 
 

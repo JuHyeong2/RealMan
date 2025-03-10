@@ -23,3 +23,4 @@ Thumbs.db
 /.idea/gradle.xml
 /.idea/misc.xml
 /.idea/vcs.xml
+src/main/resources/keystore.jks

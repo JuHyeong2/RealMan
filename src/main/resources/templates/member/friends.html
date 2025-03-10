@@ -1,44 +1,63 @@
 <!DOCTYPE html>
 <html xlmns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>친구 목록</title>
-  <link rel="stylesheet" href="/css/member/friends.css" />
-</head>
-
-<body>
-  <div>
-    <ul>
-      <li th:each="f:${list}">
-        <div class="friend-row">
-          <div class="profile-div">
-            <div class="svg-container">
-              <img class="profile" src="/image/no-profile.svg" />
-            </div>
-          </div>
-          <div class="nickname-div">
-            <label class="nickname">[[${f.MemberNickname}]]</label>
-            <label class="id">[[${f.memberId}]]</label>
-          </div>
-          <div class="other-div">
-            <div class="dm-div">
-              <div class="svg-container">
-                <img class="dm-svg qq" src="/image/message.svg" />
-              </div>
-            </div>
-            <div class="etc-div">
-              <div class="svg-container">
-                <img class="etc-svg qq" src="/image/more.svg" />
-              </div>
-              <div class="etc-menu">여기에 메뉴바 들어감</div>
-            </div>
-          </div>
+  <body>
+    <div id="friend-container" th:fragment="friends">
+      <div id="filter-search-bar">
+        <div id="filter-div">
+          <button class="selected">모두</button>
+          <button>대기중</button>
+          <button>친구 요청</button>
+          <button>친구 추가</button>
         </div>
-      </li>
-    </ul>
-  </div>
-  <script src="/js/member/friends.js"></script>
-</body>
-
+        <div id="search-div">
+          <input type="text" />
+          <button id="search-button">검색</button>
+        </div>
+      </div>
+      <div>
+        <ul id="friend-list"></ul>
+        <ul id="wait-list"></ul>
+        <ul id="request-list"></ul>
+        <ul id="search-list">
+          <li>
+            <div class="friend-row slist">
+              <input type="hidden" />
+              <div class="profile-div">
+                <div class="svg-container">
+                  <img class="profile" src="/image/friend/no-profile.svg" />
+                </div>
+              </div>
+              <div class="nickname-div">
+                <label class="nickname"></label>
+                <label class="id"></label>
+              </div>
+              <div class="other-div">
+                <div class="dm-div">
+                  <div class="svg-container">
+                    <img
+                      class="icon dm-svg qq"
+                      src="/image/friend/message.svg"
+                    />
+                  </div>
+                </div>
+                <div class="etc-div">
+                  <div class="svg-container">
+                    <img class="icon etc-svg qq" src="/image/friend/more.svg" />
+                  </div>
+                  <div class="etc-menu">
+                    <div class="qq">친구 삭제</div>
+                    <div class="qq">회원 차단</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
 </html>

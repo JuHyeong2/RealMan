@@ -38,20 +38,26 @@ public class MemberController {
 	public String findMyPwd() {
 		return "/findMyPwd";
 	}
-	
-//	친구목록 페이지로
-	@GetMapping("/friends")
-	public String friends(Model model) {
-		Member loginMember = (Member) model.getAttribute("loginMember");
-		System.out.println("loginMember : "+loginMember.getMemberId());
-		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-		ArrayList<Member> list = mService.selectFriends(friendNumberList);
-		model.addAttribute("list", list);
-		return "/friends";
-	}
-	
+
+//	// 친구목록 페이지로
 //	@GetMapping("/friends")
-//	public String friends() {
+//	public String friends(Model model) {
+//		Member loginMember = (Member) model.getAttribute("loginMember");
+//
+//		// 친구목록
+//		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
+//		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+//		// 내가 보낸 요청 목록
+//		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
+//		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
+//		// 나한테 온 요청 목록
+//		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
+//		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
+//
+//		model.addAttribute("list", list);
+//		model.addAttribute("wlist", wlist);
+//		model.addAttribute("rlist", rlist);
+//
 //		return "/friends";
 //	}
 
@@ -97,9 +103,7 @@ public class MemberController {
 	// 비밀번호 재설정하기
 	@PostMapping("/resetPwd")
 	@ResponseBody
-	public String resetPwd(@ModelAttribute Member m,
-			@RequestParam("newPwd") String newPwd,
-			Model model) {
+	public String resetPwd(@ModelAttribute Member m, @RequestParam("newPwd") String newPwd, Model model) {
 		System.out.println("memberId : " + m.getMemberId());
 		System.out.println("memberEmail : " + m.getMemberEmail());
 		System.out.println("newPwd : " + newPwd);
@@ -126,11 +130,11 @@ public class MemberController {
 
 	// 회원가입 페이지로 이동
 	@GetMapping("/signup")
-    public String signup() {
-        return "signup";
-    }
-	
-	//회원가입 처리
+	public String signup() {
+		return "signup";
+	}
+
+	// 회원가입 처리
 	@PostMapping("/signup")
 	public String signup(@ModelAttribute Member m,
 	                     @RequestParam("emailId") String emailId,
@@ -180,10 +184,10 @@ public class MemberController {
 	}
 
 	// 로그인 페이지로 이동
-	 @GetMapping("/signin")
-	 public String signIn() {
-		 return "member/signin";
-	 }
+	@GetMapping("/signin")
+	public String signIn() {
+		return "member/signin";
+	}
 
 	// 로그인 처리
 	 @PostMapping("/signin")

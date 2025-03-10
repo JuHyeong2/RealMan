@@ -1,6 +1,7 @@
 package com.example.demo.member.model.service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -83,10 +84,30 @@ public class MemberService {
 	public ArrayList<Integer> selectFriendNumbers(Member loginMember) {
 		return mapper.selectFriendNumbers(loginMember);
 	}
+
+	// 내가 보낸 친구 요청 목록 가져오기(번호만)
+	public ArrayList<Integer> selectRequestSent(int memberNo) {
+		return mapper.selectRequestSent(memberNo);
+	}
 	
-	//친구 목록 조회
+	// 내가 받은 친구 요청 목록 가져오기(번호만)
+	public ArrayList<Integer> selectRequestReceived(int memberNo) {
+		return mapper.selectRequestReceived(memberNo);
+	}
+
+	// 친구 목록 조회
 	public ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList) {
 		return mapper.selectFriends(friendNumberList);
 	}
+
+	// 친구 삭제, 거절, 요청 취소
+	public int deleteFriend(HashMap<String, Integer> map) {
+		return mapper.deleteFriend(map);
+	}
 	
+	// 친구 수락
+	public int approveRequest(HashMap<String, Integer> map) {
+		return mapper.approveRequest(map);
+	}
+
 }

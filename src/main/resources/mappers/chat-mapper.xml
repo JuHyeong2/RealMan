@@ -6,7 +6,7 @@
     <select id="chattingSidebar">
         select *
         from channel
-        where channel_separator = #{channelSeparator}
+        where server_no = #{no} and channel_status = 'Y'
     </select>
 
 
