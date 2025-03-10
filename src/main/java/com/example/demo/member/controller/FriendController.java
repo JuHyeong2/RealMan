@@ -29,7 +29,6 @@ public class FriendController {
 	public Map<String, ArrayList<Member>> friends(HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		Map<String, ArrayList<Member>> map = new HashMap<String, ArrayList<Member>>();
-		System.out.println("loginMember : "+loginMember.getMemberId());
 		
 		// 친구목록
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
@@ -41,9 +40,6 @@ public class FriendController {
 		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
 		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
 		
-		System.out.println("list : "+list);
-		System.out.println("wlist : "+wlist);
-		System.out.println("lrist : "+rlist);
 		map.put("list", list);
 		map.put("wlist", wlist);
 		map.put("rlist", rlist);
@@ -57,8 +53,6 @@ public class FriendController {
 			HttpSession session) {
 		int friendMemberNo = map2.get("fnm");
 		Member loginMember = (Member) session.getAttribute("loginMember");
-		System.out.println("friendMemberNo : "+friendMemberNo);
-		System.out.println("my member no : " + loginMember.getMemberNo());
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("myMemberNo", loginMember.getMemberNo());
 		map.put("friendMemberNo", friendMemberNo);
@@ -94,7 +88,7 @@ public class FriendController {
 		return result;
 	}
 	
-	@GetMapping("/find")
+	@GetMapping("/member/find")
 	public ArrayList<Member> findMember(@RequestParam("search") String search,
 			HttpSession session, Model model){
 		Member loginMember = (Member) session.getAttribute("loginMember");
@@ -102,7 +96,6 @@ public class FriendController {
 		searchMap.put("search", search);
 		searchMap.put("myMemberNo", loginMember.getMemberNo()+"");
 		ArrayList<Member> list = mService.findMember(searchMap);
-		
 		
 		return list;
 	}

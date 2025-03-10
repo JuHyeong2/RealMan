@@ -87,14 +87,20 @@ rLi.innerHTML = `<div class="friend-row rlist">
               </div>
             </div>`;
 let sLi = document.createElement("li");
+sLi.innerHTML = ``;
 
 const flist = document.querySelector("#friend-list"); //친구 목록
 const wlist = document.querySelector("#wait-list"); //대기중
 const rlist = document.querySelector("#request-list"); //친구 요청
+const slist = document.querySelector("#search-list");
 
 document.addEventListener("DOMContentLoaded", function () {
   getFriendList();
 });
+
+//===================================================================
+//친구 목록 가져오기
+//===================================================================
 
 const getFriendList = () => {
   fetch("/friend")
@@ -142,8 +148,12 @@ const getFriendList = () => {
     });
 };
 
+//===================================================================
+//이벤트 리스너들
+//===================================================================
+
 function setupEventHandlers() {
-  //====================필터 버튼
+  //======================필터 버튼======================
   const filterDiv = document.querySelector("#filter-div");
   filterDiv.querySelectorAll("button").forEach((filter) => {
     filter.addEventListener("click", function () {
@@ -158,16 +168,19 @@ function setupEventHandlers() {
         case "모두":
           wlist.classList.remove("ul-show");
           rlist.classList.remove("ul-show");
+          slist.classList.remove("ul-show");
           flist.classList.add("ul-show");
           break;
         case "대기중":
           rlist.classList.remove("ul-show");
           flist.classList.remove("ul-show");
+          slist.classList.remove("ul-show");
           wlist.classList.add("ul-show");
           break;
         case "친구 요청":
           wlist.classList.remove("ul-show");
           flist.classList.remove("ul-show");
+          slist.classList.remove("ul-show");
           rlist.classList.add("ul-show");
           break;
         case "친구 추가":
@@ -180,7 +193,7 @@ function setupEventHandlers() {
     });
   });
 
-  //==================== 검색창
+  //======================검색======================
   const searchButton = document.querySelector("#search-button");
   const searchInput = searchButton.previousElementSibling;
   searchInput.addEventListener("focus", function () {
@@ -199,6 +212,13 @@ function setupEventHandlers() {
     let searchStr = searchInput.value;
     if (searchInput.classList.contains("full-search")) {
       //회원 검색 fetch
+      fetch("/member/find?search=" + searchStr)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("data", data);
+          for (let s of data) {
+          }
+        });
     } else {
       //받아온 목록 안에서 검색
       let lists = [flist, wlist, rlist];
@@ -221,7 +241,7 @@ function setupEventHandlers() {
     }
   });
 
-  //==================== 친구 목록 리스트
+  //======================모든 리스트 공통 ul======================
   //닉네임 이벤트 핸들러
   const nicknames = document.querySelectorAll(".nickname");
   for (const label of nicknames) {
@@ -234,6 +254,25 @@ function setupEventHandlers() {
     });
   }
 
+  //프사 이벤트 핸들러
+  const profiles = document.querySelectorAll(".profile");
+  for (img of profiles) {
+    //click
+    img.addEventListener("click", function () {});
+  }
+
+  //etc메뉴 안보이게하는 이벤트 핸들러
+  document.querySelector("body").addEventListener("click", function (e) {
+    if (
+      !e.target.classList.contains("qq") &&
+      document.querySelector(".menu-show")
+    ) {
+      document.querySelector(".menu-show").classList.remove("menu-show");
+    }
+  });
+
+  //======================친구 목록 리스트 flist======================
+
   //dm 아이콘 이벤트 핸들러
   const dmsvgs = document.querySelectorAll(".dm-svg");
   for (const svg of dmsvgs) {
@@ -243,6 +282,7 @@ function setupEventHandlers() {
     });
   }
 
+  //flist + slist 공통
   //etc 아이콘 이벤트 핸들러
   const etcsvgs = document.querySelectorAll(".etc-svg");
   let friendrow = null;
@@ -262,47 +302,56 @@ function setupEventHandlers() {
 
       //etc메뉴 이벤트 핸들러
       friendrow = etcMenu.parentElement.parentElement.parentElement;
-      const friendMemberNo = friendrow.querySelector(
-        "form>input[type=hidden]"
-      ).value;
+      const friendMemberNo =
+        friendrow.querySelector("input[type=hidden]").value;
       const [menu1, menu2] = etcMenu.querySelectorAll("div");
-      menu1.onclick = function () {
-        if (confirm("정말로 친구 삭제를 진행하시겠습니까?")) {
-          console.log(friendMemberNo, "친구 삭제");
-          fetch("/friend", {
-            method: "delete",
-            headers: { "content-type": "application/json; charset=UTF-8" },
-            body: JSON.stringify({
-              fnm: friendMemberNo,
-            }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data == 1) {
-                alert("친구삭제가 완료되었습니다.");
-                location.reload();
-              }
-            });
-        }
-      };
-      menu2.onclick = function () {
-        if (confirm("정말로 회원을 차단하시겠습니까?")) {
-          console.log(friendMemberNo, "친구 삭제 + 회원 차단");
-        }
-      };
+      //flist 에서는 :
+      if (friendrow.parentElement.id == "friend-list") {
+        menu1.onclick = function () {
+          if (confirm("정말로 친구 삭제를 진행하시겠습니까?")) {
+            console.log(friendMemberNo, "친구 삭제");
+            fetch("/friend", {
+              method: "delete",
+              headers: { "content-type": "application/json; charset=UTF-8" },
+              body: JSON.stringify({
+                fnm: friendMemberNo,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data == 1) {
+                  alert("친구삭제가 완료되었습니다.");
+                  location.reload();
+                }
+              });
+          }
+        };
+
+        menu2.onclick = function () {
+          if (confirm("정말로 회원을 차단하시겠습니까?")) {
+            console.log(friendMemberNo, "친구 삭제 + 회원 차단");
+          }
+        };
+
+        //slist 에서는 :
+      } else {
+        menu1.onclick = function () {
+          if (confirm("정말로 회원을 차단하시겠습니까?")) {
+            console.log(friendMemberNo, "친구 삭제 + 회원 차단");
+          }
+        };
+      }
     });
   }
 
-  //==================친구 요청 리스트
+  //======================친구 요청 리스트 rlist======================
   //친구 수락
   const checkSvgs = document.querySelectorAll(".check-svg");
   for (svg of checkSvgs) {
     svg.addEventListener("click", function () {
       const thisRow =
         this.parentElement.parentElement.parentElement.parentElement;
-      const friendMemberNo = thisRow.querySelector(
-        "form>input[type=hidden]"
-      ).value;
+      const friendMemberNo = thisRow.querySelector("input[type=hidden]").value;
       if (confirm("친구 요청을 수락하시겠습니까?")) {
         fetch("/friend", {
           method: "put",
@@ -328,16 +377,14 @@ function setupEventHandlers() {
     svg.addEventListener("click", function () {});
   }
 
-  //==================대기중 리스트
+  //======================대기중 리스트 wlist======================
   //요청 취소
   const cancleSvgs = document.querySelectorAll(".cancle-svg");
   for (svg of cancleSvgs) {
     svg.addEventListener("click", function () {
       const thisRow =
         this.parentElement.parentElement.parentElement.parentElement;
-      const friendMemberNo = thisRow.querySelector(
-        "form>input[type=hidden]"
-      ).value;
+      const friendMemberNo = thisRow.querySelector("input[type=hidden]").value;
       if (confirm("보낸 요청을 취소하시겠습니까?")) {
         fetch("/friend", {
           method: "delete",
@@ -357,20 +404,13 @@ function setupEventHandlers() {
     });
   }
 
-  //프사 이벤트 핸들러
-  const profiles = document.querySelectorAll(".profile");
-  for (img of profiles) {
-    //click
-    img.addEventListener("click", function () {});
-  }
+  //======================검색 결과 리스트 slist======================
 
-  //etc메뉴 안보이게하는 이벤트 핸들러
-  document.querySelector("body").addEventListener("click", function (e) {
-    if (
-      !e.target.classList.contains("qq") &&
-      document.querySelector(".menu-show")
-    ) {
-      document.querySelector(".menu-show").classList.remove("menu-show");
-    }
-  });
+  //요청 보내기
+  const addFriendSvgs = document.querySelectorAll(".add-friend-svg");
+  for (let svg of addFriendSvgs) {
+    svg.addEventListener("click", function () {
+      //
+    });
+  }
 }

@@ -214,7 +214,8 @@ li {
   transition: all 0.3s ease;
 }
 
-.etc-menu {
+.etc-menu,
+.find-menu {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -230,18 +231,21 @@ li {
   padding: 0;
 }
 
-.etc-menu > div {
+.etc-menu > div,
+.find-menu > div {
   display: flex;
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
 
-.etc-menu > div:hover {
+.etc-menu > div:hover,
+.find-menu > div:hover {
   background-color: rgb(218, 218, 181);
 }
 
-.etc-menu > div:active {
+.etc-menu > div:active,
+.find-menu > div:active {
   background-color: rgb(168, 168, 134);
 }
 
