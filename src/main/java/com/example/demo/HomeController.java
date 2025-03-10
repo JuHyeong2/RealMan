@@ -35,7 +35,6 @@ public class HomeController {
 	@GetMapping("/main")
 	public String mainPage(Model model, HttpSession session) {
 		Member m = (Member) session.getAttribute("loginMember");
-		System.out.println(m.toString());
 		ArrayList<Server> selectServerList = sService.selectServerList(m);
 		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);

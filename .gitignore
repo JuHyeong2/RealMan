@@ -9,6 +9,7 @@ Thumbs.db
 
 #설정
 /src/main/resources/application.properties 
+/src/main/resources/keystore.jks
 
 #IDE
 /.metadata/

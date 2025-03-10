@@ -135,26 +135,47 @@ public class MemberController {
 	public String signup(@ModelAttribute Member m,
 	                     @RequestParam("emailId") String emailId,
 	                     @RequestParam("emailDomain") String emailDomain,
-	                     @RequestParam(value = "customEmailDomain", required = false) String customEmailDomain) {
+	                     @RequestParam(value = "customEmailDomain", required = false) String customEmailDomain,
+	                     Model model) {
 
-	    if ("custom".equals(emailDomain) && customEmailDomain != null && !customEmailDomain.trim().isEmpty()) {
-	        m.setMemberEmail(emailId + "@" + customEmailDomain);
-	    } else {
-	        m.setMemberEmail(emailId + "@" + emailDomain);
-	    }
-
+	    String fullEmail = emailId + "@" + ("custom".equals(emailDomain) ? customEmailDomain : emailDomain);
+	    m.setMemberEmail(fullEmail);
+	    
+	    // 회원 상태 및 관리자 여부 기본값 설정
 	    if (m.getMemberStatus() == null) {
-	        m.setMemberStatus("Y"); // 기본값 'Y' 설정
+	        m.setMemberStatus("Y");  
 	    }
 	    if (m.getMemberIsAdmin() == null) {
-	        m.setMemberIsAdmin("N"); // 기본값 'N' 설정
+	        m.setMemberIsAdmin("N");  
 	    }
-	    System.out.println(m.toString());
+
+	    // 중복 체크
+	    if (mService.isMemberIdDuplicated(m.getMemberId())) {
+	        model.addAttribute("errorMessage", "이미 사용 중인 아이디입니다.");
+	        return "signup";
+	    }
+
+	    if (mService.isMemberNicknameDuplicated(m.getMemberNickname())) {
+	        model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
+	        return "signup";
+	    }
+
+	    if (mService.isMemberPhoneDuplicated(String.valueOf(m.getMemberPhone()))) {
+	        model.addAttribute("errorMessage", "이미 등록된 전화번호입니다.");
+	        return "signup";
+	    }
+
+	    if (mService.isMemberEmailDuplicated(m.getMemberEmail())) {
+	        model.addAttribute("errorMessage", "이미 사용 중인 이메일입니다.");
+	        return "signup";
+	    }
+
+	    // 회원가입 진행
 	    int result = mService.insertMember(m);
 	    if (result > 0) {
-	        return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동
+	        return "redirect:/member/signin";
 	    } else {
-	        throw new MemberException("회원가입을 실패하였습니다.");
+	        throw new MemberException("회원가입에 실패하였습니다.");
 	    }
 	}
 
@@ -171,14 +192,12 @@ public class MemberController {
 	                     Model model, HttpSession session) {
 	     Member loginMember = mService.login(memberId, memberPwd);
 
-	     
 	     if (loginMember != null) {
-		     System.out.println("loginMember : "+loginMember.getMemberId());
-	         model.addAttribute("loginMember", loginMember);
+	         session.setAttribute("loginMember", loginMember);
 	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
-	         return "member/signin";
+	         return "member/signin"; 
 	     }
 	 }
 	 

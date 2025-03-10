@@ -42,12 +42,43 @@
 
     <!-- 회원가입 쿼리 -->
     <insert id="insertMember" parameterType="com.example.demo.member.model.vo.Member">
-        INSERT INTO MEMBER (
-            MEMBER_ID, MEMBER_PWD, MEMBER_GENDER, MEMBER_PHONE, MEMBER_EMAIL, 
-            MEMBER_NICKNAME, MEMBER_STATUS, IS_ADMIN, MEMBER_BIRTH, MEMBER_CREATEDATE
-        )
-        VALUES (#{memberId}, #{memberPwd}, #{memberGender}, #{memberPhone}, #{memberEmail}, #{memberNickname}, #{memberStatus}, #{memberIsAdmin}, #{memberBirth}, SYSDATE)
-    </insert>
+	    insert into member (
+	        member_id, member_pwd, member_gender, member_phone, member_email, 
+	        member_nickname, member_birth, member_status, is_admin, member_createdate
+	    )
+	    values (
+	        #{memberId}, #{memberPwd}, #{memberGender}, #{memberPhone}, #{memberEmail}, 
+	        #{memberNickname}, #{memberBirth}, 'Y', #{memberIsAdmin}, sysdate
+	    )
+	</insert>
+    
+    <!-- 아이디 중복 체크 -->
+    <select id="checkMemberId" resultType="int">
+	    select count(*)
+	    from member
+	    where member_id = #{memberId}
+	</select>
+	
+	<!-- 닉네임 중복 체크 -->
+	<select id="checkMemberNickname" resultType="int">
+	    select count(*)
+	    from member
+	    where member_nickname = #{memberNickname}
+	</select>
+	
+	<!-- 전화번호 중복 체크 -->
+	<select id="checkMemberPhone" resultType="int">
+	    select count(*)
+	    from member
+	    where member_phone = #{memberPhone}
+	</select>
+	
+	<!-- 이메일 중복 체크 -->
+	<select id="checkMemberEmail" resultType="int">
+	    select count(*)
+	    from member
+	    where member_email = #{memberEmail}
+	</select>
     
     <!-- 친구 목록 가져오기 (번호만) -->
     <select id="selectFriendNumbers">
