@@ -44,7 +44,6 @@ body {
     display: flex;
     width: 90%;
     max-width: 1200px;
-    overflow: hidden;
     margin-top: 100px;
 }
 
@@ -144,3 +143,4 @@ body {
 .sign-in:hover {
     background-color: #8788c4;
 }
+

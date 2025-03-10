@@ -1,5 +1,6 @@
 package com.example.demo.member.controller;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FriendController {
 	private final MemberService mService;
+
 	
 	//친구 목록 가져오기
 	@GetMapping("/friend")
@@ -89,7 +91,7 @@ public class FriendController {
 		map.put("friendMemberNo", friendMemberNo);
 		
 		int result = mService.approveRequest(map);
-		
+
 		return result;
 	}
 }
