@@ -101,5 +101,22 @@
             and friend_status='W'
     </update>
 
+    <!-- 회원 찾기 (친구 추가) -->
+    <select id="findMember">
+        select *
+        from (select * 
+            from member
+            where member_id like '%${search}%'
+                or member_nickname like '%${search}%')
+        where member_no not in (
+            select friend_member_no
+            from friend
+            where member_no = #{myMemberNo}
+            union
+            select member_no
+            from friend
+            where friend_member_no = #{myMemberNo}
+        )
+    </select>
 
 </mapper>

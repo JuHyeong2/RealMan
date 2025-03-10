@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.member.model.service.MemberService;
@@ -91,5 +92,18 @@ public class FriendController {
 		int result = mService.approveRequest(map);
 		
 		return result;
+	}
+	
+	@GetMapping("/find")
+	public ArrayList<Member> findMember(@RequestParam("search") String search,
+			HttpSession session, Model model){
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		Map<String, String> searchMap = new HashMap<String, String>();
+		searchMap.put("search", search);
+		searchMap.put("myMemberNo", loginMember.getMemberNo()+"");
+		ArrayList<Member> list = mService.findMember(searchMap);
+		
+		
+		return list;
 	}
 }

@@ -60,12 +60,22 @@
   background-color: rgb(238, 242, 250);
 }
 
-#search-div > button {
+#search-div > button:first-of-type {
   background-color: white;
   width: 6rem;
   height: 2rem;
   border: 0;
   border-radius: 0 1rem 1rem 0;
+}
+
+#search-div > button:last-child {
+  background-color: rgb(110, 190, 220);
+  height: 2rem;
+  width: 3rem;
+  margin-left: 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  font-size: 0.7rem;
 }
 
 #search-div > button:hover {
@@ -77,22 +87,16 @@
 }
 
 ul {
-  display: flex;
+  display: none;
   flex-direction: column;
   padding-left: 0 !important;
+}
+.ul-show {
+  display: flex;
 }
 
 li {
   list-style-type: none;
-}
-
-#wait-list,
-#request-list,
-#search-list {
-  display: none;
-}
-#search-list {
-  display: flex;
 }
 
 .friend-row {
@@ -123,6 +127,14 @@ li {
 
 .rlist:hover {
   background-color: rgb(100, 150, 210);
+}
+
+.slist {
+  background-color: rgb(190, 150, 230);
+}
+
+.slist:hover {
+  background-color: rgb(180, 140, 220);
 }
 
 .profile-div {

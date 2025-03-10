@@ -105,7 +105,7 @@ const getFriendList = () => {
         //친구목록
         for (let f of data.list) {
           const fli = fLi.cloneNode(true);
-          fli.querySelector("input").value = f.memberId;
+          fli.querySelector("input").value = f.memberNo;
           //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
           fli
             .querySelector(".profile")
@@ -116,7 +116,7 @@ const getFriendList = () => {
         }
         for (let w of data.wlist) {
           const wli = wLi.cloneNode(true);
-          wli.querySelector("input").value = w.memberId;
+          wli.querySelector("input").value = w.memberNo;
           //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
           wli
             .querySelector(".profile")
@@ -127,7 +127,7 @@ const getFriendList = () => {
         }
         for (let r of data.rlist) {
           const rli = rLi.cloneNode(true);
-          rli.querySelector("input").value = r.memberId;
+          rli.querySelector("input").value = r.memberNo;
           //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
           rli
             .querySelector(".profile")
@@ -156,25 +156,25 @@ function setupEventHandlers() {
       //선택에 따라 리스트 보여주기
       switch (this.innerText) {
         case "모두":
-          wlist.style.display = "none";
-          rlist.style.display = "none";
-          flist.style.display = "flex";
+          wlist.classList.remove("ul-show");
+          rlist.classList.remove("ul-show");
+          flist.classList.add("ul-show");
           break;
         case "대기중":
-          rlist.style.display = "none";
-          flist.style.display = "none";
-          wlist.style.display = "flex";
+          rlist.classList.remove("ul-show");
+          flist.classList.remove("ul-show");
+          wlist.classList.add("ul-show");
           break;
         case "친구 요청":
-          wlist.style.display = "none";
-          flist.style.display = "none";
-          rlist.style.display = "flex";
+          wlist.classList.remove("ul-show");
+          flist.classList.remove("ul-show");
+          rlist.classList.add("ul-show");
           break;
         case "친구 추가":
-          wlist.style.display = "none";
-          flist.style.display = "none";
-          rlist.style.display = "none";
-          slist.style.display = "flex";
+          wlist.classList.remove("ul-show");
+          flist.classList.remove("ul-show");
+          rlist.classList.remove("ul-show");
+          slist.classList.add("ul-show");
           break;
       }
     });
@@ -185,10 +185,39 @@ function setupEventHandlers() {
   const searchInput = searchButton.previousElementSibling;
   searchInput.addEventListener("focus", function () {
     const filterChecked = document.querySelector("#filter-div > .selected");
+
     if (filterChecked.innerText == "친구 추가") {
       searchInput.classList.add("full-search");
     } else {
       searchInput.classList.remove("full-search");
+    }
+  });
+
+  //"친구 추가" 선택하고 검색시에 전체 회원 목록에서 찾고,
+  //아니면 검색 결과는 내 목록 안에서만 나오게.
+  searchButton.addEventListener("click", function () {
+    let searchStr = searchInput.value;
+    if (searchInput.classList.contains("full-search")) {
+      //회원 검색 fetch
+    } else {
+      //받아온 목록 안에서 검색
+      let lists = [flist, wlist, rlist];
+      lists.forEach((list) => {
+        list.querySelectorAll("li").forEach((li) => {
+          console.log(li);
+          let idCheck = li.querySelector(".id").innerText.includes(searchStr);
+          let nicknameCheck = li
+            .querySelector(".nickname")
+            .innerText.includes(searchStr);
+          console.log(idCheck);
+          console.log(nicknameCheck);
+          if (!idCheck && !nicknameCheck) {
+            li.style.display = "none";
+          } else {
+            li.style.display = "flex";
+          }
+        });
+      });
     }
   });
 

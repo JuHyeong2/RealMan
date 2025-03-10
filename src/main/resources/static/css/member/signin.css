@@ -1,146 +1,144 @@
 /* ========================= 기본 설정 ========================= */
 body {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: white; 
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: white;
 }
 
 /* ========================= 상단바 ========================= */
 .topbar {
-    padding: 10px 20px;
-   	position : absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  padding: 10px 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* ========================= Sign up 버튼 (탑바 우측 상단) ========================= */
 .signup {
-    font-size: 14px;
-    color: #a3a4e0;
-    text-decoration: none;
-    font-weight: normal;
-    position: absolute;
-    top: 65px; 
-    right: 80px;
-    transform: translateY(-50%);
+  font-size: 14px;
+  color: #a3a4e0;
+  text-decoration: none;
+  font-weight: normal;
+  position: absolute;
+  top: 65px;
+  right: 80px;
+  transform: translateY(-50%);
 }
 
 .signup:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* ========================= 로그인 컨테이너 ========================= */
 .container {
-    display: flex;
-    width: 90%;
-    max-width: 1200px;
-    overflow: hidden;
-    margin-top: 100px;
+  display: flex;
+  width: 90%;
+  max-width: 1200px;
+  margin-top: 100px;
 }
 
 /* ========================= 왼쪽 섹션 (이미지) ========================= */
 .left-section {
-    flex: 1;
-    padding: 70px;
-    text-align: center;
+  flex: 1;
+  padding: 70px;
+  text-align: center;
 }
 
 /* 이미지 컨테이너 */
 .image-container {
-    text-align: center;
-    margin-top: 10px;
+  text-align: center;
+  margin-top: 10px;
 }
 
 /* 로그인 이미지 크기 조정 */
 .image-container img {
-    width: 770px;
-    height: 650px;
-    margin-left: -100px;
+  width: 770px;
+  height: 650px;
+  margin-left: -100px;
 }
 
 /* ========================= 오른쪽 섹션 ========================= */
 .right-section {
-    flex: 1;
-    padding: 70px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  flex: 1;
+  padding: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* 로그인 폼 스타일 */
 .login-form {
-    width: 80%;
-    display: flex;
-    margin-top: 200px;
-    flex-direction: column;
+  width: 80%;
+  display: flex;
+  margin-top: 200px;
+  flex-direction: column;
 }
 
 /* 로그인 입력 필드 스타일 */
 .login-form input {
-    width: 250px;
-    height: 15px;
-    padding: 15px;
-    margin: 15px 0;
-    font-size: 14px;
-    
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  width: 250px;
+  height: 15px;
+  padding: 15px;
+  margin: 15px 0;
+  font-size: 14px;
+
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 /* placeholder 기본 상태 */
 .login-form input::placeholder {
-    opacity: 1; 
-    transition: opacity 0.3s ease-out; 
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
 }
 
-
 .login-form input:focus::placeholder {
-    opacity: 0;
+  opacity: 0;
 }
 
 /* ========================= Forgot 버튼 스타일 변경 ========================= */
 .forgot-links {
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-    font-size: 10px;
-    margin-right: -45px;
-    margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  font-size: 10px;
+  margin-right: -45px;
+  margin-bottom: 30px;
 }
 
 .forgot-links a {
-    color: #b0b0b0; 
-    text-decoration: none;
-    font-weight: 300; 
-    font-family: 'Arial', sans-serif;
+  color: #b0b0b0;
+  text-decoration: none;
+  font-weight: 300;
+  font-family: "Arial", sans-serif;
 }
 
 .forgot-links a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* ========================= 로그인 버튼 스타일 ========================= */
 .sign-in {
-    width: 280px;
-    padding: 15px;
-    font-size: 14px;
-    background-color: #a3a4e0;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  width: 280px;
+  padding: 15px;
+  font-size: 14px;
+  background-color: #a3a4e0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .sign-in:hover {
-    background-color: #8788c4;
+  background-color: #8788c4;
 }
