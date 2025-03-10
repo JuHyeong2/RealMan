@@ -26,6 +26,13 @@
         </div>
 
         <div class="signUp-box">
+        
+        	<div th:if="${errorMessage}" class="error-message">
+			    <script>
+			        alert("[[${errorMessage}]]");
+			    </script>
+			</div>
+        	
             <form th:action="@{/member/signup}" method="post">
                 <!-- 아이디 입력 -->
                 <div class="input-box">
