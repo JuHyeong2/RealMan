@@ -1,8 +1,106 @@
+#friend-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(245, 245, 245);
+  width: 36rem;
+}
+
+#friend-container > div:last-child {
+  display: flex;
+  justify-content: center;
+}
+
+#filter-search-bar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+#filter-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem;
+  background-color: rgb(240, 240, 240);
+}
+
+#filter-div > button {
+  width: 20%;
+  margin-left: 1rem;
+  border: 0;
+  padding: 0.5rem 0;
+  border-radius: 2rem;
+  background-color: rgb(230, 240, 250);
+}
+
+#filter-div > .selected {
+  background-color: rgb(110, 190, 220);
+}
+
+#search-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  background-color: rgb(240, 240, 240);
+}
+
+#search-div > input {
+  height: 2rem;
+  border: 0;
+  border-radius: 1rem 0 0 1rem;
+  outline: none;
+  padding-left: 2rem;
+}
+
+#search-div > input:focus {
+  background-color: rgb(238, 242, 250);
+}
+
+#search-div > button {
+  background-color: white;
+  width: 6rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 0 1rem 1rem 0;
+}
+
+#search-div > button:hover {
+  background-color: rgb(238, 242, 250);
+}
+
+#search-div > button:active {
+  background-color: rgb(233, 237, 245);
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0 !important;
+}
+
+li {
+  list-style-type: none;
+}
+
+#wait-list,
+#request-list,
+#search-list {
+  display: none;
+}
+#search-list {
+  display: flex;
+}
+
 .friend-row {
   display: flex;
   flex-direction: row;
   align-items: center;
   height: 4rem;
+  border-radius: 0.8rem;
   background-color: rgb(189, 219, 209);
   margin-bottom: 0.5rem;
 }
@@ -66,18 +164,17 @@
   position: relative;
 }
 
-.dm-svg,
-.etc-svg,
+.icon,
 .profile {
   width: 100%;
   height: 100%;
 }
 
-.dm-svg:hover,
-.etc-svg:hover,
+.icon:hover,
 .profile:hover {
   cursor: pointer;
 }
+
 .nickname-div {
   display: flex;
   align-items: center;

@@ -39,32 +39,27 @@ public class MemberController {
 		return "/findMyPwd";
 	}
 
-	// 친구목록 페이지로
-	@GetMapping("/friends")
-	public String friends(Model model) {
-		Member loginMember = (Member) model.getAttribute("loginMember");
-
-		// 친구목록
-		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-		ArrayList<Member> list = mService.selectFriends(friendNumberList);
-		// 내가 보낸 요청 목록
-		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
-		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
-		// 나한테 온 요청 목록
-		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
-		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
-
-		model.addAttribute("list", list);
-		model.addAttribute("wlist", wlist);
-		model.addAttribute("rlist", rlist);
-
-		return "/friends";
-	}
-
-	// @GetMapping("/friends")
-	// public String friends() {
-	// return "/friends";
-	// }
+//	// 친구목록 페이지로
+//	@GetMapping("/friends")
+//	public String friends(Model model) {
+//		Member loginMember = (Member) model.getAttribute("loginMember");
+//
+//		// 친구목록
+//		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
+//		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+//		// 내가 보낸 요청 목록
+//		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
+//		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
+//		// 나한테 온 요청 목록
+//		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
+//		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
+//
+//		model.addAttribute("list", list);
+//		model.addAttribute("wlist", wlist);
+//		model.addAttribute("rlist", rlist);
+//
+//		return "/friends";
+//	}
 
 	// (아이디찾기, 비밀번호찾기)이메일 보내기
 	@GetMapping("/sendEmail")
