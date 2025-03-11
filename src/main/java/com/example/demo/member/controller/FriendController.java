@@ -78,7 +78,7 @@ public class FriendController {
 		map.put("friendMemberNo", friendMemberNo);
 		HashMap<String, String> friendCheck = mService.friendCheck(map);
 
-		//
+		//친구 요청
 		if(friendCheck == null) {
 			result = mService.requestFriend(map);
 		}else{
@@ -107,7 +107,7 @@ public class FriendController {
 		return result;
 	}
 	
-	
+	//회원 찾기
 	@GetMapping("/member/find")
 	public ArrayList<Member> findMember(@RequestParam("search") String search,
 			HttpSession session, Model model){

@@ -247,25 +247,30 @@ function setupEventHandlers() {
     let searchStr = searchInput.value;
     if (searchInput.classList.contains("full-search")) {
       //회원 검색 fetch
-      fetch("/member/find?search=" + searchStr)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("data", data);
-          slist.innerHTML = "";
-          for (let s of data) {
-            const sli = sLi.cloneNode(true);
-            sli.querySelector("input").value = s.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            sli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/friend/no-profile.svg");
-            sli.querySelector(".nickname").innerText = s.memberNickname;
-            sli.querySelector(".id").innerText = s.memberId;
-            slist.append(sli);
-          }
-          //slist는 나중에 불러오는거라서 이벤트 리스너들 다시 적용
-          setupEventHandlers();
-        });
+      if (searchStr != "") {
+        fetch("/member/find?search=" + searchStr)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            slist.innerHTML = "";
+            for (let s of data) {
+              const sli = sLi.cloneNode(true);
+              sli.querySelector("input").value = s.memberNo;
+              //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
+              sli
+                .querySelector(".profile")
+                .setAttribute("src", "/image/friend/no-profile.svg");
+              sli.querySelector(".nickname").innerText = s.memberNickname;
+              sli.querySelector(".id").innerText = s.memberId;
+              slist.append(sli);
+            }
+            //slist는 나중에 불러오는거라서 이벤트 리스너들 다시 적용
+            setupEventHandlers();
+          });
+      } else {
+        alert("검색어를 입력해주세요.");
+        searchInput.focus();
+      }
     } else {
       //기존 목록 안에서 검색
       let lists = [flist, wlist, rlist];
@@ -287,6 +292,7 @@ function setupEventHandlers() {
       });
     }
   });
+
   //전체보기
   const searchRefreshButton = document.querySelector("#search-refresh");
   searchRefreshButton.addEventListener("click", function () {

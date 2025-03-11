@@ -139,15 +139,18 @@
             from member
             where member_id like '%${search}%'
                 or member_nickname like '%${search}%')
+			<!-- 이미 친구 테이블에 있는 회원은 제외  -->
         where member_no not in (
-            select friend_member_no
-            from friend
-            where member_no = #{myMemberNo}
-            union
-            select member_no
-            from friend
-            where friend_member_no = #{myMemberNo}
-        )
+	            select friend_member_no
+	            from friend
+	            where member_no = #{myMemberNo}
+	            union
+	            select member_no
+	            from friend
+	            where friend_member_no = #{myMemberNo}
+        		)
+        	<!-- 본인 제외 -->
+        	and member_no != #{myMemberNo}
     </select>
     
     <!-- 친구관계 확인 -->
