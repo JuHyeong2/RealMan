@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
 
-    <!-- CSS 파일 연결 -->
     <link rel="stylesheet" href="/css/member/signin.css">
-    
 </head>
 <body>
 
     <!-- 상단바 -->
     <header class="topbar">
-	    <div th:insert="common/top.html"></div> 
-	    <a href="/member/signup" class="signup">Sign up</a>
-	</header>
-    
+        <div th:insert="common/top.html"></div> 
+        <a href="/member/signup" class="signup">Sign up</a>
+    </header>
 
     <div class="container">
         <!-- 왼쪽 섹션 -->
@@ -29,20 +26,25 @@
         <!-- 오른쪽 섹션 -->
         <div class="right-section">
             <form class="login-form" th:action="@{/member/signin}" method="post">
-			 	<input type="text" name="memberId" placeholder="Enter ID" required>
-			   	<input type="password" name="memberPwd" placeholder="Password" required>
-	            <div class="forgot-links">
+                <input type="text" name="memberId" placeholder="Enter ID" required>
+                <input type="password" name="memberPwd" placeholder="Password" required>
+                <div class="forgot-links">
                     <a href="/member/findMyId">Forgot ID?</a> 
                     <a href="/member/findMyPwd">Forgot Password?</a> 
                 </div>
                 <button type="submit" class="sign-in">Sign In</button>
+
+                <!-- 로그인 실패 시 에러 메시지 표시 -->
+                <div th:if="${errorMessage}" class="error-message">
+                    <p th:text="${errorMessage}" style="color: red;"></p>
+                </div>
             </form>
         </div>
     </div>
-    
+
     <script th:if="${loginUser}">
-	    window.location.href = "/main";
-	</script>
+        window.location.href = "/main";
+    </script>
 
 </body>
 </html>
