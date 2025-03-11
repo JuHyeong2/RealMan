@@ -282,7 +282,7 @@ function setupEventHandlers() {
     });
   }
 
-  //flist + slist 공통
+  //****flist + slist 공통
   //etc 아이콘 이벤트 핸들러
   const etcsvgs = document.querySelectorAll(".etc-svg");
   let friendrow = null;
@@ -410,7 +410,9 @@ function setupEventHandlers() {
   const addFriendSvgs = document.querySelectorAll(".add-friend-svg");
   for (let svg of addFriendSvgs) {
     svg.addEventListener("click", function () {
-      //
+      if (confirm("해당 회원에게 친구 요청을 보내시겠습니까?")) {
+        //요청 fetch
+      }
     });
   }
 }
