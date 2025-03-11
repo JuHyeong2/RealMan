@@ -62,5 +62,11 @@ public interface MemberMapper {
 	
 	//회원 찾기 (친구 추가)
 	ArrayList<Member> findMember(Map<String, String> searchMap);
+	
+	//친구관계 확인
+	HashMap<String, String> friendCheck(HashMap<String, Integer> map);
+	
+	//친구 요청
+	int requestFriend(HashMap<String, Integer> map);
     
 }

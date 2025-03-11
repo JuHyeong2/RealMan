@@ -65,10 +65,27 @@ public class FriendController {
 
 	// 친구 요청 (friend 테이블에 행 추가)
 	@PostMapping("/friend")
-	public int requestFriend() {
-		System.out.println();
+	public int requestFriend(@RequestBody HashMap<String, Integer> map2,
+			HttpSession session) {
 		int result = 0;
-		System.out.println("requestFriend result : " + result);
+		
+		int friendMemberNo = map2.get("fnm");
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		
+		//이미 친구인지 확인
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("myMemberNo", loginMember.getMemberNo());
+		map.put("friendMemberNo", friendMemberNo);
+		HashMap<String, String> friendCheck = mService.friendCheck(map);
+
+		//
+		if(friendCheck == null) {
+			result = mService.requestFriend(map);
+		}else{
+			//friend_status = 'W' 라면 이미 보낸 요청이라 알림
+			//friend_status = 'A' 라면 이미 친구라고 알림
+		}
+		
 		return result;
 	}
 
@@ -89,6 +106,7 @@ public class FriendController {
 
 		return result;
 	}
+	
 	
 	@GetMapping("/member/find")
 	public ArrayList<Member> findMember(@RequestParam("search") String search,

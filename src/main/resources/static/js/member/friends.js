@@ -87,7 +87,36 @@ rLi.innerHTML = `<div class="friend-row rlist">
               </div>
             </div>`;
 let sLi = document.createElement("li");
-sLi.innerHTML = ``;
+sLi.innerHTML = `<div class="friend-row slist">
+              <input type="hidden" />
+              <div class="profile-div">
+                <div class="svg-container">
+                  <img class="profile" src="/image/friend/no-profile.svg" />
+                </div>
+              </div>
+              <div class="nickname-div">
+                <label class="nickname"></label>
+                <label class="id"></label>
+              </div>
+              <div class="other-div">
+                <div class="dm-div">
+                  <div class="svg-container">
+                    <img
+                      class="icon add-friend-svg qq"
+                      src="/image/friend/add-friend.svg"
+                    />
+                  </div>
+                </div>
+                <div class="etc-div">
+                  <div class="svg-container">
+                    <img class="icon etc-svg qq" src="/image/friend/more.svg" />
+                  </div>
+                  <div class="etc-menu">
+                    <div class="qq">회원 차단</div>
+                  </div>
+                </div>
+              </div>
+            </div>`;
 
 const flist = document.querySelector("#friend-list"); //친구 목록
 const wlist = document.querySelector("#wait-list"); //대기중
@@ -154,6 +183,7 @@ const getFriendList = () => {
 
 function setupEventHandlers() {
   //======================필터 버튼======================
+
   const filterDiv = document.querySelector("#filter-div");
   filterDiv.querySelectorAll("button").forEach((filter) => {
     filter.addEventListener("click", function () {
@@ -169,24 +199,28 @@ function setupEventHandlers() {
           wlist.classList.remove("ul-show");
           rlist.classList.remove("ul-show");
           slist.classList.remove("ul-show");
+          searchRefreshButton.style.visibility = "visible";
           flist.classList.add("ul-show");
           break;
         case "대기중":
           rlist.classList.remove("ul-show");
           flist.classList.remove("ul-show");
           slist.classList.remove("ul-show");
+          searchRefreshButton.style.visibility = "visible";
           wlist.classList.add("ul-show");
           break;
         case "친구 요청":
           wlist.classList.remove("ul-show");
           flist.classList.remove("ul-show");
           slist.classList.remove("ul-show");
+          searchRefreshButton.style.visibility = "visible";
           rlist.classList.add("ul-show");
           break;
         case "친구 추가":
           wlist.classList.remove("ul-show");
           flist.classList.remove("ul-show");
           rlist.classList.remove("ul-show");
+          searchRefreshButton.style.visibility = "hidden";
           slist.classList.add("ul-show");
           break;
       }
@@ -194,6 +228,7 @@ function setupEventHandlers() {
   });
 
   //======================검색======================
+
   const searchButton = document.querySelector("#search-button");
   const searchInput = searchButton.previousElementSibling;
   searchInput.addEventListener("focus", function () {
@@ -216,11 +251,23 @@ function setupEventHandlers() {
         .then((response) => response.json())
         .then((data) => {
           console.log("data", data);
+          slist.innerHTML = "";
           for (let s of data) {
+            const sli = sLi.cloneNode(true);
+            sli.querySelector("input").value = s.memberNo;
+            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
+            sli
+              .querySelector(".profile")
+              .setAttribute("src", "/image/friend/no-profile.svg");
+            sli.querySelector(".nickname").innerText = s.memberNickname;
+            sli.querySelector(".id").innerText = s.memberId;
+            slist.append(sli);
           }
+          //slist는 나중에 불러오는거라서 이벤트 리스너들 다시 적용
+          setupEventHandlers();
         });
     } else {
-      //받아온 목록 안에서 검색
+      //기존 목록 안에서 검색
       let lists = [flist, wlist, rlist];
       lists.forEach((list) => {
         list.querySelectorAll("li").forEach((li) => {
@@ -239,6 +286,12 @@ function setupEventHandlers() {
         });
       });
     }
+  });
+  //전체보기
+  const searchRefreshButton = document.querySelector("#search-refresh");
+  searchRefreshButton.addEventListener("click", function () {
+    searchInput.value = "";
+    searchButton.click();
   });
 
   //======================모든 리스트 공통 ul======================
@@ -273,10 +326,9 @@ function setupEventHandlers() {
 
   //======================친구 목록 리스트 flist======================
 
-  //dm 아이콘 이벤트 핸들러
+  //dm 아이콘
   const dmsvgs = document.querySelectorAll(".dm-svg");
   for (const svg of dmsvgs) {
-    //click
     svg.addEventListener("click", function () {
       // window.location = "";
     });
@@ -305,7 +357,7 @@ function setupEventHandlers() {
       const friendMemberNo =
         friendrow.querySelector("input[type=hidden]").value;
       const [menu1, menu2] = etcMenu.querySelectorAll("div");
-      //flist 에서는 :
+      //flist 에서 :
       if (friendrow.parentElement.id == "friend-list") {
         menu1.onclick = function () {
           if (confirm("정말로 친구 삭제를 진행하시겠습니까?")) {
@@ -326,7 +378,6 @@ function setupEventHandlers() {
               });
           }
         };
-
         menu2.onclick = function () {
           if (confirm("정말로 회원을 차단하시겠습니까?")) {
             console.log(friendMemberNo, "친구 삭제 + 회원 차단");
@@ -410,8 +461,25 @@ function setupEventHandlers() {
   const addFriendSvgs = document.querySelectorAll(".add-friend-svg");
   for (let svg of addFriendSvgs) {
     svg.addEventListener("click", function () {
+      const thisRow =
+        this.parentElement.parentElement.parentElement.parentElement;
+      const friendMemberNo = thisRow.querySelector("input[type=hidden]").value;
       if (confirm("해당 회원에게 친구 요청을 보내시겠습니까?")) {
-        //요청 fetch
+        fetch("/friend", {
+          method: "post",
+          headers: { "content-type": "application/json;charset=UTF-8" },
+          body: JSON.stringify({
+            fnm: friendMemberNo,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            if (data == 1) {
+              alert("친구 요청이 완료되었습니다.");
+              location.reload();
+            }
+          });
       }
     });
   }

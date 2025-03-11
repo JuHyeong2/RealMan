@@ -149,5 +149,23 @@
             where friend_member_no = #{myMemberNo}
         )
     </select>
-
+    
+    <!-- 친구관계 확인 -->
+	<select id="friendCheck" resultType="hashmap">
+		select *
+		from friend
+		where (member_no = #{myMemberNo} and friend_member_no = #{friendMemberNo})
+			or (member_no = #{friendMemberNo} and friend_member_no = #{myMemberNo})
+	</select>
+	
+	<!-- 친구 요청 -->
+	<insert id="requestFriend">
+		insert into friend
+		values(
+			friend_seq.nextval,
+			#{myMemberNo},
+			#{friendMemberNo},
+			default
+		)
+	</insert>
 </mapper>
