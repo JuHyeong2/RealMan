@@ -1,5 +1,6 @@
 package com.example.demo.member.controller;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.member.model.service.MemberService;
@@ -22,13 +24,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FriendController {
 	private final MemberService mService;
+
 	
 	//친구 목록 가져오기
 	@GetMapping("/friend")
 	public Map<String, ArrayList<Member>> friends(HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		Map<String, ArrayList<Member>> map = new HashMap<String, ArrayList<Member>>();
-		System.out.println("loginMember : "+loginMember.getMemberId());
 		
 		// 친구목록
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
@@ -40,9 +42,6 @@ public class FriendController {
 		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
 		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
 		
-		System.out.println("list : "+list);
-		System.out.println("wlist : "+wlist);
-		System.out.println("lrist : "+rlist);
 		map.put("list", list);
 		map.put("wlist", wlist);
 		map.put("rlist", rlist);
@@ -56,8 +55,6 @@ public class FriendController {
 			HttpSession session) {
 		int friendMemberNo = map2.get("fnm");
 		Member loginMember = (Member) session.getAttribute("loginMember");
-		System.out.println("friendMemberNo : "+friendMemberNo);
-		System.out.println("my member no : " + loginMember.getMemberNo());
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("myMemberNo", loginMember.getMemberNo());
 		map.put("friendMemberNo", friendMemberNo);
@@ -68,10 +65,27 @@ public class FriendController {
 
 	// 친구 요청 (friend 테이블에 행 추가)
 	@PostMapping("/friend")
-	public int requestFriend() {
-		System.out.println();
+	public int requestFriend(@RequestBody HashMap<String, Integer> map2,
+			HttpSession session) {
 		int result = 0;
-		System.out.println("requestFriend result : " + result);
+		
+		int friendMemberNo = map2.get("fnm");
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		
+		//이미 친구인지 확인
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("myMemberNo", loginMember.getMemberNo());
+		map.put("friendMemberNo", friendMemberNo);
+		HashMap<String, String> friendCheck = mService.friendCheck(map);
+
+		//친구 요청
+		if(friendCheck == null) {
+			result = mService.requestFriend(map);
+		}else{
+			//friend_status = 'W' 라면 이미 보낸 요청이라 알림
+			//friend_status = 'A' 라면 이미 친구라고 알림
+		}
+		
 		return result;
 	}
 
@@ -89,7 +103,20 @@ public class FriendController {
 		map.put("friendMemberNo", friendMemberNo);
 		
 		int result = mService.approveRequest(map);
-		
+
 		return result;
+	}
+	
+	//회원 찾기
+	@GetMapping("/member/find")
+	public ArrayList<Member> findMember(@RequestParam("search") String search,
+			HttpSession session, Model model){
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		Map<String, String> searchMap = new HashMap<String, String>();
+		searchMap.put("search", search);
+		searchMap.put("myMemberNo", loginMember.getMemberNo()+"");
+		ArrayList<Member> list = mService.findMember(searchMap);
+		
+		return list;
 	}
 }

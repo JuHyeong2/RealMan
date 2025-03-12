@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Insert title here</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<body>
+<form id="chatForm">
+    <textarea id="mytextarea">여기에 메시지를 입력하세요...</textarea>
+    <button type="submit">전송</button>
+</form>
+
+<script>
+    // TinyMCE 초기화
+    tinymce.init({
+        selector: '#mytextarea',
+        menubar: false,
+        toolbar: ' image  | bullist numlist | undo redo',
+        height: 200,
+        images_upload_handler: function (blobInfo, success, failure) {
+            // 파일을 Base64로 변환하여 업로드하는 간단한 예제
+            let reader = new FileReader();
+            reader.onload = function () {
+                success(reader.result); // Base64 URL을 에디터에 삽입
+            };
+            reader.readAsDataURL(blobInfo.blob());
+        },
+        images_upload_url: '/upload-image',
+        automatic_uploads: true,
+        paste_data_images: true
+    });
+
+    document.getElementById('chatForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const message = tinymce.get('mytextarea').getContent(); // TinyMCE에서 값 가져오기
+
+        fetch('https://localhost:8080/chat/tiny2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                tinymce.get('mytextarea').setContent(''); // 전송 후 입력칸 초기화
+            })
+            .catch(error => console.error('Error:', error));
+
+        console.log();
+
+    });
+   //dd
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.example.demo.member.model.mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -29,7 +30,19 @@ public interface MemberMapper {
     // 회원가입 처리
     int insertMember(Member member);
 
-    //친구 목록 가져오기(번호만)
+    // 아이디 중복 체크
+    int checkMemberId(String memberId);
+
+    // 닉네임 중복 체크
+    int checkMemberNickname(String memberNickname);
+
+    // 전화번호 중복 체크
+    int checkMemberPhone(String memberPhone);
+
+    // 이메일 중복 체크
+    int checkMemberEmail(String memberEmail);
+    
+	//친구 목록 가져오기(번호만)
     ArrayList<Integer> selectFriendNumbers(Member loginMember);
 
     //내가 보낸 친구 요청 목록 가져오기(번호만)
@@ -46,5 +59,14 @@ public interface MemberMapper {
 
     //친구 수락
 	int approveRequest(HashMap<String, Integer> map);
+	
+	//회원 찾기 (친구 추가)
+	ArrayList<Member> findMember(Map<String, String> searchMap);
+	
+	//친구관계 확인
+	HashMap<String, String> friendCheck(HashMap<String, Integer> map);
+	
+	//친구 요청
+	int requestFriend(HashMap<String, Integer> map);
     
 }
