@@ -135,5 +135,10 @@ public class MemberService {
 	public int blockMember(HashMap<String, Integer> map) {
 		return mapper.blockMember(map);
 	}
+	
+	//회원 정보 수정
+	public int editMemberInfo(HashMap<String, String> map) {
+		return mapper.editMemberInfo(map);
+	}
 
 }

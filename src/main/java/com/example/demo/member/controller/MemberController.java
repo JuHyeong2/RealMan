@@ -8,7 +8,15 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.demo.common.util.EmailCertificationUtil;
@@ -40,28 +48,6 @@ public class MemberController {
 	public String findMyPwd() {
 		return "/findMyPwd";
 	}
-
-//	// 친구목록 페이지로
-//	@GetMapping("/friends")
-//	public String friends(Model model) {
-//		Member loginMember = (Member) model.getAttribute("loginMember");
-//
-//		// 친구목록
-//		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-//		ArrayList<Member> list = mService.selectFriends(friendNumberList);
-//		// 내가 보낸 요청 목록
-//		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
-//		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
-//		// 나한테 온 요청 목록
-//		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
-//		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
-//
-//		model.addAttribute("list", list);
-//		model.addAttribute("wlist", wlist);
-//		model.addAttribute("rlist", rlist);
-//
-//		return "/friends";
-//	}
 
 	// (아이디찾기, 비밀번호찾기)이메일 보내기
 	@GetMapping("/sendEmail")
@@ -171,6 +157,44 @@ public class MemberController {
 			result = mService.blockMember(map);
 		}
 		
+		return result;
+	}
+	
+	@PutMapping("/edit")
+	@ResponseBody
+	public int editMemberInfo(@RequestBody HashMap<String, String> map,
+			HttpSession session) {
+		int result = 0;
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		if(bcrypt.matches(
+				bcrypt.encode(map.get("pwd")), loginMember.getMemberPwd())) {
+			map.put("memberNo", loginMember.getMemberNo()+"");
+			switch(map.get("col")) {
+			case "member_nickname":
+				if(!mService.isMemberNicknameDuplicated(map.get("val"))) {
+					result = mService.editMemberInfo(map);
+				}else {
+					throw new MemberException("중복된 별명입니다.");
+				}
+				break;
+			case "member_phone":
+				if(!mService.isMemberPhoneDuplicated(map.get("val"))) {
+					result = mService.editMemberInfo(map);
+				}else {
+					throw new MemberException("이미 등록된 번호입니다.");
+				}
+				break;
+			case "member_email":
+				if(!mService.isMemberEmailDuplicated(map.get("val"))) {
+					result = mService.editMemberInfo(map);
+				}else {
+					throw new MemberException("이미 등록된 이메일입니다.");
+				}
+				break;
+			}
+		}else {
+			throw new MemberException("비밀번호가 일치하지 않습니다.");
+		}
 		return result;
 	}
 
