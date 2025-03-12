@@ -66,7 +66,9 @@
 			<div class="flex-grow-1 overflow-auto p-3">
 				<input type="hidden" th:value="${no}">
 				<div class="chatContent">
-				
+					<div class='textArea' th:each="c, cStat:${chatList}">
+						<b> [[${c.sender}]] : [[${c.message}]]</b><p>&nbsp</p>
+					</div>
 				</div>
 			</div>
 			<div class="p-3 d-flex">
@@ -111,12 +113,14 @@
 		onload=()=>{
 			/*<![CDATA[*/
 			const username = /*[[${member.memberNickname}]]*/null;
-			const serverNo = /*[[${no}]]*/0;
+			const serverNo = /*[[${serverNo}]]*/0;
+			const channelNo = /*[[${channelNo}]]*/0;
 			/*]]*/
 			
 // 			const serverNo = document.querySelector('input[type="hidden"]').value;
 			
 			console.log("serverNo : " + serverNo);
+			console.log("channelNo : " + channelNo);
 			console.log("username : " + username);
 			
 			// WebSocket 연결
@@ -127,7 +131,7 @@
 				console.log("WebSocket 연결 성공!");
 				
 				// 특정 채팅방(roomId) 구독
-				stompClient.subscribe('/sub/chatroom/' + serverNo, (message)=>{
+				stompClient.subscribe('/sub/chatroom/' + channelNo, (message)=>{
 					const chatMessage =JSON.parse(message.body);
 					console.log("새 메시지:" + chatMessage.sender + ": " + chatMessage.message);
 					let today = new Date();
@@ -160,15 +164,25 @@
            						</div>`;
 	 	            document.querySelector('.chatContent').insertAdjacentHTML("afterbegin", str);
 
-					 console.log(str);
+	 	            // 스크롤 이동
+	 	          	document.querySelector('.chatContent').scrollTop = document.querySelector('.chatContent').scrollHeight;
 				});
 
 				// 메시지 전송 함수
 				const sendMessage=(sender, message, roomId)=>{
-					console.log('여긴가');
-					stompClient.send('/pub/chat/' + serverNo, {}, JSON.stringify({ roomId, sender, message }));
-					console.log('여긴가');
+					stompClient.send('/pub/chat/' + channelNo + '/' + 'C', {}, JSON.stringify({ roomId, sender, message }));
 				}
+
+				
+				document.querySelector('#button-send').addEventListener('click', ()=>{
+					let msg = document.querySelector('textarea');
+					sendMessage(username, msg.value, channelNo);
+					msg.value = '';
+				});
+			})
+			
+			document.querySelector('textarea').addEventListener('keydown', (e)=>{
+				if(e.keyCode == 13){
 
 			// TinyMCE 초기화
 			tinymce.init({
@@ -212,90 +226,8 @@
 					document.querySelector('#button-send').click();
 				}
 			});
-
 		})
-
-
-
 	}
-
-// 			const send=()=>{
-// 				let msg = document.querySelector('textarea');
-
-// 				console.log(username + ":" + msg.value);
-// 				websocket.send(username + ":" + msg.value);
-// 				msg.value = '';
-// 			}
-
-// 			document.querySelector('#button-send').addEventListener('click', ()=>{
-// 				let msg = document.querySelector('textarea').value;
-// 				sendMessage(username, msg);
-// 			});
-
-// 			const onMessage=(msg)=>{
-// 				let data = msg.data;
-// 				let sessionId = null;
-
-// 				let message = null;
-// 				let arr = data.split(":");
-
-// 				for(let i=0; i<arr.length; i++){
-// 					console.log('arr[' + i + '] : ' + arr[i]);
-// 				}
-
-// 				let cur_session = username;
-
-// 				sessionId = arr[0];
-// 				message = arr[1];
-
-// 				console.log("sessionID : " + sessionId);
-// 	            console.log("cur_session : " + cur_session);
-
-// 	            let today = new Date();
-
-// 	            let hour = String(today.getHours());
-// 	            let minute = String(today.getMinutes());
-// 	            let second = String(today.getSeconds());
-
-// 	            if(hour.length == 1){
-// 	            	hour = '0' + hour;
-// 	            }
-
-// 	            if(minute.length == 1){
-// 	            	minute = '0' + minute;
-// 	            }
-
-// 	            if(second.length == 1){
-// 	            	second = '0' + second;
-// 	            }
-
-
-// 	            let HMS = hour + ':' + minute + ':' + second;
-
-// 	            let str = "<div class='textArea'>";
-// 	            str += "<b>" + sessionId + " : " + message + "</b>" + "<p>" + HMS + "</p>";
-// 	            str += "</div>";
-// 	            document.querySelector('.chatContent').insertAdjacentHTML("afterbegin", str);
-// 			}
-
-// 			//채팅창에 들어왔을 때
-// 	        const onOpen=(e) => {
-// 	            let str = username + ": 님이 입장하셨습니다.";
-// 	            console.log(str);
-// 	            websocket.send(str);
-// 	        }
-
-// 	      	//채팅창에서 나갔을 때
-// 	        const onClose=(e)=> {
-// 	            let str = username + ": 님이 방을 나가셨습니다.";
-// 	            console.log(str);
-// 	            websocket.send(str);
-// 	        }
-
-// 			websocket.onmessage = onMessage;
-// 			websocket.onopen = onOpen;
-// 			websocket.onclose = onClose;
-
 	</script>
 	
 </body>

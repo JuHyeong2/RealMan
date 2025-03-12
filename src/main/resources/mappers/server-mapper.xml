@@ -15,4 +15,10 @@
         	join server_member using(server_no)
         where server_status = 'Y' and member_no = #{memberNo}
     </select>
+    
+    <select id="selectChannelNo">
+    	select channel_no
+    	from channel
+    	where server_no = #{serverNo} and channel_separator = 'T' and channel_status = 'Y'
+    </select>
 </mapper>
