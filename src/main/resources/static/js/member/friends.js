@@ -137,52 +137,39 @@ const getFriendList = () => {
     .then((data) => {
       if (data != undefined) {
         console.log("data : ", data);
-
         //친구목록
-        if (data.list != null) {
-          for (let f of data.list) {
-            const fli = fLi.cloneNode(true);
-            fli.querySelector("input").value = f.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            fli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/friend/no-profile.svg");
-            fli.querySelector(".nickname").innerText = f.memberNickname;
-            fli.querySelector(".id").innerText = f.memberId;
-            flist.append(fli);
-          }
-        } else {
-          flist.innerText = "비어있음";
+        for (let f of data.list) {
+          const fli = fLi.cloneNode(true);
+          fli.querySelector("input").value = f.memberNo;
+          //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
+          fli
+            .querySelector(".profile")
+            .setAttribute("src", "/image/friend/no-profile.svg");
+          fli.querySelector(".nickname").innerText = f.memberNickname;
+          fli.querySelector(".id").innerText = f.memberId;
+          flist.append(fli);
         }
-        if (data.wlist != null) {
-          for (let w of data.wlist) {
-            const wli = wLi.cloneNode(true);
-            wli.querySelector("input").value = w.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            wli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/friend/no-profile.svg");
-            wli.querySelector(".nickname").innerText = w.memberNickname;
-            wli.querySelector(".id").innerText = w.memberId;
-            wlist.append(wli);
-          }
-        } else {
-          wlist.innerText = "비어있음";
+        for (let w of data.wlist) {
+          const wli = wLi.cloneNode(true);
+          wli.querySelector("input").value = w.memberNo;
+          //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
+          wli
+            .querySelector(".profile")
+            .setAttribute("src", "/image/friend/no-profile.svg");
+          wli.querySelector(".nickname").innerText = w.memberNickname;
+          wli.querySelector(".id").innerText = w.memberId;
+          wlist.append(wli);
         }
-        if (data.rlist != null) {
-          for (let r of data.rlist) {
-            const rli = rLi.cloneNode(true);
-            rli.querySelector("input").value = r.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            rli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/friend/no-profile.svg");
-            rli.querySelector(".nickname").innerText = r.memberNickname;
-            rli.querySelector(".id").innerText = r.memberId;
-            rlist.append(rli);
-          }
-        } else {
-          rlist.innerText = "비어있음";
+        for (let r of data.rlist) {
+          const rli = rLi.cloneNode(true);
+          rli.querySelector("input").value = r.memberNo;
+          //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
+          rli
+            .querySelector(".profile")
+            .setAttribute("src", "/image/friend/no-profile.svg");
+          rli.querySelector(".nickname").innerText = r.memberNickname;
+          rli.querySelector(".id").innerText = r.memberId;
+          rlist.append(rli);
         }
 
         setupEventHandlers();
