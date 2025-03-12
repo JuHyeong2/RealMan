@@ -1,6 +1,7 @@
 package com.example.demo.chat.controller;
 
 import com.example.demo.chat.model.vo.Channel;
+import com.example.demo.chat.model.vo.ChannelMember;
 import com.example.demo.chat.model.vo.Chat;
 import com.example.demo.chat.model.vo.ChatMessage;
 import com.example.demo.member.model.vo.Member;
@@ -11,7 +12,10 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -29,7 +33,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 @Controller
@@ -41,6 +48,8 @@ public class ChatController {
 	
 
 	private final SimpMessagingTemplate messagingTemplate;
+	
+	private Map<Integer, Set<String>> userInChannel = new ConcurrentHashMap<>();
 
 	@GetMapping("main")
 	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
@@ -109,6 +118,12 @@ public class ChatController {
 //		Integer channelNum = (Integer)channelNo;
 		ArrayList<ChatMessage> chatList = cService.selectChatList(channelNo);
 		model.addAttribute("chatList", chatList);
+		
+		if(userInChannel != null && !userInChannel.isEmpty()) {
+//			model.addAttribute("userInChannel", userInChannel);	
+//			joinVoiceChannel();
+		}
+		
 
 //		ArrayList<Chat> chatChannel= cService.chattingSidebar(no);
 //		model.addAttribute("chatChannel", chatChannel);
@@ -131,8 +146,47 @@ public class ChatController {
 		messagingTemplate.convertAndSend("/sub/chatroom/" + channelNo, message);
 	}
 	
-	@MessageMapping("/joinVoice")
-	@SendTo("")
+	// 입장시 추가 후 목록반환
+	@MessageMapping("/chat/joinVoice")
+	@SendTo("/sub/voice")
+	public  Map<Integer, Set<String>> joinVoiceChannel(@Payload ChannelMember cMember) {
+//		System.out.println("joinVoice 들어옴.");
+		
+		for(int key : userInChannel.keySet()) {
+			if(userInChannel.get(key).contains(cMember.getUsername())) {
+				userInChannel.get(key).remove(cMember.getUsername());
+			}
+		}
+		
+		userInChannel.computeIfAbsent(cMember.getClickServerNo(),  k -> ConcurrentHashMap.newKeySet()).add(cMember.getUsername());
+		
+		
+		return userInChannel;
+	}
+	
+	// 목록반환 만
+	@GetMapping("/api/voiceUsers")
+	@ResponseBody
+	public Map<Integer, Set<String>> joinVoiceChannel() {
+		System.out.println("/api/voiceUsers 들어옴.");
+		System.out.println(userInChannel);
+//		messagingTemplate.convertAndSend("/sub/voice", userInChannel);
+		return userInChannel;
+	}
+	
+	// 사용자 목록 업데이트 후 반환
+	@MessageMapping("/chat/leaveVoice")
+	@SendTo("/sub/voice")
+	public  Map<Integer, Set<String>> leaveVoiceChannel(@Payload String username) {
+		System.out.println("보이스채팅을 나가는 닉네임 : " + username);
+		for(int key : userInChannel.keySet()) {
+			if(userInChannel.get(key).contains(username)) {
+				userInChannel.get(key).remove(username);
+			}
+		}
+		return userInChannel;
+	}
+	
 	
 	@PostMapping("selectSmallestChatNo")
 	@ResponseBody
