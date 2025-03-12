@@ -28,6 +28,8 @@ import java.util.ArrayList;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Controller
@@ -128,6 +130,9 @@ public class ChatController {
 		cService.insertChat(message);
 		messagingTemplate.convertAndSend("/sub/chatroom/" + channelNo, message);
 	}
+	
+	@MessageMapping("/joinVoice")
+	@SendTo("")
 	
 	@PostMapping("selectSmallestChatNo")
 	@ResponseBody
