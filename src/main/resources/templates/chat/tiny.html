@@ -17,8 +17,19 @@
     tinymce.init({
         selector: '#mytextarea',
         menubar: false,
-        toolbar: 'bold italic underline | bullist numlist | undo redo',
-        height: 200
+        toolbar: ' image  | bullist numlist | undo redo',
+        height: 200,
+        images_upload_handler: function (blobInfo, success, failure) {
+            // 파일을 Base64로 변환하여 업로드하는 간단한 예제
+            let reader = new FileReader();
+            reader.onload = function () {
+                success(reader.result); // Base64 URL을 에디터에 삽입
+            };
+            reader.readAsDataURL(blobInfo.blob());
+        },
+        images_upload_url: '/upload-image',
+        automatic_uploads: true,
+        paste_data_images: true
     });
 
     document.getElementById('chatForm').addEventListener('submit', function(event) {
@@ -40,6 +51,9 @@
                 tinymce.get('mytextarea').setContent(''); // 전송 후 입력칸 초기화
             })
             .catch(error => console.error('Error:', error));
+
+        console.log();
+
     });
    //dd
 </script>
