@@ -107,16 +107,4 @@ public class FriendController {
 		return result;
 	}
 	
-	//회원 찾기
-	@GetMapping("/member/find")
-	public ArrayList<Member> findMember(@RequestParam("search") String search,
-			HttpSession session, Model model){
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		Map<String, String> searchMap = new HashMap<String, String>();
-		searchMap.put("search", search);
-		searchMap.put("myMemberNo", loginMember.getMemberNo()+"");
-		ArrayList<Member> list = mService.findMember(searchMap);
-		
-		return list;
-	}
 }

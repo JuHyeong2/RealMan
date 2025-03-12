@@ -265,17 +265,22 @@ function setupEventHandlers() {
           .then((data) => {
             console.log("data", data);
             slist.innerHTML = "";
-            for (let s of data) {
-              const sli = sLi.cloneNode(true);
-              sli.querySelector("input").value = s.memberNo;
-              //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-              sli
-                .querySelector(".profile")
-                .setAttribute("src", "/image/friend/no-profile.svg");
-              sli.querySelector(".nickname").innerText = s.memberNickname;
-              sli.querySelector(".id").innerText = s.memberId;
-              slist.append(sli);
+            if (data != null) {
+              for (let s of data) {
+                const sli = sLi.cloneNode(true);
+                sli.querySelector("input").value = s.memberNo;
+                //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
+                sli
+                  .querySelector(".profile")
+                  .setAttribute("src", "/image/friend/no-profile.svg");
+                sli.querySelector(".nickname").innerText = s.memberNickname;
+                sli.querySelector(".id").innerText = s.memberId;
+                slist.append(sli);
+              }
+            } else {
+              slist.innerHTML = "검색 결과 없음";
             }
+
             //slist는 나중에 불러오는거라서 이벤트 리스너들 다시 적용
             setupEventHandlers();
           });
@@ -380,37 +385,21 @@ function setupEventHandlers() {
         //친구삭제
         menu1.onclick = function () {
           if (confirm("정말로 친구 삭제를 진행하시겠습니까?")) {
-            console.log(friendMemberNo, "친구 삭제");
-            fetch("/friend", {
-              method: "delete",
-              headers: { "content-type": "application/json; charset=UTF-8" },
-              body: JSON.stringify({
-                fnm: friendMemberNo,
-              }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data == 1) {
-                  alert("친구삭제가 완료되었습니다.");
-                  location.reload();
-                }
-              });
+            delteFriend(friendMemberNo);
           }
         };
         //차단
         menu2.onclick = function () {
           if (confirm("정말로 회원을 차단하시겠습니까?")) {
-            console.log(friendMemberNo, "친구 삭제 + 회원 차단");
-            fetch("/member/block");
+            blockMember(friendMemberNo);
           }
         };
-
-        //slist 에서는 :
       } else {
+        //slist 에서 :
         //차단
         menu1.onclick = function () {
           if (confirm("정말로 회원을 차단하시겠습니까?")) {
-            console.log(friendMemberNo, "친구 삭제 + 회원 차단");
+            blockMember(friendMemberNo);
           }
         };
       }
@@ -447,7 +436,14 @@ function setupEventHandlers() {
   //친구 거절
   const denySvgs = document.querySelectorAll(".deny-svg");
   for (svg of denySvgs) {
-    svg.addEventListener("click", function () {});
+    svg.addEventListener("click", function () {
+      const thisRow =
+        this.parentElement.parentElement.parentElement.parentElement;
+      const friendMemberNo = thisRow.querySelector("input[type=hidden]").value;
+      if (confirm("요청을 거절하시겠습니까?")) {
+        delteFriend(friendMemberNo);
+      }
+    });
   }
 
   //======================대기중 리스트 wlist======================
@@ -459,20 +455,7 @@ function setupEventHandlers() {
         this.parentElement.parentElement.parentElement.parentElement;
       const friendMemberNo = thisRow.querySelector("input[type=hidden]").value;
       if (confirm("보낸 요청을 취소하시겠습니까?")) {
-        fetch("/friend", {
-          method: "delete",
-          headers: { "content-type": "application/json; charset=UTF-8" },
-          body: JSON.stringify({
-            fnm: friendMemberNo,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data == 1) {
-              alert("친구 요청이 취소되었습니다.");
-              location.reload();
-            }
-          });
+        delteFriend(friendMemberNo);
       }
     });
   }
@@ -505,4 +488,41 @@ function setupEventHandlers() {
       }
     });
   }
+}
+
+// 친구 삭제 (요청 거절, 보낸 요청 취소)
+function delteFriend(friendMemberNo) {
+  fetch("/friend", {
+    method: "delete",
+    headers: { "content-type": "application/json; charset=UTF-8" },
+    body: JSON.stringify({
+      fnm: friendMemberNo,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data == 1) {
+        alert("친구 요청이 취소되었습니다.");
+        location.reload();
+      }
+    });
+}
+
+// 회원 차단
+function blockMember(blockMemberNo) {
+  fetch("/member/block", {
+    method: "post",
+    headers: { "content-type": "application/json; charset=UTF-8" },
+    body: JSON.stringify({
+      bnm: blockMemberNo,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("data", data);
+      if (data == 1) {
+        alert("차단이 완료되었습니다.");
+        location.reload();
+      }
+    });
 }
