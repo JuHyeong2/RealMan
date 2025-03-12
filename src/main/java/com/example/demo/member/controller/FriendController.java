@@ -34,7 +34,7 @@ public class FriendController {
 		
 		// 친구목록
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+		ArrayList<Member> list = friendNumberList.isEmpty()? null : mService.selectFriends(friendNumberList);
 		// 내가 보낸 요청 목록
 		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
 		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
@@ -107,16 +107,4 @@ public class FriendController {
 		return result;
 	}
 	
-	//회원 찾기
-	@GetMapping("/member/find")
-	public ArrayList<Member> findMember(@RequestParam("search") String search,
-			HttpSession session, Model model){
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		Map<String, String> searchMap = new HashMap<String, String>();
-		searchMap.put("search", search);
-		searchMap.put("myMemberNo", loginMember.getMemberNo()+"");
-		ArrayList<Member> list = mService.findMember(searchMap);
-		
-		return list;
-	}
 }

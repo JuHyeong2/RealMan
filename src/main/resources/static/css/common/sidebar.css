@@ -1,14 +1,6 @@
-.sidebar_wrap {
-    width: 20%;
-    display: flex;
-    top:40px;
-    background: #f2f6f9;
-    flex-direction: row;
-    justify-content: flex-start;
-}
 .sidebar{
     width: 80px;
-    background-color: #dbe9f4;
+    background-color: #E4EDF3;
     padding: 40px 10px 10px;
     /*position: absolute;*/
     /*top: 20px;*/

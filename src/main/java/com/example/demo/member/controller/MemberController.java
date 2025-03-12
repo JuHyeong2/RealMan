@@ -1,6 +1,8 @@
 package com.example.demo.member.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -127,6 +129,49 @@ public class MemberController {
 			return "MemberNotFound";
 		}
 		return "?";
+	}
+	
+	//회원 찾기
+	@GetMapping("/find")
+	@ResponseBody
+	public ArrayList<Member> findMember(@RequestParam("search") String search,
+			HttpSession session, Model model){
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		
+		Map<String, String> searchMap = new HashMap<String, String>();
+		searchMap.put("search", search);
+		searchMap.put("myMemberNo", loginMember.getMemberNo()+"");
+		ArrayList<Member> list = mService.findMember(searchMap);
+		System.out.println("list : "+list);
+		return list;
+	}
+	
+	// 회원 차단
+	@PostMapping("/block")
+	@ResponseBody
+	public int blockMember(@RequestBody HashMap<String, Integer> map2,
+			HttpSession session) {
+		int result = 0;
+		int blockMemberNo = map2.get("bnm");
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("myMemberNo", loginMember.getMemberNo());
+		map.put("blockMemberNo", blockMemberNo);
+		
+		//친구관계면 삭제
+		HashMap<String, String> friendCheck = mService.friendCheck(map);
+		if (friendCheck == null) {
+			mService.deleteFriend(map);
+		}
+		
+		//차단 여부 확인
+		int blockCheck = mService.blockCheck(map);
+		if (blockCheck == 0 ) {
+			result = mService.blockMember(map);
+		}
+		
+		return result;
 	}
 
 	// 회원가입 페이지로 이동
