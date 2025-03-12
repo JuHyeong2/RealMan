@@ -23,3 +23,4 @@ Thumbs.db
 /.idea/misc.xml
 /.idea/vcs.xml
 src/main/resources/keystore.jks
+src/main/resources/realmanfirestore-firebase-adminsdk-fbsvc-42ed42e9d5.json

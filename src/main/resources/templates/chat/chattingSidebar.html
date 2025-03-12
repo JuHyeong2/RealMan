@@ -5,97 +5,136 @@
     <title>chattingSidebar</title>
     <link rel="stylesheet" href="/css/chat/chattingSidebar.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 <body>
 
 	<div class="channel-list bg-light d-flex flex-column" style="width: 320px;">
 	    <nav>
-    		<ul>
-    			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
-					<li><a href="#"><img src="/image/Voice.png">롤토체스 음성방</a></li>
-    				<ul>
-    					<li><img src="/image/profile.png">&nbsp이주형</li>
-    				</ul>
-    			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
-					<li><a href="#"><img src="/image/chat.png">롤토체스 채팅방</a></li>
-    				<ul>
-    				<li></li>
-    				</ul>
-    				<li><a href="#"><img src="/image/chat.png">수다떠는 채팅방</a></li>
-    				<ul>
-    				<li></li>
-    				</ul>
-    		</ul>
+	    	<h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
+	    	<div class="voiceChat" th:each="c : ${channel}" th:if='${c.channelSeparator eq "V"}'>
+	    		<ul>
+		    		<li>
+		    			<a href="#"><img src="/image/Voice.png">&nbsp[[${c.channelName}]]</a>
+		    			<ul></ul>
+		    		</li>
+	    		</ul>
+	    	</div>
+	
+	    	<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
+		    <div class="textChat">
+				<li th:each="c : ${channel}" th:if="${c.channelSeparator == 'T'}" onclick="goToChat(event);"><a th:href="@{'/chat/main/'+${serverNo}+'/'+${c.channelNo}}"><img src="/image/chat.png">&nbsp[[${c.channelName}]]</a></li>
+			</div>
+		    <ul>
+		    <li></li>
+		    </ul>
+
     	</nav>
     	
     	<div class="profile">
-    		<img src="/image/no-profile.svg" width="50px" onclick="goToMyAccount()">
+    		<img src="/image/profile.png" width="50px" onclick="goToMyAccount()">
     		<b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b>
     		<img id="micImg" src="/image/preferences/mic.png" width="30px">
     		<img src="/image/preferences/Headphones.png" width="30px">
     		<img src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
     	</div>
 	</div>
-	
-<!--     <div class="chatSidebar"> -->
-<!--     	<nav> -->
-<!--     		<ul> -->
-<!--     			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4> -->
-<!-- 					<li><a href="#"><img src="/image/Voice.png">롤토체스 음성방</a></li> -->
-<!--     				<ul> -->
-<!--     					<li><img src="/image/profile.png">&nbsp이주형</li> -->
-<!--     				</ul> -->
-<!--     			<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4> -->
-<!-- 					<li><a href="#"><img src="/image/chat.png">롤토체스 채팅방</a></li> -->
-<!--     				<ul> -->
-<!--     				<li></li> -->
-<!--     				</ul> -->
-<!--     				<li><a href="#"><img src="/image/chat.png">수다떠는 채팅방</a></li> -->
-<!--     				<ul> -->
-<!--     				<li></li> -->
-<!--     				</ul> -->
-<!--     		</ul> -->
-<!--     	</nav> -->
-    	
-<!--     	<div class="profile"> -->
-<!--     		<img src="/image/no-profile.svg" width="50px" onclick="goToMyAccount()"> -->
-<!--     		<b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b> -->
-<!--     		<img id="micImg" src="/image/preferences/mic.png" width="30px"> -->
-<!--     		<img src="/image/preferences/Headphones.png" width="30px"> -->
-<!--     		<img src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()"> -->
-<!--     	</div> -->
-<!--     </div> -->
+
 
 	<script>
 
 		
 		// 음성 채팅방 드롭다운
 		document.querySelectorAll('.channel')[0].addEventListener('click', ()=>{
-			const chatRoom = document.querySelector('nav ul li');
-			const people = document.querySelector('nav ul ul li');
-			
-			if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
-				chatRoom.style.display = 'block';
-				people.style.display = 'block';	
-			}else{
-				chatRoom.style.display = 'none';
-				people.style.display = 'none';
+			const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
+			const voiceChannels = document.querySelectorAll('.voiceChat');
+			for(const voiceChannel of voiceChannels){
+// 				console.log(voiceChannel);
+				const chatRoom = voiceChannel.querySelector('li');
+// 				console.log(chatRoom);
+				if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
+					chatRoom.style.display = 'block';
+// 					people.style.display = 'block';	
+				}else{
+					chatRoom.style.display = 'none';
+// 					people.style.display = 'none';
+				}	
+				
+				const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
+				const channelstompClient = Stomp.over(socket);
+				
+				channelstompClient.connect({}, ()=>{
+					console.log('channelSocket 연결 성공');
+					
+					
+				})
+				
+				voiceChannel.addEventListener('click', ()=>{
+					
+					
+					$.ajax({
+						url: '/chat/updateChannelUser',
+						success: data=>{
+							const lis = voiceChannel.querySelectorAll('ul>li>ul li');
+							console.log(lis);
+							if(lis.length == 0){
+								voiceChannel.querySelector('ul>li>ul').innerHTML += '<li><img src="/image/profile.png">&nbsp' + myNickname + '</li>';
+							}
+							for(const li of lis){
+// 								console.log(li);
+								if(li == null){
+									voiceChannel.querySelector('ul>li>ul').innerHTML += '<li><img src="/image/profile.png">&nbsp' + myNickname + '</li>';
+								}else{
+									if(li.innerText.trim() == myNickname){
+										console.log(voiceChannel.querySelector('ul>li>ul>li').innerText);
+									}else{
+// 										console.log(li.innerText.trim());
+// 										console.log(myNickname);
+										voiceChannel.querySelector('ul>li>ul').innerHTML += '<li><img src="/image/profile.png">&nbsp' + myNickname + '</li>';
+									}
+								}
+							}
+									
+						}
+					})
+				})
 			}
+// 			const chatRooms = 	document.querySelectorAll('.voiceChat').querySelectorAll('li');
+// 			const people = document.querySelector('nav ul ul li');
+			
+// 			for(const chatRoom of chatRooms){
+// 				if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
+// 					chatRoom.style.display = 'block';
+// 					people.style.display = 'block';	
+// 				}else{
+// 					chatRoom.style.display = 'none';
+// 					people.style.display = 'none';
+// 				}	
+// 			}
 		})
 		
 		// 채팅 채팅방 드롭다운
 		document.querySelectorAll('.channel')[1].addEventListener('click', ()=>{
-			const chatRoom = document.querySelector('nav > ul:nth-of-type(2) li');
+			const chatRooms = document.querySelectorAll('.textChat')[0].querySelectorAll('li');
 			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
 			
-			if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
-				chatRoom.style.display = 'block';
-				people.style.display = 'block';	
-			}else{
-				chatRoom.style.display = 'none';
-				people.style.display = 'none';
+			for(const chatRoom of chatRooms){
+				if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
+					chatRoom.style.display = 'block';
+					people.style.display = 'block';	
+				}else{
+					chatRoom.style.display = 'none';
+					people.style.display = 'none';
+				}
 			}
+			
+			
 		})
+		
+		// 해당 채팅 채널 클릭시 해당 채널로 이동
+		const goToChat=(e)=>{
+			
+		}
 		
 		// 프로필 사진, 닉네임, 톱니바퀴 클릭시 내계정 페이지로 이동
 		const goToMyAccount=()=>{

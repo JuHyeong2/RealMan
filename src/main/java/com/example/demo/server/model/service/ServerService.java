@@ -21,4 +21,9 @@ public class ServerService {
     public ArrayList<Server> selectServerList(Member m) {
         return mapper.selectServerList(m);
     }
+
+	public ArrayList<Integer> selectChannelNo(int serverNo) {
+		
+		return mapper.selectChannelNo(serverNo);
+	}
 }

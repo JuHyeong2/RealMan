@@ -1,4 +1,11 @@
 @charset "UTF-8";
+/* html, body { */
+/* 	overflow: hidden; */
+/* 	margin: 0;        페이지 마진 없애기 */
+/*     padding: 0;       페이지 패딩 없애기 */
+/*     height: 100%;     페이지 높이를 100%로 설정 */
+/* } */
+
 .all{
 	display: flex;
 	height: 100vh;
@@ -21,14 +28,14 @@
 	width: 70px;
 }
 
-/* .chatContent { */
-/* 	height: 53.5rem; */
-/* 	background-color: white; */
-/* 	display: flex; */
-/* 	flex-direction: column-reverse; */
-/* 	align-items: flex-start; */
-/* 	overflow-y: auto;  */
-/* } */
+.chatContent {
+	height: 80vh;
+	background-color: white;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-start;
+	overflow-y: auto; 
+}
 
 .inputChat {
 /* 	width: 100%; */
@@ -53,7 +60,7 @@
 	display: flex;
 	justify-content: space-between;
 	position: relative;
-	bottom: 50px;
+/* 	bottom: 50px; */
 	z-index: 1;
 	width: 100%;
 }

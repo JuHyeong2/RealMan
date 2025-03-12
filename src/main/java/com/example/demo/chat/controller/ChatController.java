@@ -16,7 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.chat.model.service.ChatService;
 
@@ -25,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 @Controller
 @RequiredArgsConstructor
@@ -79,10 +84,10 @@ public class ChatController {
 
 
 
-	@GetMapping("/main/{no}")
-	public String chatting(@PathVariable("no") int no, Model model, HttpSession session) {
+	@GetMapping("/main/{serverNo}/{channelNo}")
+	public String chatting(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
-		System.out.println(no);
+		System.out.println(serverNo);
 		
 		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
 
@@ -90,13 +95,19 @@ public class ChatController {
 			model.addAttribute("selectServerList", selectServerList);
 		}
 		
-		model.addAttribute("no", no).addAttribute("member", loginMember);
+		model.addAttribute("serverNo", serverNo).addAttribute("member", loginMember);
 
 //		Channel channel = new Channel();
 //		channel.setServerNo(no);
 //		channel.se
-		ArrayList<Channel> channel= cService.chattingSidebar(no);
+		ArrayList<Channel> channel= cService.chattingSidebar(serverNo);
+		System.out.println(channel.toString());
 		model.addAttribute("channel", channel);
+		
+		// 채널 message 가져오자
+//		Integer channelNum = (Integer)channelNo;
+		ArrayList<ChatMessage> chatList = cService.selectChatList(channelNo);
+		model.addAttribute("chatList", chatList);
 
 //		ArrayList<Chat> chatChannel= cService.chattingSidebar(no);
 //		model.addAttribute("chatChannel", chatChannel);
@@ -105,14 +116,35 @@ public class ChatController {
 
 	}
 	
-	@MessageMapping("/chat/{serverNo}")
-	public void sendMessage(@DestinationVariable("serverNo") String serverNo, ChatMessage message) {
+	@MessageMapping("/chat/{channelNo}/{separetor}")
+	public void sendMessage(@DestinationVariable("channelNo") int channelNo, @DestinationVariable("separetor") String separetor, ChatMessage message) {
 		// 특정  채팅방(roomId)에 메시지를 전송
-		System.out.println("serverNo : " + serverNo);
+		System.out.println("channelNo : " + channelNo);
+		System.out.println("separetor : " + separetor);
 		System.out.println("nickName : " + message.getSender());
 		System.out.println("message : " + message.getMessage());
-		message.setRoomId(serverNo);
-		messagingTemplate.convertAndSend("/sub/chatroom/" + serverNo, message);
+		message.setRoomId(channelNo);
+		message.setSeparetor(separetor);
+		// firebaseStore
+		cService.insertChat(message);
+		messagingTemplate.convertAndSend("/sub/chatroom/" + channelNo, message);
+	}
+	
+	@PostMapping("selectSmallestChatNo")
+	@ResponseBody
+	public int selectSmallestChatNo(@RequestParam("serverNo") int serverNo) {
+		System.out.println(serverNo);
+		ArrayList<Integer> channelNo = sService.selectChannelNo(serverNo);
+		System.out.println(channelNo);
+		Collections.sort(channelNo);
+		return channelNo.get(0);
+	}
+	
+	@GetMapping("updateChannelUser")
+	@ResponseBody
+	public int updateChannelUser() {
+		System.out.println("유저 입장.");
+		return 1;
 	}
 	
 	

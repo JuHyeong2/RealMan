@@ -40,8 +40,15 @@ public class HomeController {
 		ArrayList<Server> selectServerList = sService.selectServerList(m);
 		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);
+			
+			
 		}
 		return "/main/main";
+	}
+	
+	public int smallestTextChatNo() {
+		
+		return 0;
 	}
 
 	

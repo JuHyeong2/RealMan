@@ -13,14 +13,29 @@ html, body {
 	overflow-y: auto;
 }
 
-nav ul {
+.voiceChat ul {
 	list-style: none;
 	padding: 0;
 	margin-left: 5px;
 	font-size: 25px;
 }
 
-nav ul li {
+.voiceChat > ul > li > a {
+	display: block;
+	list-style: none;
+	padding: 10px;
+	margin: 1rem;
+	font-size: 20px;
+	background-color: #bdd3e2;
+	border-radius: 10px;
+	width: 90%;
+}
+
+.voiceChat > ul > li > ul {
+	margin-left: 30px;
+}
+
+.textChat > li {
 	list-style: none;
 	padding: 10px;
 	margin: 1rem;
@@ -29,16 +44,20 @@ nav ul li {
 	border-radius: 10px;
 }
 
-nav ul ul li{
-	list-style: none;
-	padding: 0;
-	margin-left: 30px;
-	font-size: 20px;
-	background-color: transparent;
-	border-radius: 10px;
+.voiceChat ui li{
+	margin-left: 50px;
 }
 
-nav ul li {
+/* nav ul ul li{ */
+/* 	list-style: none; */
+/* 	padding: 0; */
+/* 	margin-left: 30px; */
+/* 	font-size: 20px; */
+/* 	background-color: transparent; */
+/* 	border-radius: 10px; */
+/* } */
+
+.voiceChat > ul > li {
 	display: none;
 }
 

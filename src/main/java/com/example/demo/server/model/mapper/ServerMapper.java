@@ -11,4 +11,6 @@ public interface ServerMapper {
     ArrayList<Server> serverList(int memberNo);
 
     ArrayList<Server> selectServerList(Member m);
+
+	ArrayList<Integer> selectChannelNo(int serverNo);
 }
