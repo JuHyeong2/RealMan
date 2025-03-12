@@ -124,7 +124,7 @@
 			console.log("username : " + username);
 			
 			// WebSocket 연결
-			const socket = new SockJS("https://192.168.140.4:8080/stomp/chat");
+			const socket = new SockJS("https://192.168.40.4:9090/stomp/chat");
 			const stompClient = Stomp.over(socket);
 			
 			stompClient.connect({}, ()=>{
@@ -181,8 +181,7 @@
 				});
 			})
 			
-			document.querySelector('textarea').addEventListener('keydown', (e)=>{
-				if(e.keyCode == 13){
+
 
 			// TinyMCE 초기화
 			tinymce.init({
@@ -190,8 +189,8 @@
 				plugins: 'image paste',
 				menubar: false,
 				toolbar: ' image | bullist numlist | undo redo',
-				height: 150,
-				width: 500,
+				height: 80,
+				width: '100%',
 				images_upload_handler: function (blobInfo, success, failure) {
 					let reader = new FileReader();
 					reader.onload = function () {
@@ -245,8 +244,7 @@
 					document.querySelector('#button-send').click();
 				}
 			});
-		})
-	}
+		}
 	</script>
 	
 </body>
