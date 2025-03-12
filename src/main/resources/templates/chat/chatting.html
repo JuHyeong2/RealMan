@@ -176,8 +176,8 @@
 				plugins: 'image paste',
 				menubar: false,
 				toolbar: ' image | bullist numlist | undo redo',
-				height: 100,
-				width: 400,
+				height: 150,
+				width: 500,
 				images_upload_handler: function (blobInfo, success, failure) {
 					let reader = new FileReader();
 					reader.onload = function () {
@@ -195,15 +195,34 @@
 
 			document.querySelector('#button-send').addEventListener('click', ()=>{
 				// let msg = document.querySelector('textarea');
-				let msg = tinymce.get('mytextarea').getContent({ format: 'html' }); // TinyMCE에서 값 가져오기
-				let imgTags = msg.match(/<img[^>]+src="([^">]+)"/g);
 
 
+				let msg = tinymce.get('mytextarea').getContent({ format: 'html' }); // HTML 가져오기
+				let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/); // 첫 번째 이미지만 추출
+				// let imgTags = msg.match(/<img[^>]+src="([^">]+)"/g); // 이미지 태그 추출
 
-				sendMessage(username, msg, serverNo);
+
+				if (imgTagMatch) {
+					let imgSrc = imgTagMatch[1]; // Base64 이미지 URL
+					let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`; // 크기 지정
+
+					// 기존 메시지 + 수정된 이미지 태그
+					let newContent = msg.replace(/<img[^>]+>/, imgTag);
+
+					sendMessage(username, newContent, serverNo); // 수정된 메시지 전송
+				} else {
+					sendMessage(username, msg, serverNo); // 이미지가 없을 경우 기존 메시지 전송
+				}
+
 				tinymce.get('mytextarea').setContent('');
-				// msg.value = '';
+
+
 			});
+
+
+
+
+
 
 
 			document.querySelector('textarea').addEventListener('keydown', (e)=>{
