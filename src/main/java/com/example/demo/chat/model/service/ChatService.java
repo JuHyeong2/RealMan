@@ -90,13 +90,13 @@ public class ChatService {
 			querySnapshot = query.get();
 			List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 			for (QueryDocumentSnapshot document : documents) {
-			  System.out.println("document: " + document.getId());
-			  System.out.println("chat_content: " + document.getString("chat_content"));
-			  System.out.println("chat_createdate: " + document.getTimestamp("chat_createdate"));
-			  System.out.println("chat_memberNickname: " + document.getString("chat_memberNickname"));
-			  System.out.println("chat_separator: " + document.getString("chat_separator"));
-			  System.out.println("dc_no: " + document.getLong("dc_no"));
-			  System.out.println();
+//			  System.out.println("document: " + document.getId());
+//			  System.out.println("chat_content: " + document.getString("chat_content"));
+//			  System.out.println("chat_createdate: " + document.getTimestamp("chat_createdate"));
+//			  System.out.println("chat_memberNickname: " + document.getString("chat_memberNickname"));
+//			  System.out.println("chat_separator: " + document.getString("chat_separator"));
+//			  System.out.println("dc_no: " + document.getLong("dc_no"));
+//			  System.out.println();
 			  ChatMessage message = new ChatMessage();
 			  message.setMessage(document.getString("chat_content"));
 			  message.setRoomId(document.getLong("dc_no").intValue());

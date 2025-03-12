@@ -20,7 +20,7 @@ html, body {
 	font-size: 25px;
 }
 
-.voiceChat > ul > li > a {
+.voiceChat > ul > li > b {
 	display: block;
 	list-style: none;
 	padding: 10px;
@@ -29,6 +29,8 @@ html, body {
 	background-color: #bdd3e2;
 	border-radius: 10px;
 	width: 90%;
+	font-weight: normal;
+	cursor: pointer;
 }
 
 .voiceChat > ul > li > ul {
@@ -75,6 +77,27 @@ html, body {
 .chatSidebar nav ul li.channel:hover + .voiceList,
 .chatSidebar nav ul li.channel:hover + .chatList {
 	display: block;
+}
+
+.connect {
+	display: flex;
+	align-items: center;
+	background-color: #f2f6f9;
+	margin-top: auto;
+	margin-bottom: 3rem;
+}
+
+.connect b{
+	color: #2dc771;
+}
+
+.connect img{
+	margin-left: auto;
+	cursor: pointer;
+}
+
+.connect img:hover{
+	background-color: #dbe9f4;
 }
 
 .profile {
