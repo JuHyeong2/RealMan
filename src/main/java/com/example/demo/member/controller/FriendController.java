@@ -34,7 +34,7 @@ public class FriendController {
 		
 		// 친구목록
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-		ArrayList<Member> list = mService.selectFriends(friendNumberList);
+		ArrayList<Member> list = friendNumberList.isEmpty()? null : mService.selectFriends(friendNumberList);
 		// 내가 보낸 요청 목록
 		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
 		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
