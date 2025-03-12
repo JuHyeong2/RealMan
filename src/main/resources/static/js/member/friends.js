@@ -389,6 +389,7 @@ function setupEventHandlers() {
         menu2.onclick = function () {
           if (confirm("정말로 회원을 차단하시겠습니까?")) {
             console.log(friendMemberNo, "친구 삭제 + 회원 차단");
+            fetch("/member/block");
           }
         };
 
