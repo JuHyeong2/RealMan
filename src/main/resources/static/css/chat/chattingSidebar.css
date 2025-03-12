@@ -13,14 +13,14 @@ html, body {
 	overflow-y: auto;
 }
 
-nav ul {
+.chatSidebar nav ul {
 	list-style: none;
 	padding: 0;
 	margin-left: 5px;
 	font-size: 25px;
 }
 
-nav ul li {
+.chatSidebar nav ul li {
 	list-style: none;
 	padding: 10px;
 	margin: 1rem;
@@ -29,7 +29,7 @@ nav ul li {
 	border-radius: 10px;
 }
 
-nav ul ul li{
+.chatSidebar nav ul ul li{
 	list-style: none;
 	padding: 0;
 	margin-left: 30px;
@@ -38,7 +38,7 @@ nav ul ul li{
 	border-radius: 10px;
 }
 
-nav ul li {
+.chatSidebar nav ul li {
 	display: none;
 }
 
@@ -51,7 +51,36 @@ nav ul li {
 	padding: 0;
 }
 
+.voiceList table, .chatList table {
+	width: 100%;
+}
 
+.voiceList td, .chatList td {
+	padding: 8px;
+}
+
+.voiceList td img, .chatList td img {
+	width: 20px;
+	height: 20px;
+}
+
+.voiceList th, .chatList th {
+	text-align: left;
+}
+
+.chatList a {
+	text-decoration: none;
+	color: inherit; /* 링크 색상 상속 */
+}
+
+.chatList table {
+	border-spacing: 0;
+	width: 100%;
+}
+
+.chatList td {
+	text-align: center;
+}
 
 .chatSidebar nav ul li.channel:hover + .voiceList,
 .chatSidebar nav ul li.channel:hover + .chatList {
@@ -60,7 +89,7 @@ nav ul li {
 
 .profile {
 	display: flex;
-  	align-items: center; /* 수직 중앙 정렬 */
+  	align-items: center; 
   	gap: 5px;
   	position: absolute;
   	width: 350px;
@@ -81,22 +110,15 @@ nav ul li {
 }
 
 .modal {
-    display: none; 
-    position: fixed;
-    z-index: 1000;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    text-align: center;
+    width: 280px;
+    height: auto; /* 높이가 고정되지 않음 */
 }
 
 .modal-content {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* 요소 간격 조정 */
 }
 
 .close {
@@ -107,10 +129,19 @@ nav ul li {
     cursor: pointer;
 }
 
+.profile-modal-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.profile-modal-header img {
+    border-radius: 50%;
+    width: 50px;
+}
+
 .modal button {
     width: 100%;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 8px;
     border: none;
     background-color: #bdd3e2;
     color: white;
@@ -122,12 +153,22 @@ nav ul li {
     background-color: #91b2c3;
 }
 
-#statusMessage {
+#statusSelect {
     width: 100%;
-    height: 60px;
-    margin-top: 10px;
-    padding: 10px;
+    padding: 5px;
+    font-size: 14px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    resize: none;
+    background-color: #f5f5f5;
+}
+
+#statusSelect:hover, #liveIconSelect:hover {
+    background-color: #e0e0e0;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
 }
