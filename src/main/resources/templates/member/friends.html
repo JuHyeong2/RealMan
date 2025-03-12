@@ -16,47 +16,14 @@
         <div id="search-div">
           <input type="text" />
           <button id="search-button">검색</button>
+          <button id="search-refresh">전체보기</button>
         </div>
       </div>
       <div>
-        <ul id="friend-list"></ul>
+        <ul id="friend-list" class="ul-show"></ul>
         <ul id="wait-list"></ul>
         <ul id="request-list"></ul>
-        <ul id="search-list">
-          <li>
-            <div class="friend-row slist">
-              <input type="hidden" />
-              <div class="profile-div">
-                <div class="svg-container">
-                  <img class="profile" src="/image/friend/no-profile.svg" />
-                </div>
-              </div>
-              <div class="nickname-div">
-                <label class="nickname"></label>
-                <label class="id"></label>
-              </div>
-              <div class="other-div">
-                <div class="dm-div">
-                  <div class="svg-container">
-                    <img
-                      class="icon dm-svg qq"
-                      src="/image/friend/message.svg"
-                    />
-                  </div>
-                </div>
-                <div class="etc-div">
-                  <div class="svg-container">
-                    <img class="icon etc-svg qq" src="/image/friend/more.svg" />
-                  </div>
-                  <div class="etc-menu">
-                    <div class="qq">친구 삭제</div>
-                    <div class="qq">회원 차단</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
+        <ul id="search-list"></ul>
       </div>
     </div>
   </body>

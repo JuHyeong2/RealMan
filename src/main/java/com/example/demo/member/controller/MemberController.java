@@ -69,7 +69,8 @@ public class MemberController {
 		String random = "";
 		// 1. 가입된 이메일인지 확인
 		int emailchecked = mService.checkEmail(email);
-
+		
+		System.out.println(emailchecked);
 		if (emailchecked == 1) {
 			// 2. 코드 생성
 			for (int i = 0; i < 6; i++) {
@@ -108,7 +109,7 @@ public class MemberController {
 		System.out.println("memberEmail : " + m.getMemberEmail());
 		System.out.println("newPwd : " + newPwd);
 
-		// 1. 사용자가 입력한 아이디와 - 이메일이 일치하는지 조회
+		// 1. 사용자가 입력한 아이디와 이메일이 일치하는지 조회
 		int check = mService.confirmIdEmail(m);
 		System.out.println("confirmIdEmail : " + check);
 

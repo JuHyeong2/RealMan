@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -108,6 +109,21 @@ public class MemberService {
 	// 친구 수락
 	public int approveRequest(HashMap<String, Integer> map) {
 		return mapper.approveRequest(map);
+	}
+	
+	// 회원 찾기 (친구 추가)
+	public ArrayList<Member> findMember(Map<String, String> searchMap) {
+		return mapper.findMember(searchMap);
+	}
+	
+	// 친구관계 확인
+	public HashMap<String, String> friendCheck(HashMap<String, Integer> map) {
+		return mapper.friendCheck(map);
+	}
+	
+	//친구 요청
+	public int requestFriend(HashMap<String, Integer> map) {
+		return mapper.requestFriend(map);
 	}
 
 }

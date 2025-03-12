@@ -2,6 +2,7 @@ package com.example.demo.member.model.mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -58,5 +59,14 @@ public interface MemberMapper {
 
     //친구 수락
 	int approveRequest(HashMap<String, Integer> map);
+	
+	//회원 찾기 (친구 추가)
+	ArrayList<Member> findMember(Map<String, String> searchMap);
+	
+	//친구관계 확인
+	HashMap<String, String> friendCheck(HashMap<String, Integer> map);
+	
+	//친구 요청
+	int requestFriend(HashMap<String, Integer> map);
     
 }
