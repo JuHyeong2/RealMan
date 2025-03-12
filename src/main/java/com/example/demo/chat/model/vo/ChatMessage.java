@@ -6,7 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChatMessage {
-	private String roomId;
+	private int roomId;
 	private String sender;
 	private String message;
+	private String separetor;
+	private String createDate;
 }
