@@ -381,7 +381,8 @@ function setupEventHandlers() {
         friendrow.querySelector("input[type=hidden]").value;
       const [menu1, menu2] = etcMenu.querySelectorAll("div");
       //flist 에서 :
-      if (friendrow.parentElement.id == "friend-list") {
+      console.log(friendrow.parentElement.parentElement.id);
+      if (friendrow.parentElement.parentElement.id == "friend-list") {
         //친구삭제
         menu1.onclick = function () {
           if (confirm("정말로 친구 삭제를 진행하시겠습니까?")) {
@@ -390,6 +391,7 @@ function setupEventHandlers() {
         };
         //차단
         menu2.onclick = function () {
+          console.log(this);
           if (confirm("정말로 회원을 차단하시겠습니까?")) {
             blockMember(friendMemberNo);
           }
