@@ -10,20 +10,19 @@
     ></script>
     <link href="/css/main.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/css/member/friends.css" />
+    <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
-    <div class="container">
-      <div class="topbar_wrap" th:insert="../common/top.html"></div>
-      <div class="square">
+  <div class="topbar_wrap" th:replace="../common/top.html"></div>
+  <div class="main-container">
         <div class="sidebar_wrap">
-          <div th:insert="~{../common/sidebar.html}"></div>
-          <div th:insert="~{/main/directMassage.html :: directMassage}"></div>
+          <div th:replace="~{../common/sidebar.html}"></div>
+          <div th:replace="~{/main/directMassage.html :: directMassage}"></div>
         </div>
 
         <!-- 친구 목록 -->
-        <div th:insert="~{../member/friends.html::friends}"></div>
-      </div>
-    </div>
+        <div th:replace="~{../member/friends.html::friends}"></div>
+  </div>
 
     <script src="/js/member/friends.js"></script>
   </body>
