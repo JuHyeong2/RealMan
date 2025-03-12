@@ -13,14 +13,24 @@ html, body {
 	overflow-y: auto;
 }
 
-.chatSidebar nav ul {
-	list-style: none;
-	padding: 0;
-	margin-left: 5px;
-	font-size: 25px;
-}
 
 .chatSidebar nav ul li {
+.voiceChat > ul > li > a {
+	display: block;
+	list-style: none;
+	padding: 10px;
+	margin: 1rem;
+	font-size: 20px;
+	background-color: #bdd3e2;
+	border-radius: 10px;
+	width: 90%;
+}
+
+.voiceChat > ul > li > ul {
+	margin-left: 30px;
+}
+
+.textChat > li {
 	list-style: none;
 	padding: 10px;
 	margin: 1rem;
@@ -38,7 +48,16 @@ html, body {
 	border-radius: 10px;
 }
 
-.chatSidebar nav ul li {
+/* nav ul ul li{ */
+/* 	list-style: none; */
+/* 	padding: 0; */
+/* 	margin-left: 30px; */
+/* 	font-size: 20px; */
+/* 	background-color: transparent; */
+/* 	border-radius: 10px; */
+/* } */
+
+.voiceChat > ul > li {
 	display: none;
 }
 
@@ -106,7 +125,7 @@ html, body {
 }
 
 #micImg {
-	margin-left: auto;
+	margin-left: 50px;
 }
 
 .modal {
@@ -171,4 +190,5 @@ label {
     font-weight: bold;
     display: block;
     margin-top: 10px;
+}
 }
