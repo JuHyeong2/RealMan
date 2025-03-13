@@ -1,3 +1,5 @@
+let verificationCode = null;
+
 window.onload = () => {
   //모든 취소 버튼들
   document.querySelectorAll(".cancle-button").forEach((btn) => {
@@ -15,7 +17,7 @@ window.onload = () => {
   const nickNameModal = document.querySelector("#nickNameModal");
   document.querySelector("#nickNameBtn").addEventListener("click", () => {
     nickNameModal.style.display = "flex";
-    const completeBtn = nickNameModal.querySelector("#completeBtn");
+    const completeBtn = nickNameModal.querySelector("#nick-complete");
     completeBtn.addEventListener("click", function () {
       const nickName = nickNameModal.querySelector("input[type=text]").value;
       const pwd = nickNameModal.querySelector("input[type=password]").value;
@@ -41,7 +43,7 @@ window.onload = () => {
     document.querySelector("#nextBtn").style.visibility = "hidden";
     const email = document.querySelector(".email-span").innerText;
     fetch("/member/sendEmail?email=" + email)
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((data) => {
         console.log(data);
         switch (data) {
@@ -54,15 +56,30 @@ window.onload = () => {
             alert("이메일 형식 오류(사실상 일어날 일 없음)");
             break;
           default:
-            document.querySelector("#nextBtn").style.visibility = "visible";
+            verificationCode = data;
         }
       });
   });
+
+  //이메일인증
+  document
+    .querySelector("input[name=certification]")
+    .addEventListener("change", function () {
+      if (this.value == verificationCode) {
+        document.querySelector("#nextBtn").style.visibility = "visible";
+      }
+    });
 
   // 이메일 수정하기3
   document.querySelector("#nextBtn").addEventListener("click", () => {
     emailModal3.style.display = "flex";
     emailModal2.style.display = "none";
+    const completeBtn = document.querySelector("#email-complete");
+    completeBtn.addEventListener("click", function () {
+      const newEmail = emailModal3.querySelector("input[type=email]").value;
+      const pwd = emailModal3.querySelector("input[type=password]").value;
+      editMemberInfo("member_email", newEmail, pwd);
+    });
   });
 
   // 전화번호 수정하기
@@ -132,7 +149,7 @@ function editMemberInfo(col, val, pwd) {
         alert(data.message);
       } else {
         if (data == 1) {
-          alert("별명 변경이 완료되었습니다.");
+          alert("변경이 완료되었습니다.");
           location.reload();
         }
       }

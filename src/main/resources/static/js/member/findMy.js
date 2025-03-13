@@ -20,7 +20,7 @@ window.onload = () => {
       console.log(email.value + " 로 이메일 전송 시작");
       document.querySelector(".modal-container").style.display = "flex";
       fetch("/member/sendEmail?email=" + email.value)
-        .then((response) => response.json())
+        .then((response) => response.text())
         .then((data) => {
           document.querySelector(".modal-container").style.display = "none";
           switch (data) {

@@ -63,7 +63,7 @@ public class MemberController {
 			// 2. 코드 생성
 			for (int i = 0; i < 6; i++) {
 				String pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-				int r = (int) (Math.random() * (pool.length() + 1));
+				int r = (int) (Math.random() * pool.length());
 				char c = pool.charAt(r);
 				random += c;
 			}
