@@ -9,10 +9,12 @@
 </head>
 <body>
 
-    <header class="topbar">
-       <div th:insert="~{common/top.html}"></div>
-    </header>
+<!--     <header class="topbar"> -->
+<!--        <div th:insert="~{common/top.html}"></div> -->
+<!--     </header> -->
 
+	<header th:replace="~{common/top}"></header>
+	
     <div class="container">
         <div class="image-container">
             <img src="/image/member/signup1.png" class="background-shape">
@@ -38,6 +40,7 @@
                 <div class="input-box">
                     <input type="text" id="memberId" name="memberId" placeholder=" " required>
                     <label for="memberId">아이디</label>
+                    <p id="idCheck" style="font-size: 12px; margin-top: 5px;"></p>
                 </div>
 
                 <!-- 비밀번호 입력 -->
@@ -50,6 +53,7 @@
                 <div class="input-box">
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required>
                     <label for="confirmPassword">비밀번호 확인</label>
+                    <p id="pwdCheck" style="font-size: 12px; margin-top: 5px;"></p>
                 </div>
 
                 <!-- 닉네임 입력 -->
@@ -99,43 +103,98 @@
                     </label>
                 </div>
 
-                <button type="submit" class="btn">회원가입</button>
+                <button type="submit" id="submitBtn" class="btn">회원가입</button>
             </form>
         </div>
     </div>
 
     <script>
-        // 이메일 도메인 선택 이벤트
-        document.getElementById('emailDomainSelect').addEventListener('change', function() {
-            var customDomainInput = document.getElementById('customEmailDomain');
-            if (this.value === 'custom') {
-                customDomainInput.style.display = 'inline-block';
-                customDomainInput.setAttribute('required', 'true');
-            } else {
-                customDomainInput.style.display = 'none';
-                customDomainInput.removeAttribute('required');
-            }
-        });
+    	
+    document.addEventListener("DOMContentLoaded", function () {
+        const memberIdInput = document.getElementById("memberId");
+        const idCheck = document.getElementById("idCheck");
+        const memberPwdInput = document.getElementById("memberPwd");
+        const confirmPwdInput = document.getElementById("confirmPassword");
+        const pwdCheck = document.getElementById("pwdCheck");
+        const signupBtn = document.getElementById("submitBtn");
 
-        // 생년월일 자동 변환 (YYYYMMDD 형식)
-        document.querySelector('form').addEventListener('submit', function(event) {
-            const birthInput = document.getElementById('memberBirthDate');
-            const hiddenBirthInput = document.getElementById('memberBirth');
-
-            if (!birthInput.value) {
-                event.preventDefault();
-                alert("생년월일을 입력해주세요.");
+        // 아이디 중복 체크
+        memberIdInput.addEventListener("input", function () {
+            const memberId = memberIdInput.value.trim();
+            if (memberId === "") {
+                idCheck.textContent = "";
                 return;
             }
 
-            const birthDate = new Date(birthInput.value);
-            const year = birthDate.getFullYear();
-            const month = String(birthDate.getMonth() + 1).padStart(2, '0');
-            const day = String(birthDate.getDate()).padStart(2, '0');
-
-            hiddenBirthInput.value = `${year}${month}${day}`;
+            fetch(`/member/checkMemberId?memberId=${memberId}`)
+                .then(response => response.json())  // JSON 변환
+                .then(data => {
+                    if (data.isAvailable) {
+                        idCheck.textContent = "사용 가능한 아이디입니다.";
+                        idCheck.style.color = "green";
+                    } else {
+                        idCheck.textContent = "사용할 수 없는 아이디입니다.";
+                        idCheck.style.color = "red";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    idCheck.textContent = "아이디 확인 중 오류 발생!";
+                    idCheck.style.color = "red";
+                });
         });
-    </script>
+
+        // 비밀번호 확인
+        function checkPasswordMatch() {
+            if (memberPwdInput.value !== confirmPwdInput.value) {
+                pwdCheck.textContent = "비밀번호가 일치하지 않습니다.";
+                pwdCheck.style.color = "red";
+                signupBtn.disabled = true;
+            } else {
+                pwdCheck.textContent = "비밀번호가 일치합니다.";
+                pwdCheck.style.color = "green";
+                signupBtn.disabled = false;
+            }
+        }
+
+        memberPwdInput.addEventListener("input", checkPasswordMatch);
+        confirmPwdInput.addEventListener("input", checkPasswordMatch);
+    });	
+    
+        // 이메일 도메인 선택 이벤트
+        const emailDomainSelect = document.getElementById('emailDomainSelect');
+		const customDomainInput = document.getElementById('customEmailDomain');
+		
+		emailDomainSelect.addEventListener('change', function() {
+		    if (this.value === 'custom') {
+		        customDomainInput.style.display = 'inline-block';
+		        customDomainInput.required = true;
+		    } else {
+		        customDomainInput.style.display = 'none';
+		        customDomainInput.required = false;
+		        customDomainInput.value = ''; 
+		    }
+		});
+
+         // 생년월일 자동 변환 (YYYYMMDD 형식)
+         document.querySelector('form').addEventListener('submit', function(event) {
+             const birthInput = document.getElementById('memberBirthDate');
+             const hiddenBirthInput = document.getElementById('memberBirth');
+
+             if (!birthInput.value) {
+                 event.preventDefault();
+                 alert("생년월일을 입력해주세요.");
+                 return;
+             }
+
+             const birthDate = new Date(birthInput.value);
+             const year = birthDate.getFullYear();
+             const month = String(birthDate.getMonth() + 1).padStart(2, '0');
+             const day = String(birthDate.getDate()).padStart(2, '0');
+
+             hiddenBirthInput.value = `${year}${month}${day}`;
+         });
+</script> 
 
 </body>
 </html>
