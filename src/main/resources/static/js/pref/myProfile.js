@@ -13,6 +13,7 @@ window.onload = () => {
     });
   });
 
+  //======================별명======================
   // 별명 수정하기
   const nickNameModal = document.querySelector("#nickNameModal");
   document.querySelector("#nickNameBtn").addEventListener("click", () => {
@@ -25,6 +26,7 @@ window.onload = () => {
     });
   });
 
+  //======================이메일======================
   // 이메일 수정하기
   const emailModal1 = document.querySelector("#emailModal-1");
   const emailModal2 = document.querySelector("#emailModal-2");
@@ -82,6 +84,7 @@ window.onload = () => {
     });
   });
 
+  //======================전화번호======================
   // 전화번호 수정하기
   const phoneModal1 = document.querySelector("#phoneModal-1");
   const phoneModal2 = document.querySelector("#phoneModal-2");
@@ -96,11 +99,27 @@ window.onload = () => {
     phoneModal1.style.display = "none";
   });
 
+  //======================비밀번호======================
   // 비밀번호 변경하기
+  const passwordModal = document.querySelector("#passwordModal");
   document.querySelector("#changePassword").addEventListener("click", () => {
-    document.querySelector("#passwordModal").style.display = "flex";
+    passwordModal.style.display = "flex";
+    const completeBtn = document.querySelector("#pwd-complete");
+    completeBtn.style.visibility = "hidden";
+    const pwd = passwordModal.querySelector("input[name=password]").value;
+    const newInput1 = passwordModal.querySelector("input[name=newPassword]");
+    const newInput2 = passwordModal.querySelector("input[name=newPassword2]");
+    newInput2.addEventListener("keyup", function () {
+      if (newInput1.value == newInput2.value) {
+        completeBtn.style.visibility = "visible";
+      }
+    });
+    completeBtn.addEventListener("click", function () {
+      editMemberInfo("member_pwd", newInput2.value, pwd);
+    });
   });
 
+  //======================계정삭제======================
   // 계정 삭제하기
   document.querySelector("#deleteBtn").addEventListener("click", () => {
     document.querySelector("#deleteModal").style.display = "flex";

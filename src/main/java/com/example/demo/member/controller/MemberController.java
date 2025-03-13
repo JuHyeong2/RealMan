@@ -193,6 +193,11 @@ public class MemberController {
 					throw new MemberException("이미 등록된 이메일입니다.");
 				}
 				break;
+			case "member_pwd":
+				String newPwd = bcrypt.encode(map.get("val"));
+				map.put("val", newPwd);
+				result = mService.editMemberInfo(map);
+				break;
 			}
 		}else {
 			throw new MemberException("비밀번호가 일치하지 않습니다.");
