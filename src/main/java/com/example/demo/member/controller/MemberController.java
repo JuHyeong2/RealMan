@@ -160,14 +160,16 @@ public class MemberController {
 		return result;
 	}
 	
+	//회원 정보 수정
 	@PutMapping("/edit")
 	@ResponseBody
 	public int editMemberInfo(@RequestBody HashMap<String, String> map,
 			HttpSession session) {
 		int result = 0;
 		Member loginMember = (Member) session.getAttribute("loginMember");
+
 		if(bcrypt.matches(
-				bcrypt.encode(map.get("pwd")), loginMember.getMemberPwd())) {
+				map.get("pwd"), loginMember.getMemberPwd())) {
 			map.put("memberNo", loginMember.getMemberNo()+"");
 			switch(map.get("col")) {
 			case "member_nickname":
@@ -195,6 +197,7 @@ public class MemberController {
 		}else {
 			throw new MemberException("비밀번호가 일치하지 않습니다.");
 		}
+		
 		return result;
 	}
 

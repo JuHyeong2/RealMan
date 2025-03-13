@@ -3,10 +3,10 @@ window.onload = () => {
   const nickNameModal = document.querySelector("#nickNameModal");
   document.querySelector("#nickNameBtn").addEventListener("click", () => {
     nickNameModal.style.display = "flex";
-    const nickName = nickNameModal.querySelector("input[type=text").value;
-    const pwd = nickNameModal.querySelector("input[type=password]").value;
     const completeBtn = nickNameModal.querySelector("#completeBtn");
     completeBtn.addEventListener("click", function () {
+      const nickName = nickNameModal.querySelector("input[type=text]").value;
+      const pwd = nickNameModal.querySelector("input[type=password]").value;
       editMemberInfo("member_nickname", nickName, pwd);
     });
   });
@@ -61,6 +61,8 @@ window.onload = () => {
     phoneModal1.style.display = "none";
   });
 
+  //전화번호 수정 취소
+
   // 비밀번호 변경하기
   document.querySelector("#changePassword").addEventListener("click", () => {
     document.querySelector("#passwordModal").style.display = "flex";
@@ -97,6 +99,8 @@ window.onload = () => {
 };
 
 function editMemberInfo(col, val, pwd) {
+  console.log("col", col, "val", val, "pwd", pwd);
+
   fetch("/member/edit", {
     method: "put",
     headers: { "content-type": "application/json;charset=UTF-8" },
@@ -107,5 +111,14 @@ function editMemberInfo(col, val, pwd) {
     }),
   })
     .then((response) => response.json())
-    .then((data) => {});
+    .then((data) => {
+      if (data.message) {
+        alert(data.message);
+      } else {
+        if (data == 1) {
+          alert("별명 변경이 완료되었습니다.");
+          location.reload();
+        }
+      }
+    });
 }
