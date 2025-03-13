@@ -19,30 +19,31 @@ window.onload = () => {
     if (validateEmail(email.value)) {
       console.log(email.value + " 로 이메일 전송 시작");
       document.querySelector(".modal-container").style.display = "flex";
-      const response = await fetch("/member/sendEmail?email=" + email.value);
-      const data = await response.text();
-      console.log("data : " + data);
-      document.querySelector(".modal-container").style.display = "none";
-      switch (data) {
-        case "EmailNotFound":
-          alert("해당 이메일로 가입된 회원이 존재하지 않습니다.");
-          email.focus();
-          break;
-        case "MailException":
-          alert(
-            "이메일 전송 과정중 오류가 발생했습니다 잠시 후에 다시 시도해주세요."
-          );
-          break;
-        case "MessagingException":
-          alert("이메일 형식 오류(사실상 일어날 일 없음)");
-          break;
-        default:
+      fetch("/member/sendEmail?email=" + email.value)
+        .then((response) => response.json())
+        .then((data) => {
           document.querySelector(".modal-container").style.display = "none";
-          verificationCode = data;
-          console.log("verificationCode : " + verificationCode);
-          timer();
-          break;
-      }
+          switch (data) {
+            case "EmailNotFound":
+              alert("해당 이메일로 가입된 회원이 존재하지 않습니다.");
+              email.focus();
+              break;
+            case "MailException":
+              alert(
+                "이메일 전송 과정중 오류가 발생했습니다 잠시 후에 다시 시도해주세요."
+              );
+              break;
+            case "MessagingException":
+              alert("이메일 형식 오류(사실상 일어날 일 없음)");
+              break;
+            default:
+              document.querySelector(".modal-container").style.display = "none";
+              verificationCode = data;
+              console.log("verificationCode : " + verificationCode);
+              timer();
+              break;
+          }
+        });
     } else {
       alert("올바른 형식의 이메일 주소를 입력해주세요.");
       email.focus();

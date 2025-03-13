@@ -140,5 +140,9 @@ public class MemberService {
 	public int editMemberInfo(HashMap<String, String> map) {
 		return mapper.editMemberInfo(map);
 	}
+	
+	public Member selectMember(int memberNo) {
+		return mapper.selectMember(memberNo);
+	}
 
 }

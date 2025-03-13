@@ -77,5 +77,7 @@ public interface MemberMapper {
 	
 	//회원 정보 수정
 	int editMemberInfo(HashMap<String, String> map);
+
+	Member selectMember(int memberNo);
     
 }

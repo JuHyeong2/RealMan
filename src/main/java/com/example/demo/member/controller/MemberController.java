@@ -164,7 +164,7 @@ public class MemberController {
 	@PutMapping("/edit")
 	@ResponseBody
 	public int editMemberInfo(@RequestBody HashMap<String, String> map,
-			HttpSession session) {
+			HttpSession session, Model model) {
 		int result = 0;
 		Member loginMember = (Member) session.getAttribute("loginMember");
 
@@ -196,6 +196,12 @@ public class MemberController {
 			}
 		}else {
 			throw new MemberException("비밀번호가 일치하지 않습니다.");
+		}
+		
+		// session attribute 
+		if(result==1) {
+			loginMember = mService.selectMember(loginMember.getMemberNo());
+			model.addAttribute("loginMember", loginMember);
 		}
 		
 		return result;

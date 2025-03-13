@@ -1,4 +1,16 @@
 window.onload = () => {
+  //모든 취소 버튼들
+  document.querySelectorAll(".cancle-button").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".modal").forEach((modal) => {
+        modal.querySelectorAll("input").forEach((input) => {
+          input.value = "";
+        });
+        modal.style.display = "none";
+      });
+    });
+  });
+
   // 별명 수정하기
   const nickNameModal = document.querySelector("#nickNameModal");
   document.querySelector("#nickNameBtn").addEventListener("click", () => {
@@ -11,11 +23,6 @@ window.onload = () => {
     });
   });
 
-  // 별명 수정하기 취소
-  document.querySelector("#cancelBtn").addEventListener("click", () => {
-    nickNameModal.style.display = "none";
-  });
-
   // 이메일 수정하기
   const emailModal1 = document.querySelector("#emailModal-1");
   const emailModal2 = document.querySelector("#emailModal-2");
@@ -24,27 +31,38 @@ window.onload = () => {
     emailModal1.style.display = "flex";
   });
 
-  // 이메일 수정하기 취소
-  document.querySelector("#cancelBtn2").addEventListener("click", () => {
-    emailModal1.style.display = "none";
-  });
-
   // 이메일 수정하기2
+  document.querySelector("#clickP").addEventListener("click", function () {
+    document.querySelector("#sendBtn").click();
+  });
   document.querySelector("#sendBtn").addEventListener("click", () => {
     emailModal2.style.display = "flex";
     emailModal1.style.display = "none";
+    document.querySelector("#nextBtn").style.visibility = "hidden";
+    const email = document.querySelector(".email-span").innerText;
+    fetch("/member/sendEmail?email=" + email)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        switch (data) {
+          case "MailException":
+            alert(
+              "이메일 전송 과정중 오류가 발생했습니다 잠시 후에 다시 시도해주세요."
+            );
+            break;
+          case "MessagingException":
+            alert("이메일 형식 오류(사실상 일어날 일 없음)");
+            break;
+          default:
+            document.querySelector("#nextBtn").style.visibility = "visible";
+        }
+      });
   });
 
   // 이메일 수정하기3
   document.querySelector("#nextBtn").addEventListener("click", () => {
     emailModal3.style.display = "flex";
     emailModal2.style.display = "none";
-  });
-
-  // 이메일 수정하기 뒤로가기
-  document.querySelector("#backBtn").addEventListener("click", () => {
-    emailModal3.style.display = "none";
-    emailModal2.style.display = "flex";
   });
 
   // 전화번호 수정하기
@@ -60,8 +78,6 @@ window.onload = () => {
     phoneModal2.style.display = "flex";
     phoneModal1.style.display = "none";
   });
-
-  //전화번호 수정 취소
 
   // 비밀번호 변경하기
   document.querySelector("#changePassword").addEventListener("click", () => {
