@@ -14,7 +14,7 @@
 	<div class="server-list p-2" style="width: 80px;">
 	    <h6 class="text-center" onclick="location.href='/main';"><img src="/image/RealManLogo.png" width="60px"></h6>
 	    <div class="mb-2" th:each="s:${selectServerList}">
-	        <div class="bg-light rounded-circle mx-auto" style="width: 50px; height: 50px;">[[${s.serverName}]]</div>
+	        <div class="bg-light rounded-circle mx-auto" style="width: 50px; height: 50px; cursor: pointer;">[[${s.serverName}]]</div>
 	        <input type="hidden" th:value="${s.serverNo}">
 	    </div>
 	    <div class="addServer">+</div>
