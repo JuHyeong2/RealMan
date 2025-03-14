@@ -9,5 +9,10 @@
         where server_no = #{no} and channel_status = 'Y'
     </select>
 
+	<select id="selectChannel">
+		select *
+		from channel
+		where channel_no = #{channelNo} and channel_status='Y'
+	</select>
 
 </mapper>
