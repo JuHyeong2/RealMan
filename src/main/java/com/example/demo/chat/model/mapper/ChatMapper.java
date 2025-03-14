@@ -10,4 +10,6 @@ import java.util.ArrayList;
 public interface ChatMapper {
 
     ArrayList<Channel> chattingSidebar(int no);
+
+	String selectChannel(int channelNo);
 }
