@@ -8,6 +8,7 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -215,7 +216,7 @@ public class MemberController {
 	}
 	
 	// 프사 변경
-	@PostMapping("/profileImg")
+	@PutMapping("/profileImg")
 	@ResponseBody
 	public boolean changeProfileImg(@RequestParam("image") MultipartFile image,
 			HttpSession session) {
@@ -223,6 +224,12 @@ public class MemberController {
 		boolean imageUploaded = mService.changeProfileImg(loginMember.getMemberNo(), image);
 		
 		return imageUploaded;
+	}
+	
+	@DeleteMapping("/profileImg")
+	@ResponseBody
+	public boolean deleteProfileImg() {
+		return false;
 	}
 
 	// 회원가입 페이지로 이동

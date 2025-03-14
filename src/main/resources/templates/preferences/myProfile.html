@@ -37,12 +37,6 @@
               <div class="profile-pic-inner">
                 <div class="profile-pic-container">
                   <img
-                    th:if="${session.loginMember.profileImage == null}"
-                    class="profile-pic"
-                    src="/image/member/no-profile.svg"
-                  />
-                  <img
-                    th:unless="${session.loginMember.profileImage == null}"
                     class="profile-pic"
                     th:src="@{'/profile-images/' 
                       + ${session.loginMember.profileImage}}"

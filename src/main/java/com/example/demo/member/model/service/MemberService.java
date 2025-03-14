@@ -63,7 +63,7 @@ public class MemberService {
         return mapper.insertMember(member);
     }
     
- // 아이디 중복 확인
+    // 아이디 중복 확인
     public boolean isMemberIdDuplicated(String memberId) {
         return mapper.checkMemberId(memberId) > 0;
     }
@@ -146,7 +146,8 @@ public class MemberService {
 	public Member selectMember(int memberNo) {
 		return mapper.selectMember(memberNo);
 	}
-
+	
+	//프사 저장
 	public boolean changeProfileImg(int memberNo, MultipartFile image) {
 		String oldName = image.getOriginalFilename();
 		String type = oldName.substring(oldName.indexOf("."));
@@ -171,7 +172,15 @@ public class MemberService {
 		
 		try {
 			image.transferTo(new File(folder+"\\"+memberNo+type));
-			return true;
+			
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("memberNo", memberNo+"");
+			map.put("col", "profile_image");
+			map.put("val", memberNo+type);
+			
+			int result = mapper.editMemberInfo(map);
+			
+			return result==1? true : false;
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 			return false;

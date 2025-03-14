@@ -2,8 +2,8 @@ let fLi = document.createElement("li");
 fLi.innerHTML = `<div class="friend-row">
               <input type="hidden" />
               <div class="profile-div">
-                <div class="svg-container">
-                  <img class="profile" src="/image/member/no-profile.svg" />
+                <div class="">
+                  <img class="profile" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -35,7 +35,7 @@ wLi.innerHTML = `<div class="friend-row wlist">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" src="/image/member/no-profile.svg" />
+                  <img class="profile" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -66,7 +66,7 @@ rLi.innerHTML = `<div class="friend-row rlist">
                 <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" src="/image/member/no-profile.svg" />
+                  <img class="profile"" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -91,7 +91,7 @@ sLi.innerHTML = `<div class="friend-row slist">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" src="/image/member/no-profile.svg" />
+                  <img class="profile" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -141,10 +141,8 @@ const getFriendList = () => {
           for (let f of data.list) {
             const fli = fLi.cloneNode(true);
             fli.querySelector("input").value = f.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            fli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/member/no-profile.svg");
+            fli.querySelector("img").src = "/profile-images/" + f.profileImage;
+            console.log(fli.querySelector("img"));
             fli.querySelector(".nickname").innerText = f.memberNickname;
             fli.querySelector(".id").innerText = f.memberId;
             flist.append(fli);
@@ -156,10 +154,7 @@ const getFriendList = () => {
           for (let w of data.wlist) {
             const wli = wLi.cloneNode(true);
             wli.querySelector("input").value = w.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            wli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/member/no-profile.svg");
+            wli.querySelector("img").src = "/profile-images/" + w.profileImage;
             wli.querySelector(".nickname").innerText = w.memberNickname;
             wli.querySelector(".id").innerText = w.memberId;
             wlist.append(wli);
@@ -171,10 +166,7 @@ const getFriendList = () => {
           for (let r of data.rlist) {
             const rli = rLi.cloneNode(true);
             rli.querySelector("input").value = r.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            rli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/member/no-profile.svg");
+            rli.querySelector("img").src = "/profile-images/" + r.profileImage;
             rli.querySelector(".nickname").innerText = r.memberNickname;
             rli.querySelector(".id").innerText = r.memberId;
             rlist.append(rli);
@@ -267,10 +259,8 @@ function setupEventHandlers() {
               for (let s of data) {
                 const sli = sLi.cloneNode(true);
                 sli.querySelector("input").value = s.memberNo;
-                //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-                sli
-                  .querySelector(".profile")
-                  .setAttribute("src", "/image/member/no-profile.svg");
+                sli.querySelector("img").src =
+                  "/profile-images/" + s.profileImage;
                 sli.querySelector(".nickname").innerText = s.memberNickname;
                 sli.querySelector(".id").innerText = s.memberId;
                 slist.append(sli);

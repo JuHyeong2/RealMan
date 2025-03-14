@@ -28,7 +28,7 @@ window.onload = () => {
         const formData = new FormData();
         formData.append("image", file);
         fetch("/member/profileImg", {
-          method: "post",
+          method: "put",
           body: formData,
         })
           .then((response) => response.json())
@@ -43,7 +43,17 @@ window.onload = () => {
           });
       });
     });
-    deleteBtn.addEventListener("click", function () {});
+    deleteBtn.addEventListener("click", function () {
+      if (confirm("정말로 프로필 사진을 삭제하시겠습니까?")) {
+        fetch("/member/profileImg", {
+          method: "delete",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          });
+      }
+    });
   });
 
   //======================별명======================
