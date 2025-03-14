@@ -68,5 +68,11 @@ public interface MemberMapper {
 	
 	//친구 요청
 	int requestFriend(HashMap<String, Integer> map);
+	
+	//차단 여부 확인
+	int blockCheck(HashMap<String, Integer> map);
+
+	//회원 차단
+	int blockMember(HashMap<String, Integer> map);
     
 }

@@ -139,7 +139,6 @@
             from member
             where member_id like '%${search}%'
                 or member_nickname like '%${search}%')
-			<!-- 이미 친구 테이블에 있는 회원은 제외  -->
         where member_no not in (
 	            select friend_member_no
 	            from friend
@@ -149,7 +148,15 @@
 	            from friend
 	            where friend_member_no = #{myMemberNo}
         		)
-        	<!-- 본인 제외 -->
+        	and member_no not in(
+        		select member_no
+        		from block
+        		where b_member_no = #{myMemberNo}
+        		union
+        		select b_member_no
+        		from block
+        		where member_no =#{myMemberNo}
+        		)
         	and member_no != #{myMemberNo}
     </select>
     
@@ -169,6 +176,24 @@
 			#{myMemberNo},
 			#{friendMemberNo},
 			default
+		)
+	</insert>
+	
+	<!-- 차단 여부 확인 -->
+	<select id="blockCheck">
+		select count(*)
+		from block
+		where (member_no = #{myMemberNo} and b_member_no = #{blockMemberNo})
+			or (member_no = #{blockMemberNo} and b_member_no = #{myMemberNo}) 
+	</select>
+	
+	<!-- 차단 -->
+	<insert id="blockMember">
+		insert into block
+		values(
+			block_seq.nextval,
+			#{myMemberNo},
+			#{blockMemberNo}
 		)
 	</insert>
 </mapper>

@@ -125,5 +125,15 @@ public class MemberService {
 	public int requestFriend(HashMap<String, Integer> map) {
 		return mapper.requestFriend(map);
 	}
+	
+	//차단 여부 확인
+	public int blockCheck(HashMap<String, Integer> map) {
+		return mapper.blockCheck(map);
+	}
+	
+	//회원 차단
+	public int blockMember(HashMap<String, Integer> map) {
+		return mapper.blockMember(map);
+	}
 
 }

@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   background-color: rgb(245, 245, 245);
-  width: 36rem;
+  flex-grow: 1;
+  height: calc(100vh - 40px);
 }
 
 #friend-container > div:last-child {
@@ -54,6 +55,7 @@
   border-radius: 1rem 0 0 1rem;
   outline: none;
   padding-left: 2rem;
+  width: 40%;
 }
 
 #search-div > input:focus {
@@ -93,6 +95,7 @@ ul {
 }
 .ul-show {
   display: flex;
+  width: 70%;
 }
 
 li {
@@ -190,7 +193,7 @@ li {
 .nickname-div {
   display: flex;
   align-items: center;
-  min-width: 18rem;
+  flex-grow: 1;
   margin-left: 1rem;
   margin-right: 2rem;
 }
