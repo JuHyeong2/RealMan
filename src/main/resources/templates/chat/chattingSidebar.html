@@ -50,9 +50,9 @@
 
 	</div>
 
-
-
-
+	<!-- 모달 배경 -->
+	<div id="modalOverlay" class="modal-overlay"></div>
+	
 	<!-- 프로필 모달 -->
 	<div id="profileModal" class="modal">
 	    <div class="modal-content">
@@ -74,7 +74,7 @@
 	
 	        <button onclick="goToMyAccount()">내 정보 수정</button>
 	    </div>
-	</div>
+</div>
 		
 	
 	<script>
@@ -141,15 +141,8 @@
 		}
 		
 		document.querySelectorAll('.channel')[0].addEventListener('click', ()=>{
-<<<<<<< HEAD
-
-			const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
-			const voiceChannels = document.querySelectorAll('.voiceChat');
-			for(const voiceChannel of voiceChannels){
-=======
 			voiceChannels = document.querySelectorAll('.voiceChat');
 			for(voiceChannel of voiceChannels){
->>>>>>> main
 // 				console.log(voiceChannel);
 				const chatRoom = voiceChannel.querySelector('li');
 // 				console.log(chatRoom);
@@ -208,15 +201,21 @@
 	</script>
 	
 	 <script>
-        // 프로필 모달 열기
-        function ProfileModal() {
-            document.getElementById("profileModal").style.display = "block";
-        }
-
-        // 프로필 모달 닫기
-        function closeProfileModal() {
-            document.getElementById("profileModal").style.display = "none";
-        }
+	 
+		 function ProfileModal() {
+			    document.getElementById("profileModal").style.display = "block";
+			    document.getElementById("modalOverlay").style.display = "block";
+			}
+	
+			function closeProfileModal() {
+			    document.getElementById("profileModal").style.display = "none";
+			    document.getElementById("modalOverlay").style.display = "none";
+			}
+	
+			// 배경 클릭 시 모달 닫기
+			document.addEventListener("DOMContentLoaded", function () {
+			    document.getElementById("modalOverlay").addEventListener("click", closeProfileModal);
+			});
 
         // 내 정보 페이지로 이동
         function goToMyAccount() {

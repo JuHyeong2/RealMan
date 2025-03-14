@@ -111,38 +111,10 @@
     <script>
     	
     document.addEventListener("DOMContentLoaded", function () {
-        const memberIdInput = document.getElementById("memberId");
-        const idCheck = document.getElementById("idCheck");
         const memberPwdInput = document.getElementById("memberPwd");
         const confirmPwdInput = document.getElementById("confirmPassword");
         const pwdCheck = document.getElementById("pwdCheck");
         const signupBtn = document.getElementById("submitBtn");
-
-        // 아이디 중복 체크
-        memberIdInput.addEventListener("input", function () {
-            const memberId = memberIdInput.value.trim();
-            if (memberId === "") {
-                idCheck.textContent = "";
-                return;
-            }
-
-            fetch(`/member/checkMemberId?memberId=${memberId}`)
-                .then(response => response.json())  // JSON 변환
-                .then(data => {
-                    if (data.isAvailable) {
-                        idCheck.textContent = "사용 가능한 아이디입니다.";
-                        idCheck.style.color = "green";
-                    } else {
-                        idCheck.textContent = "사용할 수 없는 아이디입니다.";
-                        idCheck.style.color = "red";
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    idCheck.textContent = "아이디 확인 중 오류 발생!";
-                    idCheck.style.color = "red";
-                });
-        });
 
         // 비밀번호 확인
         function checkPasswordMatch() {
