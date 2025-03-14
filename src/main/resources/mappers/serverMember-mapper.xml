@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org..DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.serverMember.model.mapper.ServerMemberMapper">
+    <select id="serverMemberList">
+        select *
+        from server_member
+        join member using(member_no)
+        where server_no = #{serverNo}
+    </select>
+
+</mapper>

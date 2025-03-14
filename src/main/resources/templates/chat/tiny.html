@@ -1,61 +1,591 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="utf-8">
     <title>Insert title here</title>
+    <style>
+        .autocomplete > div.active {
+            background: #e0e5f6;
+            color: #000;
+        }
+
+        /* -------------------------- */
+
+        .autocomplete > div {
+            background: #f1f3f499;
+            padding: .2rem .6rem;
+        }
+
+        section {
+            width: 500px;
+            padding: 1.5rem 1.6rem;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, .05);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #fff;
+            margin-top: 2rem;
+        }
+
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            word-break: break-all;
+            font-family: Pretendard;
+        }
+
+        input {
+            width: 100%;
+            height: 3rem;
+            border-radius: 5px;
+            padding: 0 1rem;
+            border: 1px solid #e0e5f6;
+            background: #fff;
+            margin: 1rem 0;
+        }
+
+        input::placeholder {
+            font-size: 1rem;
+        }
+
+        body {
+            background: #f7f8fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        mark {
+            background: #febf0090;
+        }
+
+        p {
+            opacity: .8;
+            font-size: 15px;
+        }
+
+    </style>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <body>
-<form id="chatForm">
-    <textarea id="mytextarea">여기에 메시지를 입력하세요...</textarea>
-    <button type="submit">전송</button>
-</form>
+<!--<form id="chatForm">-->
+<!--    <textarea id="mytextarea">여기에 메시지를 입력하세요...</textarea>-->
+<!--    <button type="submit">전송</button>-->
+<!--</form>-->
 
-<script>
-    // TinyMCE 초기화
-    tinymce.init({
-        selector: '#mytextarea',
-        menubar: false,
-        toolbar: ' image  | bullist numlist | undo redo',
-        height: 200,
-        images_upload_handler: function (blobInfo, success, failure) {
-            // 파일을 Base64로 변환하여 업로드하는 간단한 예제
-            let reader = new FileReader();
-            reader.onload = function () {
-                success(reader.result); // Base64 URL을 에디터에 삽입
-            };
-            reader.readAsDataURL(blobInfo.blob());
-        },
-        images_upload_url: '/upload-image',
-        automatic_uploads: true,
-        paste_data_images: true
+
+    <section>
+<!--        <h2>검색 자동완성</h2>-->
+<!--        <p>(검색어 - 빨간색, 파란색, 노란색, 검정색)</p>-->
+<!--        <tr th:each="s:${ServerMember}">-->
+<!--            <td th:text="${s.memberNickName}"></td>-->
+<!--        </tr>-->
+<!--        <p></p>-->
+        <!-- 검색어 입력창   -->
+        <input
+                type="text"
+                id="chatInput"
+                placeholder="검색어를 입력해주세요."
+                autocomplete="off"
+        />
+        <!-- 자동완성 단어 리스트 -->
+<!--        <div class="autocomplete"></div>-->
+    </section>
+
+<script th:inline="javascript">
+
+
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     let searchSection = null;
+    //
+    //     document.addEventListener("keydown", function (event) {
+    //         if (event.key === "@" && !searchSection) {
+    //             event.preventDefault(); // 기본 동작 방지
+    //             createSearchBox();
+    //         }
+    //     });
+    //
+    //     function createSearchBox() {
+    //         searchSection = document.createElement("section");
+    //         searchSection.innerHTML = `
+    //         <input type="text" id="search" autocomplete="off" />
+    //         <div class="autocomplete"></div>`;
+    //         document.body.appendChild(searchSection);
+    //
+    //         const searchInput = document.getElementById("search");
+    //         const autocompleteBox = document.querySelector(".autocomplete");
+    //
+    //         searchInput.focus(); // 입력창 자동 포커스
+    //
+    //         // 입력 이벤트 - 자동완성 기능
+    //         searchInput.addEventListener("input", function () {
+    //             const value = searchInput.value.toLowerCase();
+    //             autocompleteBox.innerHTML = "";
+    //
+    //             if (value.trim() !== "") {
+    //                 const filteredMembers = memberList.filter(member =>
+    //                     member.memberNickName.toLowerCase().includes(value)
+    //                 );
+    //
+    //                 filteredMembers.forEach(member => {
+    //                     const item = document.createElement("div");
+    //                     item.textContent = member.memberNickName;
+    //                     item.classList.add("autocomplete-item");
+    //                     item.addEventListener("click", function () {
+    //                         searchInput.value = member.memberNickName;
+    //                         autocompleteBox.innerHTML = ""; // 선택 후 목록 숨김
+    //                     });
+    //                     autocompleteBox.appendChild(item);
+    //                 });
+    //             }
+    //
+    //
+    //             /*<![CDATA*/ const memberList =/*[[${ServerMember}]]*/null;/*]]>*/
+    //
+    //
+    //
+    //             let dataList = [];
+    //             dataList = memberList.map(member => member.memberNickName);
+    //             // console.log(dataList);
+    //
+    //
+    //             const $search = document.querySelector("#search");
+    //             const $autoComplete = document.querySelector(".autocomplete");
+    //
+    //             let nowIndex = 0;
+    //
+    //             $search.onkeyup = (event) => {
+    //                 // 검색어
+    //                 const value = $search.value.trim();
+    //
+    //                 // 자동완성 필터링
+    //                 const matchDataList = value ? dataList.filter((label) => label.includes(value)) : [];
+    //
+    //                 switch (event.keyCode) {
+    //                     // UP KEY
+    //                     case 38:
+    //                         nowIndex = Math.max(nowIndex - 1, 0);
+    //                         break;
+    //
+    //                     // DOWN KEY
+    //                     case 40:
+    //                         nowIndex = Math.min(nowIndex + 1, matchDataList.length - 1);
+    //                         break;
+    //
+    //                     // ENTER KEY
+    //                     case 13:
+    //                         document.querySelector("#search").value = matchDataList[nowIndex] || "";
+    //
+    //                         // 초기화
+    //                         nowIndex = 0;
+    //                         matchDataList.length = 0;
+    //                         break;
+    //
+    //                     // 그외 다시 초기화
+    //                     default:
+    //                         nowIndex = 0;
+    //                         break;
+    //                 }
+    //
+    //                 // 리스트 보여주기
+    //                 showList(matchDataList, value, nowIndex);
+    //             };
+    //
+    //             const showList = (data, value, nowIndex) => {
+    //                 // 정규식으로 변환
+    //                 const regex = new RegExp(`(${value})`, "g");
+    //
+    //                 $autoComplete.innerHTML = data
+    //                     .map(
+    //                         (label, index) => `
+    //                                           <div class='${nowIndex === index ? "active" : ""}'>
+    //                                             ${label.replace(regex, "<mark>$1</mark>")}
+    //                                           </div>
+    //                                         `)
+    //                     .join("");
+    //             };
+    //         });
+    //
+    //         // 바깥 클릭 시 검색창 제거
+    //         document.addEventListener("click", function (event) {
+    //             if (searchSection && !searchSection.contains(event.target)) {
+    //                 searchSection.remove();
+    //                 searchSection = null;
+    //             }
+    //         });
+    //     }
+    // });
+
+
+
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     let searchBox = null;
+    //     let autoCompleteBox = null;
+    //     let inputField = null;
+    //     let mentionStartIndex = -1;
+    //
+    //     document.addEventListener("keydown", function (event) {
+    //         const chatInput = document.getElementById("chatInput"); //
+    //         if (!chatInput || chatInput !== document.activeElement) return; //
+    //
+    //         if (event.key === "@") {
+    //             mentionStartIndex = chatInput.selectionStart;
+    //             createSearchBox(chatInput);
+    //         }
+    //     });
+    //
+    //     function createSearchBox(inputElement) {
+    //         if (searchBox) return;
+    //
+    //         searchBox = document.createElement("div");
+    //         searchBox.style.position = "absolute";
+    //         searchBox.style.zIndex = "1000";
+    //         searchBox.style.background = "white";
+    //         searchBox.style.border = "1px solid #ccc";
+    //         searchBox.style.padding = "5px";
+    //         searchBox.style.borderRadius = "5px";
+    //         searchBox.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)";
+    //         searchBox.style.width = "200px";
+    //
+    //         autoCompleteBox = document.createElement("div");
+    //         autoCompleteBox.classList.add("autocomplete");
+    //         searchBox.appendChild(autoCompleteBox);
+    //
+    //         document.body.appendChild(searchBox);
+    //         positionSearchBox(inputElement);
+    //
+    //         inputElement.addEventListener("input", updateAutoComplete);
+    //         inputField = inputElement;
+    //     }
+    //
+    //     function positionSearchBox(inputElement) {
+    //         const rect = inputElement.getBoundingClientRect();
+    //         searchBox.style.top = `${rect.bottom + window.scrollY}px`;
+    //         searchBox.style.left = `${rect.left + window.scrollX}px`;
+    //     }
+    //
+    //     function updateAutoComplete() {
+    //         const text = inputField.value;
+    //         const cursorPosition = inputField.selectionStart;
+    //
+    //         const atIndex = text.lastIndexOf("@", cursorPosition);
+    //         if (atIndex === -1) {
+    //             removeSearchBox();
+    //             return;
+    //         }
+    //
+    //         const value = text.substring(atIndex + 1, cursorPosition).toLowerCase();
+    //         autoCompleteBox.innerHTML = "";
+    //
+    //         if (value.trim() !== "") {
+    //             const filteredMembers = memberList.filter(member =>
+    //                 member.memberNickName.toLowerCase().includes(value)
+    //             );
+    //
+    //
+    //             filteredMembers.forEach(member => {
+    //                 const item = document.createElement("div");
+    //                 item.innerHTML = highlightText(member.memberNickName, value);
+    //                 item.classList.add("autocomplete-item");
+    //                 item.addEventListener("click", function () {
+    //                     insertMention(member.memberNickName, atIndex);
+    //                 });
+    //                 autoCompleteBox.appendChild(item);
+    //             });
+    //         }
+    //     }
+    //
+    //     function insertMention(name, atIndex) {
+    //         const beforeText = inputField.value.substring(0, atIndex + 1); // `@` 포함 앞부분
+    //         const afterText = inputField.value.substring(inputField.selectionStart); // 현재 커서 이후
+    //         inputField.value = beforeText + name + " " + afterText; // 닉네임을 `@` 뒤에 삽입
+    //         removeSearchBox();
+    //     }
+    //
+    //     function highlightText(text, query) {
+    //         const regex = new RegExp(`(${query})`, "gi");
+    //         return text.replace(regex, "<mark>$1</mark>");
+    //     }
+    //
+    //     function removeSearchBox() {
+    //         if (searchBox) {
+    //             searchBox.remove();
+    //             searchBox = null;
+    //         }
+    //     }
+    //
+    //     document.addEventListener("keydown", function (event) {
+    //         if (event.key === "Escape" && searchBox) {
+    //             removeSearchBox();
+    //         }
+    //     });
+    //
+    //     /*<![CDATA*/
+    //     const memberList = /*[[${ServerMember}]]*/ null /*]]>*/
+    //
+    //     let dataList = [];
+    //     if (memberList) {
+    //         dataList = memberList.map(member => member.memberNickName);
+    //     }
+    //
+    //     const $search = document.getElementById("chatInput"); // 채팅 입력창
+    //     const $autoComplete = document.querySelector(".autocomplete");
+    //
+    //     let nowIndex = 0;
+    //
+    //     $search.addEventListener("keyup", (event) => {
+    //         const value = $search.value.trim();
+    //         const matchDataList = value ? dataList.filter(label => label.includes(value)) : [];
+    //
+    //         switch (event.keyCode) {
+    //             case 38: // UP KEY
+    //                 nowIndex = Math.max(nowIndex - 1, 0);
+    //                 break;
+    //             case 40: // DOWN KEY
+    //                 nowIndex = Math.min(nowIndex + 1, matchDataList.length - 1);
+    //                 break;
+    //             case 13: // ENTER KEY
+    //                 if (matchDataList[nowIndex]) {
+    //                     insertMention(matchDataList[nowIndex]);
+    //                 }
+    //                 nowIndex = 0;
+    //                 matchDataList.length = 0;
+    //                 break;
+    //             default:
+    //                 nowIndex = 0;
+    //                 break;
+    //         }
+    //
+    //         showList(matchDataList, value, nowIndex);
+    //     });
+    //
+    //     function showList(data, value, nowIndex) {
+    //         const regex = new RegExp(`(${value})`, "gi");
+    //
+    //         $autoComplete.innerHTML = data
+    //             .map((label, index) =>
+    //                 `<div class='${nowIndex === index ? "active" : ""}'>
+    //                 ${label.replace(regex, "<mark>$1</mark>")}
+    //             </div>`
+    //             )
+    //             .join("");
+    //     }
+    // });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let searchBox = null;
+        let autoCompleteBox = null;
+        let inputField = null;
+        let mentionStartIndex = -1;
+        let nowIndex = -1; // 현재 선택된 자동완성 항목
+
+        const chatInput = document.getElementById("chatInput");
+        if (!chatInput) {
+            return;
+        }
+
+        // 키보드 입력 감지
+        chatInput.addEventListener("keydown", function (event) {
+            if (event.key === "@") {
+                mentionStartIndex = chatInput.selectionStart;
+                createSearchBox(chatInput);
+            }
+
+            if (searchBox) {
+                if (event.key === "ArrowDown") {
+                    event.preventDefault();
+                    moveSelection(1);
+                } else if (event.key === "ArrowUp") {
+                    event.preventDefault();
+                    moveSelection(-1);
+                } else if (event.key === "Enter" && nowIndex > -1) {
+                    event.preventDefault();
+                    selectItem();
+                } else if (event.key === "Escape") {
+                    removeSearchBox();
+                }
+            }
+        });
+
+        // 입력 이벤트 (자동완성 업데이트)
+        chatInput.addEventListener("input", function () {
+            if (searchBox) {
+                updateAutoComplete();
+            }
+        });
+
+        function createSearchBox(inputElement) {
+            if (searchBox) return;
+
+            searchBox = document.createElement("div");
+            searchBox.style.position = "absolute";
+            searchBox.style.zIndex = "1000";
+            searchBox.style.background = "white";
+            searchBox.style.border = "1px solid #ccc";
+            searchBox.style.padding = "5px";
+            searchBox.style.borderRadius = "5px";
+            searchBox.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)";
+            searchBox.style.width = "200px";
+
+            autoCompleteBox = document.createElement("div");
+            autoCompleteBox.classList.add("autocomplete");
+            searchBox.appendChild(autoCompleteBox);
+
+            document.body.appendChild(searchBox);
+            positionSearchBox(inputElement);
+
+            inputField = inputElement;
+        }
+
+        function positionSearchBox(inputElement) {
+            const rect = inputElement.getBoundingClientRect();
+            searchBox.style.top = `${rect.bottom + window.scrollY}px`;
+            searchBox.style.left = `${rect.left + window.scrollX}px`;
+        }
+
+        function updateAutoComplete() {
+            const text = inputField.value;
+            const cursorPosition = inputField.selectionStart;
+
+            const atIndex = text.lastIndexOf("@", cursorPosition);
+            if (atIndex === -1) {
+                removeSearchBox();
+                return;
+            }
+
+            const value = text.substring(atIndex + 1, cursorPosition).toLowerCase();
+            autoCompleteBox.innerHTML = "";
+            nowIndex = -1; // 초기화
+
+            if (value.trim() !== "") {
+                const filteredMembers = memberList.filter(member =>
+                    member.memberNickName.toLowerCase().includes(value)
+                );
+
+
+                filteredMembers.forEach((member, index) => {
+                    const item = document.createElement("div");
+                    item.innerHTML = highlightText(member.memberNickName, value);
+                    item.classList.add("autocomplete-item");
+                    item.dataset.index = index;
+
+                    item.addEventListener("click", function () {
+                        insertMention(member.memberNickName, atIndex);
+                    });
+
+                    autoCompleteBox.appendChild(item);
+                });
+            }
+        }
+
+        function moveSelection(direction) {
+            const items = autoCompleteBox.querySelectorAll(".autocomplete-item");
+            if (items.length === 0) return;
+
+            nowIndex += direction;
+            if (nowIndex < 0) nowIndex = items.length - 1;
+            if (nowIndex >= items.length) nowIndex = 0;
+
+            items.forEach((item, index) => {
+                item.classList.toggle("active", index === nowIndex);
+            });
+        }
+
+        function selectItem() {
+            const items = autoCompleteBox.querySelectorAll(".autocomplete-item");
+            if (nowIndex > -1 && nowIndex < items.length) {
+                insertMention(items[nowIndex].textContent, mentionStartIndex);
+            }
+        }
+
+        function insertMention(name, atIndex) {
+            const beforeText = inputField.value.substring(0, atIndex + 1);
+            const afterText = inputField.value.substring(inputField.selectionStart);
+            inputField.value = beforeText + name + " " + afterText;
+            removeSearchBox();
+        }
+
+        function highlightText(text, query) {
+            const regex = new RegExp(`(${query})`, "gi");
+            return text.replace(regex, "<mark>$1</mark>");
+        }
+
+        function removeSearchBox() {
+            if (searchBox) {
+                searchBox.remove();
+                searchBox = null;
+                nowIndex = -1;
+            }
+        }
+
+        /*<![CDATA*/
+        const memberList = /*[[${ServerMember}]]*/ null /*]]>*/
     });
 
-    document.getElementById('chatForm').addEventListener('submit', function(event) {
-        event.preventDefault();
 
-        const message = tinymce.get('mytextarea').getContent(); // TinyMCE에서 값 가져오기
 
-        fetch('https://localhost:8080/chat/tiny2', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ message })
-        })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                tinymce.get('mytextarea').setContent(''); // 전송 후 입력칸 초기화
-            })
-            .catch(error => console.error('Error:', error));
 
-        console.log();
 
-    });
+
+
+
+
+
+
+
+
+    // // TinyMCE 초기화
+    // tinymce.init({
+    //     selector: '#mytextarea',
+    //     menubar: false,
+    //     toolbar: ' image  | bullist numlist | undo redo',
+    //     height: 200,
+    //     images_upload_handler: function (blobInfo, success, failure) {
+    //         // 파일을 Base64로 변환하여 업로드하는 간단한 예제
+    //         let reader = new FileReader();
+    //         reader.onload = function () {
+    //             success(reader.result); // Base64 URL을 에디터에 삽입
+    //         };
+    //         reader.readAsDataURL(blobInfo.blob());
+    //     },
+    //     images_upload_url: '/upload-image',
+    //     automatic_uploads: true,
+    //     paste_data_images: true
+    // });
+    //
+    // document.getElementById('chatForm').addEventListener('submit', function(event) {
+    //     event.preventDefault();
+    //
+    //     const message = tinymce.get('mytextarea').getContent(); // TinyMCE에서 값 가져오기
+    //
+    //     fetch('https://localhost:8080/chat/tiny2', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Accept': 'application/json'
+    //         },
+    //         body: JSON.stringify({ message })
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             alert(data.message);
+    //             tinymce.get('mytextarea').setContent(''); // 전송 후 입력칸 초기화
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    //
+    //     console.log();
+    //
+    // });
    //dd
+
 </script>
 
 
