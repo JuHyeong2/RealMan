@@ -113,7 +113,10 @@
 // 			}
 // 		}
 		
-		const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
+		// const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
+		const socket = new SockJS("https://192.168.140.4:8080/stomp/chat");
+
+
 		const channelStompClient = Stomp.over(socket);
 		
 		channelStompClient.connect({}, ()=>{
