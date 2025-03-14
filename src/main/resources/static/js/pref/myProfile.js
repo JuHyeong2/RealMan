@@ -106,7 +106,6 @@ window.onload = () => {
     passwordModal.style.display = "flex";
     const completeBtn = document.querySelector("#pwd-complete");
     completeBtn.style.visibility = "hidden";
-    const pwd = passwordModal.querySelector("input[name=password]").value;
     const newInput1 = passwordModal.querySelector("input[name=newPassword]");
     const newInput2 = passwordModal.querySelector("input[name=newPassword2]");
     newInput2.addEventListener("keyup", function () {
@@ -115,6 +114,7 @@ window.onload = () => {
       }
     });
     completeBtn.addEventListener("click", function () {
+      const pwd = passwordModal.querySelector("input[name=password]").value;
       editMemberInfo("member_pwd", newInput2.value, pwd);
     });
   });

@@ -167,7 +167,8 @@ public class MemberController {
 			HttpSession session, Model model) {
 		int result = 0;
 		Member loginMember = (Member) session.getAttribute("loginMember");
-
+		System.out.println(map.get("pwd"));
+		
 		if(bcrypt.matches(
 				map.get("pwd"), loginMember.getMemberPwd())) {
 			map.put("memberNo", loginMember.getMemberNo()+"");
