@@ -1,0 +1,8 @@
+.directMassage{
+    width: 320px;
+    background-color: #f2f6f9;
+    height: calc(100vh - 40px);
+    padding: 2rem 0;
+    box-sizing: border-box;
+    overflow-y: auto;
+}

@@ -97,7 +97,7 @@
 			// console.log("username : " + username);
 			
 			// WebSocket 연결
-			const socket = new SockJS("https://192.168.40.4:9090/stomp/chat");
+			const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
 			const stompClient = Stomp.over(socket);
 			
 			stompClient.connect({}, ()=>{
