@@ -14,9 +14,10 @@
   <body>
     <div class="main">
       <div th:insert="preferences/preferencesSidebar.html"></div>
+
       <div class="profile-main">
         <div class="profile-top">
-          <div class="profile-container">
+          <div>
             <h1>내 계정</h1>
           </div>
           <img
@@ -27,60 +28,71 @@
             onclick="location.href='/chat/main'"
           />
         </div>
+
         <div class="myprofile">
-          <div class="circle"></div>
-          <div class="profile-pic-container">
-            <img
-              th:if="${session.loginMember.profileImage == null}"
-              class="profilePicture"
-              src="/image/member/no-profile.svg"
-            />
-            <img
-              th:unless="${session.loginMember.profileImage == null}"
-              class="profilePicture"
-              th:src="@{'/profile-images/' 
-            + ${session.loginMember.profileImage}}"
-            />
-            <div class="profileInfo">
-              <b>별명</b>
-              <h2>[[${session.loginMember.memberNickname}]]</h2>
-              <b>이메일</b>
-              <h2>[[${session.loginMember.memberEmail}]]</h2>
-              <b>전화번호</b>
-              <h2>[[${session.loginMember.memberPhone}]]</h2>
+          <div class="myprofile-top"></div>
+
+          <div class="myprofile-main">
+            <div class="profile-pic-outer">
+              <div class="profile-pic-inner">
+                <div class="profile-pic-container">
+                  <img
+                    th:if="${session.loginMember.profileImage == null}"
+                    class="profile-pic"
+                    src="/image/member/no-profile.svg"
+                  />
+                  <img
+                    th:unless="${session.loginMember.profileImage == null}"
+                    class="profile-pic"
+                    th:src="@{'/profile-images/' 
+                      + ${session.loginMember.profileImage}}"
+                  />
+                </div>
+              </div>
             </div>
-            <div class="profileInfo-2">
-              <button id="nickNameBtn">수정</button><br />
-              <button id="emailBtn">수정</button><br />
-              <button id="phoneBtn">수정</button>
+
+            <div class="profile-info">
+              <div class="profile-info-row">
+                <b>별명</b>
+                <h2>[[${session.loginMember.memberNickname}]]</h2>
+                <button id="nickNameBtn">수정</button>
+              </div>
+              <div class="profile-info-row">
+                <b>이메일</b>
+                <h2>[[${session.loginMember.memberEmail}]]</h2>
+                <button id="emailBtn">수정</button>
+              </div>
+              <div class="profile-info-row">
+                <b>전화번호</b>
+                <h2>[[${session.loginMember.memberPhone}]]</h2>
+                <button id="phoneBtn">수정</button>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="changePassword">
-          <h2>비밀번호</h2>
-          <button id="changePassword">비밀번호 변경하기</button>
-        </div>
-        <div class="deleteAccount">
-          <h2>계정 제거</h2>
-          <button id="deactivateBtn">계정 비활성화</button>
-          <button id="deleteBtn">계정 삭제하기</button>
+          <div class="manage-div">
+            <button id="changePassword">비밀번호 변경하기</button>
+            <button id="deactivateBtn">계정 비활성화</button>
+            <button id="deleteBtn">계정 삭제하기</button>
+          </div>
         </div>
       </div>
     </div>
 
+    <!------------------------프사 모달------------------------>
     <div class="modal" id="profile-pic-modal">
       <div class="modal-content">
         <div>
-          <img
-            th:if="${session.loginMember.profileImage == null}"
-            src="/image/member/no-profile.svg"
-          />
-          <img
-            th:unless="${session.loginMember.profileImage == null}"
-            th:src="@{'/profile-images/' 
+          <div>
+            <img
+              th:if="${session.loginMember.profileImage == null}"
+              src="/image/member/no-profile.svg"
+            />
+            <img
+              th:unless="${session.loginMember.profileImage == null}"
+              th:src="@{'/profile-images/' 
              + ${session.loginMember.profileImage}}"
-          />
+            />
+          </div>
         </div>
         <div>
           <button type="button">변경하기</button>
@@ -90,6 +102,7 @@
       </div>
     </div>
 
+    <!------------------------닉넴 모달------------------------>
     <div class="modal" id="nickNameModal">
       <div class="modal-content">
         <form>
@@ -111,6 +124,7 @@
       </div>
     </div>
 
+    <!------------------------이메일 모달------------------------>
     <div class="modal" id="emailModal-1">
       <div class="modal-content">
         <div class="modalTitle">
@@ -170,6 +184,7 @@
       </div>
     </div>
 
+    <!------------------------전번 모달------------------------>
     <div class="modal" id="phoneModal-1">
       <div class="modal-content">
         <div class="modalTitle">
@@ -223,6 +238,7 @@
       </div>
     </div>
 
+    <!------------------------비번 모달------------------------>
     <div class="modal" id="passwordModal">
       <div class="modal-content">
         <div class="modalTitle">
@@ -242,6 +258,7 @@
       </div>
     </div>
 
+    <!------------------------삭제 모달------------------------>
     <div class="modal" id="deleteModal">
       <div class="modal-content">
         <div class="modalTitle">
@@ -263,3 +280,4 @@
     <script src="/js/pref/myProfile.js"></script>
   </body>
 </html>
+\

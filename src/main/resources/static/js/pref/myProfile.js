@@ -13,7 +13,7 @@ window.onload = () => {
     });
   });
   //======================프사======================
-  const profilePicture = document.querySelector(".profilePicture");
+  const profilePicture = document.querySelector(".profile-pic");
   const profilePicModal = document.querySelector("#profile-pic-modal");
   profilePicture.addEventListener("click", function () {
     profilePicModal.style.display = "flex";
