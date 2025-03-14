@@ -12,6 +12,39 @@ window.onload = () => {
       });
     });
   });
+  //======================프사======================
+  const profilePicture = document.querySelector(".profilePicture");
+  const profilePicModal = document.querySelector("#profile-pic-modal");
+  profilePicture.addEventListener("click", function () {
+    profilePicModal.style.display = "flex";
+    const [changeBtn, deleteBtn] = profilePicModal.querySelectorAll("button");
+    changeBtn.addEventListener("click", function () {
+      const input = document.createElement("input");
+      input.setAttribute("type", "file");
+      input.setAttribute("accept", "image/*");
+      input.click();
+      input.addEventListener("change", function () {
+        const file = this.files[0];
+        const formData = new FormData();
+        formData.append("image", file);
+        fetch("/member/profileImg", {
+          method: "post",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data == true) {
+              alert("변경 완료");
+              location.reload();
+            } else {
+              console.log(data);
+              alert("실패");
+            }
+          });
+      });
+    });
+    deleteBtn.addEventListener("click", function () {});
+  });
 
   //======================별명======================
   // 별명 수정하기

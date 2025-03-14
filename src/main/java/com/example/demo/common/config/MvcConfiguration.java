@@ -18,7 +18,10 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		registry.addResourceHandler("/**")
 			.addResourceLocations("classpath:/static/")
 			.setCacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES));
+		registry.addResourceHandler("/profile-images/**")
+			.addResourceLocations("file:///c:/RealMan/profile-images/");
 	}
+	
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {

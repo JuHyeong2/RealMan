@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.common.util.EmailCertificationUtil;
 import com.example.demo.member.model.exception.MemberException;
@@ -211,6 +212,17 @@ public class MemberController {
 		}
 		
 		return result;
+	}
+	
+	// 프사 변경
+	@PostMapping("/profileImg")
+	@ResponseBody
+	public boolean changeProfileImg(@RequestParam("image") MultipartFile image,
+			HttpSession session) {
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		boolean imageUploaded = mService.changeProfileImg(loginMember.getMemberNo(), image);
+		
+		return imageUploaded;
 	}
 
 	// 회원가입 페이지로 이동

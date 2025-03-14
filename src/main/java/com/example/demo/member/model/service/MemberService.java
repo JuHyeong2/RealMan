@@ -1,12 +1,14 @@
 package com.example.demo.member.model.service;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.member.model.mapper.MemberMapper;
 import com.example.demo.member.model.vo.Member;
@@ -143,6 +145,40 @@ public class MemberService {
 	
 	public Member selectMember(int memberNo) {
 		return mapper.selectMember(memberNo);
+	}
+
+	public boolean changeProfileImg(int memberNo, MultipartFile image) {
+		String oldName = image.getOriginalFilename();
+		String type = oldName.substring(oldName.indexOf("."));
+		String path = "c:\\RealMan";
+		String path2 = "profile-images";
+		
+		File dir = new File(path);
+		File folder = new File(path+"\\"+path2);	
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+		
+		for(File f :folder.listFiles()) {
+			String name1 = f.getName().substring(0, f.getName().indexOf("."));
+			if (name1.equals(memberNo+"")) {
+				f.delete();
+			}
+		}
+		
+		try {
+			image.transferTo(new File(folder+"\\"+memberNo+type));
+			return true;
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

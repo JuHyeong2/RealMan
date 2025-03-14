@@ -50,13 +50,32 @@
   margin-top: 4.6rem;
 }
 
-.profilePicture {
+.profile-pic.input-container {
   position: absolute;
+  z-index: 3;
+}
+
+.profilePicture {
   width: 60px;
   z-index: 2;
   margin-left: 6.3rem;
   margin-top: 5rem;
   cursor: pointer;
+  border-radius: 50%;
+}
+
+#profile-pic-modal > div > div:first-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 16rem;
+}
+
+#profile-pic-modal img {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
 }
 
 .profileInfo {

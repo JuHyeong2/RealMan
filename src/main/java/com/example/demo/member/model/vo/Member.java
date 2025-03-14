@@ -23,4 +23,5 @@ public class Member {
 	private String memberStatus;
 	private String memberIsAdmin;
 	private Date memberCreateDate;
+	private String profileImage;
 }

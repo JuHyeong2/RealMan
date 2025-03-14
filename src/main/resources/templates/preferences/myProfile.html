@@ -27,31 +27,34 @@
             onclick="location.href='/chat/main'"
           />
         </div>
-
-        <img
-          class="myProfile"
-          alt="myProfile"
-          src="/image/preferences/myprofile.png"
-        />
-        <div class="circle"></div>
-        <img
-          class="profilePicture"
-          alt="profilePicture"
-          src="/image/member/no-profile.svg"
-        />
-
-        <div class="profileInfo">
-          <b>별명</b>
-          <h2>[[${session.loginMember.memberNickname}]]</h2>
-          <b>이메일</b>
-          <h2>[[${session.loginMember.memberEmail}]]</h2>
-          <b>전화번호</b>
-          <h2>[[${session.loginMember.memberPhone}]]</h2>
-        </div>
-        <div class="profileInfo-2">
-          <button id="nickNameBtn">수정</button><br />
-          <button id="emailBtn">수정</button><br />
-          <button id="phoneBtn">수정</button>
+        <div class="myprofile">
+          <div class="circle"></div>
+          <div class="profile-pic-container">
+            <img
+              th:if="${session.loginMember.profileImage == null}"
+              class="profilePicture"
+              src="/image/member/no-profile.svg"
+            />
+            <img
+              th:unless="${session.loginMember.profileImage == null}"
+              class="profilePicture"
+              th:src="@{'/profile-images/' 
+            + ${session.loginMember.profileImage}}"
+            />
+            <div class="profileInfo">
+              <b>별명</b>
+              <h2>[[${session.loginMember.memberNickname}]]</h2>
+              <b>이메일</b>
+              <h2>[[${session.loginMember.memberEmail}]]</h2>
+              <b>전화번호</b>
+              <h2>[[${session.loginMember.memberPhone}]]</h2>
+            </div>
+            <div class="profileInfo-2">
+              <button id="nickNameBtn">수정</button><br />
+              <button id="emailBtn">수정</button><br />
+              <button id="phoneBtn">수정</button>
+            </div>
+          </div>
         </div>
 
         <div class="changePassword">
@@ -63,6 +66,27 @@
           <button id="deactivateBtn">계정 비활성화</button>
           <button id="deleteBtn">계정 삭제하기</button>
         </div>
+      </div>
+    </div>
+
+    <div class="modal" id="profile-pic-modal">
+      <div class="modal-content">
+        <div>
+          <img
+            th:if="${session.loginMember.profileImage == null}"
+            src="/image/member/no-profile.svg"
+          />
+          <img
+            th:unless="${session.loginMember.profileImage == null}"
+            th:src="@{'/profile-images/' 
+             + ${session.loginMember.profileImage}}"
+          />
+        </div>
+        <div>
+          <button type="button">변경하기</button>
+          <button type="button">삭제하기</button>
+        </div>
+        <button class="cancle-button" type="button">취소</button>
       </div>
     </div>
 
