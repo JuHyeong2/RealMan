@@ -96,9 +96,6 @@
 			/*]]>*/
 			console.log("memberList:" + memberList[0]);
 
-			// console.log("serverNo : " + serverNo);
-			// console.log("channelNo : " + channelNo);
-			// console.log("username : " + username);
 
 			// WebSocket 연결
 			const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
@@ -141,10 +138,6 @@
 					document.querySelector('.chatContent').scrollTop = document.querySelector('.chatContent').scrollHeight;
 				});
 
-				// 메시지 전송 함수
-				// const sendMessage=(sender, message, roomId)=>{
-				// 	stompClient.send('/pub/chat/' + channelNo + '/' + 'C', {}, JSON.stringify({ roomId, sender, message }));
-				// }
 				const sendMessage = (sender, message, roomId) => {
 					if (!message || message.trim() === "" || message === "<p></p>") {
 						alert("메시지를 입력하세요!");
@@ -159,24 +152,9 @@
 				};
 
 
-				// document.querySelector('#button-send').addEventListener('click', ()=>{
-				// 	// let msg = document.querySelector('textarea');
-				// 	let msg = document.getElementById('mytextarea');
-				// 	sendMessage(username, msg.value, channelNo);
-				// 	msg.value = '';
-				// });
-				//
 				document.querySelector('#button-send').addEventListener('click', () => {
 					let msg = tinymce.get('mytextarea').getContent({format: 'html'}).trim(); // HTML 가져오기
 
-					// 	if (!msg || msg === "<p></p>") {
-					// 		alert("메시지를 입력하세요!");
-					// 		return;
-					// 	}
-					//
-					// 	sendMessage(username, msg, channelNo);
-					// 	tinymce.get('mytextarea').setContent(''); // 입력창 초기화
-					// });
 					let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
 					if (imgTagMatch) {
 						let imgSrc = imgTagMatch[1];
