@@ -61,6 +61,7 @@
 		
 		/*<![CDATA[*/
 		const username = /*[[${member.memberNickname}]]*/null;
+		const userid = /*[[${member.memberId}]]*/null;
 		const serverNo = /*[[${serverNo}]]*/0;
 		const channelNo = /*[[${channelNo}]]*/0;
 		/*]]*/
@@ -102,6 +103,10 @@
 			console.log('나갑니다 : ' + username);
 			channelStompClient.send("/pub/chat/leaveVoice", {}, username);
 		}
+		
+		window.addEventListener('beforeunload', e=>{
+			leaveVoiceChannel(username);
+		})
 
 		// 사용자 목록 업데이트
 		const updateUserList=(users)=> {
