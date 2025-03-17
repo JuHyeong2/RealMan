@@ -111,21 +111,28 @@ public class ChatController {
 		System.out.println(channel.toString());
 		model.addAttribute("channel", channel);
 		
+		
 		// 채널 message 가져오자
 //		Integer channelNum = (Integer)channelNo;
 		ArrayList<ChatMessage> chatList = cService.selectChatList(channelNo);
 		model.addAttribute("chatList", chatList);
 		
-		if(userInChannel != null && !userInChannel.isEmpty()) {
-//			model.addAttribute("userInChannel", userInChannel);	
-//			joinVoiceChannel();
+		// 채널이 Voice인지 Chat인지 확인
+		String voiceOrChat = cService.selectChannel(channelNo);
+		
+		if(voiceOrChat != null && voiceOrChat != "") {
+			if(voiceOrChat.equals("V")) {
+				return "chat/videoChatting";
+			}else{
+				return "chat/chatting";
+			}
 		}
 		
 
 //		ArrayList<Chat> chatChannel= cService.chattingSidebar(no);
 //		model.addAttribute("chatChannel", chatChannel);
 
-		return "chat/chatting";
+		return "";
 
 	}
 	
@@ -201,6 +208,83 @@ public class ChatController {
 		System.out.println("유저 입장.");
 		return 1;
 	}
+	
+	//offer 정보를 주고 받기 위한 websocket
+	//camKey : 각 요청하는 캠의 key , roomId : 룸 아이디
+	@MessageMapping("/peer/offer/{camKey}/{roomId}")
+	@SendTo("/sub/peer/offer/{camKey}/{roomId}")
+	public String PeerHandleOffer(@Payload String offer, @DestinationVariable(value = "roomId") String roomId,
+	                              @DestinationVariable(value = "camKey") String camKey) {
+		System.out.println("roomId : " + roomId);
+		System.out.println("offer : " + offer);
+		System.out.println("camKey : " + camKey);
+//	    System.out.printf("[OFFER] {} : {}", camKey, offer);
+	    return offer;
+	}
+	
+	//iceCandidate 정보를 주고 받기 위한 webSocket
+	//camKey : 각 요청하는 캠의 key , roomId : 룸 아이디
+	@MessageMapping("/peer/iceCandidate/{camKey}/{roomId}")
+	@SendTo("/sub/peer/iceCandidate/{camKey}/{roomId}")
+	public String PeerHandleIceCandidate(@Payload String candidate, @DestinationVariable(value = "roomId") String roomId,
+	                                     @DestinationVariable(value = "camKey") String camKey) {
+		System.out.println("iceCandidateroomId : " + roomId);
+		System.out.println("iceCandidatecamKey : " + camKey);
+//		System.out.println("[ICECANDIDATE] {} : {}", camKey, candidate);
+	    return candidate;
+	}
+
+	//
+
+	@MessageMapping("/peer/answer/{camKey}/{roomId}")
+	@SendTo("/sub/peer/answer/{camKey}/{roomId}")
+	public String PeerHandleAnswer(@Payload String answer, @DestinationVariable(value = "roomId") String roomId,
+	                               @DestinationVariable(value = "camKey") String camKey) {
+		System.out.println("answerroomId : " + roomId);
+		System.out.println("answercamKey : " + camKey);
+//	    log.info("[ANSWER] {} : {}", camKey, answer);
+	    return answer;
+	}
+	
+	//camKey 를 받기위해 신호를 보내는 webSocket
+	@MessageMapping("/call/key")
+	@SendTo("/sub/call/key")
+	public String callKey(@Payload String message) {
+		System.out.println("callmessage : " + message);
+//	    log.info("[Key] : {}", message);
+	    return message;
+	}
+	
+	//자신의 camKey 를 모든 연결된 세션에 보내는 webSocket
+	@MessageMapping("/send/key")
+	@SendTo("/sub/send/key")
+	public String sendKey(@Payload String message) {
+		System.out.println("sendmessage : " + message);
+	    return message;
+	}
+	
+//	@GetMapping("voiceChat/{serverNo}/{channelNo}")
+//	public String voiceChat(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
+//		Member loginMember = (Member)session.getAttribute("loginMember");
+////		System.out.println(serverNo);
+//		
+//		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
+//
+//		if(selectServerList != null || !selectServerList.isEmpty()) {
+//			model.addAttribute("selectServerList", selectServerList);
+//		}
+//		
+//		model.addAttribute("member", loginMember);
+//
+////		Channel channel = new Channel();
+////		channel.setServerNo(no);
+////		channel.se
+//		ArrayList<Channel> channel= cService.chattingSidebar(serverNo);
+//		System.out.println(channel.toString());
+//		model.addAttribute("channel", channel);
+//		
+//		return "videoChatting";
+//	}
 
 
 	@GetMapping("/tiny")
