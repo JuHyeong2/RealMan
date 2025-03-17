@@ -16,6 +16,10 @@
 
 }
 
+.mb-2 div {
+	cursor: pointer;
+}
+
 
 .mainLogo img {
     width: 100%;
