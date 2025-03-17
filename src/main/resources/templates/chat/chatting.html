@@ -6,238 +6,408 @@
     <link rel="stylesheet" href="/css/chat/chatting.css" />
     <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script
-      src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js"
-      referrerpolicy="origin"
-    ></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
-    <style>
-      body,
-      html {
-        height: 100%;
-      }
-      .top-bar {
-        height: 40px;
-        background-color: #e4edf3;
-      }
-      .sidebar {
-        height: calc(100vh - 40px);
-        background-color: #e4edf3;
-      }
-      .chat-area {
-        flex-grow: 1; /* 남은 공간 차지 */
-        width: 1120px;
-      }
-      .user-list {
-        width: 360px;
-      }
-      @media (max-width: 768px) {
-        .top-bar {
-          display: none !important;
-        }
-        .sidebar {
-          height: 100vh;
-        }
-        .chat-area,
-        .user-list {
-          display: none;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!--     <div th:replace="~{/common/sidebar.html :: sidebar}"></div> -->
-    <!--     <div th:replace="~{/chat/chattingSidebar.html :: chattingSidebar}"></div> -->
-    <!--     <div th:replace="~{/chat/friendSidebar.html :: friendSidebar}"></div> -->
+	<style>
+		body, html {
+			height: 100%;
+		}
+		.top-bar {
+			height: 40px;
+			background-color: #E4EDF3;
+		}
+		.sidebar {
+			height: calc(100vh - 40px);
+			background-color: #E4EDF3;
+		}
+		.chat-area {
+			flex-grow: 1; /* 남은 공간 차지 */
+			width: 1120px;
+		}
+		.user-list {
+			width: 360px;
+		}
+		@media (max-width: 768px) {
+			.top-bar {
+				display: none !important;
+			}
+			.sidebar {
+				height: 100vh;
+			}
+			.chat-area, .user-list {
+				display: none;
+			}
+		}
+	</style>
+    
+</head>
+<body>
 
-    <!-- 탑바 -->
-    <div th:replace="~{/common/top :: html}"></div>
-    <!-- 메인 컨테이너-->
-    <div class="main-container d-flex">
-      <!-- 왼쪽 사이드바 -->
-      <div class="sidebar d-flex">
-        <!-- 서버 목록 (조각 코드 포함) -->
-        <div th:replace="~{/common/sidebar :: body}"></div>
-        <!-- 채팅 채널 목록 (조각 코드 포함) -->
-        <div th:replace="~{chattingSidebar :: html}"></div>
-      </div>
+	<!-- 탑바 -->
+	<div th:replace="~{/common/top :: html}"></div>
+	<!-- 메인 컨테이너-->
+	<div class="main-container d-flex">
+		<!-- 왼쪽 사이드바 -->
+		<div class="sidebar d-flex">
+			<!-- 서버 목록 (조각 코드 포함) -->
+			<div th:replace="~{/common/sidebar :: body}"></div>
+			<!-- 채팅 채널 목록 (조각 코드 포함) -->
+			<div th:replace="~{chattingSidebar :: html}"></div>
+		</div>
+	
+		<!-- 채팅 공간 -->
+		<div class="chat-area d-flex flex-column">
+			<div class="flex-grow-1 overflow-auto p-3">
+				<input type="hidden" th:value="${no}">
+				<div class="chatContent">
+					<div class='textArea' th:each="c, cStat:${chatList}">
+						<b> [[${c.sender}]] : [[${c.message}]]</b><p>&nbsp</p>
+					</div>
+				</div>
+			</div>
+			<div class="p-3 d-flex">
+				<textarea class="flex-grow-1" id="mytextarea"></textarea>
+			    <button id="button-send">입력</button>
+			</div>
+		</div>
+	
+		<!-- 유저 목록 -->
+		<div class="user-list bg-light p-3 overflow-auto">
+			<div th:each="i : ${#numbers.sequence(1, 20)}">
+				유저 #[[${i}]]
+			</div>
+		</div>
+	</div>
 
-      <!-- 채팅 공간 -->
-      <div class="chat-area d-flex flex-column">
-        <div class="flex-grow-1 overflow-auto p-3">
-          <input type="hidden" th:value="${no}" />
-          <div class="chatContent">
-            <div class="textArea" th:each="c, cStat:${chatList}">
-              <b> [[${c.sender}]] : [[${c.message}]]</b>
-              <p>&nbsp</p>
-            </div>
-          </div>
-        </div>
-        <div class="p-3 d-flex">
-          <textarea class="flex-grow-1" id="mytextarea"></textarea>
-          <button id="button-send">입력</button>
-        </div>
-      </div>
 
-      <!-- 유저 목록 -->
-      <div class="user-list bg-light p-3 overflow-auto">
-        <div th:each="i : ${#numbers.sequence(1, 20)}">유저 #[[${i}]]</div>
-      </div>
-    </div>
+	<script th:inline="javascript">
 
-    <!-- 	<div class="all"> -->
-    <!-- 		<div th:insert="common/top.html"></div> -->
 
-    <!-- 		<div class="sidebar_wrap"> -->
-    <!-- 			<div th:insert="common/sidebar.html" class="server_siderbar_wrap"></div> -->
+		onload=()=> {
+			// let mytext = document.getElementById('mytextarea');
+			/*<![CDATA[*/
+			const memberList = /*[[${ServerMember}]]*/ null;
+			const username = /*[[${member.memberNickname}]]*/ null;
+			const serverNo = /*[[${serverNo}]]*/ 0;
+			const channelNo = /*[[${channelNo}]]*/ 0;
+			/*]]>*/
+			console.log("memberList:" + memberList[0]);
 
-    <!-- 		    <div th:insert="chat/chattingSidebar.html"></div> -->
-    <!-- 		</div> -->
+			// console.log("serverNo : " + serverNo);
+			// console.log("channelNo : " + channelNo);
+			// console.log("username : " + username);
 
-    <!-- 		<div class="chatSidebarDiv"> -->
+			// WebSocket 연결
+			const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
+			const stompClient = Stomp.over(socket);
 
-    <!-- 		    <div class="chattingPage"> -->
-    <!-- 		    	<input type="hidden" th:value="${no}"> -->
-    <!-- 		    	<div class="chatContent"> -->
+			stompClient.connect({}, () => {
+				console.log("WebSocket 연결 성공!");
 
-    <!-- 		    	</div> -->
-    <!-- 		    	<div class="inputChat"> -->
-    <!-- 		    		<textarea></textarea> -->
-    <!-- 		    		<button id="button-send">입력</button> -->
-    <!-- 		    	</div> -->
-    <!-- 		    </div> -->
-    <!-- 		</div> -->
-    <!-- 	</div> -->
+				// 특정 채팅방(roomId) 구독
+				stompClient.subscribe('/sub/chatroom/' + channelNo, (message) => {
+					const chatMessage = JSON.parse(message.body);
+					console.log("새 메시지:" + chatMessage.sender + ": " + chatMessage.message);
+					let today = new Date();
 
-    <script th:inline="javascript">
-      onload = () => {
-        /*<![CDATA[*/
-        const username = /*[[${member.memberNickname}]]*/ null;
-        const serverNo = /*[[${serverNo}]]*/ 0;
-        const channelNo = /*[[${channelNo}]]*/ 0;
-        /*]]*/
+					let hour = String(today.getHours());
+					let minute = String(today.getMinutes());
+					let second = String(today.getSeconds());
 
-        // 			const serverNo = document.querySelector('input[type="hidden"]').value;
+					if (hour.length == 1) {
+						hour = '0' + hour;
+					}
 
-        console.log("serverNo : " + serverNo);
-        console.log("channelNo : " + channelNo);
-        console.log("username : " + username);
+					if (minute.length == 1) {
+						minute = '0' + minute;
+					}
 
-        // WebSocket 연결
-        const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
-        const stompClient = Stomp.over(socket);
+					if (second.length == 1) {
+						second = '0' + second;
+					}
 
-        stompClient.connect({}, () => {
-          console.log("WebSocket 연결 성공!");
 
-          // 특정 채팅방(roomId) 구독
-          stompClient.subscribe("/sub/chatroom/" + channelNo, (message) => {
-            const chatMessage = JSON.parse(message.body);
-            console.log(
-              "새 메시지:" + chatMessage.sender + ": " + chatMessage.message
-            );
-            let today = new Date();
-
-            let hour = String(today.getHours());
-            let minute = String(today.getMinutes());
-            let second = String(today.getSeconds());
-
-            if (hour.length == 1) {
-              hour = "0" + hour;
-            }
-
-            if (minute.length == 1) {
-              minute = "0" + minute;
-            }
-
-            if (second.length == 1) {
-              second = "0" + second;
-            }
-
-            let HMS = hour + ":" + minute + ":" + second;
-
-            // let str = "<div class='textArea'>";
-            // str += "<b>" + chatMessage.sender + " : " + chatMessage.message + "</b>" + "<p>" + HMS + "</p>";
-            // str += "</div>";
-            let str = `<div class='textArea'>
+					let HMS = hour + ':' + minute + ':' + second;
+					let str = `<div class='textArea'>
 								  <b>${chatMessage.sender} :</b> ${chatMessage.message}
 								  <p>${HMS}</p>
            						</div>`;
-            document
-              .querySelector(".chatContent")
-              .insertAdjacentHTML("afterbegin", str);
+					document.querySelector('.chatContent').insertAdjacentHTML("afterbegin", str);
 
-            // 스크롤 이동
-            document.querySelector(".chatContent").scrollTop =
-              document.querySelector(".chatContent").scrollHeight;
-          });
+					// 스크롤 이동
+					document.querySelector('.chatContent').scrollTop = document.querySelector('.chatContent').scrollHeight;
+				});
 
-          // 메시지 전송 함수
-          const sendMessage = (sender, message, roomId) => {
-            stompClient.send(
-              "/pub/chat/" + channelNo + "/" + "C",
-              {},
-              JSON.stringify({ roomId, sender, message })
-            );
-          };
+				// 메시지 전송 함수
+				// const sendMessage=(sender, message, roomId)=>{
+				// 	stompClient.send('/pub/chat/' + channelNo + '/' + 'C', {}, JSON.stringify({ roomId, sender, message }));
+				// }
+				const sendMessage = (sender, message, roomId) => {
+					if (!message || message.trim() === "" || message === "<p></p>") {
+						alert("메시지를 입력하세요!");
+						return;
+					}
 
-          document
-            .querySelector("#button-send")
-            .addEventListener("click", () => {
-              let msg = document.querySelector("textarea");
-              sendMessage(username, msg.value, channelNo);
-              msg.value = "";
-            });
-        });
+					const sendData = {roomId, sender, message};
 
-        // TinyMCE 초기화
-        tinymce.init({
-          selector: "#mytextarea",
-          plugins: "image paste",
-          menubar: false,
-          toolbar: " image | bullist numlist | undo redo",
-          height: 80,
-          width: "100%",
-          images_upload_handler: function (blobInfo, success, failure) {
-            let reader = new FileReader();
-            reader.onload = function () {
-              let base64URL = reader.result;
-              success(base64URL); // Base64 URL을 에디터에 삽입
-              // console.log("Base64 Image URL:", base64URL);
-            };
-            reader.readAsDataURL(blobInfo.blob());
-          },
-          images_upload_url: "/upload-image",
-          automatic_uploads: true,
-          paste_data_images: true,
-          promotion: false,
-          statusbar: false,
-        });
+					console.log(`✅ 전송 데이터:`, sendData);
 
-        document.querySelector("#button-send").addEventListener("click", () => {
-          // let msg = document.querySelector('textarea');
-          let msg = tinymce.get("mytextarea").getContent({ format: "html" }); // TinyMCE에서 값 가져오기
-          let imgTags = msg.match(/<img[^>]+src="([^">]+)"/g);
+					stompClient.send(`/pub/chat/${roomId}/C`, {}, JSON.stringify(sendData));
+				};
 
-          sendMessage(username, msg, serverNo);
-          tinymce.get("mytextarea").setContent("");
-          // msg.value = '';
-        });
 
-        document.querySelector("textarea").addEventListener("keydown", (e) => {
-          if (e.keyCode === 13) {
-            e.preventDefault();
-            document.querySelector("#button-send").click();
-          }
-        });
-      };
-    </script>
-  </body>
+				// document.querySelector('#button-send').addEventListener('click', ()=>{
+				// 	// let msg = document.querySelector('textarea');
+				// 	let msg = document.getElementById('mytextarea');
+				// 	sendMessage(username, msg.value, channelNo);
+				// 	msg.value = '';
+				// });
+				//
+				document.querySelector('#button-send').addEventListener('click', () => {
+					let msg = tinymce.get('mytextarea').getContent({format: 'html'}).trim(); // HTML 가져오기
+
+					// 	if (!msg || msg === "<p></p>") {
+					// 		alert("메시지를 입력하세요!");
+					// 		return;
+					// 	}
+					//
+					// 	sendMessage(username, msg, channelNo);
+					// 	tinymce.get('mytextarea').setContent(''); // 입력창 초기화
+					// });
+					let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
+					if (imgTagMatch) {
+						let imgSrc = imgTagMatch[1];
+						let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`;
+						let newContent = msg.replace(/<img[^>]+>/, imgTag);
+						sendMessage(username, newContent, serverNo);
+					} else {
+						sendMessage(username, msg, serverNo);
+					}
+
+					tinymce.get('mytextarea').setContent('');
+				});
+
+
+			})
+
+
+			// TinyMCE 초기화
+			tinymce.init({
+				selector: '#mytextarea',
+				plugins: 'image paste',
+				menubar: false,
+				toolbar: ' image | bullist numlist | undo redo',
+				height: 120,
+				width: '80%',
+				images_upload_handler: function (blobInfo, success, failure) {
+					let reader = new FileReader();
+					reader.onload = function () {
+						let base64URL = reader.result;
+
+						// ✅ 이미지 크기 조절 태그 추가
+						let imgTag = `<img src="${base64URL}" style="width: 150px; height: 150px;">`;
+
+						console.log("📷 업로드된 이미지:", imgTag);
+						success(base64URL);
+					};
+					reader.readAsDataURL(blobInfo.blob());
+				},
+				images_upload_url: '/upload-image',
+				automatic_uploads: true,
+				paste_data_images: true,
+				setup: function (editor) {
+					let mentionBox = null;
+					let mentionText = '';
+					// const memberList = /*[[${ServerMember}]]*/ [];  // 서버에서 가져온 멤버 목록
+
+					editor.on('keydown', function (event) {
+						if (event.key === '@') {
+							mentionText = ''; // @ 입력 시 초기화
+							setTimeout(() => showMentionBox(editor), 10);
+						} else if (mentionBox) {
+							if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+								event.preventDefault();
+								moveSelection(event.key === "ArrowDown" ? 1 : -1);
+							} else if (event.key === "Enter" && mentionText) {
+								event.preventDefault();
+								selectItem();
+							} else if (event.key === "Escape") {
+								removeMentionBox();
+							}
+						}
+					});
+
+					// ✨ `input` 이벤트에서 mentionText 업데이트
+					editor.on('input', function () {
+						let content = editor.getContent({ format: 'text' }); // 현재 텍스트 가져오기
+						let words = content.split(/\s+/); // 공백 기준으로 분리
+						let lastWord = words[words.length - 1]; // 마지막 단어 가져오기
+
+						if (lastWord.startsWith("@")) {
+							mentionText = lastWord.slice(1); // @ 제외한 텍스트 저장
+							console.log("현재 입력한 mentionText:", mentionText);
+							updateMentionList();
+						} else {
+							mentionText = ''; // @로 시작하지 않으면 초기화
+							removeMentionBox();
+						}
+					});
+
+					document.addEventListener("click", function (event) {
+						if (mentionBox && !mentionBox.contains(event.target)) {
+							removeMentionBox();
+						}
+					});
+
+					function showMentionBox(editor) {
+						if (mentionBox) mentionBox.remove();
+
+						mentionBox = document.createElement("div");
+						mentionBox.classList.add("mention-box");
+						Object.assign(mentionBox.style, {
+							position: "absolute",
+							zIndex: "1000",
+							background: "white",
+							border: "1px solid #ccc",
+							padding: "5px",
+							borderRadius: "5px",
+							boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+							width: "200px",
+							display: "block",
+						});
+
+						document.body.appendChild(mentionBox);
+						positionMentionBox(editor);
+						updateMentionList();
+					}
+
+					function positionMentionBox(editor) {
+						const node = editor.selection.getNode();
+						const rect = node.getBoundingClientRect();
+						mentionBox.style.top = `${rect.bottom + window.scrollY + 5}px`;
+						mentionBox.style.left = `${rect.right + window.scrollX + 10}px`;
+					}
+
+					function updateMentionList() {
+						mentionBox.innerHTML = "";
+
+						console.log("현재 입력한 텍스트:", mentionText);
+						console.log("전체 멤버 리스트:", memberList);
+
+						if (!mentionText) {
+							mentionBox.innerHTML = "<div>검색어를 입력하세요.</div>";
+							return;
+						}
+
+						let filteredMembers = memberList.filter(member =>
+								member.memberNickName.toLowerCase().includes(mentionText.toLowerCase())
+						);
+
+						console.log("🔍 필터링된 멤버 리스트:", filteredMembers);
+
+						if (filteredMembers.length === 0) {
+							mentionBox.innerHTML = "<div>검색 결과가 없습니다.</div>";
+							return;
+						}
+
+						filteredMembers.forEach(member => {
+							let item = document.createElement("div");
+							item.classList.add("mention-item");
+							item.dataset.nickname = member.memberNickName;
+							item.innerHTML = member.memberNickName.replace(
+									new RegExp(mentionText, "gi"),
+									match => `<span style="color: blue; font-weight: bold;">${match}</span>`
+							);
+							item.style.padding = "5px";
+							item.style.cursor = "pointer";
+
+							item.addEventListener("click", function () {
+								insertMention(editor, member.memberNickName);
+							});
+							mentionBox.appendChild(item);
+						});
+					}
+
+					let selectedIndex = 0; // 선택된 아이템의 인덱스 저장
+
+					function moveSelection(direction) {
+						const items = mentionBox.querySelectorAll(".mention-item");
+						if (items.length === 0) return;
+
+						selectedIndex += direction;
+						if (selectedIndex < 0) selectedIndex = items.length - 1;
+						if (selectedIndex >= items.length) selectedIndex = 0;
+
+						items.forEach((item, index) => {
+							item.style.backgroundColor = index === selectedIndex ? "#ddd" : "white";
+						});
+					}
+
+					function selectItem() {
+						const items = mentionBox.querySelectorAll(".mention-item");
+						if (items.length > 0) {
+							insertMention(editor, items[selectedIndex].dataset.nickname);
+						}
+					}
+
+					function insertMention(editor, name) {
+						const range = editor.selection.getRng();
+						const startNode = range.startContainer;
+						const startOffset = range.startOffset;
+
+						// 기존 '@ + 입력한 텍스트' 삭제
+						const textContent = startNode.textContent;
+						const atIndex = textContent.lastIndexOf("@"); // 마지막 '@' 위치 찾기
+						if (atIndex !== -1) {
+							startNode.deleteData(atIndex, mentionText.length + 1); // @ + 입력한 텍스트 길이만큼 삭제
+						}
+
+						// 새로운 멘션 삽입
+						const newText = `@${name} `;
+						startNode.insertData(atIndex, newText);
+
+						// 커서 위치 조정 (멘션 삽입 후 올바른 위치로 이동)
+						editor.selection.setCursorLocation(startNode, atIndex + newText.length);
+
+						removeMentionBox();
+					}
+
+
+
+
+
+					function removeMentionBox() {
+						if (mentionBox) {
+							mentionBox.remove();
+							mentionBox = null;
+							mentionText = '';
+						}
+					}
+				}
+			});
+
+
+
+
+
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+	</script>
+	
+</body>
 </html>
 

@@ -37,28 +37,45 @@
       <div class="addServer">+</div>
     </div>
 
-    <script>
-      const tds = document.querySelectorAll(".bg-light");
-      for (const td of tds) {
-        td.addEventListener("click", (e) => {
-          console.log("클릭함");
-          $.ajax({
-            url: "/chat/selectSmallestChatNo",
-            method: "post",
-            data: { serverNo: e.target.nextElementSibling.value },
-            success: (data) => {
-              console.log(data);
-              if (data != 0) {
-                location.href =
-                  "/chat/main/" +
-                  e.target.nextElementSibling.value +
-                  "/" +
-                  data;
-              }
-            },
-          });
-        });
-      }
-    </script>
-  </body>
+	<div class="server-list p-2" style="width: 80px;">
+	    <h6 class="text-center" onclick="location.href='/main';"><img src="/image/RealManLogo.png" width="60px"></h6>
+	    <div class="mb-2" th:each="s:${selectServerList}">
+	        <div class="bg-light rounded-circle mx-auto" style="width: 50px; height: 50px; cursor: pointer;">[[${s.serverName}]]</div>
+	        <input type="hidden" th:value="${s.serverNo}">
+	    </div>
+	    <div class="addServer">+</div>
+	</div>
+
+
+
+
+<script>
+	
+    const tds = document.querySelectorAll(".bg-light");
+    console.log(tds);
+    for (const td of tds){
+        console.log(td);
+        td.addEventListener('click',(e)=>{
+            console.log('크릭함');
+            $.ajax({
+            	url: "/chat/selectSmallestChatNo",
+            	method: 'post',
+            	data: {serverNo:e.target.nextElementSibling.value},
+            	success: data=>{
+            		console.log(data);
+            		if(data != 0){
+            			location.href='/chat/main/' + e.target.nextElementSibling.value + "/" + data;
+            		}
+            	}
+            })
+            
+        })
+    }
+
+
+
+</script>
+
+</body>
 </html>
+
