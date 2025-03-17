@@ -21,4 +21,10 @@
     	from channel
     	where server_no = #{serverNo} and channel_separator = 'T' and channel_status = 'Y'
     </select>
+    
+    <!-- 초대 -->
+    <insert id="inviteMember">
+    	insert into server_member
+    	values (#{memberNo}, #{serverNo), default)
+    </insert>
 </mapper>

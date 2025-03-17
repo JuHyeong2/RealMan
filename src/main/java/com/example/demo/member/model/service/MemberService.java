@@ -1,12 +1,14 @@
 package com.example.demo.member.model.service;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.member.model.mapper.MemberMapper;
 import com.example.demo.member.model.vo.Member;
@@ -61,7 +63,7 @@ public class MemberService {
         return mapper.insertMember(member);
     }
     
- // 아이디 중복 확인
+    // 아이디 중복 확인
     public boolean isMemberIdDuplicated(String memberId) {
         return mapper.checkMemberId(memberId) > 0;
     }
@@ -134,6 +136,58 @@ public class MemberService {
 	//회원 차단
 	public int blockMember(HashMap<String, Integer> map) {
 		return mapper.blockMember(map);
+	}
+	
+	//회원 정보 수정
+	public int editMemberInfo(HashMap<String, String> map) {
+		return mapper.editMemberInfo(map);
+	}
+	
+	public Member selectMember(int memberNo) {
+		return mapper.selectMember(memberNo);
+	}
+	
+	//프사 저장
+	public boolean changeProfileImg(int memberNo, MultipartFile image) {
+		String oldName = image.getOriginalFilename();
+		String type = oldName.substring(oldName.indexOf("."));
+		String path = "c:\\RealMan";
+		String path2 = "profile-images";
+		
+		File dir = new File(path);
+		File folder = new File(path+"\\"+path2);	
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+		
+		for(File f :folder.listFiles()) {
+			String name1 = f.getName().substring(0, f.getName().indexOf("."));
+			if (name1.equals(memberNo+"")) {
+				f.delete();
+			}
+		}
+		
+		try {
+			image.transferTo(new File(folder+"\\"+memberNo+type));
+			
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("memberNo", memberNo+"");
+			map.put("col", "profile_image");
+			map.put("val", memberNo+type);
+			
+			int result = mapper.editMemberInfo(map);
+			
+			return result==1? true : false;
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

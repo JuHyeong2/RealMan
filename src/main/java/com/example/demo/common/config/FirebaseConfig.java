@@ -16,15 +16,15 @@ public class FirebaseConfig {
 	
 	@PostConstruct
 	public void firestore() throws IOException {
-		
-		FileInputStream serviceAccount =  
-				new FileInputStream("src/main/resources/realmanfirestore-firebase-adminsdk-fbsvc-42ed42e9d5.json");
+		if(FirebaseApp.getApps().isEmpty()) {
+			FileInputStream serviceAccount =  
+					new FileInputStream("src/main/resources/realmanfirestore-firebase-adminsdk-fbsvc-42ed42e9d5.json");
 
-		FirebaseOptions options = new FirebaseOptions.Builder()
-		  .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-		  .build();
+			FirebaseOptions options = new FirebaseOptions.Builder()
+			  .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+			  .build();
 
-		FirebaseApp.initializeApp(options);
-
+			FirebaseApp.initializeApp(options);
+		}
 	}
 }

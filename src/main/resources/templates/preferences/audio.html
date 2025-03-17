@@ -50,10 +50,10 @@
 			<h3 class="section-title">입력 방식</h3>
 			<div class="radio-group">
 				<label class="radio-option selected">
-					<input type="radio" name="mode" checked> 음성 감지
+					<input type="radio" name="inputType" value="A" checked> 음성 감지
 				</label>
 				<label class="radio-option">
-					<input type="radio" name="mode"> 눌러서 말하기
+					<input type="radio" name="inputType" value="P"> 눌러서 말하기
 				</label>
 			</div>
 		</div>
@@ -61,10 +61,13 @@
 
 		<!-- 🔹 권한 요청 버튼 -->
 		<button class="request-permission">마이크 & 스피커 권한 요청</button>
+
+		<button class="testButton">보낼 변수 값 불러오는지 확인용 버튼</button>
 	</div>
 </div>
 
 <script>
+	let fingerprint = null;
 	document.addEventListener("DOMContentLoaded", function () {
 		const micSelect = document.getElementById("micSelect");
 		const speakerSelect = document.getElementById("speakerSelect");
@@ -73,12 +76,37 @@
 		const requestPermissionButton = document.querySelector(".request-permission");
 		const inputVolumeSlider = document.getElementById("inputVolume");
 		const outputVolumeSlider = document.getElementById("outputVolume");
-		const waveform = document.querySelector(".waveform");
 
+		const waveform = document.querySelector(".waveform");
 		let micStream = null;
 		let audioContext = null;
 		let analyser = null;
+
 		let source = null;
+		// fingerprint : 네트워크 기준의  접속 기기 정보 불러오기
+		async function getClientFingerprint() {
+			const connection = new RTCPeerConnection();
+			connection.createDataChannel("");
+
+			// 🟢 Offer 생성 (비동기 처리)
+			const offer = await connection.createOffer();
+
+			// 🟢 반드시 `setLocalDescription()`을 호출하여 `localDescription` 설정
+			await connection.setLocalDescription(offer);
+
+			connection.close();
+
+			// 🟢 Fingerprint 생성 (Base64 인코딩)
+			return btoa(connection.localDescription.sdp);
+		}
+
+// Fingerprint 전역 변수 저장
+		getClientFingerprint().then(fp => {
+			fingerprint = fp;
+			console.log("Fingerprint:", fingerprint);
+		});
+
+
 
 		// 오디오 장치 목록을 가져오는 함수
 		async function getAudioDevices() {
@@ -241,6 +269,77 @@
 		requestAudioPermission();
 		getAudioDevices();
 	});
+
+	// 환경설정 값을 백엔드로 전송하는 함수
+	async function sendAudioPreferences() {
+		// fingerprint 값은 전역 변수에서 가져오기 (중복 호출 제거)
+		if (!fingerprint) {
+			console.error("Fingerprint 값이 아직 생성되지 않았습니다.");
+			return;
+		}
+
+		// HTML 요소에서 값 가져오기
+		const micSelect = document.getElementById("micSelect").value;
+		const inputVolume = document.getElementById("inputVolume").value;
+		const speakerSelect = document.getElementById("speakerSelect").value;
+		const outputVolume = document.getElementById("outputVolume").value;
+		const inputType = document.querySelector('input[name="inputType"]:checked').value;
+
+		// 전송할 데이터 객체 생성
+		const requestData = {
+			audioInput: micSelect,
+			inputValue: inputVolume,
+			audioOutput: speakerSelect,
+			outputValue: outputVolume,
+			inputType: inputType,
+			deviceId: fingerprint // 이미 저장된 fingerprint 값 사용
+		};
+
+		console.log("보낼 데이터:", requestData); // 디버깅용 로그
+
+		// 서버로 데이터 전송
+		try {
+			const response = await fetch("/prefs/audio", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(requestData)
+			});
+
+			if (response.ok) {
+				console.log("환경설정이 성공적으로 저장되었습니다.");
+			} else {
+				console.error("환경설정 저장 실패:", response.status);
+			}
+		} catch (error) {
+			console.error("서버 요청 오류:", error);
+		}
+	}
+
+	// 페이지를 벗어날 때 설정 값 저장 (이벤트 리스너 추가)
+	window.addEventListener("beforeunload", sendAudioPreferences);
+
+
+	// 값불러오는 테스트용 버튼
+	document.addEventListener("DOMContentLoaded", function () {
+		// "testButton" 클래스를 가진 버튼 가져오기
+		const testButton = document.querySelector(".testButton");
+
+		// 버튼 클릭 시 환경설정 값 확인
+		testButton.addEventListener("click", ()=>{
+			const micSelect = document.getElementById("micSelect").value;
+			const inputVolume = document.getElementById("inputVolume").value;
+			const speakerSelect = document.getElementById("speakerSelect").value;
+			const outputVolume = document.getElementById("outputVolume").value;
+			const inputType = document.querySelector('input[name="inputType"]:checked').value;
+
+			alert('마이크 : ' + micSelect
+					+ '/ 마이크볼륨 : ' + inputVolume
+					+ '/ 스피커 : ' + speakerSelect
+					+ '/ 스피커볼륨 : ' + outputVolume
+					+ '/ 입력방식 : ' + inputType);
+		});
+	});
+
 
 </script>
 
