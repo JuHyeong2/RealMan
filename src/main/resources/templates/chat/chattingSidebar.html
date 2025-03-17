@@ -27,9 +27,6 @@
 		    <div class="textChat">
 				<li th:each="c : ${channel}" th:if="${c.channelSeparator == 'T'}" onclick="goToChat(event);"><a th:href="@{'/chat/main/'+${serverNo}+'/'+${c.channelNo}}"><img src="/image/chat.png">&nbsp[[${c.channelName}]]</a></li>
 			</div>
-		    <ul>
-		    <li></li>
-		    </ul>
 
     	</nav>
     	
@@ -163,38 +160,7 @@
 // 			}
 // 		}
 		
-		const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
-		const channelStompClient = Stomp.over(socket);
 		
-		channelStompClient.connect({}, ()=>{
-			console.log('channelSocket 연결 성공');
-			
-			// 보이스 채널 사용자 목록 구독
-			channelStompClient.subscribe("/topic/voice", (message)=>{
-				updateUserList(JSON.pase(message.body));
-			});
-		});
-		
-		// 보이스 채널 입장 함수
-		const joinVoiceChannel=(username)=>{
-		    stompClient.send("/chat/joinVoice", {}, username);
-		}
-
-		// 보이스 채널 퇴장 함수
-		const leaveVoiceChannel=(username)=>{
-		    stompClient.send("/chat/leaveVoice", {}, username);
-		}
-
-		// 사용자 목록 업데이트
-		const updateUserList=(users)=> {
-		    const userList = document.getElementById("voice-users");
-		    userList.innerHTML = "";
-		    users.forEach(user => {
-		        let li = document.createElement("li");
-		        li.textContent = user;
-		        userList.appendChild(li);
-		    });
-		}
 		
 		// 채팅 채팅방 드롭다운
 		document.querySelectorAll('.channel')[1].addEventListener('click', ()=>{

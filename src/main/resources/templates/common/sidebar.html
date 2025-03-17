@@ -14,28 +14,8 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.js"
-      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
-    <div class="server-list p-2" style="width: 80px">
-      <h6 class="text-center" onclick="location.href='/main';">
-        <img src="/image/RealManLogo.png" width="60px" />
-      </h6>
-      <div class="mb-2" th:each="s:${selectServerList}">
-        <div
-          class="bg-light rounded-circle mx-auto"
-          style="width: 50px; height: 50px; cursor: pointer"
-        >
-          [[${s.serverName}]]
-        </div>
-        <input type="hidden" th:value="${s.serverNo}" />
-      </div>
-      <div class="addServer">+</div>
-    </div>
 
 	<div class="server-list p-2" style="width: 80px;">
 	    <h6 class="text-center" onclick="location.href='/main';"><img src="/image/RealManLogo.png" width="60px"></h6>

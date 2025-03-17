@@ -27,4 +27,5 @@
     	insert into server_member
     	values (#{memberNo}, #{serverNo), default)
     </insert>
+
 </mapper>

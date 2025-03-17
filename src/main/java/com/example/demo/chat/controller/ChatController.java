@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,6 +45,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatController {
 	private final ChatService cService;
 	private final ServerService sService;
+	private final ServerMemberService smService;
 	
 
 	private final SimpMessagingTemplate messagingTemplate;
@@ -141,95 +143,92 @@ public class ChatController {
 //		ArrayList<Chat> chatChannel= cService.chattingSidebar(no);
 //		model.addAttribute("chatChannel", chatChannel);
 
-			return "";
+		return "";
 
-		}
+	}
 
-		@MessageMapping("/chat/{channelNo}/{separetor}")
-		public void sendMessage(@DestinationVariable("channelNo") int channelNo, @DestinationVariable("separetor") String separetor, ChatMessage message) {
-			// 특정  채팅방(roomId)에 메시지를 전송
-			System.out.println("channelNo : " + channelNo);
-			System.out.println("separetor : " + separetor);
-			System.out.println("nickName : " + message.getSender());
-			System.out.println("message : " + message.getMessage());
-			message.setRoomId(channelNo);
-			message.setSeparetor(separetor);
-			// firebaseStore
-			cService.insertChat(message);
-			messagingTemplate.convertAndSend("/sub/chatroom/" + channelNo, message);
-		}
-
-		// 입장시 추가 후 목록반환
-		@MessageMapping("/chat/joinVoice")
-		@SendTo("/sub/voice")
-		public Map<Integer, Set<String>> joinVoiceChannel (@Payload ChannelMember cMember){
-//		System.out.println("joinVoice 들어옴.");
+	@MessageMapping("/chat/{channelNo}/{separetor}")
+	public void sendMessage(@DestinationVariable("channelNo") int channelNo, @DestinationVariable("separetor") String separetor, ChatMessage message) {
+		// 특정  채팅방(roomId)에 메시지를 전송
+		System.out.println("channelNo : " + channelNo);
+		System.out.println("separetor : " + separetor);
+		System.out.println("nickName : " + message.getSender());
+		System.out.println("message : " + message.getMessage());
+		message.setRoomId(channelNo);
+		message.setSeparetor(separetor);
+		// firebaseStore
+		cService.insertChat(message);
+		messagingTemplate.convertAndSend("/sub/chatroom/" + channelNo, message);
+	}
+	
+	// 입장시 추가 후 목록반환
+	@MessageMapping("/chat/joinVoice")
+	@SendTo("/sub/voice")
+	public Map<Integer, Set<String>> joinVoiceChannel (@Payload ChannelMember cMember){
+		//System.out.println("joinVoice 들어옴.");
 		memberInchannelNo = cMember.getClickServerNo();
 		for(int key : userInChannel.keySet()) {
 			if(userInChannel.get(key).contains(cMember.getUsername())) {
 				userInChannel.get(key).remove(cMember.getUsername());
 			}
-
-			userInChannel.computeIfAbsent(cMember.getClickServerNo(),
-					k -> ConcurrentHashMap.newKeySet()).add(cMember.getUsername());
-
-
-			return userInChannel;
 		}
-
-		// 목록반환 만
-		@GetMapping("/api/voiceUsers")
-		@ResponseBody
-		public Map<Integer, Set<String>> joinVoiceChannel () {
-			System.out.println("/api/voiceUsers 들어옴.");
-			System.out.println(userInChannel);
-//		messagingTemplate.convertAndSend("/sub/voice", userInChannel);
-			return userInChannel;
-		}
-
-		// 사용자 목록 업데이트 후 반환
-		@MessageMapping("/chat/leaveVoice")
-		@SendTo("/sub/voice")
-		public Map<Integer, Set<String>> leaveVoiceChannel (@Payload String username){
-			System.out.println("보이스채팅을 나가는 닉네임 : " + username);
-			for (int key : userInChannel.keySet()) {
-				if (userInChannel.get(key).contains(username)) {
-					userInChannel.get(key).remove(username);
-				}
+		userInChannel.computeIfAbsent(cMember.getClickServerNo(), k -> ConcurrentHashMap.newKeySet()).add(cMember.getUsername());
+		return userInChannel;
+	}
+	
+	// 목록반환 만
+	@GetMapping("/api/voiceUsers")
+	@ResponseBody
+	public Map<Integer, Set<String>> joinVoiceChannel () {
+		System.out.println("/api/voiceUsers 들어옴.");
+		System.out.println(userInChannel);
+	//messagingTemplate.convertAndSend("/sub/voice", userInChannel);
+		return userInChannel;
+	}
+	
+	// 사용자 목록 업데이트 후 반환
+	@MessageMapping("/chat/leaveVoice")
+	@SendTo("/sub/voice")
+	public Map<Integer, Set<String>> leaveVoiceChannel (@Payload String username){
+		System.out.println("보이스채팅을 나가는 닉네임 : " + username);
+		for (int key : userInChannel.keySet()) {
+			if (userInChannel.get(key).contains(username)) {
+				userInChannel.get(key).remove(username);
 			}
-			return userInChannel;
 		}
-
-
-		@PostMapping("selectSmallestChatNo")
-		@ResponseBody
-		public int selectSmallestChatNo ( @RequestParam("serverNo") int serverNo){
-			System.out.println(serverNo);
-			ArrayList<Integer> channelNo = sService.selectChannelNo(serverNo);
-			System.out.println(channelNo);
-			Collections.sort(channelNo);
-			return channelNo.get(0);
-		}
-
-		@GetMapping("updateChannelUser")
-		@ResponseBody
-		public int updateChannelUser () {
-//		System.out.println("유저 입장.");
-			return 1;
-		}
-
-		//offer 정보를 주고 받기 위한 websocket
-		//camKey : 각 요청하는 캠의 key , roomId : 룸 아이디
-		@MessageMapping("/peer/offer/{camKey}/{roomId}")
-		@SendTo("/sub/peer/offer/{camKey}/{roomId}")
-		public String PeerHandleOffer (@Payload String offer, @DestinationVariable(value = "roomId") String roomId,
-				@DestinationVariable(value = "camKey") String camKey){
-			System.out.println("roomId : " + roomId);
-			System.out.println("offer : " + offer);
-			System.out.println("camKey : " + camKey);
-//	    System.out.printf("[OFFER] {} : {}", camKey, offer);
-
-	    return offer;
+		return userInChannel;
+	}
+	
+	
+	@PostMapping("selectSmallestChatNo")
+	@ResponseBody
+	public int selectSmallestChatNo ( @RequestParam("serverNo") int serverNo){
+		System.out.println(serverNo);
+		ArrayList<Integer> channelNo = sService.selectChannelNo(serverNo);
+		System.out.println(channelNo);
+		Collections.sort(channelNo);
+		return channelNo.get(0);
+	}
+	
+	@GetMapping("updateChannelUser")
+	@ResponseBody
+	public int updateChannelUser () {
+	//System.out.println("유저 입장.");
+		return 1;
+	}
+	
+	//offer 정보를 주고 받기 위한 websocket
+	//camKey : 각 요청하는 캠의 key , roomId : 룸 아이디
+	@MessageMapping("/peer/offer/{camKey}/{roomId}")
+	@SendTo("/sub/peer/offer/{camKey}/{roomId}")
+	public String PeerHandleOffer (@Payload String offer, @DestinationVariable(value = "roomId") String roomId,
+			@DestinationVariable(value = "camKey") String camKey){
+		System.out.println("roomId : " + roomId);
+		System.out.println("offer : " + offer);
+		System.out.println("camKey : " + camKey);
+	//	System.out.printf("[OFFER] {} : {}", camKey, offer);
+	
+		return offer;
 	}
 	
 	//iceCandidate 정보를 주고 받기 위한 webSocket
@@ -270,16 +269,15 @@ public class ChatController {
 		System.out.println(message);
 //	    log.info("[Key] : {}", message);
 				return message;
-			}
+	}
 
 			//자신의 camKey 를 모든 연결된 세션에 보내는 webSocket
-			@MessageMapping("/send/key")
-			@SendTo("/sub/send/key")
-			public String sendKey (@Payload String message){
-				System.out.println("sendmessage : " + message);
-				return message;
-			}
-
+	@MessageMapping("/send/key")
+	@SendTo("/sub/send/key")
+	public String sendKey (@Payload String message){
+		System.out.println("sendmessage : " + message);
+		return message;
+	}
 
 
 
@@ -303,18 +301,5 @@ public class ChatController {
 		response.put("message", "메시지가 전송되었습니다!");
 		return response;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

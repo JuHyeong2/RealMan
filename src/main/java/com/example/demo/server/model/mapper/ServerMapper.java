@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.member.model.vo.Member;
 import com.example.demo.server.model.vo.Server;
+import com.example.demo.serverMember.model.vo.ServerMember;
 
 @Mapper
 public interface ServerMapper {
@@ -17,4 +18,5 @@ public interface ServerMapper {
 	ArrayList<Integer> selectChannelNo(int serverNo);
 	
 	int inviteMember(HashMap<String, Integer> map);
+
 }

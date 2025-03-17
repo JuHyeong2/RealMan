@@ -4,6 +4,8 @@ package com.example.demo.server.model.service;
 import com.example.demo.member.model.vo.Member;
 import com.example.demo.server.model.mapper.ServerMapper;
 import com.example.demo.server.model.vo.Server;
+import com.example.demo.serverMember.model.vo.ServerMember;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +28,5 @@ public class ServerService {
 		
 		return mapper.selectChannelNo(serverNo);
 	}
+
 }
