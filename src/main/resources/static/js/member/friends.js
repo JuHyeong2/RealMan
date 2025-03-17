@@ -2,8 +2,8 @@ let fLi = document.createElement("li");
 fLi.innerHTML = `<div class="friend-row">
               <input type="hidden" />
               <div class="profile-div">
-                <div class="svg-container">
-                  <img class="profile" src="/image/friend/no-profile.svg" />
+                <div class="">
+                  <img class="profile" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -35,7 +35,7 @@ wLi.innerHTML = `<div class="friend-row wlist">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" src="/image/friend/no-profile.svg" />
+                  <img class="profile" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -66,7 +66,7 @@ rLi.innerHTML = `<div class="friend-row rlist">
                 <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" src="/image/friend/no-profile.svg" />
+                  <img class="profile"" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -91,7 +91,7 @@ sLi.innerHTML = `<div class="friend-row slist">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" src="/image/friend/no-profile.svg" />
+                  <img class="profile" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -136,16 +136,12 @@ const getFriendList = () => {
     .then((response) => response.json())
     .then((data) => {
       if (data != undefined) {
-        console.log("data : ", data);
         //친구목록
         if (data.list != null) {
           for (let f of data.list) {
             const fli = fLi.cloneNode(true);
             fli.querySelector("input").value = f.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            fli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/friend/no-profile.svg");
+            fli.querySelector("img").src = "/profile-images/" + f.profileImage;
             fli.querySelector(".nickname").innerText = f.memberNickname;
             fli.querySelector(".id").innerText = f.memberId;
             flist.append(fli);
@@ -157,10 +153,7 @@ const getFriendList = () => {
           for (let w of data.wlist) {
             const wli = wLi.cloneNode(true);
             wli.querySelector("input").value = w.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            wli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/friend/no-profile.svg");
+            wli.querySelector("img").src = "/profile-images/" + w.profileImage;
             wli.querySelector(".nickname").innerText = w.memberNickname;
             wli.querySelector(".id").innerText = w.memberId;
             wlist.append(wli);
@@ -172,10 +165,7 @@ const getFriendList = () => {
           for (let r of data.rlist) {
             const rli = rLi.cloneNode(true);
             rli.querySelector("input").value = r.memberNo;
-            //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-            rli
-              .querySelector(".profile")
-              .setAttribute("src", "/image/friend/no-profile.svg");
+            rli.querySelector("img").src = "/profile-images/" + r.profileImage;
             rli.querySelector(".nickname").innerText = r.memberNickname;
             rli.querySelector(".id").innerText = r.memberId;
             rlist.append(rli);
@@ -263,16 +253,13 @@ function setupEventHandlers() {
         fetch("/member/find?search=" + searchStr)
           .then((response) => response.json())
           .then((data) => {
-            console.log("data", data);
             slist.innerHTML = "";
             if (data != null) {
               for (let s of data) {
                 const sli = sLi.cloneNode(true);
                 sli.querySelector("input").value = s.memberNo;
-                //----(프사 없다면 기본 프사 넣는 로직 넣어야함)
-                sli
-                  .querySelector(".profile")
-                  .setAttribute("src", "/image/friend/no-profile.svg");
+                sli.querySelector("img").src =
+                  "/profile-images/" + s.profileImage;
                 sli.querySelector(".nickname").innerText = s.memberNickname;
                 sli.querySelector(".id").innerText = s.memberId;
                 slist.append(sli);
@@ -293,13 +280,10 @@ function setupEventHandlers() {
       let lists = [flist, wlist, rlist];
       lists.forEach((list) => {
         list.querySelectorAll("li").forEach((li) => {
-          console.log(li);
           let idCheck = li.querySelector(".id").innerText.includes(searchStr);
           let nicknameCheck = li
             .querySelector(".nickname")
             .innerText.includes(searchStr);
-          console.log(idCheck);
-          console.log(nicknameCheck);
           if (!idCheck && !nicknameCheck) {
             li.style.display = "none";
           } else {
@@ -381,7 +365,7 @@ function setupEventHandlers() {
         friendrow.querySelector("input[type=hidden]").value;
       const [menu1, menu2] = etcMenu.querySelectorAll("div");
       //flist 에서 :
-      if (friendrow.parentElement.id == "friend-list") {
+      if (friendrow.parentElement.parentElement.id == "friend-list") {
         //친구삭제
         menu1.onclick = function () {
           if (confirm("정말로 친구 삭제를 진행하시겠습니까?")) {
@@ -479,7 +463,6 @@ function setupEventHandlers() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("data", data);
             if (data == 1) {
               alert("친구 요청이 완료되었습니다.");
               location.reload();
@@ -519,7 +502,6 @@ function blockMember(blockMemberNo) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("data", data);
       if (data == 1) {
         alert("차단이 완료되었습니다.");
         location.reload();

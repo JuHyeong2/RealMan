@@ -46,6 +46,7 @@ public class PrefsController {
     public String videoView() {
         return "video";
     }
+    
     /*
     // 카메라 장치 목록을 반환하는 API
     @ResponseBody

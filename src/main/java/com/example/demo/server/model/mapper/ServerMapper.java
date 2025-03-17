@@ -1,10 +1,12 @@
 package com.example.demo.server.model.mapper;
 
-import com.example.demo.member.model.vo.Member;
-import com.example.demo.server.model.vo.Server;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.ArrayList;
+import com.example.demo.member.model.vo.Member;
+import com.example.demo.server.model.vo.Server;
 
 @Mapper
 public interface ServerMapper {
@@ -13,4 +15,6 @@ public interface ServerMapper {
     ArrayList<Server> selectServerList(Member m);
 
 	ArrayList<Integer> selectChannelNo(int serverNo);
+	
+	int inviteMember(HashMap<String, Integer> map);
 }
