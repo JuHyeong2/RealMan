@@ -8,14 +8,22 @@ import com.example.demo.chat.model.vo.ChatMessage;
 import com.example.demo.member.model.vo.Member;
 import com.example.demo.server.model.service.ServerService;
 import com.example.demo.server.model.vo.Server;
+
 import com.example.demo.serverMember.model.service.ServerMemberService;
 import com.example.demo.serverMember.model.vo.ServerMember;
 import jakarta.servlet.http.HttpServletRequest;
+
+
+
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+
+
+
+
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -23,6 +31,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -35,8 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatController {
 	private final ChatService cService;
 	private final ServerService sService;
-	private final ServerMemberService smService;
-
+	
 
 	private final SimpMessagingTemplate messagingTemplate;
 	
@@ -64,7 +72,7 @@ public class ChatController {
 	    
 //		System.out.println(ip);
 		Member m = (Member) session.getAttribute("loginMember");
-//		System.out.println(m.toString());
+		System.out.println(m.toString());
 //		Server server = new Server();
 //		server.setServerNo(server.getServerNo());
 //
@@ -87,12 +95,10 @@ public class ChatController {
 
 	@GetMapping("/main/{serverNo}/{channelNo}")
 	public String chatting(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		System.out.println(serverNo);
-
+		Member loginMember = (Member)session.getAttribute("loginMember");
+		
 		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
-
-		if (selectServerList != null || !selectServerList.isEmpty()) {
+		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);
 		}
 
@@ -101,13 +107,13 @@ public class ChatController {
 //		Channel channel = new Channel();
 //		channel.setServerNo(no);
 //		channel.se
+
 		ArrayList<Channel> channel = cService.chattingSidebar(serverNo);
 //		System.out.println(channel.toString());
 		model.addAttribute("channel", channel);
 
 		ArrayList<ServerMember> ServerMember = smService.serverMemberList(serverNo);
 		model.addAttribute("ServerMember", ServerMember);
-
 
 		// 채널 message 가져오자
 //		Integer channelNum = (Integer)channelNo;
@@ -124,7 +130,7 @@ public class ChatController {
 				return "chat/chatting";
 			}
 		}
-
+		
 
 
 
@@ -280,60 +286,41 @@ public class ChatController {
 				return message;
 			}
 
-//	@GetMapping("voiceChat/{serverNo}/{channelNo}")
-//	public String voiceChat(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
-//		Member loginMember = (Member)session.getAttribute("loginMember");
-////		System.out.println(serverNo);
-//
-//		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
-//
-//		if(selectServerList != null || !selectServerList.isEmpty()) {
-//			model.addAttribute("selectServerList", selectServerList);
-//		}
-//
-//		model.addAttribute("member", loginMember);
-//
-////		Channel channel = new Channel();
-////		channel.setServerNo(no);
-////		channel.se
-//		ArrayList<Channel> channel= cService.chattingSidebar(serverNo);
-//		System.out.println(channel.toString());
-//		model.addAttribute("channel", channel);
-//
-//		return "videoChatting";
-//	}
 
 
-			@GetMapping("/tiny")
-			public String tiny () {
-				return "/tiny";
-			}
 
 
-//	public String tiny(@RequestParam(name = "serverNo", required = false, defaultValue = "1") int serverNo, Model model) {
+	@GetMapping("/tiny")
+	public String tiny () {
+			return "/tiny";
+	}
 
 
-//	@PostMapping("/tiny2")
-//	@ResponseBody
-//	public Map<String, String> sendMessage(@RequestBody Map<String, String> request) {
-//		String message = request.get("message"); // TinyMCE에서 보낸 메시지 받기
-//		System.out.println("받은 메시지: " + message);
-//
-//		// 메시지를 DB에 저장하거나 WebSocket을 통해 전송 가능
-//
-//		Map<String, String> response = new HashMap<>();
-//		response.put("message", "메시지가 전송되었습니다!");
-//		return response;
-//	}
+	@PostMapping("/tiny2")
+	@ResponseBody
+	public Map<String, String> sendMessage(@RequestBody Map<String, String> request) {
+		String message = request.get("message"); // TinyMCE에서 보낸 메시지 받기
+		System.out.println("받은 메시지: " + message);
+
+		// 메시지를 DB에 저장하거나 WebSocket을 통해 전송 가능
 
 
-// chattingSidebar 할떄 쓸것
-//	public String chattingSidebar(HttpServletRequest request, Model model) {
-//		ArrayList<Chat> voiceChannel= cService.chattingSidebar("V");
-//		ArrayList<Chat> chatChannel= cService.chattingSidebar("T");
-//		model.addAttribute("chatList", voiceChannel);
-//		model.addAttribute("chatList", chatChannel);
-//		return "chattingSidebar";
-//	}
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "메시지가 전송되었습니다!");
+		return response;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-		}
+}
