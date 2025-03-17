@@ -60,7 +60,13 @@
 	</div>
 	
 	
-	<script>
+	<script th:inline="javascript">
+		
+		/*<![CDATA[*/
+		const username = /*[[${member.memberNickname}]]*/null;
+		const serverNo = /*[[${serverNo}]]*/0;
+		const channelNo = /*[[${channelNo}]]*/0;
+		/*]]*/
 		// 최초에 채널에 입장해 있는 사람들 목록 보이게 하기
 		window.addEventListener('load', ()=>{
 			fetch("/chat/api/voiceUsers")
@@ -204,11 +210,9 @@
 					people.style.display = 'none';
 				}
 			}
-			
-			
 		})
 		
-		// 해당 채팅 채널 클릭시 해당 채널로 이동
+		// 음성연결 끊기 버튼 클릭 시 가장 상단 채팅채널로 이동
 		console.log('---------------------');
 		console.log(document.querySelectorAll('.connect')[0].querySelector('img'));
 		document.querySelectorAll('.connect')[0].querySelector('img').addEventListener('click', ()=>{
@@ -216,6 +220,17 @@
 			console.log(document.querySelectorAll('.profile')[0].querySelector('b').innerText);
 			const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
 			leaveVoiceChannel(myNickname);
+			$.ajax({
+            	url: "/chat/selectSmallestChatNo",
+            	method: 'post',
+            	data: {serverNo:serverNo},
+            	success: data=>{
+            		console.log(data);
+            		if(data != 0){
+            			location.href='/chat/main/' + serverNo + "/" + data;
+            		}
+            	}
+            })
 		})
 		
 		// 프로필 사진, 닉네임, 톱니바퀴 클릭시 내계정 페이지로 이동

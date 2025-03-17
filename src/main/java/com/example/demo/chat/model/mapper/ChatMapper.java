@@ -11,5 +11,5 @@ public interface ChatMapper {
 
     ArrayList<Channel> chattingSidebar(int no);
 
-	String selectChannel(int channelNo);
+	Channel selectChannel(int channelNo);
 }

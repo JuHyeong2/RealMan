@@ -49,6 +49,8 @@ public class ChatController {
 	private final SimpMessagingTemplate messagingTemplate;
 	
 	private Map<Integer, Set<String>> userInChannel = new ConcurrentHashMap<>();
+	private Map<Integer, Set<String>> videoInChannel = new ConcurrentHashMap<>();
+	private int memberInchannelNo = 0; 
 
 	@GetMapping("main")
 	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
@@ -107,8 +109,8 @@ public class ChatController {
 //		Channel channel = new Channel();
 //		channel.setServerNo(no);
 //		channel.se
+		ArrayList<Channel> channel= cService.chattingSidebar(serverNo);
 
-		ArrayList<Channel> channel = cService.chattingSidebar(serverNo);
 //		System.out.println(channel.toString());
 		model.addAttribute("channel", channel);
 
@@ -121,10 +123,12 @@ public class ChatController {
 		model.addAttribute("chatList", chatList);
 
 		// 채널이 Voice인지 Chat인지 확인
-		String voiceOrChat = cService.selectChannel(channelNo);
 
-		if (voiceOrChat != null && voiceOrChat != "") {
-			if (voiceOrChat.equals("V")) {
+		Channel Channel = cService.selectChannel(channelNo);
+		System.out.println("V or C ? : " + Channel.getChannelSeparator());
+		
+		if(Channel.getChannelSeparator() != null && Channel.getChannelSeparator() != "") {
+			if(Channel.getChannelSeparator().equals("V")) {
 				return "chat/videoChatting";
 			} else {
 				return "chat/chatting";
@@ -160,11 +164,10 @@ public class ChatController {
 		@SendTo("/sub/voice")
 		public Map<Integer, Set<String>> joinVoiceChannel (@Payload ChannelMember cMember){
 //		System.out.println("joinVoice 들어옴.");
-
-			for (int key : userInChannel.keySet()) {
-				if (userInChannel.get(key).contains(cMember.getUsername())) {
-					userInChannel.get(key).remove(cMember.getUsername());
-				}
+		memberInchannelNo = cMember.getClickServerNo();
+		for(int key : userInChannel.keySet()) {
+			if(userInChannel.get(key).contains(cMember.getUsername())) {
+				userInChannel.get(key).remove(cMember.getUsername());
 			}
 
 			userInChannel.computeIfAbsent(cMember.getClickServerNo(),
@@ -225,55 +228,46 @@ public class ChatController {
 			System.out.println("offer : " + offer);
 			System.out.println("camKey : " + camKey);
 //	    System.out.printf("[OFFER] {} : {}", camKey, offer);
-			return offer;
-		}
 
-		//iceCandidate 정보를 주고 받기 위한 webSocket
-		//camKey : 각 요청하는 캠의 key , roomId : 룸 아이디
-		@MessageMapping("/peer/iceCandidate/{camKey}/{roomId}")
-		@SendTo("/sub/peer/iceCandidate/{camKey}/{roomId}")
-		public String PeerHandleIceCandidate (@Payload String candidate, @DestinationVariable(value = "roomId") String
-		roomId,
-				@DestinationVariable(value = "camKey") String camKey){
-			System.out.println("iceCandidateroomId : " + roomId);
-			System.out.println("iceCandidatecamKey : " + camKey);
+	    return offer;
+	}
+	
+	//iceCandidate 정보를 주고 받기 위한 webSocket
+	//camKey : 각 요청하는 캠의 key , roomId : 룸 아이디
+	@MessageMapping("/peer/iceCandidate/{camKey}/{roomId}")
+	@SendTo("/sub/peer/iceCandidate/{camKey}/{roomId}")
+	public String PeerHandleIceCandidate(@Payload String candidate, @DestinationVariable(value = "roomId") String roomId,
+	                                     @DestinationVariable(value = "camKey") String camKey) {
+		System.out.println("iceCandidateroomId : " + roomId);
+		System.out.println("iceCandidatecamKey : " + camKey);
+		for(int key : videoInChannel.keySet()) {
+			if(videoInChannel.get(key).contains(camKey)) {
+				videoInChannel.get(key).remove(camKey);
+			}
+		}
+		
+		videoInChannel.computeIfAbsent(memberInchannelNo,  k -> ConcurrentHashMap.newKeySet()).add(camKey);
+
 //		System.out.println("[ICECANDIDATE] {} : {}", camKey, candidate);
 			return candidate;
 		}
 
-
-//		@GetMapping("tiny")
-//		public String tiny ( @RequestParam("serverNo") int serverNo, Model model, HttpSession session) {
-////	public String tiny(@RequestParam(name = "serverNo", required = false, defaultValue = "1") int serverNo, Model model) {
-//			Member m = (Member) session.getAttribute("loginMember");
-//			System.out.println(m.toString());
-//			ArrayList<ServerMember> ServerMember = smService.serverMemberList(serverNo);
-//			ArrayList<Server> Server = sService.selectServerList(m);
-//			System.out.println(ServerMember);
-//			System.out.println(serverNo);
-//			model.addAttribute("ServerMember", ServerMember)
-//					.addAttribute("serverNo", serverNo)
-//					.addAttribute("member", m);
-//			return "tiny";
-//		}
-
-
-			@MessageMapping("/peer/answer/{camKey}/{roomId}")
-			@SendTo("/sub/peer/answer/{camKey}/{roomId}")
-			public String PeerHandleAnswer (@Payload String answer, @DestinationVariable(value = "roomId") String
-			roomId,
-					@DestinationVariable(value = "camKey") String camKey){
-				System.out.println("answerroomId : " + roomId);
-				System.out.println("answercamKey : " + camKey);
+	@MessageMapping("/peer/answer/{camKey}/{roomId}")
+	@SendTo("/sub/peer/answer/{camKey}/{roomId}")
+	public String PeerHandleAnswer(@Payload String answer, @DestinationVariable(value = "roomId") String roomId,
+	                               @DestinationVariable(value = "camKey") String camKey) {
+		System.out.println("answerroomId : " + roomId);
+		System.out.println("answercamKey : " + camKey);
+		System.out.println("answer : " + answer);
 //	    log.info("[ANSWER] {} : {}", camKey, answer);
-				return answer;
-			}
-
-			//camKey 를 받기위해 신호를 보내는 webSocket
-			@MessageMapping("/call/key")
-			@SendTo("/sub/call/key")
-			public String callKey (@Payload String message){
-				System.out.println("callmessage : " + message);
+	    return answer;
+	}
+	
+	//camKey 를 받기위해 신호를 보내는 webSocket
+	@MessageMapping("/call/key")
+	@SendTo("/sub/call/key")
+	public String callKey(@Payload String message) {
+		System.out.println(message);
 //	    log.info("[Key] : {}", message);
 				return message;
 			}

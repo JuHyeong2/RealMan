@@ -79,8 +79,9 @@
 
 .grid {
 	display: grid;
-	grid-template-columns: 200px 200x 200x;
-	grid-template-rows: 200px 200px;
-	margin: 30px;
+/* 	grid-template-columns: 200px 200x 200x; */
+	grid-template-columns: repeat(2, 1fr);
+/* 	grid-template-rows: 200px 200px; */
+	gap: 10px;
 	width: 100%;
 }
