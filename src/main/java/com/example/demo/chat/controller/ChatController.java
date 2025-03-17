@@ -63,6 +63,8 @@ public class ChatController {
 	private final SimpMessagingTemplate messagingTemplate;
 	
 	private Map<Integer, Set<String>> userInChannel = new ConcurrentHashMap<>();
+	private Map<Integer, Set<String>> videoInChannel = new ConcurrentHashMap<>();
+	private int memberInchannelNo = 0; 
 
 	@GetMapping("main")
 	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
@@ -110,7 +112,7 @@ public class ChatController {
 	@GetMapping("/main/{serverNo}/{channelNo}")
 	public String chatting(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
-		System.out.println(serverNo);
+//		System.out.println(serverNo);
 		
 		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
 
@@ -124,7 +126,7 @@ public class ChatController {
 //		channel.setServerNo(no);
 //		channel.se
 		ArrayList<Channel> channel= cService.chattingSidebar(serverNo);
-		System.out.println(channel.toString());
+//		System.out.println(channel.toString());
 		model.addAttribute("channel", channel);
 		
 		
@@ -134,10 +136,11 @@ public class ChatController {
 		model.addAttribute("chatList", chatList);
 		
 		// 채널이 Voice인지 Chat인지 확인
-		String voiceOrChat = cService.selectChannel(channelNo);
+		Channel Channel = cService.selectChannel(channelNo);
+		System.out.println("V or C ? : " + Channel.getChannelSeparator());
 		
-		if(voiceOrChat != null && voiceOrChat != "") {
-			if(voiceOrChat.equals("V")) {
+		if(Channel.getChannelSeparator() != null && Channel.getChannelSeparator() != "") {
+			if(Channel.getChannelSeparator().equals("V")) {
 				return "chat/videoChatting";
 			}else{
 				return "chat/chatting";
@@ -171,7 +174,7 @@ public class ChatController {
 	@SendTo("/sub/voice")
 	public  Map<Integer, Set<String>> joinVoiceChannel(@Payload ChannelMember cMember) {
 //		System.out.println("joinVoice 들어옴.");
-		
+		memberInchannelNo = cMember.getClickServerNo();
 		for(int key : userInChannel.keySet()) {
 			if(userInChannel.get(key).contains(cMember.getUsername())) {
 				userInChannel.get(key).remove(cMember.getUsername());
@@ -246,6 +249,13 @@ public class ChatController {
 	                                     @DestinationVariable(value = "camKey") String camKey) {
 		System.out.println("iceCandidateroomId : " + roomId);
 		System.out.println("iceCandidatecamKey : " + camKey);
+		for(int key : videoInChannel.keySet()) {
+			if(videoInChannel.get(key).contains(camKey)) {
+				videoInChannel.get(key).remove(camKey);
+			}
+		}
+		
+		videoInChannel.computeIfAbsent(memberInchannelNo,  k -> ConcurrentHashMap.newKeySet()).add(camKey);
 //		System.out.println("[ICECANDIDATE] {} : {}", camKey, candidate);
 	    return candidate;
 	}
@@ -258,6 +268,7 @@ public class ChatController {
 	                               @DestinationVariable(value = "camKey") String camKey) {
 		System.out.println("answerroomId : " + roomId);
 		System.out.println("answercamKey : " + camKey);
+		System.out.println("answer : " + answer);
 //	    log.info("[ANSWER] {} : {}", camKey, answer);
 	    return answer;
 	}
@@ -266,7 +277,7 @@ public class ChatController {
 	@MessageMapping("/call/key")
 	@SendTo("/sub/call/key")
 	public String callKey(@Payload String message) {
-		System.out.println("callmessage : " + message);
+		System.out.println(message);
 //	    log.info("[Key] : {}", message);
 	    return message;
 	}
