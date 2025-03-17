@@ -142,7 +142,6 @@ const getFriendList = () => {
             const fli = fLi.cloneNode(true);
             fli.querySelector("input").value = f.memberNo;
             fli.querySelector("img").src = "/profile-images/" + f.profileImage;
-            console.log(fli.querySelector("img"));
             fli.querySelector(".nickname").innerText = f.memberNickname;
             fli.querySelector(".id").innerText = f.memberId;
             flist.append(fli);

@@ -110,10 +110,8 @@ public class ChatController {
 	@GetMapping("/main/{serverNo}/{channelNo}")
 	public String chatting(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
-		System.out.println(serverNo);
 		
 		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
-
 		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);
 		}
@@ -124,9 +122,6 @@ public class ChatController {
 //		channel.setServerNo(no);
 //		channel.se
 		ArrayList<Channel> channel= cService.chattingSidebar(serverNo);
-		System.out.println(channel.toString());
-		model.addAttribute("channel", channel);
-		
 		
 		// 채널 message 가져오자
 //		Integer channelNum = (Integer)channelNo;
@@ -211,9 +206,9 @@ public class ChatController {
 	@PostMapping("selectSmallestChatNo")
 	@ResponseBody
 	public int selectSmallestChatNo(@RequestParam("serverNo") int serverNo) {
-		System.out.println(serverNo);
+		System.out.println("serverNo : "+serverNo);
 		ArrayList<Integer> channelNo = sService.selectChannelNo(serverNo);
-		System.out.println(channelNo);
+		System.out.println("channelNo : " +channelNo);
 		Collections.sort(channelNo);
 		return channelNo.get(0);
 	}
