@@ -24,5 +24,4 @@
         WHERE MEMBER_NO = #{memberNo}
           AND DEVICE_ID = #{deviceId}
     </update>
-
 </mapper>

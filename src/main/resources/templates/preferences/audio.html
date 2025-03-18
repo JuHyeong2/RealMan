@@ -67,245 +67,182 @@
 </div>
 
 <script>
-	document.addEventListener("DOMContentLoaded", function () {
-		const micSelect = document.getElementById("micSelect");
-		const speakerSelect = document.getElementById("speakerSelect");
-		const testButton = document.querySelector(".test-button");
-		const stopButton = document.querySelector(".stop-button");
-		const requestPermissionButton = document.querySelector(".request-permission");
-		const inputVolumeSlider = document.getElementById("inputVolume");
-		const outputVolumeSlider = document.getElementById("outputVolume");
+	// 초기 실행 및 함수 호출
+	requestAudioPermission();
 
-		const waveform = document.querySelector(".waveform");
-		let micStream = null;
-		let audioContext = null;
-		let analyser = null;
-		let source = null;
-
-		// 오디오 장치 목록을 가져오는 함수
-		async function getAudioDevices() {
-			const devices = await navigator.mediaDevices.enumerateDevices();
-			micSelect.innerHTML = "";
-			speakerSelect.innerHTML = "";
-
-			// 장치 목록에서 입력 장치와 출력 장치를 구분하여 추가
-			devices.forEach(device => {
-				const option = document.createElement("option");
-				option.value = device.deviceId;
-				option.textContent = device.label || "알 수 없는 장치";
-
-				if (device.kind === "audioinput") {
-					micSelect.appendChild(option);
-				} else if (device.kind === "audiooutput") {
-					speakerSelect.appendChild(option);
-				}
-			});
-		}
-
-		// 슬라이더의 값이 변경될 때 슬라이더 바의 배경 색을 업데이트하는 이벤트 리스너 추가
+	// 이벤트 리스너 등록
+	window.addEventListener("DOMContentLoaded", async function () {
+		await getAudioDevices();  // 장치 목록을 먼저 불러온 후
+		await loadAudioPreferences(); // 그 후에 DB에서 설정 값을 적용
 		document.querySelectorAll('.slider').forEach(slider => {
-			slider.addEventListener('input', function() {
-				const value = this.value; // 현재 슬라이더 값 가져오기
-
-				// 슬라이더의 진행된 부분(#7c3aed: 보라색)과 남은 부분(#e9ecef: 회색)의 색상을 동적으로 변경
-				this.style.background = `linear-gradient(to right, #bed3e2 0%, #bed3e2 ${value}%, #e9ecef ${value}%, #e9ecef 100%)`;
-			});
-
-			// 페이지가 로드될 때 초기 슬라이더 값에 맞춰 배경 색을 설정
-			const value = slider.value;
-			slider.style.background = `linear-gradient(to right, #bed3e2 0%, #bed3e2 ${value}%, #e9ecef ${value}%, #e9ecef 100%)`;
+			slider.addEventListener('input', function() { updateSliderStyle(this); });
+			updateSliderStyle(slider);
 		});
 
-		// 마이크 테스트 시작 함수
-		testButton.addEventListener("click", async function () {
-			try {
-				// 기존 마이크 스트림이 있으면 중지
-				if (micStream) stopMicTest();
-
-				// 선택한 마이크 장치를 사용하여 스트림 가져오기
-				micStream = await navigator.mediaDevices.getUserMedia({
-					audio: { deviceId: micSelect.value ? { exact: micSelect.value } : undefined }
-				});
-
-				// 오디오 컨텍스트 및 분석기 생성
-				audioContext = new AudioContext();
-				analyser = audioContext.createAnalyser();
-				source = audioContext.createMediaStreamSource(micStream);
-				source.connect(analyser);
-
-				// 마이크 테스트 시각화 시작
-				drawWaveform();
-				console.log("마이크 테스트 시작!");
-			} catch (error) {
-				console.error("마이크 테스트 실패:", error);
-				alert("마이크 테스트 중 오류가 발생했습니다.");
-			}
-		});
-
-		// 마이크 테스트 중지 함수
-		stopButton.addEventListener("click", function () {
-			stopMicTest();
-		});
-
-		// 마이크 테스트를 중지하는 함수
-		function stopMicTest() {
-			if (micStream) {
-				micStream.getTracks().forEach(track => track.stop());
-				micStream = null;
-			}
-			console.log("마이크 테스트 중지됨.");
-		}
-
-		// 마이크 입력을 시각화하는 함수
-		function drawWaveform() {
-			// 캔버스 요소 생성 및 설정
-			const canvas = document.createElement("canvas");
-			canvas.width = 1024;
-			canvas.height = 40;
-			waveform.innerHTML = "";
-			waveform.appendChild(canvas);
-			const ctx = canvas.getContext("2d");
-
-			// 실시간 파형 업데이트 함수
-			function update() {
-				requestAnimationFrame(update);
-				let dataArray = new Uint8Array(analyser.frequencyBinCount); // 입력된 소리를 주파수별로 나눠 배열로 저장
-				analyser.getByteFrequencyData(dataArray);
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				ctx.fillStyle = "#7c3aed";
-
-				// dataArray[i] 는 0(저음 영역)부터 음역대별 주파수가 따로 저장되어있기 때문에
-				// total에 사람 음성을 잡기 적합한(5~40 = 300Hz ~ 3kHz ) 주파수값을 합쳐 평균값 생성
-				let volumeMin = 5; // 저음 주파수 영역
-				let volumeMax = 40 // 고음 영역
-				let total = 0;
-				for (let i = volumeMin; i <= volumeMax; i++) {
-					total += dataArray[i];
-				}
-				let average = total / (volumeMax - volumeMin + 1);
-				ctx.fillRect(0, 0, average*4, 100);
-			}
-			update();
-		}
-		// 브라우저에서 권한 요청
-		async function requestAudioPermission() {
-			try {
-				// 마이크 권한 상태 확인
-				const permissionStatus = await navigator.permissions.query({ name: "microphone" }); // 권한 상태 가져오기
-				if (permissionStatus.state === "granted") { //  "granted"(허용됨), "denied"(거부됨), "prompt"(요청 가능)
-					return;
-				}
-				// 권한이 허용되지 않은 경우 권한 요청
-				await navigator.mediaDevices.getUserMedia({ audio: true });
-				alert("마이크 및 스피커 권한이 허용되었습니다!");
-				location.reload(); // 권한을 새로 허용한 경우에만 새로고침
-			} catch (error) {
-				console.error("권한 요청 실패:", error);
-				alert("마이크 및 스피커 권한을 허용해주세요.");
-			}
-		}
-
-		// 마이크 및 스피커 권한 수동 요청 버튼 기능
-		requestPermissionButton.addEventListener("click", async function () {
-			try {
-				// 마이크 권한 상태 확인
-				const permissionStatus = await navigator.permissions.query({ name: "microphone" }); // 권한 상태 가져오기
-				if (permissionStatus.state === "granted") { //  "granted"(허용됨), "denied"(거부됨), "prompt"(요청 가능)
-					// 이미 권한이 허용된 경우 새로고침하지 않음
-					alert("마이크 및 스피커 권한이 이미 허용되어 있습니다.");
-					return;
-				}
-				// 권한이 허용되지 않은 경우 권한 요청
-				await navigator.mediaDevices.getUserMedia({ audio: true });
-				alert("마이크 및 스피커 권한이 허용되었습니다!");
-				location.reload(); // 권한을 새로 허용한 경우에만 새로고침
-			} catch (error) {
-				console.error("권한 요청 실패:", error);
-				alert("마이크 및 스피커 권한을 허용해주세요.");
-			}
-		});
-
-		// '입력 방식'의 라디오 버튼 div 효과
-		function selectOption(element) {
-			// 모든 옵션에서 'selected' 클래스를 제거하여 선택 효과 초기화
-			document.querySelectorAll('.radio-option').forEach(option => {
-				option.classList.remove('selected');
-			});
-
-			// 클릭한 옵션에 'selected' 클래스 추가 (선택된 상태로 표시)
-			element.classList.add('selected');
-
-			// 클릭한 옵션의 라디오 버튼을 체크 상태로 변경
-			element.querySelector('input[type="radio"]').checked = true;
-		}
-
-		// 페이지 로드 시 오디오 장치 목록 가져오기; 오디오장치 권한 요청;
-		requestAudioPermission();
-		getAudioDevices();
+		testButton.addEventListener("click", startMicTest);
+		stopButton.addEventListener("click", stopMicTest);
+		requestPermissionButton.addEventListener("click", requestAudioPermission);
+		window.addEventListener("beforeunload", sendAudioPreferences);
 	});
 
-	// 환경설정 값을 백엔드로 전송하는 함수
-	async function sendAudioPreferences() {
-		// HTML 요소에서 값 가져오기
-		const micSelect = document.getElementById("micSelect").value;
-		const inputVolume = document.getElementById("inputVolume").value;
-		const speakerSelect = document.getElementById("speakerSelect").value;
-		const outputVolume = document.getElementById("outputVolume").value;
-		const inputType = document.querySelector('input[name="inputType"]:checked').value;
+	// 요소 선택
+	const micSelect = document.getElementById("micSelect");
+	const speakerSelect = document.getElementById("speakerSelect");
+	const testButton = document.querySelector(".test-button");
+	const stopButton = document.querySelector(".stop-button");
+	const requestPermissionButton = document.querySelector(".request-permission");
+	const inputVolumeSlider = document.getElementById("inputVolume");
+	const outputVolumeSlider = document.getElementById("outputVolume");
+	const waveform = document.querySelector(".waveform");
 
-		// 전송할 데이터 객체 생성
-		const requestData = {
-			audioInput: micSelect,
-			inputValue: inputVolume,
-			audioOutput: speakerSelect,
-			outputValue: outputVolume,
-			inputType: inputType,
-		};
+	let micStream = null;
+	let audioContext = null;
+	let analyser = null;
+	let source = null;
 
-		console.log("보낼 데이터:", requestData); // 디버깅용 로그
+	// 오디오 장치 목록 불러오기
+	async function getAudioDevices() {
+		const devices = await navigator.mediaDevices.enumerateDevices();
+		micSelect.innerHTML = "";
+		speakerSelect.innerHTML = "";
 
-		// 서버로 데이터 전송
-		// fetch("/prefs/audio", {
-		// 	method: "POST",
-		// 	headers: { "Content-Type": "application/json" },
-		// 	body: JSON.stringify(requestData)
-		// })
-		// .catch(error => {
-		// 	console.error("서버 요청 오류:", error);
-		// });
+		devices.forEach(device => {
+			const option = document.createElement("option");
+			option.value = device.deviceId;
+			option.textContent = device.label || "알 수 없는 장치";
 
-		// JSON 데이터를 Blob 형식으로 변환
-		const blob = new Blob([JSON.stringify(requestData)], { type: "application/json" });
-
-		// sendBeacon을 사용하여 페이지를 벗어날 때도 요청 보장
-		navigator.sendBeacon("/prefs/audio", blob);
-
+			if (device.kind === "audioinput") {
+				micSelect.appendChild(option);
+			} else if (device.kind === "audiooutput") {
+				speakerSelect.appendChild(option);
+			}
+		});
 	}
 
-	// 페이지를 벗어날 때 설정 값 저장 (이벤트 리스너 추가)
-	window.addEventListener("beforeunload", sendAudioPreferences);
+	// 오디오 설정 불러오기
+	function loadAudioPreferences() {
+		fetch("/prefs/audio/getPrefs")
+				.then(response => response.json())
+				.then(data => {
+					if (data) {
+						micSelect.value = data.audioInput || "";
+						speakerSelect.value = data.audioOutput || "";
+						inputVolumeSlider.value = data.inputValue || 50;
+						outputVolumeSlider.value = data.outputValue || 50;
+
+						//  슬라이더의 스타일을 강제로 업데이트하여 위치와 색이 일치하도록 함
+						setTimeout(() => {
+							updateSliderStyle(inputVolumeSlider);
+							updateSliderStyle(outputVolumeSlider);
+						}, 0);
+
+						document.querySelectorAll('input[name="inputType"]').forEach(radio => {
+							if (radio.value === data.inputType) {
+								radio.checked = true;
+								radio.closest('.radio-option').classList.add('selected');
+							} else {
+								radio.closest('.radio-option').classList.remove('selected');
+							}
+						});
+					}
+				})
+				.catch(error => console.error("오디오 설정 로드 오류:", error));
+	}
 
 
-	/////////////테스트용 버튼//////////////////
-	document.addEventListener("DOMContentLoaded", function () {
-		// "testButton" 클래스를 가진 버튼 가져오기
-		const testButton = document.querySelector(".testButton");
+	// 슬라이더 스타일 업데이트
+	function updateSliderStyle(slider) {
+		const value = slider.value;
+		slider.style.background = `linear-gradient(to right, #bed3e2 0%, #bed3e2 ${value}%, #e9ecef ${value}%, #e9ecef 100%)`;
+	}
 
-		// 버튼 클릭 시 환경설정 값 확인
-		testButton.addEventListener("click", ()=>{
-			const micSelect = document.getElementById("micSelect").value;
-			const inputVolume = document.getElementById("inputVolume").value;
-			const speakerSelect = document.getElementById("speakerSelect").value;
-			const outputVolume = document.getElementById("outputVolume").value;
-			const inputType = document.querySelector('input[name="inputType"]:checked').value;
+	// 마이크 테스트 시작
+	async function startMicTest() {
+		try {
+			if (micStream) stopMicTest();
+			micStream = await navigator.mediaDevices.getUserMedia({
+				audio: { deviceId: micSelect.value ? { exact: micSelect.value } : undefined }
+			});
 
-			alert('마이크 : ' + micSelect
-					+ '/ 마이크볼륨 : ' + inputVolume
-					+ '/ 스피커 : ' + speakerSelect
-					+ '/ 스피커볼륨 : ' + outputVolume
-					+ '/ 입력방식 : ' + inputType);
-		});
-	});
+			audioContext = new AudioContext();
+			analyser = audioContext.createAnalyser();
+			source = audioContext.createMediaStreamSource(micStream);
+			source.connect(analyser);
+
+			drawWaveform();
+		} catch (error) {
+			console.error("마이크 테스트 실패:", error);
+			alert("마이크 테스트 중 오류가 발생했습니다.");
+		}
+	}
+
+	// 마이크 테스트 중지
+	function stopMicTest() {
+		if (micStream) {
+			micStream.getTracks().forEach(track => track.stop());
+			micStream = null;
+		}
+	}
+
+	// 마이크 입력 시각화
+	function drawWaveform() {
+		const canvas = document.createElement("canvas");
+		canvas.width = 1024;
+		canvas.height = 40;
+		waveform.innerHTML = "";
+		waveform.appendChild(canvas);
+		const ctx = canvas.getContext("2d");
+
+		function update() {
+			requestAnimationFrame(update);
+			let dataArray = new Uint8Array(analyser.frequencyBinCount);
+			analyser.getByteFrequencyData(dataArray);
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.fillStyle = "#7c3aed";
+
+			let total = dataArray.slice(5, 41).reduce((sum, val) => sum + val, 0);
+			let average = total / 36;
+			ctx.fillRect(0, 0, average * 4, 100);
+		}
+		update();
+	}
+
+	// 마이크 및 스피커 권한 요청
+	async function requestAudioPermission() {
+		try {
+			const permissionStatus = await navigator.permissions.query({ name: "microphone" });
+			if (permissionStatus.state !== "granted") {
+				await navigator.mediaDevices.getUserMedia({ audio: true });
+				alert("마이크 및 스피커 권한이 허용되었습니다!");
+				location.reload();
+			}
+		} catch (error) {
+			console.error("권한 요청 실패:", error);
+			alert("마이크 및 스피커 권한을 허용해주세요.");
+		}
+	}
+
+	// 환경설정 저장
+	function sendAudioPreferences() {
+		const requestData = {
+			audioInput: micSelect.value,
+			inputValue: inputVolumeSlider.value,
+			audioOutput: speakerSelect.value,
+			outputValue: outputVolumeSlider.value,
+			inputType: document.querySelector('input[name="inputType"]:checked').value,
+		};
+
+		const blob = new Blob([JSON.stringify(requestData)], { type: "application/json" });
+		navigator.sendBeacon("/prefs/audio", blob);
+	}
+
+	// 라디오 버튼 선택 효과
+	function selectOption(element) {
+		document.querySelectorAll('.radio-option').forEach(option => option.classList.remove('selected'));
+		element.classList.add('selected');
+		element.querySelector('input[type="radio"]').checked = true;
+	}
+
 
 
 </script>

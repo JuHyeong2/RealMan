@@ -24,5 +24,9 @@ public class PrefsService {
     public int updateAudio(Device device) {
         return prefsMapper.updateAudio(device);
     }
+
+    public Device getAudioPrefs(int memberNo, String fingerPrint) {
+        return prefsMapper.checkDevice(memberNo, fingerPrint);
+    }
 }
 

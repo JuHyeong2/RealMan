@@ -63,37 +63,25 @@ public class PrefsController {
         if(loginUser == null){
             return;
         }
-        device.setMemberNo(loginUser.getMemberNo());   // 기존 null이었던 필드에 값 설정
+        device.setMemberNo(loginUser.getMemberNo());
         device.setDeviceId(fingerPrint);
         int resultUdtAudio = pService.updateAudio(device);
         System.out.println("오디오 업데이트 : " + (resultUdtAudio==1?"성공":"실패"));
     }
 
-//    @PostMapping("/audio")
-//    @ResponseBody
-//    public ResponseEntity<Void> updateAudio(@RequestBody Device device, HttpSession session) {
-//        System.out.println("✅ updateAudio() 실행됨");
-//
-//        // 세션 ID 출력 (세션이 유지되고 있는지 확인)
-//        System.out.println("🔹 세션 ID: " + session.getId());
-//
-//        // 현재 세션에 저장된 모든 속성 확인
-//        Enumeration<String> attributeNames = session.getAttributeNames();
-//        while (attributeNames.hasMoreElements()) {
-//            String attributeName = attributeNames.nextElement();
-//            System.out.println("🔹 세션에 저장된 속성: " + attributeName + " = " + session.getAttribute(attributeName));
-//        }
-//
-//        Member loginUser = (Member) session.getAttribute("loginUser");
-//        if (loginUser == null) {
-//            System.out.println("❌ 로그인 정보 없음 - 401 반환");
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//
-//        System.out.println("🔹 로그인 유저 확인됨: " + loginUser.getMemberNo());
-//
-//        return ResponseEntity.noContent().build();
-//    }
+    @GetMapping("/audio/getPrefs")
+    @ResponseBody
+    public Device getAudioPrefs(HttpSession session) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        String fingerPrint = (String) session.getAttribute("fingerprint");
+        if (loginMember == null) {
+            return null;
+        }
+        // 사용자 ID를 기반으로 오디오 설정 정보 조회
+        Device audioPrefs = pService.getAudioPrefs(loginMember.getMemberNo(), fingerPrint);
+
+        return audioPrefs;
+    }
 
 
 
