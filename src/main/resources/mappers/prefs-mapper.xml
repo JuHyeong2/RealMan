@@ -13,4 +13,16 @@
         VALUES (#{memberNo}, #{fingerprint})
     </insert>
 
+    <update id="updateAudio" parameterType="com.example.demo.preferences.model.vo.Device">
+        UPDATE DEVICES
+        SET
+            AUDIO_INPUT = #{audioInput},
+            AUDIO_OUTPUT = #{audioOutput},
+            INPUT_VALUE = #{inputValue},
+            OUTPUT_VALUE = #{outputValue},
+            INPUT_TYPE = #{inputType}
+        WHERE MEMBER_NO = #{memberNo}
+          AND DEVICE_ID = #{deviceId}
+    </update>
+
 </mapper>

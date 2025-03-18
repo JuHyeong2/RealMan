@@ -9,4 +9,6 @@ import org.apache.ibatis.annotations.Param;
 public interface PrefsMapper {
     Device checkDevice(int memberNo, String fingerprint);
     int insertDevice(int memberNo, String fingerprint);
+
+    int updateAudio(Device device);
 }

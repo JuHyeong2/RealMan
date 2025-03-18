@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class Device {
+public class    Device {
     private int deviceNo;
     private int memberNo;
     private String deviceId;

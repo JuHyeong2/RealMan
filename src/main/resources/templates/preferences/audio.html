@@ -265,21 +265,21 @@
 		console.log("보낼 데이터:", requestData); // 디버깅용 로그
 
 		// 서버로 데이터 전송
-		try {
-			const response = await fetch("/prefs/audio", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(requestData)
-			});
+		// fetch("/prefs/audio", {
+		// 	method: "POST",
+		// 	headers: { "Content-Type": "application/json" },
+		// 	body: JSON.stringify(requestData)
+		// })
+		// .catch(error => {
+		// 	console.error("서버 요청 오류:", error);
+		// });
 
-			if (response.ok) {
-				console.log("환경설정이 성공적으로 저장되었습니다.");
-			} else {
-				console.error("환경설정 저장 실패:", response.status);
-			}
-		} catch (error) {
-			console.error("서버 요청 오류:", error);
-		}
+		// JSON 데이터를 Blob 형식으로 변환
+		const blob = new Blob([JSON.stringify(requestData)], { type: "application/json" });
+
+		// sendBeacon을 사용하여 페이지를 벗어날 때도 요청 보장
+		navigator.sendBeacon("/prefs/audio", blob);
+
 	}
 
 	// 페이지를 벗어날 때 설정 값 저장 (이벤트 리스너 추가)

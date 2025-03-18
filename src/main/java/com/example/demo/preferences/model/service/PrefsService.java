@@ -20,5 +20,9 @@ public class PrefsService {
         }
         // 동일한 fingerprint가 있으면 아무 동작도 하지 않음 (중복 저장 방지)
     }
+
+    public int updateAudio(Device device) {
+        return prefsMapper.updateAudio(device);
+    }
 }
 
