@@ -1,0 +1,68 @@
+#memberList-container {
+  width: 15%;
+  min-width: 14rem;
+}
+
+.ul-div {
+  height: 80%;
+  background-color: rgb(250, 250, 250);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.memberList-ul {
+  padding-top: 1rem;
+}
+
+li {
+  list-style-type: none;
+  display: flex;
+  margin-top: 0.3rem;
+  border-radius: 0.2rem;
+  width: 90%;
+}
+
+li:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.nickname {
+  cursor: pointer;
+}
+
+.button-div {
+  background-color: aliceblue;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.button-div > button {
+  width: 45%;
+  border: 0;
+  border-radius: 0.3rem;
+}
+
+.button-div > button:first-child {
+  background-color: rgb(157, 157, 238);
+}
+
+.button-div > button:last-child {
+  background-color: rgb(253, 193, 203);
+}
+
+.button-div > button:first-child:hover {
+  background-color: rgb(167, 167, 248);
+}
+
+.button-div > button:last-child:hover {
+  background-color: rgb(243, 183, 193);
+}
+
+.button-div > button:first-child:active {
+  background-color: rgb(147, 147, 228);
+}
+
+.button-div > button:last-child:active {
+  background-color: rgb(233, 173, 183);
+}

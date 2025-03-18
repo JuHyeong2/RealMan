@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xlmns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div id="memberList-container" th:fragment="memberList">
+      <div class="ul-div">
+        <ul class="memberList-ul">
+          <li th:each="m : ${memberList}">
+            <input type="hidden" th:value="${m.memberNo}" />
+            <label class="nickname">[[${m.memberNickname}]]</label>
+          </li>
+        </ul>
+      </div>
+      <div class="button-div">
+        <button class="invite-button">초대</button>
+        <button class="eject-button">추방</button>
+      </div>
+    </div>
+  </body>
+</html>

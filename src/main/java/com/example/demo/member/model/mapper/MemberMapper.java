@@ -79,5 +79,7 @@ public interface MemberMapper {
 	int editMemberInfo(HashMap<String, String> map);
 
 	Member selectMember(int memberNo);
+
+	ArrayList<Member> selectMembers(ArrayList<Integer> memberNumberList);
     
 }

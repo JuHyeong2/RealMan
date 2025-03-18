@@ -98,11 +98,6 @@ public class MemberService {
 		return mapper.selectRequestReceived(memberNo);
 	}
 
-	// 친구 목록 조회
-	public ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList) {
-		return mapper.selectFriends(friendNumberList);
-	}
-
 	// 친구 삭제, 거절, 요청 취소
 	public int deleteFriend(HashMap<String, Integer> map) {
 		return mapper.deleteFriend(map);
@@ -188,6 +183,10 @@ public class MemberService {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public ArrayList<Member> selectMembers(ArrayList<Integer> memberNumberList) {
+		return mapper.selectMembers(memberNumberList);
 	}
 
 }
