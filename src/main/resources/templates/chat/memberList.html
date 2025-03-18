@@ -4,20 +4,34 @@
     <meta charset="UTF-8" />
   </head>
 
-  <body>
-    <div id="memberList-container" th:fragment="memberList">
+  <body th:fragment="memberList">
+    <div id="memberList-container">
       <div class="ul-div">
         <ul class="memberList-ul">
-          <li th:each="m : ${memberList}">
+          <li class="memberList-li" th:each="m : ${memberList}">
             <input type="hidden" th:value="${m.memberNo}" />
             <label class="nickname">[[${m.memberNickname}]]</label>
           </li>
         </ul>
       </div>
       <div class="button-div">
-        <button class="invite-button">초대</button>
-        <button class="eject-button">추방</button>
+        <button class="invite-modal-button">초대</button>
+        <button class="eject-modal-button">추방</button>
       </div>
+    </div>
+
+    <!-- 모달 -->
+    <div class="modal-container">
+      <!-- 초대 모달 -->
+      <div class="invite-modal">
+        <h1>회원 초대</h1>
+        <button class="cancle-button">x</button>
+        <div class="modal-ul-div">
+          <ul class="ul-friends"></ul>
+        </div>
+      </div>
+      <!-- 추방 모달 -->
+      <div class="eject-modal"></div>
     </div>
   </body>
 </html>
