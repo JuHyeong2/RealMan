@@ -9,24 +9,35 @@
 </head>
 <body>
 
-    <!-- ✅ 미니 프로필 영역 -->
-    <div class="mini-profile">
-        <img src="/image/profile.png" width="50px" id="profileImg">
-        <b th:text="${member.memberNickname}"></b>
-        <img id="micImg" src="/image/preferences/mic.png" width="30px">
-        <img src="/image/preferences/Headphones.png" width="30px">
-        <img id="settingsIcon" src="/image/preferences/Preferences.png" width="30px">
-    </div>
-
     <!-- ✅ 프로필 모달 -->
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeProfileModal()">&times;</span>
+
+            <!-- 프로필 헤더 (이미지 + 상태 추가) -->
             <div class="profile-modal-header">
-                <img src="/image/profile.png" width="80px">
+                <div class="profile-img-container">
+                    <img id="modalProfileImg" src="/image/profile.png" width="80px">
+                    <span id="statusIndicator" class="status-online"></span> <!-- 상태 아이콘 -->
+                </div>
             </div>
+
+            <!-- 닉네임 & 아이디 -->
             <h2 th:text="${member.memberNickname}"></h2>
-            <p>추가 정보</p>
+            <p class="user-id" th:text="${member.memberId}"></p>
+
+            <!-- 프로필 편집 버튼 -->
+            <button class="profile-edit-btn" onclick="goToMyAccount()">프로필 편집</button>
+
+            <!-- 상태 변경 드롭다운 -->
+            <div class="status-dropdown">
+                <label for="statusSelect">상태 변경:</label>
+                <select id="statusSelect" onchange="changeStatus(this.value)">
+                    <option value="online">온라인</option>
+                    <option value="away">자리비움</option>
+                    <option value="offline">오프라인</option>
+                </select>
+            </div>
         </div>
     </div>
 
