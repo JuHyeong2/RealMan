@@ -44,11 +44,11 @@
 
 
 .textArea {
-	display: flex;
-	justify-content: space-between;
-	position: relative;
+/* 	display: flex; */
+/* 	justify-content: space-between; */
+/* 	position: relative; */
 /* 	bottom: 50px; */
-	z-index: 1;
+/* 	z-index: 1; */
 	width: 100%;
 }
 

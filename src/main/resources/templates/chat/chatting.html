@@ -64,7 +64,8 @@
 				<input type="hidden" th:value="${no}">
 				<div class="chatContent">
 					<div class='textArea' th:each="c, cStat:${chatList}">
-						<b th:utext='${c.sender}'></b><p th:utext='${c.message}'></p>
+						<b th:utext='${c.sender}' ></b>
+						<p th:utext='${c.message}' style='margin:0;'></p>
 					</div>
 				</div>
 			</div>
@@ -128,10 +129,14 @@
 
 
 					let HMS = hour + ':' + minute + ':' + second;
+// 					<div style='margin:0;  padding: 0; flex-grow: 1;'>${chatMessage.message}</div>
 					console.log(chatMessage);
 					let str = `<div class='textArea'>
-								  <b>${chatMessage.sender} :</b> ${chatMessage.message}
-								  <p>${HMS}</p>
+								  <b>${chatMessage.sender}</b>
+								  <div style='display:flex; justify-content:space-between; align-items:center;'>
+								  	${chatMessage.message}
+								  	<p>${HMS}</p>
+								  </div>
            						</div>`;
 					document.querySelector('.chatContent').insertAdjacentHTML("afterbegin", str);
 
