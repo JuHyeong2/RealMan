@@ -28,6 +28,7 @@
             <form class="login-form" th:action="@{/member/signin}" method="post">
                 <input type="text" name="memberId" placeholder="Enter ID" required>
                 <input type="password" name="memberPwd" placeholder="Password" required>
+                <input type="hidden" id="fingerprint" name="fingerprint">
                 <div class="forgot-links">
                     <a href="/member/findMyId">Forgot ID?</a> 
                     <a href="/member/findMyPwd">Forgot Password?</a> 
@@ -44,6 +45,33 @@
 
     <script th:if="${loginUser}">
         window.location.href = "/main";
+
+        // fingerprint : 네트워크 기준의 접속 기기 정보 불러오기
+        async function getClientFingerprint() {
+            const connection = new RTCPeerConnection();
+            connection.createDataChannel("");
+
+            // Offer 생성 (비동기 처리)
+            const offer = await connection.createOffer();
+
+            // `setLocalDescription()`을 호출하여 `localDescription` 설정
+            await connection.setLocalDescription(offer);
+            connection.close();
+
+            // Fingerprint 생성 (Base64 인코딩)
+            return btoa(connection.localDescription.sdp);
+        }
+        // post에 같이 보내게 form안의 hidden인 input에 값 전달
+        document.addEventListener("DOMContentLoaded", async function () {
+            const fingerprint = await getClientFingerprint();
+            const fingerprintInput = document.getElementById("fingerprint");
+
+            if (fingerprintInput) {
+                fingerprintInput.value = fingerprint;
+                console.log("로그인 페이지 - Fingerprint:", fingerprint);
+            }
+        });
+
     </script>
 
 </body>
