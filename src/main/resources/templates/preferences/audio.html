@@ -67,7 +67,6 @@
 </div>
 
 <script>
-	let fingerprint = null;
 	document.addEventListener("DOMContentLoaded", function () {
 		const micSelect = document.getElementById("micSelect");
 		const speakerSelect = document.getElementById("speakerSelect");
@@ -81,32 +80,7 @@
 		let micStream = null;
 		let audioContext = null;
 		let analyser = null;
-
 		let source = null;
-		// fingerprint : 네트워크 기준의  접속 기기 정보 불러오기
-		async function getClientFingerprint() {
-			const connection = new RTCPeerConnection();
-			connection.createDataChannel("");
-
-			// 🟢 Offer 생성 (비동기 처리)
-			const offer = await connection.createOffer();
-
-			// 🟢 반드시 `setLocalDescription()`을 호출하여 `localDescription` 설정
-			await connection.setLocalDescription(offer);
-
-			connection.close();
-
-			// 🟢 Fingerprint 생성 (Base64 인코딩)
-			return btoa(connection.localDescription.sdp);
-		}
-
-// Fingerprint 전역 변수 저장
-		getClientFingerprint().then(fp => {
-			fingerprint = fp;
-			console.log("Fingerprint:", fingerprint);
-		});
-
-
 
 		// 오디오 장치 목록을 가져오는 함수
 		async function getAudioDevices() {
@@ -272,12 +246,6 @@
 
 	// 환경설정 값을 백엔드로 전송하는 함수
 	async function sendAudioPreferences() {
-		// fingerprint 값은 전역 변수에서 가져오기 (중복 호출 제거)
-		if (!fingerprint) {
-			console.error("Fingerprint 값이 아직 생성되지 않았습니다.");
-			return;
-		}
-
 		// HTML 요소에서 값 가져오기
 		const micSelect = document.getElementById("micSelect").value;
 		const inputVolume = document.getElementById("inputVolume").value;
@@ -292,7 +260,6 @@
 			audioOutput: speakerSelect,
 			outputValue: outputVolume,
 			inputType: inputType,
-			deviceId: fingerprint // 이미 저장된 fingerprint 값 사용
 		};
 
 		console.log("보낼 데이터:", requestData); // 디버깅용 로그
@@ -319,7 +286,7 @@
 	window.addEventListener("beforeunload", sendAudioPreferences);
 
 
-	// 값불러오는 테스트용 버튼
+	/////////////테스트용 버튼//////////////////
 	document.addEventListener("DOMContentLoaded", function () {
 		// "testButton" 클래스를 가진 버튼 가져오기
 		const testButton = document.querySelector(".testButton");

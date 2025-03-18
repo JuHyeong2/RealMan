@@ -297,11 +297,13 @@ public class MemberController {
 	 @PostMapping("/signin")
 	 public String login(@RequestParam("memberId") String memberId,
 	                     @RequestParam("memberPwd") String memberPwd,
+						 @RequestParam("fingerprint") String fingerprint,
 	                     Model model, HttpSession session) {
 	     Member loginMember = mService.login(memberId, memberPwd);
 
 	     if (loginMember != null) {
 	         session.setAttribute("loginMember", loginMember);
+			 session.setAttribute("fingerprint", fingerprint);
 	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
