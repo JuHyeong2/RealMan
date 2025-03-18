@@ -6,9 +6,10 @@
   height: calc(100vh - 40px);
 }
 
-#friend-container > div:last-child {
+#list-div {
   display: flex;
   justify-content: center;
+  overflow-y: scroll;
 }
 
 #filter-search-bar {
