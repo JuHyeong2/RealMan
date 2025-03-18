@@ -222,6 +222,11 @@
 							} else if (event.key === "Escape") {
 								removeMentionBox();
 							}
+						}else{
+							if(event.key == 'Enter' && !event.shiftKey){
+								event.preventDefault();
+								document.querySelector('#button-send').click();
+							}
 						}
 					});
 
@@ -376,6 +381,14 @@
 
 
 
+			// 엔터키 == 입력, 쉬프트 + 엔터 줄바꿈
+			document.querySelector('#mytextarea').addEventListener('keydown', e=>{
+				console.log(e.key);
+				if(e.key == 'Enter' && !e.shiftKey){
+					e.preventDefault();
+					document.querySelector('#button-send').click();
+				}
+			})
 
 
 
