@@ -10,220 +10,52 @@
 </head>
 <body>
 
-	<div class="channel-list bg-light d-flex flex-column" style="width: 320px;">
-	    <nav>
-	    	<h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
-	    	<div class="voiceChat" th:each="c : ${channel}" th:if='${c.channelSeparator eq "V"}' th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|">
-	    		<input class="chatInput" type="hidden" th:value="${c.channelNo}">
-	    		<ul>
-		    		<li>
-		    			<b><img src="/image/Voice.png">&nbsp[[${c.channelName}]]</b>
-		    			<ul>
-		    			</ul>
-		    		</li>
-	    		</ul>
-	    	</div>
+    <div class="channel-list bg-light d-flex flex-column" style="width: 320px;">
+        <nav>
+            <h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
+            <div class="voiceChat" th:each="c : ${channel}" th:if='${c.channelSeparator eq "V"}' th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|">
+                <input class="chatInput" type="hidden" th:value="${c.channelNo}">
+                <ul>
+                    <li>
+                        <b><img src="/image/Voice.png">&nbsp[[${c.channelName}]]</b>
+                        <ul></ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
+            <div class="textChat">
+                <li th:each="c : ${channel}" th:if="${c.channelSeparator == 'T'}" onclick="goToChat(event);">
+                    <a th:href="@{'/chat/main/'+${serverNo}+'/'+${c.channelNo}}"><img src="/image/chat.png">&nbsp[[${c.channelName}]]</a>
+                </li>
+            </div>
+        </nav>
+
+        <div class="connect">
+            <b>음성 연결됨</b>
+            <img src="/image/member/closeVoice.png" width="30px">
+        </div>
+
+        <div class="profile">
+            <img src="/image/profile.png" width="50px" onclick="goToMyAccount()">
+            <b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b>
+            <img id="micImg" src="/image/preferences/mic.png" width="30px">
+            <img src="/image/preferences/Headphones.png" width="30px">
+            <img src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
+        </div>
+
+    </div>
+
+     <script defer>
+	    function goToMyAccount() {
+	        window.location.href = '/prefs/myProfile';
+	    }
 	
-	    	<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
-		    <div class="textChat">
-				<li th:each="c : ${channel}" th:if="${c.channelSeparator == 'T'}" onclick="goToChat(event);"><a th:href="@{'/chat/main/'+${serverNo}+'/'+${c.channelNo}}"><img src="/image/chat.png">&nbsp[[${c.channelName}]]</a></li>
-			</div>
-		   
-
-    	</nav>
-
-    	
-    	<div class="connect">
-    		<b>음성 연결됨</b>
-    		<img src="/image/member/closeVoice.png" width="30px">
-    	</div>
-    	
-    	
-    	<div class="profile">
-    		<img src="/image/profile.png" width="50px" onclick="ProfileModal()">
-    		<b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b>
-    		<img id="micImg" src="/image/preferences/mic.png" width="30px">
-    		<img src="/image/preferences/Headphones.png" width="30px">
-    		<img src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
-    	</div>
-
-
-	</div>
-
-	<!-- 모달 배경 -->
-	<div id="modalOverlay" class="modal-overlay"></div>
-	
-	<!-- 프로필 모달 -->
-	<div id="profileModal" class="modal">
-	    <div class="modal-content">
-	        <span class="close" onclick="closeProfileModal()">&times;</span>
-	
-	        <!-- 프로필 이미지 -->
-	        <div class="profile-modal-header">
-	            <img src="/image/no-profile.svg" width="80px">
-	        </div>
-	
-	        <h2>프로필 설정</h2>
-	
-	        <label for="statusSelect">상태 변경</label>
-	        <select id="statusSelect">
-	            <option value="online">🟢 온라인</option>
-	            <option value="away">🟡 자리비움</option>
-	            <option value="offline">⚫ 오프라인</option>
-	        </select>
-	
-	        <button onclick="goToMyAccount()">내 정보 수정</button>
-	    </div>
-</div>
-		
-	
-	<script>
-		// 최초에 채널에 입장해 있는 사람들 목록 보이게 하기
-		window.addEventListener('load', ()=>{
-			fetch("/chat/api/voiceUsers")
-			.then(response=>response.json())
-			.then(data => {
-				updateUserList(data);
-			})
-		})
-		
-		// 음성 채팅방 드롭다운
-		let voiceChannels = null;
-		let voiceChannel = null;
-		let clickChannel = null;
-		let clickServerNo = 0;
-		const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
-		
-		const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
-		const channelStompClient = Stomp.over(channelSocket);
-		
-		channelStompClient.connect({}, ()=>{
-			
-			// 보이스 채널 사용자 목록 구독
-			channelStompClient.subscribe("/sub/voice", (message)=>{
-				updateUserList(JSON.parse(message.body));
-			});
-		});
-
-		
-		// 보이스 채널 입장 함수
-		const joinVoiceChannel=(username, clickServerNo)=>{
-			channelStompClient.send("/pub/chat/joinVoice", {}, JSON.stringify({ username, clickServerNo }));
-		}
-
-		// 보이스 채널 퇴장 함수
-		const leaveVoiceChannel=(username)=>{
-			console.log('나갑니다 : ' + username);
-			channelStompClient.send("/pub/chat/leaveVoice", {}, username);
-		}
-
-		// 사용자 목록 업데이트
-		const updateUserList=(users)=> {
-// 			if(users[clickServerNo])
-			const channelNos = document.querySelectorAll('.chatInput');
-// 			console.log(channelNos);
-			const keys = Object.keys(users);
-// 			console.log(keys);
-			
-			// 채널 번호 비교
-			for(const channelNo of channelNos){
-				console.log(channelNo.value);
-				for(const key of keys){
-					if(channelNo.value == key){
-// 						console.log(channelNo.parentElement);
-						channelNo.parentElement.querySelector('ul>li>ul').innerHTML = '';
-						for(const user of users[channelNo.value]){
-							channelNo.parentElement.querySelector('ul>li>ul').innerHTML += '<li><img src="/image/profile.png">&nbsp' + user + '</li>';
-						}
-					}
-				}
-			}
-		}
-		
-		document.querySelectorAll('.channel')[0].addEventListener('click', ()=>{
-			voiceChannels = document.querySelectorAll('.voiceChat');
-			for(voiceChannel of voiceChannels){
-// 				console.log(voiceChannel);
-				const chatRoom = voiceChannel.querySelector('li');
-// 				console.log(chatRoom);
-				if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
-					chatRoom.style.display = 'block';
-// 					people.style.display = 'block';	
-				}else{
-					chatRoom.style.display = 'none';
-// 					people.style.display = 'none';
-				}	
-			
-				voiceChannel.addEventListener('click', (e)=>{
-					clickChannel = e.currentTarget;
-					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
-// 					console.log(typeof clickServerNo);
-					joinVoiceChannel(myNickname, clickServerNo);
-// 					location.href = '/chat/voiceChat/2';
-				})
-
-			}
-		})
-		
-		// 채팅 채팅방 드롭다운
-		document.querySelectorAll('.channel')[1].addEventListener('click', ()=>{
-
-			const chatRooms = document.querySelectorAll('.textChat')[0].querySelectorAll('li');
-			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
-			
-			for(const chatRoom of chatRooms){
-				if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
-					chatRoom.style.display = 'block';
-					people.style.display = 'block';	
-				}else{
-					chatRoom.style.display = 'none';
-					people.style.display = 'none';
-				}
-
-			}
-			
-			
-		})
-		
-		// 해당 채팅 채널 클릭시 해당 채널로 이동
-		console.log('---------------------');
-		console.log(document.querySelectorAll('.connect')[0].querySelector('img'));
-		document.querySelectorAll('.connect')[0].querySelector('img').addEventListener('click', ()=>{
-			console.log('나가기 버튼 클릭!');
-			console.log(document.querySelectorAll('.profile')[0].querySelector('b').innerText);
-			const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
-			leaveVoiceChannel(myNickname);
-		})
-		
-		// 프로필 사진, 닉네임, 톱니바퀴 클릭시 내계정 페이지로 이동
-// 		const goToMyAccount=()=>{
-// 			location.href = '/prefs/myProfile';
-// 		}
+	    document.addEventListener("DOMContentLoaded", function () {
+	        document.querySelectorAll('.profile img, .profile b').forEach(element => {
+	            element.addEventListener('click', goToMyAccount);
+	        });
+	    });
 	</script>
-	
-	 <script>
-	 
-		 function ProfileModal() {
-			    document.getElementById("profileModal").style.display = "block";
-			    document.getElementById("modalOverlay").style.display = "block";
-			}
-	
-			function closeProfileModal() {
-			    document.getElementById("profileModal").style.display = "none";
-			    document.getElementById("modalOverlay").style.display = "none";
-			}
-	
-			// 배경 클릭 시 모달 닫기
-			document.addEventListener("DOMContentLoaded", function () {
-			    document.getElementById("modalOverlay").addEventListener("click", closeProfileModal);
-			});
-
-        // 내 정보 페이지로 이동
-        function goToMyAccount() {
-            location.href = '/prefs/myProfile';
-        }
-
-    </script>
-
 </body>
 </html>

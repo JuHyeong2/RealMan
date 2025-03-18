@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Profile</title>
+
+    <!-- ✅ 미니 프로필 CSS 파일 연결 -->
+    <link rel="stylesheet" href="/css/common/miniProfile.css">
+</head>
+<body>
+
+    <!-- ✅ 미니 프로필 영역 -->
+    <div class="mini-profile">
+        <img src="/image/profile.png" width="50px" id="profileImg">
+        <b th:text="${member.memberNickname}"></b>
+        <img id="micImg" src="/image/preferences/mic.png" width="30px">
+        <img src="/image/preferences/Headphones.png" width="30px">
+        <img id="settingsIcon" src="/image/preferences/Preferences.png" width="30px">
+    </div>
+
+    <!-- ✅ 프로필 모달 -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProfileModal()">&times;</span>
+            <div class="profile-modal-header">
+                <img src="/image/profile.png" width="80px">
+            </div>
+            <h2 th:text="${member.memberNickname}"></h2>
+            <p>추가 정보</p>
+        </div>
+    </div>
+
+    <!-- ✅ 미니 프로필 JS 파일 연결 -->
+    <script defer src="/js/common/miniProfile.js"></script>
+
+</body>
+</html>
