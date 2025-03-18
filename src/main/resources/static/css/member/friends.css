@@ -145,6 +145,18 @@ li {
   padding-left: 0.5rem;
 }
 
+.profile-div > div {
+  width: 3.3rem;
+  height: 3.3rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile-div img {
+  width: 100%;
+  height: auto;
+}
+
 .other-div {
   width: 8rem;
   height: 4rem;

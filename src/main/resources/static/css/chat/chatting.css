@@ -34,53 +34,43 @@
 	display: flex;
 	flex-direction: column-reverse;
 	align-items: flex-start;
-	overflow-y: auto; 
-}
-
-.inputChat {
-/* 	width: 100%; */
-	height: 2rem;
-	display: flex;
+	overflow-y: auto;
+	overflow-x: hidden;  
 }
 
 .p-3 {
 	gap: 10px;
 }
 
-.p-3 textarea {
-/* 	width: 90%; */
-	resize: none;
-}
-
-.inputChat button {
-	width: 5%;
-}
 
 .textArea {
-	display: flex;
-	justify-content: space-between;
-	position: relative;
+/* 	display: flex; */
+/* 	justify-content: space-between; */
+/* 	position: relative; */
 /* 	bottom: 50px; */
-	z-index: 1;
+/* 	z-index: 1; */
 	width: 100%;
 }
+
+
 
 .video-preview {
 	width: 100%;
-	height: 100%;
-	background-color: #f1f1f1;
+	
+	
 }
 
 #remoteStreamDiv {
 	width: 100%;
 	height: 100%;
-	background: #f1f1f1; 
+	
 }
 
 .grid {
 	display: grid;
-	grid-template-columns: 200px 200x 200x;
-	grid-template-rows: 200px 200px;
-	margin: 30px;
+/* 	grid-template-columns: 200px 200x 200x; */
+	grid-template-columns: repeat(2, 1fr);
+/* 	grid-template-rows: 200px 200px; */
+	gap: 10px;
 	width: 100%;
 }

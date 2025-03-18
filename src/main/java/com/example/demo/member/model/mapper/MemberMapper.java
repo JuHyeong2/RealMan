@@ -74,5 +74,10 @@ public interface MemberMapper {
 
 	//회원 차단
 	int blockMember(HashMap<String, Integer> map);
+	
+	//회원 정보 수정
+	int editMemberInfo(HashMap<String, String> map);
+
+	Member selectMember(int memberNo);
     
 }

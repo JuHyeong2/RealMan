@@ -1,20 +1,46 @@
 package com.example.demo.chat.controller;
 
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+=======
+import com.example.demo.chat.model.service.ChatService;
+import com.example.demo.chat.model.vo.Channel;
+import com.example.demo.chat.model.vo.ChannelMember;
+import com.example.demo.chat.model.vo.ChatMessage;
+import com.example.demo.member.model.vo.Member;
+import com.example.demo.server.model.service.ServerService;
+import com.example.demo.server.model.vo.Server;
 
+import com.example.demo.serverMember.model.service.ServerMemberService;
+import com.example.demo.serverMember.model.vo.ServerMember;
+import jakarta.servlet.http.HttpServletRequest;
+>>>>>>> main
+
+
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> main
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +60,17 @@ import com.example.demo.server.model.vo.Server;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+=======
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+>>>>>>> main
 
 
 @Controller
@@ -42,11 +79,14 @@ import lombok.RequiredArgsConstructor;
 public class ChatController {
 	private final ChatService cService;
 	private final ServerService sService;
+	private final ServerMemberService smService;
 	
 
 	private final SimpMessagingTemplate messagingTemplate;
 	
 	private Map<Integer, Set<String>> userInChannel = new ConcurrentHashMap<>();
+	private Map<Integer, Set<String>> videoInChannel = new ConcurrentHashMap<>();
+	private int memberInchannelNo = 0; 
 
 	@GetMapping("main")
 	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
@@ -94,40 +134,45 @@ public class ChatController {
 	@GetMapping("/main/{serverNo}/{channelNo}")
 	public String chatting(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
-		System.out.println(serverNo);
 		
 		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
-
 		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);
 		}
-		
+
 		model.addAttribute("serverNo", serverNo).addAttribute("member", loginMember);
 
 //		Channel channel = new Channel();
 //		channel.setServerNo(no);
 //		channel.se
 		ArrayList<Channel> channel= cService.chattingSidebar(serverNo);
-		System.out.println(channel.toString());
+
+//		System.out.println(channel.toString());
 		model.addAttribute("channel", channel);
-		
-		
+
+		ArrayList<ServerMember> ServerMember = smService.serverMemberList(serverNo);
+		model.addAttribute("ServerMember", ServerMember);
+
 		// 채널 message 가져오자
 //		Integer channelNum = (Integer)channelNo;
 		ArrayList<ChatMessage> chatList = cService.selectChatList(channelNo);
 		model.addAttribute("chatList", chatList);
-		
+
 		// 채널이 Voice인지 Chat인지 확인
-		String voiceOrChat = cService.selectChannel(channelNo);
+
+		Channel Channel = cService.selectChannel(channelNo);
+		System.out.println("V or C ? : " + Channel.getChannelSeparator());
 		
-		if(voiceOrChat != null && voiceOrChat != "") {
-			if(voiceOrChat.equals("V")) {
+		if(Channel.getChannelSeparator() != null && Channel.getChannelSeparator() != "") {
+			if(Channel.getChannelSeparator().equals("V")) {
 				return "chat/videoChatting";
-			}else{
+			} else {
 				return "chat/chatting";
 			}
 		}
 		
+
+
 
 //		ArrayList<Chat> chatChannel= cService.chattingSidebar(no);
 //		model.addAttribute("chatChannel", chatChannel);
@@ -135,7 +180,7 @@ public class ChatController {
 		return "";
 
 	}
-	
+
 	@MessageMapping("/chat/{channelNo}/{separetor}")
 	public void sendMessage(@DestinationVariable("channelNo") int channelNo, @DestinationVariable("separetor") String separetor, ChatMessage message) {
 		// 특정  채팅방(roomId)에 메시지를 전송
@@ -153,38 +198,35 @@ public class ChatController {
 	// 입장시 추가 후 목록반환
 	@MessageMapping("/chat/joinVoice")
 	@SendTo("/sub/voice")
-	public  Map<Integer, Set<String>> joinVoiceChannel(@Payload ChannelMember cMember) {
-//		System.out.println("joinVoice 들어옴.");
-		
+	public Map<Integer, Set<String>> joinVoiceChannel (@Payload ChannelMember cMember){
+		//System.out.println("joinVoice 들어옴.");
+		memberInchannelNo = cMember.getClickServerNo();
 		for(int key : userInChannel.keySet()) {
 			if(userInChannel.get(key).contains(cMember.getUsername())) {
 				userInChannel.get(key).remove(cMember.getUsername());
 			}
 		}
-		
-		userInChannel.computeIfAbsent(cMember.getClickServerNo(),  k -> ConcurrentHashMap.newKeySet()).add(cMember.getUsername());
-		
-		
+		userInChannel.computeIfAbsent(cMember.getClickServerNo(), k -> ConcurrentHashMap.newKeySet()).add(cMember.getUsername());
 		return userInChannel;
 	}
 	
 	// 목록반환 만
 	@GetMapping("/api/voiceUsers")
 	@ResponseBody
-	public Map<Integer, Set<String>> joinVoiceChannel() {
+	public Map<Integer, Set<String>> joinVoiceChannel () {
 		System.out.println("/api/voiceUsers 들어옴.");
 		System.out.println(userInChannel);
-//		messagingTemplate.convertAndSend("/sub/voice", userInChannel);
+	//messagingTemplate.convertAndSend("/sub/voice", userInChannel);
 		return userInChannel;
 	}
 	
 	// 사용자 목록 업데이트 후 반환
 	@MessageMapping("/chat/leaveVoice")
 	@SendTo("/sub/voice")
-	public  Map<Integer, Set<String>> leaveVoiceChannel(@Payload String username) {
+	public Map<Integer, Set<String>> leaveVoiceChannel (@Payload String username){
 		System.out.println("보이스채팅을 나가는 닉네임 : " + username);
-		for(int key : userInChannel.keySet()) {
-			if(userInChannel.get(key).contains(username)) {
+		for (int key : userInChannel.keySet()) {
+			if (userInChannel.get(key).contains(username)) {
 				userInChannel.get(key).remove(username);
 			}
 		}
@@ -194,7 +236,7 @@ public class ChatController {
 	
 	@PostMapping("selectSmallestChatNo")
 	@ResponseBody
-	public int selectSmallestChatNo(@RequestParam("serverNo") int serverNo) {
+	public int selectSmallestChatNo ( @RequestParam("serverNo") int serverNo){
 		System.out.println(serverNo);
 		ArrayList<Integer> channelNo = sService.selectChannelNo(serverNo);
 		System.out.println(channelNo);
@@ -204,8 +246,8 @@ public class ChatController {
 	
 	@GetMapping("updateChannelUser")
 	@ResponseBody
-	public int updateChannelUser() {
-		System.out.println("유저 입장.");
+	public int updateChannelUser () {
+	//System.out.println("유저 입장.");
 		return 1;
 	}
 	
@@ -213,13 +255,14 @@ public class ChatController {
 	//camKey : 각 요청하는 캠의 key , roomId : 룸 아이디
 	@MessageMapping("/peer/offer/{camKey}/{roomId}")
 	@SendTo("/sub/peer/offer/{camKey}/{roomId}")
-	public String PeerHandleOffer(@Payload String offer, @DestinationVariable(value = "roomId") String roomId,
-	                              @DestinationVariable(value = "camKey") String camKey) {
+	public String PeerHandleOffer (@Payload String offer, @DestinationVariable(value = "roomId") String roomId,
+			@DestinationVariable(value = "camKey") String camKey){
 		System.out.println("roomId : " + roomId);
 		System.out.println("offer : " + offer);
 		System.out.println("camKey : " + camKey);
-//	    System.out.printf("[OFFER] {} : {}", camKey, offer);
-	    return offer;
+	//	System.out.printf("[OFFER] {} : {}", camKey, offer);
+	
+		return offer;
 	}
 	
 	//iceCandidate 정보를 주고 받기 위한 webSocket
@@ -230,11 +273,17 @@ public class ChatController {
 	                                     @DestinationVariable(value = "camKey") String camKey) {
 		System.out.println("iceCandidateroomId : " + roomId);
 		System.out.println("iceCandidatecamKey : " + camKey);
-//		System.out.println("[ICECANDIDATE] {} : {}", camKey, candidate);
-	    return candidate;
-	}
+		for(int key : videoInChannel.keySet()) {
+			if(videoInChannel.get(key).contains(camKey)) {
+				videoInChannel.get(key).remove(camKey);
+			}
+		}
+		
+		videoInChannel.computeIfAbsent(memberInchannelNo,  k -> ConcurrentHashMap.newKeySet()).add(camKey);
 
-	//
+//		System.out.println("[ICECANDIDATE] {} : {}", camKey, candidate);
+			return candidate;
+		}
 
 	@MessageMapping("/peer/answer/{camKey}/{roomId}")
 	@SendTo("/sub/peer/answer/{camKey}/{roomId}")
@@ -242,6 +291,7 @@ public class ChatController {
 	                               @DestinationVariable(value = "camKey") String camKey) {
 		System.out.println("answerroomId : " + roomId);
 		System.out.println("answercamKey : " + camKey);
+		System.out.println("answer : " + answer);
 //	    log.info("[ANSWER] {} : {}", camKey, answer);
 	    return answer;
 	}
@@ -250,49 +300,26 @@ public class ChatController {
 	@MessageMapping("/call/key")
 	@SendTo("/sub/call/key")
 	public String callKey(@Payload String message) {
-		System.out.println("callmessage : " + message);
+		System.out.println(message);
 //	    log.info("[Key] : {}", message);
-	    return message;
+				return message;
 	}
-	
-	//자신의 camKey 를 모든 연결된 세션에 보내는 webSocket
+
+			//자신의 camKey 를 모든 연결된 세션에 보내는 webSocket
 	@MessageMapping("/send/key")
 	@SendTo("/sub/send/key")
-	public String sendKey(@Payload String message) {
+	public String sendKey (@Payload String message){
 		System.out.println("sendmessage : " + message);
-	    return message;
+		return message;
 	}
-	
-//	@GetMapping("voiceChat/{serverNo}/{channelNo}")
-//	public String voiceChat(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
-//		Member loginMember = (Member)session.getAttribute("loginMember");
-////		System.out.println(serverNo);
-//		
-//		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
-//
-//		if(selectServerList != null || !selectServerList.isEmpty()) {
-//			model.addAttribute("selectServerList", selectServerList);
-//		}
-//		
-//		model.addAttribute("member", loginMember);
-//
-////		Channel channel = new Channel();
-////		channel.setServerNo(no);
-////		channel.se
-//		ArrayList<Channel> channel= cService.chattingSidebar(serverNo);
-//		System.out.println(channel.toString());
-//		model.addAttribute("channel", channel);
-//		
-//		return "videoChatting";
-//	}
+
+
 
 
 	@GetMapping("/tiny")
-	public String tiny(){
-		return "/tiny";
+	public String tiny () {
+			return "/tiny";
 	}
-
-
 
 
 	@PostMapping("/tiny2")
@@ -303,32 +330,10 @@ public class ChatController {
 
 		// 메시지를 DB에 저장하거나 WebSocket을 통해 전송 가능
 
+
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "메시지가 전송되었습니다!");
 		return response;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-// chattingSidebar 할떄 쓸것
-//	public String chattingSidebar(HttpServletRequest request, Model model) {
-//		ArrayList<Chat> voiceChannel= cService.chattingSidebar("V");
-//		ArrayList<Chat> chatChannel= cService.chattingSidebar("T");
-//		model.addAttribute("chatList", voiceChannel);
-//		model.addAttribute("chatList", chatChannel);
-//		return "chattingSidebar";
-//	}
-	
+
 }

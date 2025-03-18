@@ -196,4 +196,16 @@
 			#{blockMemberNo}
 		)
 	</insert>
+	
+	<update id="editMemberInfo">
+		update member
+		set ${col} = #{val}
+		where member_no = #{memberNo}
+	</update>
+	
+	<select id="selectMember">
+		select *
+		from member
+		where member_no = #{memberNo}
+	</select>
 </mapper>

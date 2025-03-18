@@ -114,7 +114,7 @@ public class ChatService {
 		
 	}
 
-	public String selectChannel(int channelNo) {
+	public Channel selectChannel(int channelNo) {
 		
 		return mapper.selectChannel(channelNo);
 	}

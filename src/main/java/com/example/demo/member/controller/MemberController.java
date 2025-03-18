@@ -8,8 +8,18 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.common.util.EmailCertificationUtil;
 import com.example.demo.member.model.exception.MemberException;
@@ -41,28 +51,6 @@ public class MemberController {
 		return "/findMyPwd";
 	}
 
-//	// 친구목록 페이지로
-//	@GetMapping("/friends")
-//	public String friends(Model model) {
-//		Member loginMember = (Member) model.getAttribute("loginMember");
-//
-//		// 친구목록
-//		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-//		ArrayList<Member> list = mService.selectFriends(friendNumberList);
-//		// 내가 보낸 요청 목록
-//		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
-//		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectFriends(sentRequestList);
-//		// 나한테 온 요청 목록
-//		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
-//		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectFriends(receivedRequestList);
-//
-//		model.addAttribute("list", list);
-//		model.addAttribute("wlist", wlist);
-//		model.addAttribute("rlist", rlist);
-//
-//		return "/friends";
-//	}
-
 	// (아이디찾기, 비밀번호찾기)이메일 보내기
 	@GetMapping("/sendEmail")
 	@ResponseBody
@@ -77,7 +65,7 @@ public class MemberController {
 			// 2. 코드 생성
 			for (int i = 0; i < 6; i++) {
 				String pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-				int r = (int) (Math.random() * (pool.length() + 1));
+				int r = (int) (Math.random() * pool.length());
 				char c = pool.charAt(r);
 				random += c;
 			}
@@ -173,6 +161,76 @@ public class MemberController {
 		
 		return result;
 	}
+	
+	//회원 정보 수정
+	@PutMapping("/edit")
+	@ResponseBody
+	public int editMemberInfo(@RequestBody HashMap<String, String> map,
+			HttpSession session, Model model) {
+		int result = 0;
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		System.out.println(map.get("pwd"));
+		
+		if(bcrypt.matches(
+				map.get("pwd"), loginMember.getMemberPwd())) {
+			map.put("memberNo", loginMember.getMemberNo()+"");
+			switch(map.get("col")) {
+			case "member_nickname":
+				if(!mService.isMemberNicknameDuplicated(map.get("val"))) {
+					result = mService.editMemberInfo(map);
+				}else {
+					throw new MemberException("중복된 별명입니다.");
+				}
+				break;
+			case "member_phone":
+				if(!mService.isMemberPhoneDuplicated(map.get("val"))) {
+					result = mService.editMemberInfo(map);
+				}else {
+					throw new MemberException("이미 등록된 번호입니다.");
+				}
+				break;
+			case "member_email":
+				if(!mService.isMemberEmailDuplicated(map.get("val"))) {
+					result = mService.editMemberInfo(map);
+				}else {
+					throw new MemberException("이미 등록된 이메일입니다.");
+				}
+				break;
+			case "member_pwd":
+				String newPwd = bcrypt.encode(map.get("val"));
+				map.put("val", newPwd);
+				result = mService.editMemberInfo(map);
+				break;
+			}
+		}else {
+			throw new MemberException("비밀번호가 일치하지 않습니다.");
+		}
+		
+		// session attribute 
+		if(result==1) {
+			loginMember = mService.selectMember(loginMember.getMemberNo());
+			model.addAttribute("loginMember", loginMember);
+		}
+		
+		return result;
+	}
+	
+	// 프사 변경
+	@PutMapping("/profileImg")
+	@ResponseBody
+	public boolean changeProfileImg(@RequestParam("image") MultipartFile image,
+			HttpSession session) {
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		boolean imageUploaded = mService.changeProfileImg(loginMember.getMemberNo(), image);
+		
+		return imageUploaded;
+	}
+	
+	@DeleteMapping("/profileImg")
+	@ResponseBody
+	public boolean deleteProfileImg() {
+		return false;
+	}
 
 	// 회원가입 페이지로 이동
 	@GetMapping("/signup")
@@ -239,11 +297,13 @@ public class MemberController {
 	 @PostMapping("/signin")
 	 public String login(@RequestParam("memberId") String memberId,
 	                     @RequestParam("memberPwd") String memberPwd,
+						 @RequestParam("fingerprint") String fingerprint,
 	                     Model model, HttpSession session) {
 	     Member loginMember = mService.login(memberId, memberPwd);
 
 	     if (loginMember != null) {
 	         session.setAttribute("loginMember", loginMember);
+			 session.setAttribute("fingerprint", fingerprint);
 	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");

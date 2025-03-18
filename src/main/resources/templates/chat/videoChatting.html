@@ -64,7 +64,7 @@
 		<!-- 내 웹캠 화면을 보여주는 video html -->
 		<div class="grid">
 			<div class="video-preview">
-				<video class="video-preview" id="localStream" autoplay playsinline controls style="display: none;"></video>
+				<video class="video-preview" id="localStream" autoplay mute playsinline style="display: none;"></video>
 			</div>
 			<!-- WebRTC에 연결된 웹캠들이 추가되는 Div -->
 			<div id="remoteStreamDiv">
@@ -82,17 +82,14 @@
 	
 	<script th:inline="javascript">
 	
-		/*<![CDATA[*/
-		const username = /*[[${member.memberNickname}]]*/null;
-		const serverNo = /*[[${serverNo}]]*/0;
-		const channelNo = /*[[${channelNo}]]*/0;
-		/*]]*/
+		
 		// let remoteStreamElement = document.querySelector('#remoteStream');
 		let localStreamElement = document.querySelector('#localStream');
 		//자신을 식별하기위한 랜덤한 key 
-		const myKey = Math.random().toString(36).substring(2, 11);
+// 		const myKey = Math.random().toString(36).substring(2, 11);
+		const myKey = userid;
 		let pcListMap = new Map();
-		let roomId = serverNo;
+		let roomId = channelNo;
 		let otherKeyList = [];
 		let localStream = undefined;
 		console.log("둠칫 둠칫 : " + navigator.mediaDevices);
@@ -127,7 +124,7 @@
 		    setTimeout(() =>{
 		    
 		        otherKeyList.map((key) =>{
-		       	 console.log('들어왔당.');
+// 		       	 console.log('들어왔당.');
 		       	 console.log(pcListMap);
 		            if(!pcListMap.has(key)){
 		            	console.log('pcListMap.has(key)가 true다!!!')
@@ -163,7 +160,7 @@
 		 		//offer peer 교환을 위한 subscribe
 		         stompClient.subscribe('/sub/peer/offer/' + myKey + '/' + roomId, offer => {
 		        	 console.log("sub/per/offer/에 들어옴");
-		        	 console.log("Received Offer:", offer.body);
+// 		        	 console.log("Received Offer:", offer.body);
 		             const key = JSON.parse(offer.body).key;
 		             const message = JSON.parse(offer.body).body;
 		    						
@@ -179,18 +176,19 @@
 		    				
 		 				//answer peer 교환을 위한 subscribe
 		         stompClient.subscribe('/sub/peer/answer/' + myKey + '/' + roomId, answer =>{
-		        	 console.log("sub/peer/answer/에 들어옴");
 		             const key = JSON.parse(answer.body).key;
 		             const message = JSON.parse(answer.body).body;
+		             
+		             console.log("sub/peer/answer/에 들어옴 : " + message);
 		    						
-		 						// 해당 key에 해당되는 Peer 에 받은 정보를 setRemoteDescription 해준다.
+		 			// 해당 key에 해당되는 Peer 에 받은 정보를 setRemoteDescription 해준다.
 		             pcListMap.get(key).setRemoteDescription(new RTCSessionDescription(message));
 		    
 		         });
 		    				
 		 			  //key를 보내라는 신호를 받은 subscribe
 		         stompClient.subscribe('/sub/call/key', message =>{
-		        	 console.log("/sub/call/key에 들어옴");
+		        	 console.log("/sub/call/key에 들어옴 : " + message);
 		 						//자신의 key를 보내는 send
 		             stompClient.send('/pub/send/key', {}, JSON.stringify(myKey));
 		    
@@ -202,14 +200,16 @@
 		             const key = JSON.parse(message.body);
 		    						
 		 						//만약 중복되는 키가 ohterKeyList에 있는지 확인하고 없다면 추가해준다.
-		             if(myKey !== key && otherKeyList.find((mapKey) => mapKey === myKey) === undefined){
+		             if(myKey !== key && otherKeyList.find((mapKey) => mapKey === key) === undefined){
 		                 otherKeyList.push(key);
 		             }
+		 						
+		             console.log(otherKeyList);
 		         });
 		    
 		     });
 		 }
-		
+		let remoteVideo = null;
 		 let onTrack = (event, otherKey) => {
 			 console.log('otherKey : ' + otherKey);
 			 console.log('event : ' + event);
@@ -221,8 +221,19 @@
 		         video.controls = true;
 		         video.id = otherKey;
 		         video.srcObject = event.streams[0];
+		         const element = document.querySelector('#' + otherKey);
+		         // 같은 cameraKey값이 있는 video가 있으면 해당 video 삭제
+		         console.log('element 확인');
+		         console.log(element);
+// 		         if(element){
+// 		        	 console.log('존재하는 element');
+// 		        	 console.log(element);
+// 		        	 element.remove();
+// 		         }
 		    
 		         document.getElementById('remoteStreamDiv').appendChild(video);
+		         remoteVideo = document.getElementById(otherKey);
+		         console.log(remoteVideo);
 		     }
 		    
 		     //
@@ -244,6 +255,32 @@
 		                 pc.addTrack(track, localStream);
 		             });
 		         }
+		         console.log("otherKey는 아래와 같습니다.");
+		         console.log(otherKey);
+// 		         const remoteVideo = document.getElementById(otherKey); // 상대방 비디오 요소
+		         console.log("remoteVieo의 값은 아래와 같습니다.");
+		         console.log(remoteVideo);
+		         
+				pc.addEventListener("connectionstatechange", () => {
+				    console.log("연결 상태:", pc.connectionState);
+				
+				    if (pc.connectionState === "disconnected" || pc.connectionState === "failed" || pc.connectionState === "closed") {
+				        console.log("상대방 연결이 끊어졌습니다. 비디오 제거!");
+				        remoteVideo.srcObject = null; // 비디오 스트림 제거
+				        remoteVideo.style.display = "none"; // 화면에서 숨기기 (선택)
+				    }
+				});
+		         
+				pc.addEventListener("iceconnectionstatechange", () => {
+				    console.log("ICE 상태:", pc.iceConnectionState);
+
+				    if (pc.iceConnectionState === "disconnected" || pc.iceConnectionState === "failed") {
+				        console.log("상대방이 네트워크 문제로 연결이 끊어졌습니다!");
+				        console.log(remoteVideo);
+				        remoteVideo.srcObject = null; // 비디오 스트림 제거
+				        remoteVideo.style.display = "none"; // 화면에서 숨기기 (선택)
+				    }
+				});
 		    
 		         console.log('PeerConnection created');
 		     } catch (error) {
@@ -290,6 +327,17 @@
 		     pc.setLocalDescription(sessionDescription);
 		 }
 		    
+		 window.addEventListener('beforeunload', ()=>{
+			 // webRTC 연결 종료
+			 if(peerConnection){
+				 console.log('연결이 끊깁니다.');
+				 peerConnection.cose();
+			 }
+		 })
+		 
+		 
+		 
+		
 	
 		    
 	
