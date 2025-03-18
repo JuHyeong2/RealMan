@@ -34,27 +34,14 @@
 	display: flex;
 	flex-direction: column-reverse;
 	align-items: flex-start;
-	overflow-y: auto; 
-}
-
-.inputChat {
-/* 	width: 100%; */
-	height: 2rem;
-	display: flex;
+	overflow-y: auto;
+	overflow-x: hidden;  
 }
 
 .p-3 {
 	gap: 10px;
 }
 
-.p-3 textarea {
-/* 	width: 90%; */
-	resize: none;
-}
-
-.inputChat button {
-	width: 5%;
-}
 
 .textArea {
 	display: flex;
@@ -64,6 +51,8 @@
 	z-index: 1;
 	width: 100%;
 }
+
+
 
 .video-preview {
 	width: 100%;

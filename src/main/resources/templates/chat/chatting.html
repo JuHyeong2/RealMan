@@ -64,7 +64,7 @@
 				<input type="hidden" th:value="${no}">
 				<div class="chatContent">
 					<div class='textArea' th:each="c, cStat:${chatList}">
-						<b> [[${c.sender}]] : [[${c.message}]]</b><p>&nbsp</p>
+						<b th:utext='${c.sender}'></b><p th:utext='${c.message}'></p>
 					</div>
 				</div>
 			</div>
@@ -128,6 +128,7 @@
 
 
 					let HMS = hour + ':' + minute + ':' + second;
+					console.log(chatMessage);
 					let str = `<div class='textArea'>
 								  <b>${chatMessage.sender} :</b> ${chatMessage.message}
 								  <p>${HMS}</p>
@@ -177,9 +178,10 @@
 				selector: '#mytextarea',
 				plugins: 'image paste',
 				menubar: false,
-				toolbar: ' image | bullist numlist | undo redo',
-				height: 120,
-				width: '80%',
+				toolbar: false,
+				height: '70px',
+				width: '100%',
+				resize: false,
 				images_upload_handler: function (blobInfo, success, failure) {
 					let reader = new FileReader();
 					reader.onload = function () {
