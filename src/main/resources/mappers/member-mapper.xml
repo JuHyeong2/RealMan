@@ -107,15 +107,6 @@
         and friend_status = 'W'
     </select>
 
-    <!-- 친구 목록 조회  -->
-    <select id="selectFriends" resultType="Member">
-        select * from member where member_no in(
-        <foreach collection="list" item="number" separator="," index="i">
-            #{number}
-        </foreach>
-        )
-    </select>
-
     <!-- 친구 거절, 삭제, 요청 취소 -->
     <delete id="deleteFriend">
         delete from friend
@@ -209,6 +200,7 @@
 		where member_no = #{memberNo}
 	</select>
 	
+
 	<select id="getProfileImage">
 		select *
 		from image
@@ -232,4 +224,13 @@
 		from image
 		where mcd_no = ${memberNo} and img_separator = 'M'
 	</select>
+
+	<select id="selectMembers" resultType="Member">
+        select * from member where member_no in(
+        <foreach collection="list" item="number" separator="," index="i">
+            #{number}
+        </foreach>
+        )
+    </select>
+
 </mapper>

@@ -88,5 +88,8 @@ public interface MemberMapper {
 	int updateProfileImage(ProfileImage profileImage);
 
 	ProfileImage selectImage(int memberNo);
+
+	ArrayList<Member> selectMembers(ArrayList<Integer> memberNumberList);
+
     
 }

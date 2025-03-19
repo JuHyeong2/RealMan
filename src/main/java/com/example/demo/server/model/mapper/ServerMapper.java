@@ -19,4 +19,6 @@ public interface ServerMapper {
 	
 	int inviteMember(HashMap<String, Integer> map);
 
+	ArrayList<Integer> selectMemberNumbers(int serverNo);
+
 }

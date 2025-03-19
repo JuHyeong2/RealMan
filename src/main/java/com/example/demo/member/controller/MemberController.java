@@ -7,7 +7,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import org.springframework.beans.factory.annotation.Value;
+
+import com.example.demo.preferences.model.service.PrefsService;
+import com.example.demo.preferences.model.vo.Device;
+
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -32,7 +37,9 @@ import com.example.demo.common.util.EmailCertificationUtil;
 import com.example.demo.member.model.exception.MemberException;
 import com.example.demo.member.model.service.MemberService;
 import com.example.demo.member.model.vo.Member;
+
 import com.example.demo.member.model.vo.ProfileImage;
+
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -44,6 +51,7 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("loginMember")
 public class MemberController {
 	private final MemberService mService;
+	private final PrefsService pService;
 	private final BCryptPasswordEncoder bcrypt;
 	private final EmailCertificationUtil emailUtil;
 	private final AmazonS3Client amazonS3;
@@ -352,15 +360,18 @@ public class MemberController {
 						 @RequestParam("fingerprint") String fingerprint,
 	                     Model model, HttpSession session) {
 	     Member loginMember = mService.login(memberId, memberPwd);
+
 	     // 프로필 이미지도 세션에 저장하는게 좋을 듯
 		 ProfileImage userImage = mService.selectImage(loginMember.getMemberNo());
 		 if(userImage != null) {
 			 loginMember.setImageUrl(amazonS3.getUrl(bucket, userImage.getImgRename()).toString());
 		 }
 
+
 	     if (loginMember != null) {
 	         session.setAttribute("loginMember", loginMember);
 			 session.setAttribute("fingerprint", fingerprint);
+			 pService.saveDevice(loginMember.getMemberNo(), fingerprint);
 	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");

@@ -29,4 +29,8 @@ public class ServerService {
 		return mapper.selectChannelNo(serverNo);
 	}
 
+	public ArrayList<Integer> selectMemberNumbers(int serverNo) {
+		return mapper.selectMemberNumbers(serverNo);
+	}
+
 }

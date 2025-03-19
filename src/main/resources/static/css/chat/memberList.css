@@ -1,0 +1,184 @@
+#memberList-container {
+  width: 15%;
+  min-width: 14rem;
+}
+
+.ul-div {
+  height: 90%;
+  background-color: rgb(250, 250, 250);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+li {
+  list-style-type: none;
+}
+
+.memberList-li {
+  display: flex;
+  margin-top: 0.3rem;
+  border-radius: 0.2rem;
+  width: 90%;
+}
+
+.memberList-li:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.nickname {
+  cursor: pointer;
+}
+
+.button-div {
+  background-color: rgb(205, 225, 243);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.button-div > button {
+  width: 45%;
+  border: 0;
+  border-radius: 0.3rem;
+}
+
+.button-div > button:first-child {
+  background-color: rgb(157, 157, 238);
+}
+
+.button-div > button:last-child {
+  background-color: rgb(253, 193, 203);
+}
+
+.button-div > button:first-child:hover {
+  background-color: rgb(167, 167, 248);
+}
+
+.button-div > button:last-child:hover {
+  background-color: rgb(243, 183, 193);
+}
+
+.button-div > button:first-child:active {
+  background-color: rgb(147, 147, 228);
+}
+
+.button-div > button:last-child:active {
+  background-color: rgb(233, 173, 183);
+}
+
+.modal-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.295);
+}
+
+.invite-modal,
+.eject-modal {
+  width: 20%;
+  min-width: 30rem;
+  height: 70%;
+  background-color: aliceblue;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.5rem;
+  position: relative;
+}
+
+.modal-container h1 {
+  margin: 0;
+  margin-top: 1rem;
+  position: relative;
+  left: -6rem;
+  background-color: rgb(108, 108, 187);
+  color: white;
+  font-weight: 600;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 0.3rem;
+}
+
+.modal-ul-div {
+  width: 95%;
+  height: 80%;
+  background-color: rgb(253, 253, 253);
+  border: 2px solid;
+  border-color: rgb(108, 108, 187);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-button-div {
+  display: flex;
+}
+
+.cancle-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: rgb(253, 76, 76);
+  color: white;
+  border: 0;
+  border-radius: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0.2rem;
+}
+
+.ul-friends {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.li-friends {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 3rem;
+  padding-left: 0.5rem;
+}
+
+.li-friends:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.li-friends > label {
+  padding-left: 1rem;
+}
+
+.li-friends > span {
+  padding-left: 0.5rem;
+}
+
+.profile-div {
+  height: 80%;
+}
+
+.profile-div > img {
+  height: 100%;
+}
+
+.li-friends > button {
+  position: absolute;
+  right: 1.5rem;
+  border: 0;
+  border-radius: 0.3rem;
+  width: 2rem;
+  padding-bottom: 0.2rem;
+}
