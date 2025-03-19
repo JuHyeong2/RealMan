@@ -222,7 +222,7 @@
 	<select id="selectImage">
 		select *
 		from image
-		where mcd_no = ${memberNo} and img_separator = 'M'
+		where mcd_no = #{memberNo} and img_separator = 'M'
 	</select>
 
 	<select id="selectMembers" resultType="Member">

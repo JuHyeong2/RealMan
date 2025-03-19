@@ -201,6 +201,7 @@ public class MemberService {
 
 	public ProfileImage selectImage(int memberNo) {
 		return mapper.selectImage(memberNo);
+	}
 
 	public ArrayList<Member> selectMembers(ArrayList<Integer> memberNumberList) {
 		return mapper.selectMembers(memberNumberList);
