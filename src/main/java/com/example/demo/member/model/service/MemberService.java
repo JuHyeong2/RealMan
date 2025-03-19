@@ -10,8 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import com.example.demo.member.model.mapper.MemberMapper;
 import com.example.demo.member.model.vo.Member;
+import com.example.demo.member.model.vo.ProfileImage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -184,6 +186,21 @@ public class MemberService {
 			return false;
 		}
 	}
+
+
+	public boolean saveOrUpdateProfileImage(ProfileImage profileImage) {
+		ProfileImage existingImage = mapper.getProfileImage(profileImage.getMcdNo());
+        if (existingImage == null) {
+            return mapper.insertProfileImage(profileImage) > 0;
+        } else {
+        	profileImage.setImgNo(existingImage.getImgNo());
+            return mapper.updateProfileImage(profileImage) > 0;
+        }
+		
+	}
+
+	public ProfileImage selectImage(int memberNo) {
+		return mapper.selectImage(memberNo);
 
 	public ArrayList<Member> selectMembers(ArrayList<Integer> memberNumberList) {
 		return mapper.selectMembers(memberNumberList);

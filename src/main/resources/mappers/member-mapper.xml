@@ -200,6 +200,31 @@
 		where member_no = #{memberNo}
 	</select>
 	
+
+	<select id="getProfileImage">
+		select *
+		from image
+		where mcd_no = #{memberNo} and img_separator = 'M'
+	</select>
+	
+	<insert id="insertProfileImage">
+		insert into image(img_no,img_originalname,img_rename,img_path,img_separator,mcd_no)
+		values(image_seq.nextval,#{imgOriginalname},#{imgPath},#{imgRename},#{imgSeparator},#{mcdNo})
+	</insert>
+	
+	<update id="updateProfileImage">
+		update image
+		set img_originalname = #{imgName},img_path = #{imgPath}, img_rename =
+		#{imgRename}
+		where img_no = #{imgNo}
+	</update>
+	
+	<select id="selectImage">
+		select *
+		from image
+		where mcd_no = ${memberNo} and img_separator = 'M'
+	</select>
+
 	<select id="selectMembers" resultType="Member">
         select * from member where member_no in(
         <foreach collection="list" item="number" separator="," index="i">
@@ -207,4 +232,5 @@
         </foreach>
         )
     </select>
+
 </mapper>
