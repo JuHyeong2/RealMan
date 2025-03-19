@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.demo.member.model.vo.Member;
+import com.example.demo.member.model.vo.ProfileImage;
 
 @Mapper
 public interface MemberMapper {
@@ -79,5 +80,13 @@ public interface MemberMapper {
 	int editMemberInfo(HashMap<String, String> map);
 
 	Member selectMember(int memberNo);
+
+	ProfileImage getProfileImage(int mcdNo);
+
+	int insertProfileImage(ProfileImage profileImage);
+
+	int updateProfileImage(ProfileImage profileImage);
+
+	ProfileImage selectImage(int memberNo);
     
 }
