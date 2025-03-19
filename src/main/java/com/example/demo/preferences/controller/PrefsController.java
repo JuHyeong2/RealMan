@@ -73,12 +73,12 @@ public class PrefsController {
     @ResponseBody
     public Device getAudioPrefs(HttpSession session) {
         Member loginMember = (Member) session.getAttribute("loginMember");
-        String fingerPrint = (String) session.getAttribute("fingerprint");
+        String fingerprint = (String) session.getAttribute("fingerprint");
         if (loginMember == null) {
             return null;
         }
         // 사용자 ID를 기반으로 오디오 설정 정보 조회
-        Device audioPrefs = pService.getAudioPrefs(loginMember.getMemberNo(), fingerPrint);
+        Device audioPrefs = pService.getAudioPrefs(loginMember.getMemberNo(), fingerprint);
 
         return audioPrefs;
     }

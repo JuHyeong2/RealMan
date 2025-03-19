@@ -5,12 +5,14 @@
     <select id="checkDevice" resultType="com.example.demo.preferences.model.vo.Device">
         SELECT *
         FROM DEVICES
-        WHERE MEMBER_NO = #{memberNo} AND DEVICE_ID = #{fingerprint}
+        WHERE MEMBER_NO = #{memberNo}
+          AND DEVICE_ID = #{deviceId}
     </select>
 
-    <insert id="insertDevice">
+
+    <insert id="insertDevice" parameterType="com.example.demo.preferences.model.vo.Device">
         INSERT INTO DEVICES (MEMBER_NO, DEVICE_ID)
-        VALUES (#{memberNo}, #{fingerprint})
+        VALUES (#{memberNo}, #{deviceId})
     </insert>
 
     <update id="updateAudio" parameterType="com.example.demo.preferences.model.vo.Device">
