@@ -16,9 +16,13 @@ public interface ServerMapper {
     ArrayList<Server> selectServerList(Member m);
 
 	ArrayList<Integer> selectChannelNo(int serverNo);
-	
-	int inviteMember(HashMap<String, Integer> map);
 
 	ArrayList<Integer> selectMemberNumbers(int serverNo);
+
+	String checkIsAdmin(HashMap<String, Integer> map2);
+
+	int inviteMember(HashMap<String, Integer> map);
+
+	ArrayList<Member> selectInviteList(int memberNo);
 
 }

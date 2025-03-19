@@ -81,7 +81,7 @@
           <button id="button-send">입력</button>
         </div>
       </div>
-
+      <input type="hidden" id="serverNo" th:value="${serverNo}" />
       <!-- 유저 목록 -->
       <div
         th:replace="~{memberList :: div}"
