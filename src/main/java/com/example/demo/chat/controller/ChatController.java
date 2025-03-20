@@ -133,8 +133,6 @@ public class ChatController {
 		model.addAttribute("chatList", chatList);
 
 		//서버멤버 가져오기
-		ArrayList<Integer> memberNumberList = sService.selectMemberNumbers(serverNo);
-		ArrayList<Member> memberList = mService.selectMembers(memberNumberList);
 		for(int i=0; i<memberList.size(); i++) {
 			ProfileImage img = mService.selectImage(memberList.get(i).getMemberNo());
 //			System.out.println(img);

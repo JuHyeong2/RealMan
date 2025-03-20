@@ -1,46 +1,38 @@
 <!DOCTYPE html>
 <html xlmns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-  </head>
+<head>
+<meta charset="UTF-8" />
+</head>
 
-  <body th:fragment="memberList">
-    <div id="memberList-container">
-      <div class="ul-div">
-        <ul class="memberList-ul">
-          <li class="memberList-li" th:each="m : ${memberList}">
-            <input type="hidden" th:value="${m.memberNo}" />
-            <img th:src="${m.imageUrl != null ? m.imageUrl : '/image/member/no-profile.svg'}" width="30px" height="30px">
-            <label
-              class="nickname"
-              th:style="${m.memberNo == session.loginMember.memberNo? 'color: rgb(140, 140, 220)':'color:inherit'}"
-            >
-              [[${m.memberNickname}]]
-            </label>
-            <button
-              class="eject-button"
-              th:if="${admin and m.isServerAdmin=='N'}"
-            >
-              <img src="/image/friend/deny.svg" />
-            </button>
-          </li>
-        </ul>
-      </div>
-      <div th:if="${admin}" class="button-div">
-        <button class="invite-modal-button">초대</button>
-      </div>
-    </div>
+<body th:fragment="memberList">
+	<div id="memberList-container">
+		<div class="ul-div">
+			<ul class="memberList-ul">
+				<li class="memberList-li" th:each="m : ${memberList}">
+					<input type="hidden" th:value="${m.memberNo}" /> 
+					<img th:src="${m.imageUrl != null ? m.imageUrl : '/image/member/no-profile.svg'}" width="30px" height="30px"> 
+					<label class="nickname" th:style="${m.memberNo == session.loginMember.memberNo? 'color: rgb(140, 140, 220)':'color:inherit'}"> [[${m.memberNickname}]] </label>
+					<button class="eject-button" th:if="${admin and m.isServerAdmin=='N'}">
+						<img src="/image/friend/deny.svg" />
+					</button>
+				</li>
+			</ul>
+		</div>
+		<div th:if="${admin}" class="button-div">
+			<button class="invite-modal-button">초대</button>
+		</div>
+	</div>
 
-    <!-- 모달 -->
-    <div class="modal-container">
-      <!-- 초대 모달 -->
-      <div class="invite-modal">
-        <h1>회원 초대</h1>
-        <button class="cancle-button">x</button>
-        <div class="modal-ul-div">
-          <ul class="ul-friends"></ul>
-        </div>
-      </div>
-    </div>
-  </body>
+	<!-- 모달 -->
+	<div class="modal-container">
+		<!-- 초대 모달 -->
+		<div class="invite-modal">
+			<h1>회원 초대</h1>
+			<button class="cancle-button">x</button>
+			<div class="modal-ul-div">
+				<ul class="ul-friends"></ul>
+			</div>
+		</div>
+	</div>
+</body>
 </html>
