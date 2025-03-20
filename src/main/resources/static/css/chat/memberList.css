@@ -119,6 +119,7 @@ li {
   justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
+  overflow: hidden;
 }
 
 .modal-button-div {
@@ -143,9 +144,13 @@ li {
 
 .ul-friends {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 0;
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .li-friends {
