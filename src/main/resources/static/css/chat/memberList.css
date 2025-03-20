@@ -19,10 +19,15 @@ li {
   margin-top: 0.3rem;
   border-radius: 0.2rem;
   width: 90%;
+  align-items: center;
 }
 
 .memberList-li:hover {
   background-color: rgb(240, 240, 240);
+}
+
+.memberList-li img{
+	border-radius: 100px;
 }
 
 .nickname {

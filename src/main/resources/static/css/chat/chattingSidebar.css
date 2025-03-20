@@ -116,6 +116,7 @@ html, body {
 
 .profile img {
 	cursor: pointer;
+	border-radius: 100px;
 }
 
 #micImg {

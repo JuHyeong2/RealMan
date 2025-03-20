@@ -10,6 +10,7 @@
         <ul class="memberList-ul">
           <li class="memberList-li" th:each="m : ${memberList}">
             <input type="hidden" th:value="${m.memberNo}" />
+            <img th:src="${m.imageUrl != null ? m.imageUrl : '/image/member/no-profile.svg'}" width="30px" height="30px">
             <label class="nickname">[[${m.memberNickname}]]</label>
           </li>
         </ul>

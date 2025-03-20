@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class ProfileImage {
 	private int imgNo;
-	private String imgOriginalname;
+	private String imgName;
 	private String imgPath;
 	private String imgRename;
 	private String imgSeparator;
