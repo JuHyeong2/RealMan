@@ -233,4 +233,8 @@
         )
     </select>
 
+	<select id="getMemberNo" resultType="int">
+		select member_no from member where member_id = #{memberID}
+	</select>
+
 </mapper>

@@ -16,6 +16,7 @@ import com.example.demo.preferences.model.vo.Device;
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -341,6 +342,8 @@ public class MemberController {
 	    // 회원가입 진행
 	    int result = mService.insertMember(m);
 	    if (result > 0) {
+			int getMemberNo = mService.getMemberNo(m.getMemberId());
+			pService.inesrtDefaultSetting(getMemberNo);
 	        return "redirect:/member/signin";
 	    } else {
 	        throw new MemberException("회원가입에 실패하였습니다.");
@@ -375,7 +378,7 @@ public class MemberController {
 	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
-	         return "member/signin"; 
+	         return "member/signin";
 	     }
 	 }
 	 

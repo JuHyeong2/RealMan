@@ -3,15 +3,11 @@ package com.example.demo.preferences.controller;
 import com.example.demo.member.model.vo.Member;
 import com.example.demo.preferences.model.service.PrefsService;
 import com.example.demo.preferences.model.vo.Device;
+import com.example.demo.preferences.model.vo.Notification;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -107,8 +103,26 @@ public class PrefsController {
         }
         // 사용자 ID를 기반으로 오디오 설정 정보 조회
         Device videoPrefs = pService.getVideoPrefs(loginMember.getMemberNo(), fingerprint);
-
         return videoPrefs;
+    }
+
+    @PostMapping("/notifications")
+    @ResponseBody
+    public void updateNotify(@RequestBody Notification notify, HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginMember");
+        notify.setMemberNo(loginUser.getMemberNo());
+        int resultUdtNotify = pService.updateNotify(notify);
+        System.out.println("비디오 업데이트 : " + (resultUdtNotify ==1?"성공":"실패"));
+    }
+
+    @GetMapping("/notifications/getPrefs")
+    @ResponseBody
+    public Notification getNotifyPrefs(HttpSession session){
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        System.out.println("로그인유저 : " + loginMember.getMemberId());
+        Notification notify = pService.getNotifyPrefs(loginMember.getMemberNo());
+        System.out.println("알림설정가져온 데이터 : " + notify);
+        return notify;
     }
 
 }

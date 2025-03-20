@@ -34,4 +34,27 @@
         WHERE MEMBER_NO = #{memberNo}
           AND DEVICE_ID = #{deviceId}
     </update>
+
+    <update id="updateNotify" parameterType="com.example.demo.preferences.model.vo.Notification">
+        UPDATE NOTIFICATION
+        SET
+            NOTIFY_STATUS = #{notifyStatus},
+            NOTIFY_SCOPE = #{notifyScope}
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+
+    <select id="getNotifyPrefs" resultType="com.example.demo.preferences.model.vo.Notification">
+        SELECT * FROM NOTIFICATION
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
+
+    <insert id="insertNotify" parameterType="int">
+        INSERT INTO NOTIFICATION (MEMBER_NO) VALUES (#{memberNo})
+    </insert>
+
+    <insert id="insertTheme" parameterType="int">
+        INSERT INTO THEME (MEMBER_NO) VALUES (#{memberNo})
+    </insert>
+
+
 </mapper>
