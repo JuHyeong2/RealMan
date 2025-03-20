@@ -16,9 +16,24 @@ li {
 
 .memberList-li {
   display: flex;
+  position: relative;
   margin-top: 0.3rem;
   border-radius: 0.2rem;
   width: 90%;
+}
+
+.eject-button {
+  position: absolute;
+  height: 100%;
+  right: 0;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+}
+.eject-button > img {
+  height: 70%;
 }
 
 .memberList-li:hover {
@@ -46,24 +61,12 @@ li {
   background-color: rgb(157, 157, 238);
 }
 
-.button-div > button:last-child {
-  background-color: rgb(253, 193, 203);
-}
-
 .button-div > button:first-child:hover {
   background-color: rgb(167, 167, 248);
 }
 
-.button-div > button:last-child:hover {
-  background-color: rgb(243, 183, 193);
-}
-
 .button-div > button:first-child:active {
   background-color: rgb(147, 147, 228);
-}
-
-.button-div > button:last-child:active {
-  background-color: rgb(233, 173, 183);
 }
 
 .modal-container {
@@ -156,6 +159,13 @@ li {
 
 .li-friends:hover {
   background-color: rgb(245, 245, 245);
+}
+
+.li-dark {
+  background-color: rgba(108, 108, 187, 0.4);
+}
+.li-dark:hover {
+  background-color: rgba(108, 108, 187, 0.4);
 }
 
 .li-friends > label {

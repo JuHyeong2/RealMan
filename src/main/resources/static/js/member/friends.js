@@ -465,7 +465,7 @@ function setupEventHandlers() {
           .then((data) => {
             if (data == 1) {
               alert("친구 요청이 완료되었습니다.");
-              location.reload();
+              thisRow.remove();
             }
           });
       }
