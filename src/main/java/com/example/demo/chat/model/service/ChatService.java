@@ -117,7 +117,7 @@ public class ChatService {
 		return mapper.selectChannel(channelNo);
 	}
 
-    public ArrayList<DM> DM(int memberNo) {
-		return mapper.DM(memberNo);
+    public ArrayList<DM> selectDm(int memberNo) {
+		return mapper.selectDm(memberNo);
     }
 }

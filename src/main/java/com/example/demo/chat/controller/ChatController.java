@@ -1,11 +1,7 @@
 package com.example.demo.chat.controller;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.example.demo.chat.model.vo.DM;
@@ -56,7 +52,7 @@ public class ChatController {
 	private Map<Integer, Set<String>> videoInChannel = new ConcurrentHashMap<>();
 	private int memberInchannelNo = 0; 
 
-	@GetMapping("main")
+	@GetMapping("/main")
 	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
 //		String ip = request.getHeader("X-Forwarded-For");
 //	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
@@ -78,17 +74,14 @@ public class ChatController {
 	    
 //		System.out.println(ip);
 		Member m = (Member) session.getAttribute("loginMember");
-		System.out.println(m.toString());
-//		Server server = new Server();
-//		server.setServerNo(server.getServerNo());
-//
-//		System.out.println(server.getServerNo());
 
 		ArrayList<Server> selectServerList = sService.selectServerList(m);
 		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);
 		}
-		
+
+
+
 //		model.addAttribute("ip", ip);
 //		model.addAttribute("server", server);
 		
@@ -322,18 +315,6 @@ public class ChatController {
 	}
 
 
-	@GetMapping("/dm")
-	public String dm (HttpSession session, Model model) {
-		Member loginMember = (Member)session.getAttribute("loginMember");
-		int memberNo = loginMember.getMemberNo();
 
-		ArrayList<DM> DM = cService.DM(memberNo);
-
-		model.addAttribute("member", loginMember);
-
-
-
-		return "/dm";
-	}
 
 }
