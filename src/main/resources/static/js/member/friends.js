@@ -3,7 +3,7 @@ fLi.innerHTML = `<div class="friend-row">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="">
-                  <img class="profile" />
+                  <img class="" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -35,7 +35,7 @@ wLi.innerHTML = `<div class="friend-row wlist">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" />
+                  <img class="" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -66,7 +66,7 @@ rLi.innerHTML = `<div class="friend-row rlist">
                 <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile"" />
+                  <img class=""" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -91,7 +91,7 @@ sLi.innerHTML = `<div class="friend-row slist">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" />
+                  <img class="" />
                 </div>
               </div>
               <div class="nickname-div">
