@@ -31,18 +31,18 @@ window.onload = () => {
           method: "put",
           body: formData,
         })
-		.then((response) => {
-		    if (!response.ok) {
-		      throw new Error("서버 오류 발생");
-		    }
-		    return response.text(); // JSON이 아닐 수도 있으므로 .text()로 받음
-		  })
-		  .then((text) => {
-		      if (!text) {
-		        throw new Error("서버 응답이 비어 있습니다.");
-		      }
-		      return JSON.parse(text); // JSON으로 변환
-		    })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("서버 오류 발생");
+            }
+            return response.text(); // JSON이 아닐 수도 있으므로 .text()로 받음
+          })
+          .then((text) => {
+            if (!text) {
+              throw new Error("서버 응답이 비어 있습니다.");
+            }
+            return JSON.parse(text); // JSON으로 변환
+          })
           .then((data) => {
             if (data == true) {
               alert("변경 완료");
@@ -176,7 +176,13 @@ window.onload = () => {
   //======================계정삭제======================
   // 계정 삭제하기
   document.querySelector("#deleteBtn").addEventListener("click", () => {
-    document.querySelector("#deleteModal").style.display = "flex";
+    const deleteModal = document.querySelector("#deleteModal");
+    deleteModal.style.display = "flex";
+    const deleteBtn2 = deleteModal.querySelector("#deleteBtn2");
+    deleteBtn2.addEventListener("click", function () {
+      const pwd = deleteModal.querySelector("input[name=password]").value;
+      editMemberInfo("member_status", "N", pwd);
+    });
   });
 
   // 계정 삭제하기 -> 취소

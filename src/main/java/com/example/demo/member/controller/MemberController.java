@@ -222,6 +222,9 @@ public class MemberController {
 				map.put("val", newPwd);
 				result = mService.editMemberInfo(map);
 				break;
+			case "member_status":
+				result = mService.editMemberInfo(map);
+				break;
 			}
 		}else {
 			throw new MemberException("비밀번호가 일치하지 않습니다.");
