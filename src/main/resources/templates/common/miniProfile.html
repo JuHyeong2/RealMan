@@ -14,10 +14,10 @@
         <span class="close" onclick="closeMiniProfileModal()">×</span>
         <div class="profile">
             <img id="miniProfileImage" src="" class="profile-avatar">
-            <h2 id="miniProfileNickname">
-                사용자 <span id="miniProfileStatus" class="offline"></span> <!-- ✅ 상태 아이콘 추가 -->
-            </h2>
-            <p id="miniProfileId">#0000</p>
+            <h2 id="miniProfileNickname" th:text="${member.memberNickname}">
+			    <span id="miniProfileStatus" class="status-indicator offline">●</span> <!-- ✅ 상태 아이콘 추가 -->
+			</h2>
+			<p id="miniProfileId" th:text="'#' + ${member.memberId}">#0000</p>p>
 
             <!-- ✅ 상태 변경 버튼 및 드롭다운 -->
             <div id="miniProfileActions">

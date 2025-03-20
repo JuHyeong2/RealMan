@@ -111,6 +111,25 @@
     z-index: 1000;
 }
 
+/* ✅ 상태 표시 아이콘 */
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 8px;
+}
+
+/* ✅ 온라인 상태 (초록불) */
+.online {
+    background-color: green;
+}
+
+/* ✅ 오프라인 상태 (회색불) */
+.offline {
+    background-color: gray;
+}
+
 #statusDropdown button {
     width: 100%;
     padding: 5px;

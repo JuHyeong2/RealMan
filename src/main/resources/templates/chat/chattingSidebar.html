@@ -40,15 +40,14 @@
 		</div>
 		
 		<div class="profile">
-            <img id="profileImg" th:src="${member.profileImage != null ? '/image/' + member.profileImage : '/image/default-profile.png'}" width="50px"
-                 onclick="openMiniProfile(this.src, '${member.memberNickname}', '#${member.memberId}', true)">
+            <img id="profileImg" th:src="${member.profileImage}" width="50px"
+    			 onclick="openMiniProfile(this.src, document.getElementById('profileName').textContent, '#${member.memberId}', true)">
             <b id="profileName" th:text="${member.memberNickname}"
                  onclick="openMiniProfile(document.getElementById('profileImg').src, '${member.memberNickname}', '#${member.memberId}', true)"></b>
             <img id="micImg" src="/image/preferences/mic.png" width="30px">
             <img src="/image/preferences/Headphones.png" width="30px">
             <img id="settingsBtn" src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
-        </div>
-    </div>
+	    </div>
 		
 	<div th:replace="~{/common/miniProfile :: body}"></div>
 	
@@ -199,9 +198,7 @@
             })
 		})
 		
-	</script>
 	
-	 <script>
         $(document).ready(function() {
             // ✅ 내 프로필 클릭 시 미니 프로필 모달 표시
             $("#profileImg, #profileName").on("click", function() {
@@ -212,6 +209,18 @@
                 openMiniProfile(imageSrc, nickname, userId, true);
             });
         });
+    
+        function ProfileModal() {
+            document.getElementById("profileModal").style.display = "block";
+        }
+
+        function closeProfileModal() {
+            document.getElementById("profileModal").style.display = "none";
+        }
+
+        function goToMyAccount() {
+            location.href = '/prefs/myProfile'; // ✅ 페이지 이동 경로 수정
+        }
     </script>
 
 </body>
