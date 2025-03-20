@@ -1,64 +1,76 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page</title>
 
-    <link rel="stylesheet" href="/css/member/signin.css" />
-  </head>
-  <body>
-    <!-- 상단바 -->
-    <header class="topbar">
-      <div th:insert="common/top.html"></div>
-      <a href="/member/signup" class="signup">Sign up</a>
-    </header>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
 
-    <div class="container">
-      <!-- 왼쪽 섹션 -->
-      <div class="left-section">
-        <div class="image-container">
-          <img src="/image/member/signin1.png" alt="Login Image" />
-        </div>
-      </div>
+<link rel="stylesheet" href="/css/member/signin.css">
+</head>
+<body>
 
-      <!-- 오른쪽 섹션 -->
-      <div class="right-section">
-        <form class="login-form" th:action="@{/member/signin}" method="post">
-          <input type="text" name="memberId" placeholder="Enter ID" required />
-          <input
-            type="password"
-            name="memberPwd"
-            placeholder="Password"
-            required
-          />
-          <input type="hidden" id="fingerprint" name="fingerprint" />
-          <div class="forgot-links">
-            <a href="/member/findMyId">Forgot ID?</a>
-            <a href="/member/findMyPwd">Forgot Password?</a>
-          </div>
-          <button type="submit" class="sign-in">Sign In</button>
+	<!-- 상단바 -->
+	<header class="topbar">
+		<div th:insert="common/top.html"></div>
+		<a href="/member/signup" class="signup">Sign up</a>
+	</header>
 
-          <!-- 로그인 실패 시 에러 메시지 표시 -->
-          <div th:if="${errorMessage}" class="error-message">
-            <p th:text="${errorMessage}" style="color: red"></p>
-          </div>
-        </form>
-      </div>
-    </div>
+	<div class="container">
+		<!-- 왼쪽 섹션 -->
+		<div class="left-section">
+			<div class="image-container">
+				<img src="/image/member/signin1.png" alt="Login Image">
+			</div>
+		</div>
 
-    <script>
-      async function getClientIPAddress() {
-        return new Promise((resolve, reject) => {
-          const connection = new RTCPeerConnection();
-          connection.createDataChannel("");
-          connection.onicecandidate = (event) => {
-            if (event.candidate) {
-              const ipMatch =
-                event.candidate.candidate.match(/\d+\.\d+\.\d+\.\d+/);
-              if (ipMatch) {
-                resolve(ipMatch[0]); // 내부 IP 주소 반환
-              }
+		<!-- 오른쪽 섹션 -->
+		<div class="right-section">
+			<form class="login-form" th:action="@{/member/signin}" method="post">
+				<input type="text" name="memberId" placeholder="Enter ID" required>
+				<input type="password" name="memberPwd" placeholder="Password"
+					required> <input type="hidden" id="fingerprint"
+					name="fingerprint">
+				<div class="forgot-links">
+					<a href="/member/findMyId">Forgot ID?</a> <a
+						href="/member/findMyPwd">Forgot Password?</a>
+				</div>
+				<button type="submit" class="sign-in">Sign In</button>
+
+				<!-- 로그인 실패 시 에러 메시지 표시 -->
+				<div th:if="${errorMessage}" class="error-message">
+					<p th:text="${errorMessage}" style="color: red;"></p>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script>
+
+        async function getClientIPAddress() {
+            return new Promise((resolve, reject) => {
+                const connection = new RTCPeerConnection({
+                	iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+                });
+                connection.createDataChannel("");
+                connection.onicecandidate = (event) => {
+                    if (event.candidate) {
+                    	console.log(event.candidate);
+                    	console.log(event.candidate.candidate);
+                    	 if (event.candidate.candidate.includes("srflx")) { // 공용 IP만 필터링
+                             const ipMatch = event.candidate.candidate.match(/\d+\.\d+\.\d+\.\d+/);
+                             console.log(ipMatch);
+                             if (ipMatch) {
+                                 resolve(ipMatch[0]);
+                             }
+                         }
+//                         const ipMatch = event.candidate.candidate.match(/\d+\.\d+\.\d+\.\d+/);
+                        console.log('ipMatch Check before!');
+//                         console.log(ipMatch);
+//                         if (ipMatch) {
+//                         	console.log('ipMatch Check After!');
+//                             resolve(ipMatch[0]); // 내부 IP 주소 반환
+//                         }
             }
           };
           connection

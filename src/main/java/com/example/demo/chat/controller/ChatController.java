@@ -26,6 +26,7 @@ import com.example.demo.chat.model.vo.ChannelMember;
 import com.example.demo.chat.model.vo.ChatMessage;
 import com.example.demo.member.model.service.MemberService;
 import com.example.demo.member.model.vo.Member;
+import com.example.demo.member.model.vo.ProfileImage;
 import com.example.demo.server.model.service.ServerService;
 import com.example.demo.server.model.vo.Server;
 import com.example.demo.serverMember.model.service.ServerMemberService;
@@ -132,9 +133,17 @@ public class ChatController {
 		model.addAttribute("chatList", chatList);
 
 		//서버멤버 가져오기
-//		ArrayList<Integer> memberNumberList = sService.selectMemberNumbers(serverNo);
-//		ArrayList<Member> memberList = mService.selectMembers(memberNumberList);
-//		model.addAttribute("memberList", memberList);
+		ArrayList<Integer> memberNumberList = sService.selectMemberNumbers(serverNo);
+		ArrayList<Member> memberList = mService.selectMembers(memberNumberList);
+		for(int i=0; i<memberList.size(); i++) {
+			ProfileImage img = mService.selectImage(memberList.get(i).getMemberNo());
+//			System.out.println(img);
+			if(img != null) {
+				memberList.get(i).setImageUrl(img.getImgRename());
+			}
+		}
+		model.addAttribute("memberList", memberList);
+
 		
 		
 		// 채널이 Voice인지 Chat인지 확인
