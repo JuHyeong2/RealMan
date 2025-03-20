@@ -15,4 +15,11 @@
 		where channel_no = #{channelNo} and channel_status='Y'
 	</select>
 
+    <select id="DM">
+        select *
+        from DM
+        join member using(member_no)
+        where member_no = #{memberNo}
+    </select>
+
 </mapper>
