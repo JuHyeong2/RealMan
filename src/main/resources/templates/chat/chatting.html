@@ -81,7 +81,7 @@
           <button id="button-send">입력</button>
         </div>
       </div>
-
+      <input type="hidden" id="serverNo" th:value="${serverNo}" />
       <!-- 유저 목록 -->
       <div
         th:replace="~{memberList :: div}"
@@ -94,7 +94,7 @@
       onload = () => {
         // let mytext = document.getElementById('mytextarea');
         /*<![CDATA[*/
-        const memberList = /*[[${ServerMember}]]*/ null;
+        const memberList = /*[[${memberList}]]*/ null;
         const username = /*[[${member.memberNickname}]]*/ null;
         const serverNo = /*[[${serverNo}]]*/ 0;
         const channelNo = /*[[${channelNo}]]*/ 0;
