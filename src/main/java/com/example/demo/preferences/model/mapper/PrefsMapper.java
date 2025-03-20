@@ -20,4 +20,6 @@ public interface PrefsMapper {
     int insertNotify(int memberNo);
 
     int insertTheme(int memberNo);
+
+    int updateMsg(Notification msg);
 }

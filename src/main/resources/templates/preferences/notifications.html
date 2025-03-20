@@ -61,12 +61,8 @@
 
 	// 페이지 로드 시 초기 설정
 	document.addEventListener("DOMContentLoaded", async function () {
-		try {
-			await loadNotifyPreferences();
-			await requestNotificationPermission();
-		} catch (error) {
-			console.error("초기 로드 중 오류 발생:", error);
-		}
+		await loadNotifyPreferences();
+		await requestNotificationPermission();
 
 		notificationButton.addEventListener("click", requestNotificationButton);
 		window.addEventListener("beforeunload", sendNotifyPreferences);

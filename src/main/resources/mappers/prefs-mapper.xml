@@ -56,5 +56,11 @@
         INSERT INTO THEME (MEMBER_NO) VALUES (#{memberNo})
     </insert>
 
-
+    <update id="updateMsg" parameterType="com.example.demo.preferences.model.vo.Notification">
+        UPDATE NOTIFICATION
+        SET
+            CHAT_TYPE = #{chatType},
+            TIME_TYPE = #{timeType}
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
 </mapper>

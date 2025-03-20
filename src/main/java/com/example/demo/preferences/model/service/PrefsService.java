@@ -63,5 +63,9 @@ public class PrefsService {
         int resultTheme = prefsMapper.insertTheme(memberNo);
         System.out.println(resultTheme+resultNotify==2?"설정기본값생성완료":"설정기본값생성실패");
     }
+
+    public int updateMsg(Notification msg) {
+        return prefsMapper.updateMsg(msg);
+    }
 }
 

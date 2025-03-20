@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.traversal.NodeIterator;
 
 @RequiredArgsConstructor
 @Controller
@@ -112,17 +113,33 @@ public class PrefsController {
         Member loginUser = (Member) session.getAttribute("loginMember");
         notify.setMemberNo(loginUser.getMemberNo());
         int resultUdtNotify = pService.updateNotify(notify);
-        System.out.println("비디오 업데이트 : " + (resultUdtNotify ==1?"성공":"실패"));
+        System.out.println("알림 업데이트 : " + (resultUdtNotify ==1?"성공":"실패"));
     }
 
     @GetMapping("/notifications/getPrefs")
     @ResponseBody
     public Notification getNotifyPrefs(HttpSession session){
         Member loginMember = (Member) session.getAttribute("loginMember");
-        System.out.println("로그인유저 : " + loginMember.getMemberId());
         Notification notify = pService.getNotifyPrefs(loginMember.getMemberNo());
-        System.out.println("알림설정가져온 데이터 : " + notify);
         return notify;
+    }
+    
+    @PostMapping("/messages")
+    @ResponseBody
+    public void updateMessage(@RequestBody Notification msg, HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginMember");
+        msg.setMemberNo(loginUser.getMemberNo());
+        int resultUdtMsg = pService.updateMsg(msg);
+        System.out.println("메세지타입 업데이트 : " + (resultUdtMsg ==1?"성공":"실패"));
+    }
+
+    @GetMapping("/messages/getPrefs")
+    @ResponseBody
+    public Notification getMsgPrefs(HttpSession session){
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        Notification msg = pService.getNotifyPrefs(loginMember.getMemberNo());
+
+        return msg;
     }
 
 }
