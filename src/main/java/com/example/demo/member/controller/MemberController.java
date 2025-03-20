@@ -242,7 +242,7 @@ public class MemberController {
 	// 프사 변경
 	@PutMapping("/profileImg")
 	@ResponseBody
-	public boolean changeProfileImg(@RequestParam("image") MultipartFile image, HttpSession session) {
+	public boolean changeProfileImg(@RequestParam("image") MultipartFile image, HttpSession session, Model model) {
 		System.out.println("profileImg 들어옴.");
 		Member loginMember = (Member)session.getAttribute("loginMember");
 		
@@ -252,11 +252,14 @@ public class MemberController {
 			String[] files = saveFiles(image);
 			if (files[1] != null) {
 	            ProfileImage profileImage = new ProfileImage();
-	            profileImage.setImgOriginalname(fileName);
+	            profileImage.setImgName(fileName);
 	            profileImage.setImgPath(files[1]);
 	            profileImage.setImgRename(files[0]);
 	            profileImage.setImgSeparator("M");
 	            profileImage.setMcdNo(loginMember.getMemberNo());
+	            
+	            loginMember.setImageUrl(profileImage.getImgRename());
+	            model.addAttribute("loginMember", loginMember);
 	            
 	            return mService.saveOrUpdateProfileImage(profileImage);
 	        }
@@ -367,8 +370,11 @@ public class MemberController {
 	     // 프로필 이미지도 세션에 저장하는게 좋을 듯
 		 ProfileImage userImage = mService.selectImage(loginMember.getMemberNo());
 		 if(userImage != null) {
-			 loginMember.setImageUrl(amazonS3.getUrl(bucket, userImage.getImgRename()).toString());
+			 loginMember.setImageUrl(userImage.getImgRename().toString());
 		 }
+		 
+		 System.out.println(amazonS3.getUrl(bucket, userImage.getImgRename()).toString());
+		 System.out.println(loginMember.getImageUrl());
 
 
 	     if (loginMember != null) {
