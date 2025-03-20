@@ -9,4 +9,6 @@ public interface PrefsMapper {
     int insertDevice(Device device);
 
     int updateAudio(Device device);
+
+    int updateVideo(Device device);
 }

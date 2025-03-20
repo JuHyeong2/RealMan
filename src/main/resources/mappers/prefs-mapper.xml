@@ -26,4 +26,12 @@
         WHERE MEMBER_NO = #{memberNo}
           AND DEVICE_ID = #{deviceId}
     </update>
+
+    <update id="updateVideo" parameterType="com.example.demo.preferences.model.vo.Device">
+        UPDATE DEVICES
+        SET
+            VIDEO = #{video}
+        WHERE MEMBER_NO = #{memberNo}
+          AND DEVICE_ID = #{deviceId}
+    </update>
 </mapper>

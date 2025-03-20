@@ -36,5 +36,16 @@ public class PrefsService {
         device.setDeviceId(fingerprint);
         return prefsMapper.checkDevice(device);
     }
+
+    public int updateVideo(Device device) {
+        return prefsMapper.updateVideo(device);
+    }
+
+    public Device getVideoPrefs(int memberNo, String fingerprint) {
+        Device device = new Device();
+        device.setMemberNo(memberNo);
+        device.setDeviceId(fingerprint);
+        return prefsMapper.checkDevice(device);
+    }
 }
 

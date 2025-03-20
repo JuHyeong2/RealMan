@@ -83,6 +83,32 @@ public class PrefsController {
         return audioPrefs;
     }
 
+    @PostMapping("/video")
+    @ResponseBody
+    public void updateVideo(@RequestBody Device device, HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginMember");
+        String fingerPrint = (String) session.getAttribute("fingerprint");
+        if(loginUser == null){
+            return;
+        }
+        device.setMemberNo(loginUser.getMemberNo());
+        device.setDeviceId(fingerPrint);
+        int resultUdtVideo = pService.updateVideo(device);
+        System.out.println("비디오 업데이트 : " + (resultUdtVideo==1?"성공":"실패"));
+    }
 
+    @GetMapping("/video/getPrefs")
+    @ResponseBody
+    public Device getVideoPrefs(HttpSession session) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        String fingerprint = (String) session.getAttribute("fingerprint");
+        if (loginMember == null) {
+            return null;
+        }
+        // 사용자 ID를 기반으로 오디오 설정 정보 조회
+        Device videoPrefs = pService.getVideoPrefs(loginMember.getMemberNo(), fingerprint);
+
+        return videoPrefs;
+    }
 
 }
