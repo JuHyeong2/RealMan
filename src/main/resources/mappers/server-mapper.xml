@@ -28,12 +28,26 @@
     	where server_no = #{serverNo}
     </select>
     
-    <!-- 초대 -->
+    <select id="selectInviteList">
+    	select
+    </select>
+    
+	<select id="checkIsAdmin">
+		select is_admin
+		from server_member
+		where server_no = #{serverNo} and member_no = #{memberNo}
+	</select>
+	
     <insert id="inviteMember">
     	insert into server_member
-    	values (#{memberNo}, #{serverNo), default)
+    	values (#{memberNo}, #{serverNo}, default)
     </insert>
     
+    <delete id="ejectMember">
+    	delete from server_member
+    	where member_no = #{memberNo}
+    		and server_no = #{serverNo}
+    </delete>
     
 
 </mapper>

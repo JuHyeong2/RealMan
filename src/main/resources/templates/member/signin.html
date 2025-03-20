@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,55 +71,55 @@
 //                         	console.log('ipMatch Check After!');
 //                             resolve(ipMatch[0]); // 내부 IP 주소 반환
 //                         }
-                    }
-                };
-                connection.createOffer()
-                    .then((offer) => connection.setLocalDescription(offer))
-                    .catch(reject);
-            });
-        }
-
-        function getGPUInfo() {
-            const canvas = document.createElement("canvas");
-            const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-            if (!gl) return "Unknown GPU";
-
-            const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
-            return debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "Unknown GPU";
-        }
-
-        async function getClientFingerprint() {
-            try {
-                const ip = await getClientIPAddress(); // 내부 IP 주소 가져오기
-                console.log(ip);
-                const gpu = getGPUInfo(); // GPU 모델 정보 가져오기
-                const cpuCores = navigator.hardwareConcurrency || "unknown"; // CPU 코어 개수
-                const memory = navigator.deviceMemory || "unknown"; // RAM 용량
-
-                // fingerprint 값을 고유하게 생성
-                const rawFingerprint = `${ip}-${gpu}-${cpuCores}-${memory}`;
-                const fingerprint = btoa(rawFingerprint); // Base64 인코딩
-
-                console.log("Fingerprint 생성됨:", fingerprint);
-                return fingerprint;
-            } catch (error) {
-                console.error("Fingerprint 생성 중 오류 발생:", error);
-                return "UNKNOWN_DEVICE";
             }
-        }
-
-        document.addEventListener("DOMContentLoaded", async function () {
-            const fingerprint = await getClientFingerprint();
-            console.log("Final Fingerprint:", fingerprint);
-
-            const fingerprintInput = document.getElementById("fingerprint");
-            if (fingerprintInput) {
-                fingerprintInput.value = fingerprint;
-            }
+          };
+          connection
+            .createOffer()
+            .then((offer) => connection.setLocalDescription(offer))
+            .catch(reject);
         });
+      }
 
+      function getGPUInfo() {
+        const canvas = document.createElement("canvas");
+        const gl =
+          canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        if (!gl) return "Unknown GPU";
 
+        const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+        return debugInfo
+          ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+          : "Unknown GPU";
+      }
+
+      async function getClientFingerprint() {
+        try {
+          const ip = await getClientIPAddress(); // 내부 IP 주소 가져오기
+          const gpu = getGPUInfo(); // GPU 모델 정보 가져오기
+          const cpuCores = navigator.hardwareConcurrency || "unknown"; // CPU 코어 개수
+          const memory = navigator.deviceMemory || "unknown"; // RAM 용량
+
+          // fingerprint 값을 고유하게 생성
+          const rawFingerprint = `${ip}-${gpu}-${cpuCores}-${memory}`;
+          const fingerprint = btoa(rawFingerprint); // Base64 인코딩
+
+          console.log("Fingerprint 생성됨:", fingerprint);
+          return fingerprint;
+        } catch (error) {
+          console.error("Fingerprint 생성 중 오류 발생:", error);
+          return "UNKNOWN_DEVICE";
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        const fingerprint = await getClientFingerprint();
+        console.log("Final Fingerprint:", fingerprint);
+
+        const fingerprintInput = document.getElementById("fingerprint");
+        if (fingerprintInput) {
+          fingerprintInput.value = fingerprint;
+        }
+      });
     </script>
-
-</body>
+  </body>
 </html>

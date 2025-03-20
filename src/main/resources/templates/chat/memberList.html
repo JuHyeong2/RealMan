@@ -11,13 +11,23 @@
           <li class="memberList-li" th:each="m : ${memberList}">
             <input type="hidden" th:value="${m.memberNo}" />
             <img th:src="${m.imageUrl != null ? m.imageUrl : '/image/member/no-profile.svg'}" width="30px" height="30px">
-            <label class="nickname">[[${m.memberNickname}]]</label>
+            <label
+              class="nickname"
+              th:style="${m.memberNo == session.loginMember.memberNo? 'color: rgb(140, 140, 220)':'color:inherit'}"
+            >
+              [[${m.memberNickname}]]
+            </label>
+            <button
+              class="eject-button"
+              th:if="${admin and m.isServerAdmin=='N'}"
+            >
+              <img src="/image/friend/deny.svg" />
+            </button>
           </li>
         </ul>
       </div>
-      <div class="button-div">
+      <div th:if="${admin}" class="button-div">
         <button class="invite-modal-button">초대</button>
-        <button class="eject-modal-button">추방</button>
       </div>
     </div>
 
@@ -31,8 +41,6 @@
           <ul class="ul-friends"></ul>
         </div>
       </div>
-      <!-- 추방 모달 -->
-      <div class="eject-modal"></div>
     </div>
   </body>
 </html>
