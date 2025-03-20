@@ -7,26 +7,7 @@
     overflow-y: auto;
 }
 
-.connect {
-    display: flex;
-    align-items: center;
-    background-color: #f2f6f9;
-    margin-top: auto;
-    margin-bottom: 3rem;
-}
 
-.connect b{
-    color: #2dc771;
-}
-
-.connect img{
-    margin-left: auto;
-    cursor: pointer;
-}
-
-.connect img:hover{
-    background-color: #dbe9f4;
-}
 
 .profile {
     display: flex;

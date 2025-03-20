@@ -15,7 +15,7 @@
 		where channel_no = #{channelNo} and channel_status='Y'
 	</select>
 
-    <select id="DM">
+    <select id="selectDm">
         select *
         from DM
         join member using(member_no)
