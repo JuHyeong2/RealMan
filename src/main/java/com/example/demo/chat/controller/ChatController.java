@@ -117,8 +117,20 @@ public class ChatController {
 //		System.out.println(channel.toString());
 		model.addAttribute("channel", channel);
 
-		ArrayList<ServerMember> ServerMember = smService.serverMemberList(serverNo);
-		model.addAttribute("ServerMember", ServerMember);
+		ArrayList<ServerMember> memberList = smService.serverMemberList(serverNo);
+		System.out.println("memberList : "+memberList);
+		model.addAttribute("memberList", memberList);
+		
+		//로그인멤버의 서버관리자 여부
+		for(ServerMember member : memberList) {
+			if(loginMember.getMemberNo() == member.getMemberNo()) {
+				if(member.getIsServerAdmin().equals("Y")) {
+					model.addAttribute("admin", true);
+				}else {
+					model.addAttribute("admin", false);
+				}
+			}
+		}
 
 		// 채널 message 가져오자
 //		Integer channelNum = (Integer)channelNo;
@@ -126,9 +138,9 @@ public class ChatController {
 		model.addAttribute("chatList", chatList);
 
 		//서버멤버 가져오기
-		ArrayList<Integer> memberNumberList = sService.selectMemberNumbers(serverNo);
-		ArrayList<Member> memberList = mService.selectMembers(memberNumberList);
-		model.addAttribute("memberList", memberList);
+//		ArrayList<Integer> memberNumberList = sService.selectMemberNumbers(serverNo);
+//		ArrayList<Member> memberList = mService.selectMembers(memberNumberList);
+//		model.addAttribute("memberList", memberList);
 		
 		
 		// 채널이 Voice인지 Chat인지 확인

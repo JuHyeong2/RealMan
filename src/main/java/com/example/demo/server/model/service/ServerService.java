@@ -46,4 +46,8 @@ public class ServerService {
 		return mapper.selectInviteList(memberNo);
 	}
 
+	public int ejectMember(HashMap<String, Integer> map) {
+		return mapper.ejectMember(map);
+	}
+
 }

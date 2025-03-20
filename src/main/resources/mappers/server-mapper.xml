@@ -40,9 +40,14 @@
 	
     <insert id="inviteMember">
     	insert into server_member
-    	values (#{memberNo}, #{serverNo), default)
+    	values (#{memberNo}, #{serverNo}, default)
     </insert>
     
+    <delete id="ejectMember">
+    	delete from server_member
+    	where member_no = #{memberNo}
+    		and server_no = #{serverNo}
+    </delete>
     
 
 </mapper>

@@ -25,4 +25,6 @@ public interface ServerMapper {
 
 	ArrayList<Member> selectInviteList(int memberNo);
 
+	int ejectMember(HashMap<String, Integer> map);
+
 }

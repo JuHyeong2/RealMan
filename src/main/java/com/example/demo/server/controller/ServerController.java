@@ -56,11 +56,13 @@ public class ServerController {
     		HttpSession session) {
     	Member loginMember = (Member) session.getAttribute("loginMember");
     	int result = 0;
-    	//is_admin 확인
+
+    	//서버 is_admin 확인
     	HashMap<String, Integer> map2 = new HashMap<String, Integer>();
     	map2.put("memberNo", loginMember.getMemberNo());
     	map2.put("serverNo", map.get("serverNo"));
     	String isAdmin = sService.checkIsAdmin(map2);
+    	
     	if(isAdmin.equals("Y")) {
     		result = sService.inviteMember(map);
     	}else {
@@ -73,12 +75,24 @@ public class ServerController {
     //회원 강퇴
     @DeleteMapping("/serverMember")
     @ResponseBody
-    public int ejectMember() {
-    	//필요한 정보들 :
-    	//1. 서버넘버
-    	//2. loginMember가 해당 서버의 is_admin인지
+    public int ejectMember(@RequestBody HashMap<String, Integer> map, 
+    		HttpSession session) {
+    	Member loginMember = (Member) session.getAttribute("loginMember");
+    	int result = 0;
     	
-    	return 0;
+    	//서버 is_admin 확인
+    	HashMap<String, Integer> map2 = new HashMap<String, Integer>();
+    	map2.put("memberNo", loginMember.getMemberNo());
+    	map2.put("serverNo", map.get("serverNo"));
+    	String isAdmin = sService.checkIsAdmin(map2);
+    	
+    	if(isAdmin.equals("Y")) {
+    		result = sService.ejectMember(map);
+    	}else {
+    		throw new RuntimeException("not admin");
+    	}
+    	
+    	return result;
     }
     
     

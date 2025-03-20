@@ -3,10 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.serverMember.model.mapper.ServerMemberMapper">
     <select id="serverMemberList">
-        select *
-        from server_member
-        join member using(member_no)
-        where server_no = #{serverNo}
+        select server_member.is_admin as is_server_admin,member.*
+		from server_member
+		join member on(server_member.member_no = member.member_no)
+		where server_no = #{serverNo}
     </select>
 
 </mapper>
