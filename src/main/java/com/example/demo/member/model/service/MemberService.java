@@ -10,8 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import com.example.demo.member.model.mapper.MemberMapper;
 import com.example.demo.member.model.vo.Member;
+import com.example.demo.member.model.vo.ProfileImage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -96,11 +98,6 @@ public class MemberService {
 	// 내가 받은 친구 요청 목록 가져오기(번호만)
 	public ArrayList<Integer> selectRequestReceived(int memberNo) {
 		return mapper.selectRequestReceived(memberNo);
-	}
-
-	// 친구 목록 조회
-	public ArrayList<Member> selectFriends(ArrayList<Integer> friendNumberList) {
-		return mapper.selectFriends(friendNumberList);
 	}
 
 	// 친구 삭제, 거절, 요청 취소
@@ -188,6 +185,26 @@ public class MemberService {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+
+	public boolean saveOrUpdateProfileImage(ProfileImage profileImage) {
+		ProfileImage existingImage = mapper.getProfileImage(profileImage.getMcdNo());
+        if (existingImage == null) {
+            return mapper.insertProfileImage(profileImage) > 0;
+        } else {
+        	profileImage.setImgNo(existingImage.getImgNo());
+            return mapper.updateProfileImage(profileImage) > 0;
+        }
+		
+	}
+
+	public ProfileImage selectImage(int memberNo) {
+		return mapper.selectImage(memberNo);
+	}
+
+	public ArrayList<Member> selectMembers(ArrayList<Integer> memberNumberList) {
+		return mapper.selectMembers(memberNumberList);
 	}
 
 }

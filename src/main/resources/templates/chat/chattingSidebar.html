@@ -7,6 +7,9 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="/css/common/miniProfile.css">
+    <script src="/js/common/miniProfile.js"></script>
 </head>
 <body>
 
@@ -37,22 +40,17 @@
 		</div>
 		
 		<div class="profile">
-		    <img id="profileImg" th:src="${member.profileImage != null ? '/image/' + member.profileImage : '/image/default-profile.png'}" width="50px">
-		    <b id="profileName" th:text="${member.memberNickname}"></b>
-		    <img id="micImg" src="/image/preferences/mic.png" width="30px">
-		    <img src="/image/preferences/Headphones.png" width="30px">
-		    <img id="settingsBtn" src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
-		</div>
-
-	<!-- 프로필 모달 -->
-	<div id="profileModal" class="modal">
-	    <div class="modal-content">
-	        <span class="close" onclick="closeProfileModal()">&times;</span>
-	        <h2>프로필 설정</h2>
-	        <button onclick="goToMyAccount()">내 정보 수정</button>
-	    </div>
-	</div>
-	
+            <img id="profileImg" th:src="${member.profileImage != null ? '/image/' + member.profileImage : '/image/default-profile.png'}" width="50px"
+                 onclick="openMiniProfile(this.src, '${member.memberNickname}', '#${member.memberId}', true)">
+            <b id="profileName" th:text="${member.memberNickname}"
+                 onclick="openMiniProfile(document.getElementById('profileImg').src, '${member.memberNickname}', '#${member.memberId}', true)"></b>
+            <img id="micImg" src="/image/preferences/mic.png" width="30px">
+            <img src="/image/preferences/Headphones.png" width="30px">
+            <img id="settingsBtn" src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
+        </div>
+    </div>
+		
+	<div th:replace="~{/common/miniProfile :: body}"></div>
 	
 	<script th:inline="javascript">
 		
@@ -202,7 +200,19 @@
 		})
 		
 	</script>
+	
+	 <script>
+        $(document).ready(function() {
+            // ✅ 내 프로필 클릭 시 미니 프로필 모달 표시
+            $("#profileImg, #profileName").on("click", function() {
+                const imageSrc = $("#profileImg").attr("src");
+                const nickname = $("#profileName").text();
+                const userId = "#[[${member.memberId}]]";
 
-    <script src="/js/common/miniProfile.js" defer></script>
+                openMiniProfile(imageSrc, nickname, userId, true);
+            });
+        });
+    </script>
+
 </body>
 </html>

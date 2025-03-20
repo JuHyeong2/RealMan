@@ -31,7 +31,18 @@ window.onload = () => {
           method: "put",
           body: formData,
         })
-          .then((response) => response.json())
+		.then((response) => {
+		    if (!response.ok) {
+		      throw new Error("서버 오류 발생");
+		    }
+		    return response.text(); // JSON이 아닐 수도 있으므로 .text()로 받음
+		  })
+		  .then((text) => {
+		      if (!text) {
+		        throw new Error("서버 응답이 비어 있습니다.");
+		      }
+		      return JSON.parse(text); // JSON으로 변환
+		    })
           .then((data) => {
             if (data == true) {
               alert("변경 완료");

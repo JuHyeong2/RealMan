@@ -1,42 +1,42 @@
 package com.example.demo.chat.controller;
 
 
-import com.example.demo.chat.model.service.ChatService;
-import com.example.demo.chat.model.vo.Channel;
-import com.example.demo.chat.model.vo.ChannelMember;
-import com.example.demo.chat.model.vo.ChatMessage;
-import com.example.demo.member.model.vo.Member;
-import com.example.demo.server.model.service.ServerService;
-import com.example.demo.server.model.vo.Server;
-
-import com.example.demo.serverMember.model.service.ServerMemberService;
-import com.example.demo.serverMember.model.vo.ServerMember;
-import jakarta.servlet.http.HttpServletRequest;
-
-
-
-import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-
-
-
-
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.example.demo.chat.model.service.ChatService;
+import com.example.demo.chat.model.vo.Channel;
+import com.example.demo.chat.model.vo.ChannelMember;
+import com.example.demo.chat.model.vo.ChatMessage;
+import com.example.demo.member.model.service.MemberService;
+import com.example.demo.member.model.vo.Member;
+import com.example.demo.server.model.service.ServerService;
+import com.example.demo.server.model.vo.Server;
+import com.example.demo.serverMember.model.service.ServerMemberService;
+import com.example.demo.serverMember.model.vo.ServerMember;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 
 @Controller
@@ -46,6 +46,7 @@ public class ChatController {
 	private final ChatService cService;
 	private final ServerService sService;
 	private final ServerMemberService smService;
+	private final MemberService mService;
 	
 
 	private final SimpMessagingTemplate messagingTemplate;
@@ -124,8 +125,13 @@ public class ChatController {
 		ArrayList<ChatMessage> chatList = cService.selectChatList(channelNo);
 		model.addAttribute("chatList", chatList);
 
+		//서버멤버 가져오기
+		ArrayList<Integer> memberNumberList = sService.selectMemberNumbers(serverNo);
+		ArrayList<Member> memberList = mService.selectMembers(memberNumberList);
+		model.addAttribute("memberList", memberList);
+		
+		
 		// 채널이 Voice인지 Chat인지 확인
-
 		Channel Channel = cService.selectChannel(channelNo);
 		System.out.println("V or C ? : " + Channel.getChannelSeparator());
 		

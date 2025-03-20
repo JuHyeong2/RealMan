@@ -1,6 +1,12 @@
 package com.example.demo.preferences.controller;
 
+import com.example.demo.member.model.vo.Member;
+import com.example.demo.preferences.model.service.PrefsService;
+import com.example.demo.preferences.model.vo.Device;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +17,8 @@ import java.util.*;
 @Controller
 @RequestMapping("/prefs")
 public class PrefsController {
+
+    private final PrefsService pService;
 
     @GetMapping({"", "/", "/ui-theme"})
     public String preferences() {
@@ -47,47 +55,34 @@ public class PrefsController {
         return "video";
     }
     
-    /*
-    // 카메라 장치 목록을 반환하는 API
+    @PostMapping("/audio")
     @ResponseBody
-    @GetMapping("/video/devices")
-    public List<Map<String, String>> getVideoDevices(HttpServletRequest request) {
-        List<Map<String, String>> devices = new ArrayList<>();
-        Map<String, String> device1 = new HashMap<>();
-        device1.put("id", "device1");
-        device1.put("label", "기본 카메라");
-
-        Map<String, String> device2 = new HashMap<>();
-        device2.put("id", "device2");
-        device2.put("label", "외부 웹캠");
-
-        devices.add(device1);
-        devices.add(device2);
-
-        return devices;
+    public void updateAudio(@RequestBody Device device, HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginMember");
+        String fingerPrint = (String) session.getAttribute("fingerprint");
+        if(loginUser == null){
+            return;
+        }
+        device.setMemberNo(loginUser.getMemberNo());
+        device.setDeviceId(fingerPrint);
+        int resultUdtAudio = pService.updateAudio(device);
+        System.out.println("오디오 업데이트 : " + (resultUdtAudio==1?"성공":"실패"));
     }
 
-    // 비디오 연결 테스트 API
+    @GetMapping("/audio/getPrefs")
     @ResponseBody
-    @PostMapping("/video/test")
-    public Map<String, String> testVideoConnection() {
-        Map<String, String> response = new HashMap<>();
-        response.put("status", "success");
-        response.put("message", "비디오 연결이 성공적으로 테스트되었습니다.");
-        return response;
+    public Device getAudioPrefs(HttpSession session) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        String fingerprint = (String) session.getAttribute("fingerprint");
+        if (loginMember == null) {
+            return null;
+        }
+        // 사용자 ID를 기반으로 오디오 설정 정보 조회
+        Device audioPrefs = pService.getAudioPrefs(loginMember.getMemberNo(), fingerprint);
+
+        return audioPrefs;
     }
-    */
-    
-    
-//    @ResponseBody
-//    @PostMapping("/video/test")
-//    public Map<String, String> testVideoConnection() {
-//        Map<String, String> response = new HashMap<>();
-//        response.put("status", "success");
-//        response.put("message", "비디오 연결이 성공적으로 테스트되었습니다.");
-//        return response;
-//    }
-    // 혹시 몰라서 주석처리하고 안지움
-    // 설정 에서는 장치 연결 테스트만 하고
-    // 설정에서 선택한 카메라를 화상통화에서 사용하려면 장치설정 내용 세션에 저장하는 코드 필요
+
+
+
 }

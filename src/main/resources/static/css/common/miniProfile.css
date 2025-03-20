@@ -1,63 +1,133 @@
-/* ✅ 모달 기본 스타일 */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 50%;
+#miniProfileModal {
+    position: absolute;
     top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    height: 300px;
+    background-color: #bdd3E2;
+    border-radius: 5px;
+    padding: 5px;
     text-align: center;
+    display: none; /* ✅ 기본적으로 숨김 */
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* ✅ 프로필 이미지 스타일 */
-.profile-img-container {
-    position: relative;
-    display: inline-block;
+#miniProfileModal.active {
+    display: flex !important;
 }
 
-.profile-img-container img {
-    border-radius: 50%;
+/* #miniProfileModal::before { */
+/*     display: none;  */
+/* } */
+
+
+
+#miniProfileImage {
     width: 80px;
     height: 80px;
-    border: 3px solid #ccc;
-}
-
-/* ✅ 상태 표시 아이콘 */
-#statusIndicator {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 15px;
-    height: 15px;
     border-radius: 50%;
-    border: 2px solid white;
+    margin-bottom: 10px;
+    border: 2px solid #ccc;
 }
 
-.status-online {
+#miniProfileNickname {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5px;
+}
+
+#miniProfileId {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+#miniProfileActions {
+    margin-left: 80px;
+    gap: 100px; 
+    margin-top: 10px;
+}
+
+#miniProfileActions button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+#miniStatusButton {
+    background: #9d9dee;
+    color: white;
+}
+
+#miniStatusButton:hover {
+    background: darkgreen;
+}
+
+#miniEditProfile {
+    background: #fdc1cb;
+    color: white;
+}
+
+#miniEditProfile:hover {
+    background: darkblue;
+}
+
+/* ✅ 상태 아이콘 스타일 (초록불 / 회색불) */
+#miniProfileStatus {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+/* ✅ 온라인 상태 (초록불) */
+.online {
     background-color: green;
 }
 
-.status-offline {
-    background-color: red;
+/* ✅ 오프라인 상태 (회색불) */
+.offline {
+    background-color: gray;
 }
 
-/* ✅ 프로필 편집 버튼 */
-.profile-edit-btn {
-    background-color: #5865F2;
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
+/* ✅ 상태 변경 드롭다운 */
+#statusDropdown {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    width: 120px;
+    z-index: 1000;
 }
 
-.profile-edit-btn:hover {
-    background-color: #4b5cd3;
+#statusDropdown button {
+    width: 100%;
+    padding: 5px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+#statusDropdown button:hover {
+    background: #f0f0f0;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: black;
 }

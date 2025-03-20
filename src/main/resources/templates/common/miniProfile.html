@@ -2,47 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Mini Profile</title>
-
-    <!-- ✅ 미니 프로필 CSS 파일 연결 -->
+    <title>미니 프로필</title>
+    <!-- CSS 경로 변경 -->
     <link rel="stylesheet" href="/css/common/miniProfile.css">
 </head>
 <body>
 
-    <!-- ✅ 프로필 모달 -->
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeProfileModal()">&times;</span>
+<!-- ✅ 미니 프로필 모달 -->
+<div id="miniProfileModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeMiniProfileModal()">×</span>
+        <div class="profile">
+            <img id="miniProfileImage" src="" class="profile-avatar">
+            <h2 id="miniProfileNickname">
+                사용자 <span id="miniProfileStatus" class="offline"></span> <!-- ✅ 상태 아이콘 추가 -->
+            </h2>
+            <p id="miniProfileId">#0000</p>
 
-            <!-- 프로필 헤더 (이미지 + 상태 추가) -->
-            <div class="profile-modal-header">
-                <div class="profile-img-container">
-                    <img id="modalProfileImg" src="/image/profile.png" width="80px">
-                    <span id="statusIndicator" class="status-online"></span> <!-- 상태 아이콘 -->
+            <!-- ✅ 상태 변경 버튼 및 드롭다운 -->
+            <div id="miniProfileActions">
+                <button id="miniStatusButton" onclick="toggleStatusDropdown()">온라인</button>
+                <div id="statusDropdown">
+                    <button onclick="updateStatus('online')">온라인</button>
+                    <button onclick="updateStatus('offline')">오프라인</button>
                 </div>
-            </div>
-
-            <!-- 닉네임 & 아이디 -->
-            <h2 th:text="${member.memberNickname}"></h2>
-            <p class="user-id" th:text="${member.memberId}"></p>
-
-            <!-- 프로필 편집 버튼 -->
-            <button class="profile-edit-btn" onclick="goToMyAccount()">프로필 편집</button>
-
-            <!-- 상태 변경 드롭다운 -->
-            <div class="status-dropdown">
-                <label for="statusSelect">상태 변경:</label>
-                <select id="statusSelect" onchange="changeStatus(this.value)">
-                    <option value="online">온라인</option>
-                    <option value="away">자리비움</option>
-                    <option value="offline">오프라인</option>
-                </select>
+                <button id="miniEditProfile" onclick="goToMyAccount()">프로필 편집</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- ✅ 미니 프로필 JS 파일 연결 -->
-    <script defer src="/js/common/miniProfile.js"></script>
+<!-- JavaScript 파일 경로 유지 -->
+<script src="/js/common/miniProfile.js"></script>
 
 </body>
 </html>

@@ -128,14 +128,6 @@ html, body {
 	background-color: #dbe9f4;
 }
 
-.profile {
-    display: flex;
-    align-items: center; 
-    gap: 5px;
-    position: absolute;
-    width: 350px;
-    bottom: 0px; 
-}
 
 .profile b{
 	font-size: 20px;

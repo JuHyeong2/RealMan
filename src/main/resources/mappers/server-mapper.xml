@@ -22,10 +22,18 @@
     	where server_no = #{serverNo} and channel_separator = 'T' and channel_status = 'Y'
     </select>
     
+    <select id="selectMemberNumbers">
+    	select member_no
+    	from server_member
+    	where server_no = #{serverNo}
+    </select>
+    
     <!-- 초대 -->
     <insert id="inviteMember">
     	insert into server_member
     	values (#{memberNo}, #{serverNo), default)
     </insert>
+    
+    
 
 </mapper>

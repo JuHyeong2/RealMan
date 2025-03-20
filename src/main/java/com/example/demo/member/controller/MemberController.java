@@ -1,8 +1,17 @@
 package com.example.demo.member.controller;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+
+import org.springframework.beans.factory.annotation.Value;
+
+import com.example.demo.preferences.model.service.PrefsService;
+import com.example.demo.preferences.model.vo.Device;
 
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,10 +30,16 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.SdkClientException;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.demo.common.util.EmailCertificationUtil;
 import com.example.demo.member.model.exception.MemberException;
 import com.example.demo.member.model.service.MemberService;
 import com.example.demo.member.model.vo.Member;
+
+import com.example.demo.member.model.vo.ProfileImage;
+
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -36,8 +51,14 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("loginMember")
 public class MemberController {
 	private final MemberService mService;
+	private final PrefsService pService;
 	private final BCryptPasswordEncoder bcrypt;
 	private final EmailCertificationUtil emailUtil;
+	private final AmazonS3Client amazonS3;
+	
+	// aws S3 버켓 이름
+	@Value("${cloud.aws.s3.bucket}")
+	private String bucket;
 
 	// 아이디찾기 페이지로
 	@GetMapping("/findMyId")
@@ -218,12 +239,51 @@ public class MemberController {
 	// 프사 변경
 	@PutMapping("/profileImg")
 	@ResponseBody
-	public boolean changeProfileImg(@RequestParam("image") MultipartFile image,
-			HttpSession session) {
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		boolean imageUploaded = mService.changeProfileImg(loginMember.getMemberNo(), image);
+	public boolean changeProfileImg(@RequestParam("image") MultipartFile image, HttpSession session) {
+		System.out.println("profileImg 들어옴.");
+		Member loginMember = (Member)session.getAttribute("loginMember");
 		
-		return imageUploaded;
+		if(image != null && !image.isEmpty()) {
+			String fileName = image.getOriginalFilename();
+			
+			String[] files = saveFiles(image);
+			if (files[1] != null) {
+	            ProfileImage profileImage = new ProfileImage();
+	            profileImage.setImgOriginalname(fileName);
+	            profileImage.setImgPath(files[1]);
+	            profileImage.setImgRename(files[0]);
+	            profileImage.setImgSeparator("M");
+	            profileImage.setMcdNo(loginMember.getMemberNo());
+	            
+	            return mService.saveOrUpdateProfileImage(profileImage);
+	        }
+		}
+		
+		return false;
+	}
+	
+	public String[] saveFiles(MultipartFile upload) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		int ranNum = (int)(Math.random()*100000);
+		String originFileName = upload.getOriginalFilename();
+		String renameFileName = sdf.format(new Date()) + ranNum + originFileName.substring(originFileName.lastIndexOf("."));
+		
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentLength(upload.getSize());
+		metadata.setContentType(upload.getContentType());
+		
+		try {
+			amazonS3.putObject(bucket, renameFileName, upload.getInputStream(), metadata);
+		} catch (SdkClientException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String[] returnArr = new String[2];
+		returnArr[0] = amazonS3.getUrl(bucket, renameFileName).toString();
+		returnArr[1] = renameFileName;
+		
+		return returnArr;
 	}
 	
 	@DeleteMapping("/profileImg")
@@ -301,9 +361,17 @@ public class MemberController {
 	                     Model model, HttpSession session) {
 	     Member loginMember = mService.login(memberId, memberPwd);
 
+	     // 프로필 이미지도 세션에 저장하는게 좋을 듯
+		 ProfileImage userImage = mService.selectImage(loginMember.getMemberNo());
+		 if(userImage != null) {
+			 loginMember.setImageUrl(amazonS3.getUrl(bucket, userImage.getImgRename()).toString());
+		 }
+
+
 	     if (loginMember != null) {
 	         session.setAttribute("loginMember", loginMember);
 			 session.setAttribute("fingerprint", fingerprint);
+			 pService.saveDevice(loginMember.getMemberNo(), fingerprint);
 	         return "redirect:/main";
 	     } else {
 	         model.addAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");

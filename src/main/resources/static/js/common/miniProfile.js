@@ -1,40 +1,34 @@
-document.addEventListener("DOMContentLoaded", function () {
-    let profileImg = document.querySelector("#profileImg");
-    let profileName = document.querySelector("#profileName");
-    let settingsBtn = document.querySelector("#settingsBtn");
-    let closeBtn = document.querySelector(".close");
-
-    // ✅ 프로필 이미지가 없을 경우 기본 이미지 설정
-    if (profileImg) {
-        let imgSrc = profileImg.getAttribute("src");
-        if (!imgSrc || imgSrc === "null" || imgSrc === "") {
-            profileImg.setAttribute("src", "/image/default-profile.png"); // 기본 이미지 경로
-        }
-        profileImg.addEventListener("click", openProfileModal);
+function openMiniProfile(image, nickname, userId, isMyProfile) {
+    const modal = document.getElementById("miniProfileModal"); // ✅ ID로 변경
+    if (!modal) {
+        console.error("❌ [Error] 미니 프로필 모달 요소가 존재하지 않음");
+        return;
     }
 
-    if (profileName) profileName.addEventListener("click", openProfileModal);
-    if (settingsBtn) settingsBtn.addEventListener("click", goToMyAccount);
-    if (closeBtn) closeBtn.addEventListener("click", closeProfileModal);
-});
+    const profileImage = document.getElementById("miniProfileImage");
+    const profileNickname = document.getElementById("miniProfileNickname");
+    const profileId = document.getElementById("miniProfileId");
+    const profileActions = document.getElementById("miniProfileActions");
 
-// ✅ 미니 프로필 모달 열기
-function openProfileModal() {
-    let modal = document.getElementById("profileModal");
-    if (modal) {
-        modal.style.display = "block";
+    if (!profileImage || !profileNickname || !profileId) {
+        console.error("❌ [Error] 미니 프로필 요소가 로드되지 않음");
+        return;
     }
+
+    profileImage.src = image;
+    profileNickname.textContent = nickname;
+    profileId.textContent = userId;
+
+    if (isMyProfile) {
+        profileActions.style.display = "flex";
+    } else {
+        profileActions.style.display = "none";
+    }
+
+    modal.classList.add("active"); // ✅ `display: flex;` 적용
 }
 
-// ✅ 미니 프로필 모달 닫기
-function closeProfileModal() {
-    let modal = document.getElementById("profileModal");
-    if (modal) {
-        modal.style.display = "none";
-    }
-}
-
-// ✅ 설정 페이지 이동
-function goToMyAccount() {
-    window.location.href = "/prefs/myProfile";
+// ✅ 모달 닫기 기능
+function closeMiniProfileModal() {
+    document.getElementById("miniProfileModal").classList.remove("active");
 }
