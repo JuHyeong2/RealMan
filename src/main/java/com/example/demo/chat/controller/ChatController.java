@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.example.demo.chat.model.vo.DM;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -318,6 +319,21 @@ public class ChatController {
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "메시지가 전송되었습니다!");
 		return response;
+	}
+
+
+	@GetMapping("/dm")
+	public String dm (HttpSession session, Model model) {
+		Member loginMember = (Member)session.getAttribute("loginMember");
+		int memberNo = loginMember.getMemberNo();
+
+		ArrayList<DM> DM = cService.DM(memberNo);
+
+		model.addAttribute("member", loginMember);
+
+
+
+		return "/dm";
 	}
 
 }

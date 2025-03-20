@@ -43,7 +43,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.4.1'
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' 
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {

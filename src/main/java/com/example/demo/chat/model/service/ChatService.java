@@ -1,8 +1,8 @@
 package com.example.demo.chat.model.service;
 
 import com.example.demo.chat.model.vo.Channel;
-import com.example.demo.chat.model.vo.Chat;
 import com.example.demo.chat.model.vo.ChatMessage;
+import com.example.demo.chat.model.vo.DM;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
@@ -19,9 +19,7 @@ import com.example.demo.chat.model.mapper.ChatMapper;
 
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,4 +116,8 @@ public class ChatService {
 		
 		return mapper.selectChannel(channelNo);
 	}
+
+    public ArrayList<DM> DM(int memberNo) {
+		return mapper.DM(memberNo);
+    }
 }
