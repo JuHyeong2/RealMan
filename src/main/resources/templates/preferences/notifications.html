@@ -23,7 +23,7 @@
 				<br/>
 				<span>끄기 / 켜기 </span>
 				<label class="switch">
-					<input type="checkbox" checked>
+					<input type="checkbox" id="pushNotify" value="on" checked>
 					<span class="slider"></span>
 				</label>
 
@@ -34,23 +34,137 @@
 				<h3 class="section-title">표시할 알람 범위</h3>
 				<br/>
 				<div class="radio-container">
-					<input type="radio" id="option1" name="alertRange" checked>
+					<input type="radio" id="option1" name="alertRange" value="ALL" checked>
 					<label for="option1" class="radio-label">모든 메시지</label>
 				</div>
 
 				<div class="radio-container">
-					<input type="radio" id="option2" name="alertRange">
+					<input type="radio" id="option2" name="alertRange" value="DM">
 					<label for="option2" class="radio-label">다이렉트 메시지만</label>
 				</div>
 
 				<div class="radio-container">
-					<input type="radio" id="option3" name="alertRange">
+					<input type="radio" id="option3" name="alertRange" value="OFF">
 					<label for="option3" class="radio-label">사용 안 함</label>
 				</div>
-
 
 			</div>
 		</div>
 	</div>
+	<button class="test">값확인</button>
+<script>
+	// 요소 선택
+	const notificationButton = document.querySelector(".notification-permission");
+	const switchBtn = document.getElementById("pushNotify");
+	const radioButtons = document.querySelectorAll('input[name="alertRange"]');
+	const testButton = document.querySelector(".test");
+
+	// 페이지 로드 시 초기 설정
+	document.addEventListener("DOMContentLoaded", async function () {
+		await loadNotifyPreferences();
+		await requestNotificationPermission();
+
+		notificationButton.addEventListener("click", requestNotificationButton);
+		window.addEventListener("beforeunload", sendNotifyPreferences);
+		testButton.addEventListener("click", testNotifyValues);
+	});
+
+	// 알림 권한 요청 함수
+	async function requestNotificationPermission() {
+		try {
+			const permission = await Notification.requestPermission();
+			if (permission === "granted") {
+				console.log("알림 권한이 허용되었습니다.");
+			} else {
+				console.warn("알림 권한이 허용되지 않았습니다.");
+			}
+		} catch (error) {
+			console.error("알림 권한 요청 실패:", error);
+		}
+	}
+
+	// 버튼 클릭 시 알림 권한 요청
+	async function requestNotificationButton() {
+		try {
+			const currentPermission = Notification.permission;
+			if (currentPermission === "granted") {
+				alert("이미 알림 권한이 허용되어 있습니다.");
+				return;
+			}
+			const permission = await Notification.requestPermission();
+
+			alert(permission === "granted"
+					? "알림 권한이 허용되었습니다."
+					: "알림 권한이 거부되었습니다.");
+		} catch (error) {
+			console.error("알림 권한 요청 실패:", error);
+		}
+	}
+
+	// 알림 설정 불러오기
+	async function loadNotifyPreferences() {
+		try {
+			const response = await fetch("/prefs/notifications/getPrefs");
+
+			if (!response.ok) {
+				throw new Error(`HTTP 오류 - 상태 코드: ${response.status}`);
+			}
+
+			const text = await response.text();
+			if (!text) {
+				console.warn("서버 응답이 비어 있습니다.");
+				return;
+			}
+
+			const data = JSON.parse(text);
+			console.log("서버에서 가져온 데이터:", data);
+
+			if (data.notifyStatus) {
+				switchBtn.checked = data.notifyStatus === 'Y';
+			}
+
+			if (data.notifyScope) {
+				radioButtons.forEach(radio => {
+					if (radio.value === data.notifyScope) {
+						radio.checked = true;
+					}
+				});
+			}
+		} catch (error) {
+			console.error("알림 설정 불러오기 오류:", error);
+		}
+	}
+
+	// 알림 설정 저장
+	function sendNotifyPreferences() {
+		try {
+			const notifyScope = document.querySelector('input[name="alertRange"]:checked').value;
+			const requestData = {
+				notifyStatus: switchBtn.checked ? 'Y' : 'N',
+				notifyScope: notifyScope,
+			};
+
+			console.log("전송할 데이터:", requestData);
+
+			const blob = new Blob([JSON.stringify(requestData)], { type: "application/json" });
+			const result = navigator.sendBeacon("/prefs/notifications", blob);
+
+			if (!result) {
+				console.error("sendBeacon 전송 실패");
+			} else {
+				console.log("sendBeacon 전송 성공");
+			}
+		} catch (error) {
+			console.error("알림 설정 저장 중 오류 발생:", error);
+		}
+	}
+
+	// 현재 알림 설정 값 확인 (테스트 버튼)
+	function testNotifyValues() {
+		console.log("푸시 알림 상태:", switchBtn.checked ? 'Y' : 'N');
+		console.log("선택된 알림 범위:", document.querySelector('input[name="alertRange"]:checked').value);
+	}
+
+</script>
 </body>
 </html>

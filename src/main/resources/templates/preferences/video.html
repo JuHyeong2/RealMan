@@ -39,148 +39,148 @@
 </div>
 
 <script>
-	document.addEventListener("DOMContentLoaded", function () {
-		const cameraSelect = document.getElementById("cameraSelect");
-		const connectButton = document.querySelector(".connect-button");
-		const testButton = document.querySelector(".test-button");
-		const videoElement = document.getElementById("videoElement");
-		const requestPermissionButton = document.querySelector(".request-permission");
-		let selectedDeviceId = null;
-		let stream = null;
-
-		// 1. 카메라 목록 가져오기
-		async function fetchCameraDevices() {
-			try {
-				const devices = await navigator.mediaDevices.enumerateDevices();
-				console.log("감지된 장치 목록:", devices);
-
-				const videoDevices = devices.filter(device => device.kind === "videoinput");
-				cameraSelect.innerHTML = "<option value=''>연결된 카메라 보기</option>";
-
-				videoDevices.forEach((device, index) => {
-					const option = document.createElement("option");
-					option.value = device.deviceId;
-					option.textContent = device.label || `Camera ${index + 1}`;
-					cameraSelect.appendChild(option);
-				});
-
-				if (videoDevices.length > 0) {
-					selectedDeviceId = videoDevices[0].deviceId;
-					cameraSelect.value = selectedDeviceId;
-					console.log("기본 카메라 자동 선택:", selectedDeviceId);
-				} else {
-					alert("사용 가능한 카메라가 없습니다.");
-				}
-
-			} catch (error) {
-				console.error(" 카메라 목록 불러오기 실패:", error);
-			}
-		}
-
-		// 2. 카메라 선택
-		cameraSelect.addEventListener("change", function () {
-			selectedDeviceId = this.value;
-			console.log("선택한 카메라:", selectedDeviceId);
-		});
-
-		// 3. "연결하기" 버튼 클릭  연결 성공 여부만 표시
-		connectButton.addEventListener("click", async function () {
-			if (!selectedDeviceId || selectedDeviceId === "") {
-				alert("카메라를 선택하세요.");
-				return;
-			}
-
-			try {
-				// 기존 스트림 중지 (중복 방지)
-				if (stream) {
-					stream.getTracks().forEach(track => track.stop());
-				}
-
-				console.log("카메라 연결 시도 중...");
-				stream = await navigator.mediaDevices.getUserMedia({
-					video: { deviceId: { exact: selectedDeviceId } }
-				});
-
-				console.log("카메라 스트림 가져오기 성공:", stream);
-				alert("카메라가 정상적으로 연결되었습니다."); // 연결 성공 메시지 출력
-
-			} catch (error) {
-				console.error("카메라 연결 실패:", error);
-				alert("카메라 연결에 실패했습니다. 권한을 확인하세요.");
-			}
-		});
-
-		// 4. "확인하기" 버튼 클릭 → 비디오 화면 출력
-		testButton.addEventListener("click", function () {
-			if (!stream) {
-				alert("비디오 연결이 되어 있지 않습니다. 카메라 연결을 먼저 해주세요.");
-				return;
-			}
-
-			videoElement.srcObject = stream;
-			videoElement.style.display = "block"; // 비디오 화면 표시
-			console.log("비디오 화면 출력 시작!");
-		});
-
-		// 5. 테스트 화면 끄기
-		const stopButton = document.querySelector(".stop-button");
-		stopButton.addEventListener("click", function () {
-			if (!stream) {
-				alert("현재 비디오가 실행 중이 아닙니다.");
-				return;
-			}
-
-			// 비디오 화면 숨기기
-			videoElement.style.display = "none";
-
-			// 스트림 중지
-			// stream.getTracks().forEach(track => track.stop());
-			// stream = null;
-
-		});
+	const cameraSelect = document.getElementById("cameraSelect");
+	const connectButton = document.querySelector(".connect-button");
+	const testButton = document.querySelector(".test-button");
+	const videoElement = document.getElementById("videoElement");
+	const requestPermissionButton = document.querySelector(".request-permission");
+	const stopButton = document.querySelector(".stop-button");
+	let selectedDeviceId = null;
+	let stream = null;
 
 
-		// 6. 브라우저에서 카메라 권한 요청
-		async function requestCameraPermission() {
-			try {
-				// 카메라 권한 상태 확인
-				const permissionStatus = await navigator.permissions.query({ name: "camera" });
-				if (permissionStatus.state === "granted") {
-					return; // 새로고침하지 않음
-				}
-				// 권한이 없거나 요청이 필요한 경우에만 실행
-				await navigator.mediaDevices.getUserMedia({ video: true });
-				console.log("카메라 권한 요청 성공");
-				location.reload(); // 권한을 새로 허용한 경우에만 새로고침
-			} catch (error) {
-				console.error("카메라 권한 요청 실패:", error);
-				alert("카메라 권한을 허용해주세요.");
-			}
-		}
+	document.addEventListener("DOMContentLoaded", async function () {
+		await fetchCameraDevices(); // 카메라 장치 목록 불러오기
+		await requestCameraPermission(); // 카메라 권한 요청
+		await loadVideoPreferences(); // DB에 저장된 선택한 설정 불러오기
 
-		// 수동 카메라 권한 요청 버튼 기능
-		requestPermissionButton.addEventListener("click", async function () {
-			try {
-				// 카메라 권한 상태 확인
-				const permissionStatus = await navigator.permissions.query({ name: "camera" });
-				if (permissionStatus.state === "granted") {
-					alert("카메라 권한이 이미 허용되어 있습니다.");
-					return; // 새로고침하지 않음
-				}
-				// 권한이 없거나 요청이 필요한 경우에만 실행
-				await navigator.mediaDevices.getUserMedia({ video: true });
-				alert("카메라 권한 요청 성공");
-				location.reload(); // 권한을 새로 허용한 경우에만 새로고침
-			} catch (error) {
-				console.error("카메라 권한 요청 실패:", error);
-				alert("카메라 권한을 허용해주세요.");
-			}
-		});
-
-		// 6. 초기 로드 시 카메라 장치 가져오기 & 권한 요청
-		fetchCameraDevices();
-		requestCameraPermission();
+		cameraSelect.addEventListener("change", handleCameraChange);
+		connectButton.addEventListener("click", connectCamera);
+		testButton.addEventListener("click", startVideoTest);
+		stopButton.addEventListener("click", stopVideoTest);
+		requestPermissionButton.addEventListener("click", requestCameraPermission);
+		window.addEventListener("beforeunload", sendVideoPreferences);
 	});
+
+
+
+	// 카메라 목록 불러오기
+	async function fetchCameraDevices() {
+		try {
+			const devices = await navigator.mediaDevices.enumerateDevices();
+			console.log("감지된 장치 목록:", devices);
+
+			const videoDevices = devices.filter(device => device.kind === "videoinput");
+			cameraSelect.innerHTML = "<option value=''>연결된 카메라 보기</option>";
+
+			videoDevices.forEach((device, index) => {
+				const option = document.createElement("option");
+				option.value = device.deviceId;
+				option.textContent = device.label || `Camera ${index + 1}`;
+				cameraSelect.appendChild(option);
+			});
+
+			if (videoDevices.length > 0) {
+				selectedDeviceId = videoDevices[0].deviceId;
+				cameraSelect.value = selectedDeviceId;
+				console.log("기본 카메라 자동 선택:", selectedDeviceId);
+			} else {
+				alert("사용 가능한 카메라가 없습니다.");
+			}
+		} catch (error) {
+			console.error("카메라 목록 불러오기 실패:", error);
+		}
+	}
+
+	// 카메라 선택 시 변경 처리
+	function handleCameraChange() {
+		selectedDeviceId = this.value;
+		console.log("선택한 카메라:", selectedDeviceId);
+	}
+
+	// 카메라 연결
+	async function connectCamera() {
+		if (!selectedDeviceId || selectedDeviceId === "") {
+			alert("카메라를 선택하세요.");
+			return;
+		}
+
+		try {
+			if (stream) {
+				stream.getTracks().forEach(track => track.stop());
+			}
+
+			console.log("카메라 연결 시도 중...");
+			stream = await navigator.mediaDevices.getUserMedia({
+				video: { deviceId: { exact: selectedDeviceId } }
+			});
+
+			console.log("카메라 스트림 가져오기 성공:", stream);
+			alert("카메라가 정상적으로 연결되었습니다.");
+		} catch (error) {
+			console.error("카메라 연결 실패:", error);
+			alert("카메라 연결에 실패했습니다. 권한을 확인하세요.");
+		}
+	}
+	// 비디오 설정 불러오기
+	function loadVideoPreferences(){
+		fetch("/prefs/video/getPrefs")
+				.then(response => response.json())
+				.then(data =>{
+					if(data){
+						cameraSelect.value = data.video || "";
+					}
+				})
+				.catch(error => console.error("비디오 설정 로드 오류:", error));
+	}
+	// 비디오 테스트 시작
+	function startVideoTest() {
+		if (!stream) {
+			alert("비디오 연결이 되어 있지 않습니다. 카메라 연결을 먼저 해주세요.");
+			return;
+		}
+
+		videoElement.srcObject = stream;
+		videoElement.style.display = "block";
+		console.log("비디오 화면 출력 시작!");
+	}
+
+	// 비디오 테스트 종료
+	function stopVideoTest() {
+		if (!stream) {
+			alert("현재 비디오가 실행 중이 아닙니다.");
+			return;
+		}
+
+		videoElement.style.display = "none";
+	}
+
+	// 카메라 권한 요청
+	async function requestCameraPermission() {
+		try {
+			const permissionStatus = await navigator.permissions.query({ name: "camera" });
+			if (permissionStatus.state === "granted") {
+				return;
+			}
+
+			await navigator.mediaDevices.getUserMedia({ video: true });
+			console.log("카메라 권한 요청 성공");
+			location.reload();
+		} catch (error) {
+			console.error("카메라 권한 요청 실패:", error);
+			alert("카메라 권한을 허용해주세요.");
+		}
+	}
+
+	//  비디오 설정 저장
+	function sendVideoPreferences() {
+		const requestData = {
+			video: cameraSelect.value
+		};
+		const blob = new Blob([JSON.stringify(requestData)], { type: "application/json" });
+		navigator.sendBeacon("/prefs/video", blob);
+	}
+
 </script>
 
 </body>

@@ -3,15 +3,12 @@ package com.example.demo.preferences.controller;
 import com.example.demo.member.model.vo.Member;
 import com.example.demo.preferences.model.service.PrefsService;
 import com.example.demo.preferences.model.vo.Device;
+import com.example.demo.preferences.model.vo.Notification;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.*;
+import org.w3c.dom.traversal.NodeIterator;
 
 @RequiredArgsConstructor
 @Controller
@@ -83,6 +80,66 @@ public class PrefsController {
         return audioPrefs;
     }
 
+    @PostMapping("/video")
+    @ResponseBody
+    public void updateVideo(@RequestBody Device device, HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginMember");
+        String fingerPrint = (String) session.getAttribute("fingerprint");
+        if(loginUser == null){
+            return;
+        }
+        device.setMemberNo(loginUser.getMemberNo());
+        device.setDeviceId(fingerPrint);
+        int resultUdtVideo = pService.updateVideo(device);
+        System.out.println("비디오 업데이트 : " + (resultUdtVideo==1?"성공":"실패"));
+    }
 
+    @GetMapping("/video/getPrefs")
+    @ResponseBody
+    public Device getVideoPrefs(HttpSession session) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        String fingerprint = (String) session.getAttribute("fingerprint");
+        if (loginMember == null) {
+            return null;
+        }
+        // 사용자 ID를 기반으로 오디오 설정 정보 조회
+        Device videoPrefs = pService.getVideoPrefs(loginMember.getMemberNo(), fingerprint);
+        return videoPrefs;
+    }
+
+    @PostMapping("/notifications")
+    @ResponseBody
+    public void updateNotify(@RequestBody Notification notify, HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginMember");
+        notify.setMemberNo(loginUser.getMemberNo());
+        int resultUdtNotify = pService.updateNotify(notify);
+        System.out.println("알림 업데이트 : " + (resultUdtNotify ==1?"성공":"실패"));
+    }
+
+    @GetMapping("/notifications/getPrefs")
+    @ResponseBody
+    public Notification getNotifyPrefs(HttpSession session){
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        Notification notify = pService.getNotifyPrefs(loginMember.getMemberNo());
+        return notify;
+    }
+    
+    @PostMapping("/messages")
+    @ResponseBody
+    public void updateMessage(@RequestBody Notification msg, HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginMember");
+        msg.setMemberNo(loginUser.getMemberNo());
+        int resultUdtMsg = pService.updateMsg(msg);
+        System.out.println("메세지타입 업데이트 : " + (resultUdtMsg ==1?"성공":"실패"));
+    }
+
+    @GetMapping("/messages/getPrefs")
+    @ResponseBody
+    public Notification getMsgPrefs(HttpSession session){
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        Notification msg = pService.getNotifyPrefs(loginMember.getMemberNo());
+
+        return msg;
+    }
 
 }

@@ -91,5 +91,6 @@ public interface MemberMapper {
 
 	ArrayList<Member> selectMembers(ArrayList<Integer> memberNumberList);
 
-    
+
+    int getMemberNo(String memberId);
 }
