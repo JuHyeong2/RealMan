@@ -64,7 +64,7 @@
 	width: 100%;
 }
 
-.chatContent-1 img {
+.chatContent-1 > img {
 	border-radius: 100px;
 }
 

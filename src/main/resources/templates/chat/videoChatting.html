@@ -120,6 +120,28 @@
 		    }
 		    
 		    await stompClient.send('/pub/call/key', {}, {});
+		    const connect = document.querySelectorAll('.connect')[0];
+			connect.innerHTML = `<b>음성 연결됨</b>
+	    		<img src="/image/member/closeVoice.png" width="30px">`;
+	    		
+		    // 음성연결 끊기 버튼 클릭 시 가장 상단 채팅채널로 이동
+		    document.querySelectorAll('.connect')[0].querySelector('img').addEventListener('click', ()=>{
+		    	console.log('나가기 버튼 클릭!');
+		    	console.log(document.querySelectorAll('.profile')[0].querySelector('b').innerText);
+		    	const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
+		    	leaveVoiceChannel(myNickname);
+		    	$.ajax({
+		            	url: "/chat/selectSmallestChatNo",
+		            	method: 'post',
+		            	data: {serverNo:serverNo},
+		            	success: data=>{
+		            		console.log(data);
+		            		if(data != 0){
+		            			location.href='/chat/main/' + serverNo + "/" + data;
+		            		}
+		            	}
+		            })
+		    })
 		    console.log('들어왔당.');
 		    setTimeout(() =>{
 		    
