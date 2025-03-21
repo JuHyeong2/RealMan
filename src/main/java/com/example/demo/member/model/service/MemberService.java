@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -206,5 +207,7 @@ public class MemberService {
 	public ArrayList<Member> selectMembers(ArrayList<Integer> memberNumberList) {
 		return mapper.selectMembers(memberNumberList);
 	}
-
+	public int getMemberNo(String memberId) {
+		return mapper.getMemberNo(memberId);
+	}
 }
