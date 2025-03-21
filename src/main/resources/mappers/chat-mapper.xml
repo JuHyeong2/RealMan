@@ -25,7 +25,7 @@
     <select id="selectDmList">
         select *
         from DM
-
+        where member_no = #{memberNo}
 
     </select>
 

@@ -54,8 +54,11 @@ public class HomeController {
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(m);
 		ArrayList<DM> d = cService.selectDmList(m.getMemberNo());
 
+		for(DM a : d){
+			System.out.println("ㅋㅋㅋㅋㅋㅋㅋㅋㅋ" + a.toString());
+		}
 
-		model.addAttribute("member", m)
+		model.addAttribute("loginMember", m)
 				.addAttribute("DM",d)
 		.addAttribute("friendNumberList", friendNumberList);
 
@@ -80,11 +83,10 @@ public class HomeController {
 	public String dm(@PathVariable int dmNo, Model model, HttpSession session) {
 		Member m = (Member) session.getAttribute("loginMember");
 
-		ArrayList<DM> selectDm = cService.selectDm(m.getMemberNo());
+		System.out.println(m);
 		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
-
+		System.out.println(friendList);
 		model.addAttribute("dmNo", dmNo)
-				.addAttribute("selectDm", selectDm)
 				.addAttribute("loginMember", m)
 				.addAttribute("friendList", friendList);
 

@@ -13,15 +13,16 @@
     <button class="createDM" onclick="sendDM()">+</button>
     <div id="dmWrapper"></div>
 
-</div>
+
     <table class="dmTable">
         <tbody id="dmList" th:each="d:${DM}">
-        <img>
-        <b th:text="${d.otherMemberNickname}"></b>
+
+            <p th:text="${d.otherMemberNo}"></p>
+
         </tbody>
     </table>
 
-
+</div>
 
 <script th:inline="javascript">
     // const memberList = /*[[${memberList}]]*/ null;
