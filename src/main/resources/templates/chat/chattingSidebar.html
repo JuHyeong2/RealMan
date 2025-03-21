@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <title>chattingSidebar</title>
     <link rel="stylesheet" href="/css/chat/chattingSidebar.css"/>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="/css/common/miniProfile.css">
+    <script src="/js/common/miniProfile.js"></script>
 </head>
 <body>
 
@@ -33,16 +37,11 @@
 			</div>
 
     	</nav>
-    	
-    	<div class="connect">
-    		<b>음성 연결됨</b>
-    		<img src="/image/member/closeVoice.png" width="30px">
-    	</div>
 
 
     	<div class="profile">
-    		<img th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}" width="50px" height="50px" onclick="ProfileModal()">
-    		<b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b>
+    		<img id="profileImg" th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}" width="50px" height="50px">
+			<b id="profileName" th:text="${member.memberNickname}"></b>
     		<img id="micImg" src="/image/preferences/mic.png" width="30px">
     		<img src="/image/preferences/Headphones.png" width="30px">
     		<img src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
@@ -58,8 +57,8 @@
 	        <h2>프로필 설정</h2>
 	        <button onclick="goToMyAccount()">내 정보 수정</button>
 	    </div>
-	</div>
-	
+		
+	<div th:replace="~{/common/miniProfile :: body}"></div>
 	
 	<script th:inline="javascript">
 		
@@ -235,13 +234,9 @@
             })
 		})
 		
-		// 프로필 사진, 닉네임, 톱니바퀴 클릭시 내계정 페이지로 이동
-// 		const goToMyAccount=()=>{
-// 			location.href = '/prefs/myProfile';
-// 		}
-	</script>
-	
+
 <!-- 	<script src="/js/chat/chattingSidebar.js"></script> -->
+
 
 </body>
 </html>
