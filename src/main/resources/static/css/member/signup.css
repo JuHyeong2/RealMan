@@ -1,6 +1,7 @@
 /* 🏠 기본 스타일 설정 */
 .body {
-    font-family: Arial, sans-serif; 
+	all: unset;
+    font-family: Arial, sans-serif !important; 
     background-color: #f8f9fa; 
     margin: 0;
     padding: 0;
@@ -25,12 +26,14 @@
 
 /* 🎨 배경 모양 스타일 */
 .background-shape {
-    width: 90%;
-    height: 80%;
-    position: absolute;
-    top: -40%;
-    left: -10%;
-    z-index: 1; 
+	all: unset;
+  	width: 70% !important;
+    height: 60% !important;
+    position: absolute !important;
+    top: -20% !important;
+    left: 0% !important;
+    z-index: 1 !important;
+
 }
 
 /* 👤 캐릭터 이미지 스타일 */
@@ -47,7 +50,7 @@
     font-size: 14px;
     position: absolute;
     text-align: center;
-    margin-top: -135px;
+    margin-top: -100px;
     margin-left: 100px;
     color: #969494 ;
     font-weight: lighter;
@@ -136,19 +139,20 @@
 
 /* 🔘 회원가입 버튼 스타일 */
 .btn {
+	all: unset;
     width: 100%;
     padding: 10px;
-    background-color: #c1c2e9;
-    color: #fefefe;
-    border: none;
+    background-color: #c1c2e9 !important;
+    color: #fefefe !important;
+    border: none !important;
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 5px !important;
     cursor: pointer;
 }
 
 /* 🖱️ 버튼 호버 효과 */
 .btn:hover {
-    background-color: #a3a4e0;
+    background-color: #a3a4e0 !important;
 }
 
 /* ✅ 성별 체크박스 스타일 */

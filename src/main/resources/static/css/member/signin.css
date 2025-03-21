@@ -1,5 +1,5 @@
 /* ========================= 기본 설정 ========================= */
-body {
+.body {
   position: relative;
   display: flex;
   justify-content: center;
@@ -12,6 +12,7 @@ body {
 
 /* ========================= 상단바 ========================= */
 .topbar {
+	
   padding: 10px 20px;
   position: absolute;
   top: 0;
@@ -30,8 +31,8 @@ body {
   text-decoration: none;
   font-weight: normal;
   position: absolute;
-  top: 65px;
-  right: 80px;
+  top: 55px;
+  right: 20px;
   transform: translateY(-50%);
 }
 

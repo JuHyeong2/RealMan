@@ -54,7 +54,7 @@
   </head>
   <body>
     <!-- 탑바 -->
-    <div th:replace="~{/common/top :: html}"></div>
+    <div th:replace="~{/common/top :: body}"></div>
     <!-- 메인 컨테이너-->
     <div class="main-container d-flex">
       <!-- 왼쪽 사이드바 -->
@@ -101,6 +101,7 @@
         /*<![CDATA[*/
         const memberList = /*[[${memberList}]]*/ null;
         const username = /*[[${member.memberNickname}]]*/ null;
+        const userProfileImage = /*[[${member.imageUrl}]]*/ null;
         const serverNo = /*[[${serverNo}]]*/ 0;
         const channelNo = /*[[${channelNo}]]*/ 0;
         /*]]>*/
@@ -141,16 +142,17 @@
             let HMS = hour + ":" + minute + ":" + second;
             // 					<div style='margin:0;  padding: 0; flex-grow: 1;'>${chatMessage.message}</div>
             console.log(chatMessage);
-            let str = `<div class='textArea'>
-      								  <b>${chatMessage.sender}</b>
-      								  <div style='display:flex; justify-content:space-between; align-items:center;'>
-      								  	${chatMessage.message}
-      								  	<p>${HMS}</p>
+            let str = `<div class='chatContent-1'>
+            						  <img src=${userProfileImage != null ? userProfileImage : '/image/member/noprofile.svg'} width="40px" height="40px">
+            						  <div class='chatContent-2'>
+	      								  <b>${chatMessage.sender}</b>
+	      								  <div style='display:flex; justify-content:space-between; align-items:center;'>
+	      								  	${chatMessage.message}
+	      								  	<p>${HMS}</p>
+	      								  </div>
       								  </div>
-                 						</div>`;
-            document
-              .querySelector(".chatContent")
-              .insertAdjacentHTML("afterbegin", str);
+                 		</div>`;
+            document.querySelector(".chatContent").insertAdjacentHTML("afterbegin", str);
 
             // 스크롤 이동
             document.querySelector(".chatContent").scrollTop =

@@ -16,7 +16,7 @@
 	    <div class="right-container">
 	        <th:block th:if="${session.loginMember != null}">
 	            <div class="welcome-container">
-	                <span class="welcome-text" th:text="${session.loginMember.memberNickname} + '님, 환영합니다!'"></span>
+	                <span class="welcome-text" th:text="${session.loginMember.memberNickname} + '님, 환영합니다!'" onclick="goToMain()" style="cursor: pointer;"></span>
 	                <button id="logoutbtn" class="topbtn">Logout</button>
 	            </div>
 	        </th:block>
@@ -57,6 +57,12 @@
 			<b>RealMan</b>으로 연결된 세상을 만나보세요! <b>상남자들만의 선택, RealMan!</b>
 		</p>
 	</div>
+	
+	<script>
+	    function goToMain() {
+	        window.location.href = "/main";
+	    }
+	</script>
 
 	<script>
 		document.getElementById("logoutbtn").addEventListener("click", function() {
