@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     
     <link rel="stylesheet" href="/css/common/miniProfile.css">
-    <script src="/js/common/miniProfile.js"></script>
+   
 </head>
 <body>
 
@@ -37,27 +37,33 @@
 
     	<div class="profile">
     		<img id="profileImg" th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}" width="50px" height="50px">
-			<b id="profileName" th:text="${member.memberNickname}"></b>
+			<b id="profileName" th:text="${member.memberNickname}" th:attr="data-user-id=${member.memberId}"></b>
     		<img id="micImg" src="/image/preferences/mic.png" width="30px">
     		<img src="/image/preferences/Headphones.png" width="30px">
     		<img src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
     	</div>
 	</div>
-
-
-
-	<!-- 프로필 모달 -->
-	<div id="profileModal" class="modal">
-	    <div class="modal-content">
-	        <span class="close" onclick="closeProfileModal()">&times;</span>
-	        <h2>프로필 설정</h2>
-	        <button onclick="goToMyAccount()">내 정보 수정</button>
-	    </div>
-		
-	<div th:replace="~{/common/miniProfile :: body}"></div>
 	
-	<script th:inline="javascript">
+	
+	<script th:inline="javascript"></script>
+
+    <script src="/js/common/miniProfile.js"></script>
+    
+    <div id="miniProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMiniProfileModal()">&times;</span>
+            <div class="profile">
+                <img id="miniProfileImage" src="" class="profile-avatar">
+                <h2 id="miniProfileNickname">
+                    <span id="miniProfileStatus" class="status-indicator offline">●</span>
+                </h2>
+                <p id="miniProfileId">#0000</p>
+                <button id="miniEditProfile" onclick="goToMyAccount()">프로필 편집</button>
+            </div>
+        </div>
+    </div>
 		
+		<script>
 		/*<![CDATA[*/
 		const username = /*[[${member.memberNickname}]]*/null;
 		const userid = /*[[${member.memberId}]]*/null;
@@ -206,15 +212,31 @@
 		
 	
         $(document).ready(function() {
+		    console.log("✅ miniProfile.js 로드됨"); // JS 파일이 실행되는지 먼저 확인
+		
+		    const profileImg = $("#profileImg");
+		    const profileName = $("#profileName");
+		
+		    console.log("✅ 프로필 이미지 요소:", profileImg.length);
+		    console.log("✅ 프로필 닉네임 요소:", profileName.length);
+		
+		    // ✅ 이벤트 추가
 		    $("#profileImg, #profileName").on("click", function() {
-		        const imageSrc = $("#profileImg").attr("src");
-		        const nickname = $("#profileName").text();
+		        console.log("✅ 프로필 이미지 또는 닉네임 클릭됨");
+		
+		        const imageSrc = $("#profileImg").attr("src") || "/images/default-avatar.png";
+		        const nickname = $("#profileName").text() || "사용자";
 		        const userId = /*[[${member.memberId}]]*/ 'unknown';
 		
 		        openMiniProfile(imageSrc, nickname, userId, true);
 		    });
 		});
+		
+		function goToMyAccount() {
+		    location.href = '/prefs/myProfile';
+		}
     </script>
+    
 
 </body>
 </html>
