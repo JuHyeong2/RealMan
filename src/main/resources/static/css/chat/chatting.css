@@ -60,6 +60,20 @@
 	
 }
 
+.chatContent-1 {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.chatContent-2 p{
+	margin-bottom: 0;
+}
+
+.chatContent-2 {
+	align-items: center;
+	align-content: center;
+}
+
 #remoteStreamDiv {
 	width: 100%;
 	height: 100%;
