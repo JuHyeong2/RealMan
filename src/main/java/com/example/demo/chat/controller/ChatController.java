@@ -1,6 +1,7 @@
 package com.example.demo.chat.controller;
 
 
+import java.io.Console;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -196,7 +197,8 @@ public class ChatController {
 	@MessageMapping("/chat/joinVoice")
 	@SendTo("/sub/voice")
 	public Map<Integer, Set<String>> joinVoiceChannel (@Payload ChannelMember cMember){
-		//System.out.println("joinVoice 들어옴.");
+		System.out.println("joinVoice 들어옴.");
+		System.out.println(cMember.toString());
 		memberInchannelNo = cMember.getClickServerNo();
 		for(int key : userInChannel.keySet()) {
 			if(userInChannel.get(key).contains(cMember.getUsername())) {

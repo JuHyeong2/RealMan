@@ -29,7 +29,11 @@
 	
 	    	<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
 		    <div class="textChat">
-				<li th:each="c : ${channel}" th:if="${c.channelSeparator == 'T'}" onclick="goToChat(event);"><a th:href="@{'/chat/main/'+${serverNo}+'/'+${c.channelNo}}"><img src="/image/chat.png">&nbsp[[${c.channelName}]]</a></li>
+				<li th:each="c : ${channel}" th:if="${c.channelSeparator == 'T'}" onclick="goToChat(event);">
+					<a th:href="@{'/chat/main/'+${serverNo}+'/'+${c.channelNo}}">
+						<img src="/image/chat.png">&nbsp[[${c.channelName}]]
+					</a>
+				</li>
 			</div>
 
     	</nav>
@@ -69,6 +73,7 @@
 			fetch("/chat/api/voiceUsers")
 			.then(response=>response.json())
 			.then(data => {
+				joinVoiceChannel(username, channelNo);
 				updateUserList(data);
 			})
 		})
@@ -88,7 +93,11 @@
 
 			// 보이스 채널 사용자 목록 구독
 			channelStompClient.subscribe("/sub/voice", (message)=>{
+				console.log("message.body 는");
+				console.log(message.body);
 				updateUserList(JSON.parse(message.body));
+				console.log("message.body 는");
+				console.log(message.body);
 			});
 		});
 
@@ -130,14 +139,34 @@
 				}
 			}
 		}
-
+		
+		voiceChannels = document.querySelectorAll('.voiceChat');
+		for(voiceChannel of voiceChannels){
+			voiceChannel.addEventListener('click', (e)=>{
+				console.log("voice채널 클릭!");
+				clickChannel = e.currentTarget;
+				clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
+	//				console.log(typeof clickServerNo);
+				joinVoiceChannel(myNickname, clickServerNo);
+	//				location.href = '/chat/voiceChat/2';
+			})
+		}
+		
 		document.querySelectorAll('.channel')[0].addEventListener('click', ()=>{
-			voiceChannels = document.querySelectorAll('.voiceChat');
+// 			const chatRoom = voiceChannel.querySelector('li');
+//				console.log(chatRoom);
+// 			if(chatRoom.style.display == 'none'){
+// 				chatRoom.style.display = 'block';
+// //					people.style.display = 'block';	
+// 			}else{
+// 				chatRoom.style.display = 'none';
+// //					people.style.display = 'none';
+// 			}	
 			for(voiceChannel of voiceChannels){
 // 				console.log(voiceChannel);
 				const chatRoom = voiceChannel.querySelector('li');
 // 				console.log(chatRoom);
-				if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
+				if(chatRoom.style.display == 'none'){
 					chatRoom.style.display = 'block';
 // 					people.style.display = 'block';	
 				}else{
@@ -145,13 +174,14 @@
 // 					people.style.display = 'none';
 				}	
 
-				voiceChannel.addEventListener('click', (e)=>{
-					clickChannel = e.currentTarget;
-					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
-// 					console.log(typeof clickServerNo);
-					joinVoiceChannel(myNickname, clickServerNo);
-// 					location.href = '/chat/voiceChat/2';
-				})
+// 				voiceChannel.addEventListener('click', (e)=>{
+// 					console.log("voice채널 클릭!");
+// 					clickChannel = e.currentTarget;
+// 					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
+// // 					console.log(typeof clickServerNo);
+// 					joinVoiceChannel(myNickname, clickServerNo);
+// // 					location.href = '/chat/voiceChat/2';
+// 				})
 			}
 		})
 		
@@ -170,15 +200,15 @@
 		// 채팅 채팅방 드롭다운
 		document.querySelectorAll('.channel')[1].addEventListener('click', ()=>{
 			const chatRooms = document.querySelectorAll('.textChat')[0].querySelectorAll('li');
-			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
+// 			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
 			
 			for(const chatRoom of chatRooms){
 				if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
 					chatRoom.style.display = 'block';
-					people.style.display = 'block';	
+// 					people.style.display = 'block';	
 				}else{
 					chatRoom.style.display = 'none';
-					people.style.display = 'none';
+// 					people.style.display = 'none';
 				}
 			}
 		})
@@ -204,17 +234,9 @@
             })
 		})
 		
-	
-        $(document).ready(function() {
-		    $("#profileImg, #profileName").on("click", function() {
-		        const imageSrc = $("#profileImg").attr("src");
-		        const nickname = $("#profileName").text();
-		        const userId = /*[[${member.memberId}]]*/ 'unknown';
-		
-		        openMiniProfile(imageSrc, nickname, userId, true);
-		    });
-		});
-    </script>
+
+<!-- 	<script src="/js/chat/chattingSidebar.js"></script> -->
+
 
 </body>
 </html>

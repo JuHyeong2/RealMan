@@ -212,7 +212,6 @@ public class MemberService {
 	}
 
 	public Member selectMemberNo(String sender) {
-		// TODO Auto-generated method stub
 		return mapper.selectMemberNo(sender);
 	}
 }
