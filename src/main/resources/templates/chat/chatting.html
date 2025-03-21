@@ -71,13 +71,17 @@
           <input type="hidden" th:value="${no}" />
           <div class="chatContent">
             <div class="textArea" th:each="c, cStat:${chatList}">
-            	<div class="chatContent-1">
-            		<img th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}" width="40px" height="40px">
-            		<div class='chatContent-2'>
-		            	<b th:utext="${c.sender}"></b>
-		            	<p th:utext="${c.message}" style="margin: 0"></p>
-	            	</div>
-            	</div>
+              <div class="chatContent-1">
+                <img
+                  th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
+                  width="40px"
+                  height="40px"
+                />
+                <div class="chatContent-2">
+                  <b th:utext="${c.sender}"></b>
+                  <p th:utext="${c.message}" style="margin: 0"></p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -87,6 +91,7 @@
         </div>
       </div>
       <input type="hidden" id="serverNo" th:value="${serverNo}" />
+
       <!-- 유저 목록 -->
       <div
         th:replace="~{memberList :: div}"
@@ -108,7 +113,7 @@
         console.log("memberList:" + memberList[0]);
 
         // WebSocket 연결
-//         const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
+        //         const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
         const socket = new SockJS("https://192.168.140.22:9090/stomp/chat");
         const stompClient = Stomp.over(socket);
 
@@ -170,7 +175,6 @@
 
             console.log(`✅ 전송 데이터:`, sendData);
 
-            // 특정 roomid로 메시지 발행
             stompClient.send(`/pub/chat/${roomId}/C`, {}, JSON.stringify(sendData));
           };
 

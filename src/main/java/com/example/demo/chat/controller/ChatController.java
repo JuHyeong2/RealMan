@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.example.demo.HomeController;
 import com.example.demo.chat.model.service.ChatService;
 import com.example.demo.chat.model.vo.Channel;
 import com.example.demo.chat.model.vo.ChannelMember;
@@ -42,6 +42,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class ChatController {
+
+    private final HomeController homeController;
 	private final ChatService cService;
 	private final ServerService sService;
 	private final ServerMemberService smService;
@@ -52,7 +54,7 @@ public class ChatController {
 	
 	private Map<Integer, Set<String>> userInChannel = new ConcurrentHashMap<>();
 	private Map<Integer, Set<String>> videoInChannel = new ConcurrentHashMap<>();
-	private int memberInchannelNo = 0; 
+	private int memberInchannelNo = 0;
 
 	@GetMapping("/main")
 	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
@@ -148,6 +150,7 @@ public class ChatController {
 //			System.out.println(img);
 			if(img != null) {
 				memberList.get(i).setImageUrl(img.getImgRename());
+				System.out.println(memberList.get(i).getMemberNickname()+" : "+memberList.get(i).getImageUrl());
 			}
 		}
 		model.addAttribute("memberList", memberList);
