@@ -8,6 +8,7 @@ import com.example.demo.chat.model.vo.Channel;
 import com.example.demo.chat.model.vo.ChatMessage;
 import com.example.demo.member.controller.FriendController;
 import com.example.demo.member.model.service.MemberService;
+import com.example.demo.member.model.vo.Friend;
 import com.example.demo.member.model.vo.ProfileImage;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -77,15 +78,17 @@ public class HomeController {
 
 	@GetMapping("/dm/{dmNo}")
 	public String dm(@PathVariable int dmNo, Model model, HttpSession session) {
-		Member loginMember = (Member) session.getAttribute("loginMember");
+		Member m = (Member) session.getAttribute("loginMember");
 
-		ArrayList<DM> selectDm = cService.selectDm(loginMember.getMemberNo());
-
+		ArrayList<DM> selectDm = cService.selectDm(m.getMemberNo());
+		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
 
 		model.addAttribute("dmNo", dmNo)
-				.addAttribute("selectDm", selectDm);
+				.addAttribute("selectDm", selectDm)
+				.addAttribute("loginMember", m)
+				.addAttribute("friendList", friendList);
 
-		return "";
+		return "/main/sendDM";
 
 	}
 

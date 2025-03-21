@@ -7,74 +7,31 @@
     <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <div class="directMassage" th:fragment="directMassage">
-        <div class="dm">다이렉트 메시지</div>
-        <button class="createDM" onclick="sendDM()">+</button>
+<div class="directMassage" th:fragment="directMassage">
 
-        <table class="dmTable">
+    <div class="dm">다이렉트 메시지</div>
+    <button class="createDM" onclick="sendDM()">+</button>
+    <div id="dmWrapper"></div>
 
-
-            <tbody id="dmList" th:each="d:${DM}">
-                <img>
-                <b th:text="${d.otherMemberNickname}"></b>
-
-            </tbody>
-        </table>
-
-
-
-        <div class="profile" th:each="m:${DM}">
-            <img src="/image/profile.png" width="50px" onclick="ProfileModal()">
-            <b th:text="${m.memberNickname}" onclick="goToMyAccount()"></b>
-            <img id="micImg" src="/image/preferences/mic.png" width="30px">
-            <img src="/image/preferences/Headphones.png" width="30px">
-            <img src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
-        </div>
-
-    </div>
-
-<script>
-    onload=()=>{
-        const memberList = /*[[${memberList}]]*/ null;
-        const flist = /*[[${flist}]]*/ null;
-
-        function sendDM(){
-            fetch('/friend')
-                .then(response => response.json())
-                .then(friends => {
-                    const friendListContainer = document.createElement('div');
-                    friendListContainer.classList.add('friendListContainer');
-
-                    friends.forEach(friend => {
-                        const friendDiv = document.createElement('div');
-                        friendDiv.innerHTML = `<img src="${flist.icon}" alt="친구 아이콘"> ${flist.nickname} (${flist.id})`;
-                        friendDiv.addEventListener('click', () => {
-                            startDM(friend.dmNo);
-                            document.body.removeChild(friendListContainer); // 박스 제거
-                        });
-                        friendListContainer.appendChild(friendDiv);
-                    });
-
-                    // 4. 생성된 박스를 body에 추가
-                    document.body.appendChild(friendListContainer);
-                })
-                .catch(error => {
-                    console.error('친구 목록을 가져오는 중 오류 발생:', error);
-                });
-
-
-            function startDM(dmNo) {
-                window.location.href = `/dm/${dmNo}`;
-            }
-        }
+</div>
+    <table class="dmTable">
+        <tbody id="dmList" th:each="d:${DM}">
+        <img>
+        <b th:text="${d.otherMemberNickname}"></b>
+        </tbody>
+    </table>
 
 
 
+<script th:inline="javascript">
+    // const memberList = /*[[${memberList}]]*/ null;
+    // const flist = /*[[${flist}]]*/ null;
 
-
-
+    function sendDM(){
 
     }
+
+
 
 </script>
 </body>

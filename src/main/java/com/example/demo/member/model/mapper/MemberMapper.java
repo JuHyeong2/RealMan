@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.demo.member.model.vo.Friend;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -95,4 +96,6 @@ public interface MemberMapper {
     int getMemberNo(String memberId);
 
 	Member selectMemberNo(String sender);
+
+    ArrayList<Friend> friendList(int memberNo);
 }

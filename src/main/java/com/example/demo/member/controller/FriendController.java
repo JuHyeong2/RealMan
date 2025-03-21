@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.demo.member.model.vo.Friend;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -112,6 +113,17 @@ public class FriendController {
 		int result = mService.approveRequest(map);
 
 		return result;
+	}
+
+	@GetMapping("/friendList")
+	public String friendList(HttpSession session, Model model){
+		Member m = (Member) session.getAttribute("loginMember");
+
+		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
+
+		model.addAttribute("loginMember", m)
+				.addAttribute("friendList", friendList);
+		return "friendList";
 	}
 
 
