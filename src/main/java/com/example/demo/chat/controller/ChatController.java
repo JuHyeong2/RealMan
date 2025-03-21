@@ -1,6 +1,7 @@
 package com.example.demo.chat.controller;
 
 
+import java.io.Console;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -130,6 +131,15 @@ public class ChatController {
 		// 채널 message 가져오자
 //		Integer channelNum = (Integer)channelNo;
 		ArrayList<ChatMessage> chatList = cService.selectChatList(channelNo);
+		for(int i=0; i<chatList.size(); i++) {
+			Member m = mService.selectMemberNo(chatList.get(i).getSender());
+			if(m != null) {
+				ProfileImage img = mService.selectImage(m.getMemberNo());
+				if(img != null) {
+					chatList.get(i).setProfileUrl(img.getImgRename());
+				}
+			} 
+		}
 		model.addAttribute("chatList", chatList);
 
 		//서버멤버 가져오기
@@ -184,7 +194,8 @@ public class ChatController {
 	@MessageMapping("/chat/joinVoice")
 	@SendTo("/sub/voice")
 	public Map<Integer, Set<String>> joinVoiceChannel (@Payload ChannelMember cMember){
-		//System.out.println("joinVoice 들어옴.");
+		System.out.println("joinVoice 들어옴.");
+		System.out.println(cMember.toString());
 		memberInchannelNo = cMember.getClickServerNo();
 		for(int key : userInChannel.keySet()) {
 			if(userInChannel.get(key).contains(cMember.getUsername())) {

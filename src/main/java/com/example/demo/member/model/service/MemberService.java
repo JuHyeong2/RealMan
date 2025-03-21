@@ -210,4 +210,9 @@ public class MemberService {
 	public int getMemberNo(String memberId) {
 		return mapper.getMemberNo(memberId);
 	}
+
+	public Member selectMemberNo(String sender) {
+		
+		return mapper.selectMemberNo(sender);
+	}
 }
