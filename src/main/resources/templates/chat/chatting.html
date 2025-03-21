@@ -181,22 +181,17 @@
             );
           };
 
-          document
-            .querySelector("#button-send")
-            .addEventListener("click", () => {
-              let msg = tinymce
-                .get("mytextarea")
-                .getContent({ format: "html" })
-                .trim(); // HTML 가져오기
-              console.log("msg",msg);
+          document.querySelector("#button-send").addEventListener("click", () => {
+              let msg = tinymce.get("mytextarea").getContent({ format: "html" }).trim(); // HTML 가져오기
+
               let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
               if (imgTagMatch) {
                 let imgSrc = imgTagMatch[1];
                 let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`;
                 let newContent = msg.replace(/<img[^>]+>/, imgTag);
-                sendMessage(username, newContent, serverNo);
+                sendMessage(username, newContent, channelNo);
               } else {
-                sendMessage(username, msg, serverNo);
+                sendMessage(username, msg, channelNo);
               }
 
               tinymce.get("mytextarea").setContent("");
@@ -254,7 +249,6 @@
 						        document.querySelector('#button-send').click();
 			  		        }
               	  }
-
             });
 
             // ✨ `input` 이벤트에서 mentionText 업데이트
