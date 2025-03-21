@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.member.model.service.MemberService;
 import com.example.demo.member.model.vo.Member;
+import com.example.demo.member.model.vo.ProfileImage;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,12 @@ public class FriendController {
 		// 친구목록
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
 		ArrayList<Member> list = friendNumberList.isEmpty()? null : mService.selectMembers(friendNumberList);
+		for(int i = 0; i < list.size(); i++) {
+			ProfileImage img = mService.selectImage(list.get(i).getMemberNo());
+			if(img != null) {
+				list.get(i).setImageUrl(img.getImgRename());
+			}
+		}
 		// 내가 보낸 요청 목록
 		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
 		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectMembers(sentRequestList);
@@ -106,5 +113,7 @@ public class FriendController {
 
 		return result;
 	}
-	
+
+
+
 }

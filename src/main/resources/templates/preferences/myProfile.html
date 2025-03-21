@@ -19,7 +19,7 @@
 					<h1>내 계정</h1>
 				</div>
 				<img alt="Xcircle" src="/image/preferences/Xcircle.png" width="50px"
-					height="50px" onclick="location.href='/chat/main'" />
+					height="50px" onclick="location.href='/main'" />
 			</div>
 
 			<div class="myprofile">
@@ -68,11 +68,7 @@
 		<div class="modal-content">
 			<div>
 				<div>
-					<img th:if="${session.loginMember.profileImage == null}"
-						src="/image/member/no-profile.svg" /> <img
-						th:unless="${session.loginMember.profileImage == null}"
-						th:src="@{'/profile-images/' 
-             + ${session.loginMember.profileImage}}" />
+					<img th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/member/no-profile.svg'}" />
 				</div>
 			</div>
 			<div>

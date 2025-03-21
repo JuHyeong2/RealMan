@@ -34,19 +34,24 @@
 
     	</nav>
 
-        <div class="connect">
-		    <b>음성 연결됨</b>
-		    <img src="/image/member/closeVoice.png" width="30px">
-		</div>
-		
-		<div class="profile">
-            <img id="profileImg" th:src="${member.profileImage}" width="50px"
-    			 onclick="openMiniProfile(this.src, document.getElementById('profileName').textContent, '#${member.memberId}', true)">
-            <b id="profileName" th:text="${member.memberNickname}"
-                 onclick="openMiniProfile(document.getElementById('profileImg').src, '${member.memberNickname}', '#${member.memberId}', true)"></b>
-            <img id="micImg" src="/image/preferences/mic.png" width="30px">
-            <img src="/image/preferences/Headphones.png" width="30px">
-            <img id="settingsBtn" src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
+
+    	<div class="profile">
+    		<img th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}" width="50px" height="50px" onclick="ProfileModal()">
+    		<b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b>
+    		<img id="micImg" src="/image/preferences/mic.png" width="30px">
+    		<img src="/image/preferences/Headphones.png" width="30px">
+    		<img src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
+    	</div>
+	</div>
+
+
+
+	<!-- 프로필 모달 -->
+	<div id="profileModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close" onclick="closeProfileModal()">&times;</span>
+	        <h2>프로필 설정</h2>
+	        <button onclick="goToMyAccount()">내 정보 수정</button>
 	    </div>
 		
 	<div th:replace="~{/common/miniProfile :: body}"></div>
@@ -75,7 +80,8 @@
 		let clickServerNo = 0;
 		const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
 
-		const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
+// 		const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
+		const channelSocket = new SockJS("https://192.168.140.22:9090/stomp/channel");
 		const channelStompClient = Stomp.over(channelSocket);
 
 		channelStompClient.connect({}, ()=>{

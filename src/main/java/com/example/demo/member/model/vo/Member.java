@@ -24,7 +24,6 @@ public class Member {
 	private String memberIsAdmin;
 	private Date memberCreateDate;
 	private String profileImage;
-	private int serverNo;
 	private String imageUrl;
 
 }

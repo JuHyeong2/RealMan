@@ -1,131 +1,173 @@
 .
-├── main
-│   ├── java
-│   │   └── com
-│   │       └── example
-│   │           └── demo
-│   │               ├── HomeController.java
-│   │               ├── RealManApplication.java
-│   │               ├── chat
-│   │               │   ├── controller
-│   │               │   │   └── ChatController.java
-│   │               │   └── model
-│   │               │       ├── exception
-│   │               │       │   └── ChatException.java
-│   │               │       ├── mapper
-│   │               │       │   └── ChatMapper.java
-│   │               │       ├── service
-│   │               │       │   └── ChatService.java
-│   │               │       └── vo
-│   │               │           └── Chat.java
-│   │               ├── common
-│   │               │   ├── config
-│   │               │   │   ├── MvcConfiguration.java
-│   │               │   │   ├── SecurityConfig.java
-│   │               │   │   ├── TemplateResolverConfig.java
-│   │               │   │   └── WebSocketConfig.java
-│   │               │   ├── handler
-│   │               │   │   └── ChatHandler.java
-│   │               │   └── util
-│   │               │       └── EmailCertificationUtil.java
-│   │               ├── member
-│   │               │   ├── controller
-│   │               │   │   └── MemberController.java
-│   │               │   └── model
-│   │               │       ├── exception
-│   │               │       │   └── MemberException.java
-│   │               │       ├── mapper
-│   │               │       │   └── MemberMapper.java
-│   │               │       ├── service
-│   │               │       │   └── MemberService.java
-│   │               │       └── vo
-│   │               │           └── Member.java
-│   │               ├── preferences
-│   │               │   └── controller
-│   │               │       └── PrefsController.java
-│   │               └── server
-│   │                   ├── controller
-│   │                   │   └── ServerController.java
-│   │                   └── model
-│   │                       ├── exception
-│   │                       │   └── ServerException.java
-│   │                       ├── mapper
-│   │                       │   └── ServerMapper.java
-│   │                       ├── service
-│   │                       │   └── ServerService.java
-│   │                       └── vo
-│   │                           └── Server.java
-│   └── resources
-│       ├── application.properties
-│       ├── mappers
-│       │   ├── chat-mapper.xml
-│       │   ├── member-mapper.xml
-│       │   └── server-mapper.xml
-│       ├── static
-│       │   ├── allviews.html
-│       │   ├── css
-│       │   │   ├── chat
-│       │   │   │   ├── chatting.css
-│       │   │   │   └── chattingSidebar.css
-│       │   │   ├── common
-│       │   │   │   ├── sidebar.css
-│       │   │   │   ├── sidebar54.css
-│       │   │   │   └── top.css
-│       │   │   ├── directMassage.css
-│       │   │   ├── friendSidebar.css
-│       │   │   ├── index.css
-│       │   │   ├── main.css
-│       │   │   ├── member
-│       │   │   │   ├── findMy.css
-│       │   │   │   ├── friends.css
-│       │   │   │   ├── signin.css
-│       │   │   │   └── signup.css
-│       │   │   ├── preferences
-│       │   │   │   ├── audio.css
-│       │   │   │   ├── message.css
-│       │   │   │   ├── myProfile.css
-│       │   │   │   ├── notifications.css
-│       │   │   │   ├── preference.css
-│       │   │   │   ├── preferencesSidebar.css
-│       │   │   │   ├── ui-theme.css
-│       │   │   │   └── video.css
-│       │   │   └── preferences.css
-│       │   ├── image
-│       │   └── js
-│       │       └── findMy.js
-│       └── templates
-│           ├── chat
-│           │   ├── chatting.html
-│           │   ├── chattingSidebar.html
-│           │   └── friendSidebar.html
-│           ├── common
-│           │   ├── sidebar.html
-│           │   └── top.html
-│           ├── index.html
-│           ├── main
-│           │   ├── directMassage.html
-│           │   └── main.html
-│           ├── member
-│           │   ├── findMyId.html
-│           │   ├── findMyPwd.html
-│           │   ├── friends.html
-│           │   └── signup.html
-│           ├── preferences
-│           │   ├── audio.html
-│           │   ├── messages.html
-│           │   ├── myProfile.html
-│           │   ├── notifications.html
-│           │   ├── preference.html
-│           │   ├── preferencesSidebar.html
-│           │   ├── ui-theme.html
-│           │   └── video.html
-│           └── voice
-│               └── voice.html
-└── test
-    └── java
-        └── com
-            └── example
-                └── demo
-                    └── RealManApplicationTests.java
+├── java
+│   └── com
+│       └── example
+│           └── demo
+│               ├── HomeController.java
+│               ├── RealManApplication.java
+│               ├── chat
+│               │   ├── controller
+│               │   │   └── ChatController.java
+│               │   └── model
+│               │       ├── exception
+│               │       │   └── ChatException.java
+│               │       ├── mapper
+│               │       │   └── ChatMapper.java
+│               │       ├── service
+│               │       │   └── ChatService.java
+│               │       └── vo
+│               │           ├── Channel.java
+│               │           ├── ChannelMember.java
+│               │           ├── Chat.java
+│               │           ├── ChatMessage.java
+│               │           └── DM.java
+│               ├── common
+│               │   ├── config
+│               │   │   ├── FirebaseConfig.java
+│               │   │   ├── MvcConfiguration.java
+│               │   │   ├── S3Config.java
+│               │   │   ├── SecurityConfig.java
+│               │   │   ├── TemplateResolverConfig.java
+│               │   │   └── WebSocketConfig.java
+│               │   ├── handler
+│               │   │   └── ChatHandler.java
+│               │   ├── interceptor
+│               │   │   └── CheckLoginInterceptor.java
+│               │   └── util
+│               │       └── EmailCertificationUtil.java
+│               ├── member
+│               │   ├── controller
+│               │   │   ├── FriendController.java
+│               │   │   └── MemberController.java
+│               │   └── model
+│               │       ├── exception
+│               │       │   └── MemberException.java
+│               │       ├── mapper
+│               │       │   └── MemberMapper.java
+│               │       ├── service
+│               │       │   └── MemberService.java
+│               │       └── vo
+│               │           ├── Member.java
+│               │           └── ProfileImage.java
+│               ├── preferences
+│               │   ├── controller
+│               │   │   └── PrefsController.java
+│               │   └── model
+│               │       ├── mapper
+│               │       │   └── PrefsMapper.java
+│               │       ├── service
+│               │       │   └── PrefsService.java
+│               │       └── vo
+│               │           ├── Device.java
+│               │           ├── Notification.java
+│               │           └── Theme.java
+│               ├── server
+│               │   ├── controller
+│               │   │   └── ServerController.java
+│               │   └── model
+│               │       ├── exception
+│               │       │   └── ServerException.java
+│               │       ├── mapper
+│               │       │   └── ServerMapper.java
+│               │       ├── service
+│               │       │   └── ServerService.java
+│               │       └── vo
+│               │           └── Server.java
+│               └── serverMember
+│                   ├── controller
+│                   │   └── ServerMemberController.java
+│                   └── model
+│                       ├── exception
+│                       │   └── ServerMemberException.java
+│                       ├── mapper
+│                       │   └── ServerMemberMapper.java
+│                       ├── service
+│                       │   └── ServerMemberService.java
+│                       └── vo
+│                           └── ServerMember.java
+└── resources
+    ├── application.properties
+    ├── keystore.jks
+    ├── mappers
+    │   ├── chat-mapper.xml
+    │   ├── member-mapper.xml
+    │   ├── prefs-mapper.xml
+    │   ├── server-mapper.xml
+    │   └── serverMember-mapper.xml
+    ├── realmanfirestore-firebase-adminsdk-fbsvc-42ed42e9d5.json
+    ├── static
+    │   ├── allviews.html
+    │   ├── css
+    │   │   ├── chat
+    │   │   │   ├── chatting.css
+    │   │   │   ├── chattingSidebar.css
+    │   │   │   └── memberList.css
+    │   │   ├── common
+    │   │   │   ├── sidebar.css
+    │   │   │   ├── sidebar54.css
+    │   │   │   └── top.css
+    │   │   ├── directMassage.css
+    │   │   ├── friendSidebar.css
+    │   │   ├── index.css
+    │   │   ├── main.css
+    │   │   ├── member
+    │   │   │   ├── findMy.css
+    │   │   │   ├── friends.css
+    │   │   │   ├── signin.css
+    │   │   │   └── signup.css
+    │   │   ├── preferences
+    │   │   │   ├── audio.css
+    │   │   │   ├── message.css
+    │   │   │   ├── myProfile.css
+    │   │   │   ├── notifications.css
+    │   │   │   ├── preference.css
+    │   │   │   ├── preferencesSidebar.css
+    │   │   │   ├── ui-theme.css
+    │   │   │   └── video.css
+    │   │   └── preferences.css
+    │   └── js
+    │       ├── chat
+    │       │   ├── chattingSidebar.js
+    │       │   └── memberList.js
+    │       ├── member
+    │       │   ├── findMy.js
+    │       │   └── friends.js
+    │       └── pref
+    │           └── myProfile.js
+    └── templates
+        ├── chat
+        │   ├── chatting.html
+        │   ├── chattingSidebar.html
+        │   ├── friendSidebar.html
+        │   ├── memberList.html
+        │   ├── tiny.html
+        │   └── videoChatting.html
+        ├── common
+        │   ├── sidebar.html
+        │   └── top.html
+        ├── index.html
+        ├── main
+        │   ├── directMassage.html
+        │   └── main.html
+        ├── member
+        │   ├── findMyId.html
+        │   ├── findMyPwd.html
+        │   ├── friends.html
+        │   ├── signin.html
+        │   └── signup.html
+        ├── preferences
+        │   ├── audio.html
+        │   ├── messages.html
+        │   ├── myProfile.html
+        │   ├── notifications.html
+        │   ├── preference.html
+        │   ├── preferencesSidebar.html
+        │   ├── ui-theme.html
+        │   └── video.html
+        └── voice
+            └── voice.html
 
-57 directories, 95 files
+63 directories, 105 files
+cd src/main
+(윈도우에서는 git bash 사용)
+tree -I 'image' > ../../src_tree.txt

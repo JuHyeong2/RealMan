@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,22 @@ public class ServerService {
 
 	public ArrayList<Integer> selectMemberNumbers(int serverNo) {
 		return mapper.selectMemberNumbers(serverNo);
+	}
+
+	public String checkIsAdmin(HashMap<String, Integer> map2) {
+		return mapper.checkIsAdmin(map2);
+	}
+
+	public int inviteMember(HashMap<String, Integer> map) {
+		return mapper.inviteMember(map);
+	}
+
+	public ArrayList<Member> selectInviteList(int memberNo) {
+		return mapper.selectInviteList(memberNo);
+	}
+
+	public int ejectMember(HashMap<String, Integer> map) {
+		return mapper.ejectMember(map);
 	}
 
 }

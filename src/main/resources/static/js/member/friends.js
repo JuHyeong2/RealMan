@@ -3,7 +3,7 @@ fLi.innerHTML = `<div class="friend-row">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="">
-                  <img class="profile" />
+                  <img class="" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -35,7 +35,7 @@ wLi.innerHTML = `<div class="friend-row wlist">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" />
+                  <img class="" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -66,7 +66,7 @@ rLi.innerHTML = `<div class="friend-row rlist">
                 <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile"" />
+                  <img class=""" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -91,7 +91,7 @@ sLi.innerHTML = `<div class="friend-row slist">
               <input type="hidden" />
               <div class="profile-div">
                 <div class="svg-container">
-                  <img class="profile" />
+                  <img class="" />
                 </div>
               </div>
               <div class="nickname-div">
@@ -141,7 +141,7 @@ const getFriendList = () => {
           for (let f of data.list) {
             const fli = fLi.cloneNode(true);
             fli.querySelector("input").value = f.memberNo;
-            fli.querySelector("img").src = "/profile-images/" + f.profileImage;
+            fli.querySelector("img").src = f.imageUrl != null ? f.imageUrl : '/image/member/no-profile.svg';
             fli.querySelector(".nickname").innerText = f.memberNickname;
             fli.querySelector(".id").innerText = f.memberId;
             flist.append(fli);
@@ -465,7 +465,7 @@ function setupEventHandlers() {
           .then((data) => {
             if (data == 1) {
               alert("친구 요청이 완료되었습니다.");
-              location.reload();
+              thisRow.remove();
             }
           });
       }
