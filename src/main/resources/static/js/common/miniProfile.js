@@ -1,39 +1,29 @@
-window.openMiniProfile = function (image, nickname, userId, isMyProfile) {
-    console.log("🔹 openMiniProfile 함수 호출됨");
+document.addEventListener("DOMContentLoaded", function () {
+    // ✅ 서버 채널의 사용자 목록에서 닉네임 또는 프로필 사진 클릭 시 이벤트 추가
+    document.querySelectorAll(".user-item").forEach(user => {
+        user.addEventListener("click", function () {
+            const profileImage = this.getAttribute("data-profile-img") || "/images/default-avatar.png";
+            const nickname = this.getAttribute("data-nickname") || "사용자";
+            const userId = this.getAttribute("data-user-id") || "0000";
+            const isOnline = this.getAttribute("data-online") === "true";
 
-    let modal = document.getElementById("miniProfileModal");
-    let profileImage = document.getElementById("miniProfileImage");
-    let profileNickname = document.getElementById("miniProfileNickname");
-    let profileId = document.getElementById("miniProfileId");
-    let profileActions = document.getElementById("miniProfileActions");
-    let statusElement = document.getElementById("miniProfileStatus");
+            openMiniProfile(profileImage, nickname, userId, isOnline);
+        });
+    });
+});
 
-    let attempts = 0;
-    const checkElements = setInterval(() => {
-        if (!modal || !profileImage || !profileNickname || !profileId || !statusElement) {
-            console.warn(`⚠️ [경고] 필수 요소가 없음. ${++attempts}번째 재시도...`);
-            modal = document.getElementById("miniProfileModal");
-            profileImage = document.getElementById("miniProfileImage");
-            profileNickname = document.getElementById("miniProfileNickname");
-            profileId = document.getElementById("miniProfileId");
-            profileActions = document.getElementById("miniProfileActions");
-            statusElement = document.getElementById("miniProfileStatus");
-        } else {
-            clearInterval(checkElements);
-            console.log("✅ [성공] 모든 요소를 찾음!");
-        }
-        if (attempts >= 3) clearInterval(checkElements);
-    }, 500);
+// ✅ 미니 프로필 모달 열기 함수
+function openMiniProfile(imageSrc, nickname, userId, isOnline) {
+    document.getElementById("miniProfileImage").src = imageSrc;
+    document.getElementById("miniProfileNickname").innerHTML = 
+        `<span id="miniProfileStatus" class="status-indicator ${isOnline ? 'online' : 'offline'}">●</span> ${nickname}`;
+    document.getElementById("miniProfileId").textContent = `#${userId}`;
+    
+    // 모달 열기
+    document.getElementById("miniProfileModal").style.display = "block";
+}
 
-    profileImage.src = image;
-    profileNickname.textContent = nickname || "알 수 없는 사용자";
-    profileId.textContent = userId ? "#" + userId : "#0000";
-
-    if (isMyProfile && profileActions) {
-        profileActions.style.display = "flex";
-    } else if (profileActions) {
-        profileActions.style.display = "none";
-    }
-
-    modal.style.display = "block";
-};
+// ✅ 모달 닫기
+function closeMiniProfileModal() {
+    document.getElementById("miniProfileModal").style.display = "none";
+}

@@ -2,6 +2,7 @@ package com.example.demo.preferences.model.service;
 
 import com.example.demo.preferences.model.mapper.PrefsMapper;
 import com.example.demo.preferences.model.vo.Device;
+import com.example.demo.preferences.model.vo.Notification;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +36,36 @@ public class PrefsService {
         device.setMemberNo(memberNo);
         device.setDeviceId(fingerprint);
         return prefsMapper.checkDevice(device);
+    }
+
+    public int updateVideo(Device device) {
+        return prefsMapper.updateVideo(device);
+    }
+
+    public Device getVideoPrefs(int memberNo, String fingerprint) {
+        Device device = new Device();
+        device.setMemberNo(memberNo);
+        device.setDeviceId(fingerprint);
+        return prefsMapper.checkDevice(device);
+    }
+
+    public int updateNotify(Notification notify) {
+        return prefsMapper.updateNotify(notify);
+    }
+
+    public Notification getNotifyPrefs(int memberNo) {
+        return prefsMapper.getNotifyPrefs(memberNo);
+    }
+
+
+    public void inesrtDefaultSetting(int memberNo) {
+        int resultNotify = prefsMapper.insertNotify(memberNo);
+        int resultTheme = prefsMapper.insertTheme(memberNo);
+        System.out.println(resultTheme+resultNotify==2?"설정기본값생성완료":"설정기본값생성실패");
+    }
+
+    public int updateMsg(Notification msg) {
+        return prefsMapper.updateMsg(msg);
     }
 }
 

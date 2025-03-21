@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <!-- ✅ 미니 프로필 모달 -->
+<div th:fragment="body">
     <div id="miniProfileModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeMiniProfileModal()">×</span>
@@ -29,21 +29,9 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- ✅ 프로필 열기 버튼 -->
-    <button id="profileButton">프로필 열기</button>
-
-    <!-- ✅ HTML 요소 로드 후 `openMiniProfile()` 실행 -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("profileButton").addEventListener("click", function() {
-                openMiniProfile('/images/user.jpg', '테스트 유저', '1234', true);
-            });
-        });
-    </script>
-
-    <!-- ✅ JavaScript 파일 -->
-    <script src="/js/common/miniProfile.js"></script>
+<script src="/js/common/miniProfile.js"></script>
 
 </body>
 </html>

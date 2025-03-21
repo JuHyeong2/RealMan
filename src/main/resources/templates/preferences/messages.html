@@ -16,7 +16,7 @@
 				<br/>
 				<div class="radio-group">
 					<div class="radio-option">
-						<input type="radio" name="message-display" id="all-messages" checked>
+						<input type="radio" name="message-display" id="all-messages" value="D" checked>
 						<div>
 							<label for="all-messages">프로필 사진, 시간, 이름, 내용 등 모두 표시</label>
 							<div class="profile-info">
@@ -27,7 +27,7 @@
 					</div>
 
 					<div class="radio-option">
-						<input type="radio" name="message-display" id="simple-messages">
+						<input type="radio" name="message-display" id="simple-messages" value="S">
 						<div>
 							<label for="simple-messages">간단하게 표시</label>
 							<div class="time-info">오후 10:34 권태혁 welcom</div>
@@ -43,7 +43,7 @@
 				<br/>
 				<div class="radio-group">
 					<div class="radio-option">
-						<input type="radio" name="time-display" id="relative-time" checked>
+						<input type="radio" name="time-display" id="relative-time" value="12H" checked>
 						<div>
 							<label for="relative-time">오전 / 오후로 표시</label>
 							<div class="time-info">오후 6시 30분</div>
@@ -51,7 +51,7 @@
 					</div>
 
 					<div class="radio-option">
-						<input type="radio" name="time-display" id="24h-time">
+						<input type="radio" name="time-display" id="24h-time" value="24H">
 						<div>
 							<label for="24h-time">24 시간으로 표시</label>
 							<div class="time-info">18시 30분</div>
@@ -65,17 +65,67 @@
 
 		</div>
 	</div>
-	<script>
-		document.querySelectorAll('.radio-option').forEach(option => {
-			option.addEventListener('click', function() {
-				const radio = this.querySelector('input[type="radio"]');
-				radio.checked = true;
+<script>
+	document.addEventListener("DOMContentLoaded", async function(){
+		await loadMessagePreferences();
+		window.addEventListener("beforeunload", sendMessagePreferences);
+	})
+
+	function loadMessagePreferences(){
+		fetch("/prefs/messages/getPrefs")
+				.then(response => response.json())
+				.then(data => {
+					if (data) {
+						console.log("서버에서 가져온 데이터:", data);
+						// chatType 값에 따라 라디오 버튼 선택
+						const chatTypeRadio = document.querySelector(`input[name="message-display"][value="${data.chatType}"]`);
+						if (chatTypeRadio) {
+							chatTypeRadio.checked = true;
+						}
+						// timeType 값에 따라 라디오 버튼 선택
+						const timeTypeRadio = document.querySelector(`input[name="time-display"][value="${data.timeType}"]`);
+						if (timeTypeRadio) {
+							timeTypeRadio.checked = true;
+						}
+					}
+				})
+				.catch(error => console.error("메시지 설정 로드 오류:", error));
+	}
+
+	function sendMessagePreferences() {
+		try {
+			const checkedChatType = document.querySelector('input[name="message-display"]:checked').value;
+			const checkedTimeType = document.querySelector('input[name="time-display"]:checked').value;
+			const requestData = {
+				chatType: checkedChatType,
+				timeType: checkedTimeType,
+			};
+
+			console.log("전송할 데이터:", requestData);
+
+			const blob = new Blob([JSON.stringify(requestData)], { type: "application/json" });
+			const result = navigator.sendBeacon("/prefs/messages", blob);
+
+			if (!result) {
+				console.error("sendBeacon 전송 실패");
+			} else {
+				console.log("sendBeacon 전송 성공");
+			}
+		} catch (error) {
+			console.error("채팅 설정 저장 중 오류 발생:", error);
+		}
+	}
+
+	document.querySelectorAll('.radio-option').forEach(option => {
+		option.addEventListener('click', function() {
+			const radio = this.querySelector('input[type="radio"]');
+			radio.checked = true;
 
 
-				const event = new Event('change');
-				radio.dispatchEvent(event);
-			});
+			const event = new Event('change');
+			radio.dispatchEvent(event);
 		});
-	</script>
+	});
+</script>
 </body>
 </html>
