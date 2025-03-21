@@ -54,7 +54,7 @@
   </head>
   <body>
     <!-- 탑바 -->
-    <div th:replace="~{/common/top :: body}"></div>
+    <div th:replace="~{/common/top :: html}"></div>
     <!-- 메인 컨테이너-->
     <div class="main-container d-flex">
       <!-- 왼쪽 사이드바 -->
@@ -240,7 +240,6 @@
 						        document.querySelector('#button-send').click();
 			  		        }
               	  }
-
             });
 
             // ✨ `input` 이벤트에서 mentionText 업데이트
