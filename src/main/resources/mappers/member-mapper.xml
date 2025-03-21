@@ -236,5 +236,11 @@
 	<select id="getMemberNo" resultType="int">
 		select member_no from member where member_id = #{memberID}
 	</select>
+	
+	<select id="selectMemberNo">
+		select *
+		from member
+		where member_nickname = #{sender}
+	</select>
 
 </mapper>
