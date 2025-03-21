@@ -240,6 +240,7 @@ public class MemberController {
 		// session attribute 
 		if(result==1) {
 			loginMember = mService.selectMember(loginMember.getMemberNo());
+			loginMember.setImageUrl(mService.selectImage());
 			model.addAttribute("loginMember", loginMember);
 		}
 		

@@ -140,18 +140,18 @@ window.onload = () => {
 
   //======================전화번호======================
   // 전화번호 수정하기
-  const phoneModal1 = document.querySelector("#phoneModal-1");
-  const phoneModal2 = document.querySelector("#phoneModal-2");
-
+  const phoneModal = document.querySelector("#phoneModal");
   document.querySelector("#phoneBtn").addEventListener("click", () => {
-    phoneModal1.style.display = "flex";
+    phoneModal.style.display = "flex";
+    const completeBtn = document.querySelector("#phone-complete");
+    completeBtn.addEventListener("click", function(){
+      const newPhone = phoneModal.querySelector("input[name=memberPhone]").value;
+      const pwd = phoneModal.querySelector("input[type=password]").value;
+      editMemberInfo("member_phone", newPhone, pwd);
+    });
   });
 
-  // 전화번호 수정하기2
-  document.querySelector("#sendPhoneBtn").addEventListener("click", () => {
-    phoneModal2.style.display = "flex";
-    phoneModal1.style.display = "none";
-  });
+
 
   //======================비밀번호======================
   // 비밀번호 변경하기
