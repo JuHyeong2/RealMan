@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
 
-    <link rel="stylesheet" href="/css/member/signin.css">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
+
+<link rel="stylesheet" href="/css/member/signin.css">
 </head>
 <body>
-
     <!-- 상단바 -->
     <header class="topbar">
         <div th:insert="common/top.html"></div> 
@@ -102,10 +102,8 @@
             if (fingerprintInput) {
                 fingerprintInput.value = fingerprint;
             }
-        });
-
-
+          };
+         
     </script>
-
-</body>
+  </body>
 </html>

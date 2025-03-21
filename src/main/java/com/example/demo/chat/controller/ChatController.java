@@ -1,13 +1,10 @@
 package com.example.demo.chat.controller;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.example.demo.chat.model.vo.DM;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -29,6 +26,7 @@ import com.example.demo.chat.model.vo.ChannelMember;
 import com.example.demo.chat.model.vo.ChatMessage;
 import com.example.demo.member.model.service.MemberService;
 import com.example.demo.member.model.vo.Member;
+import com.example.demo.member.model.vo.ProfileImage;
 import com.example.demo.server.model.service.ServerService;
 import com.example.demo.server.model.vo.Server;
 import com.example.demo.serverMember.model.service.ServerMemberService;
@@ -55,7 +53,7 @@ public class ChatController {
 	private Map<Integer, Set<String>> videoInChannel = new ConcurrentHashMap<>();
 	private int memberInchannelNo = 0; 
 
-	@GetMapping("main")
+	@GetMapping("/main")
 	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
 //		String ip = request.getHeader("X-Forwarded-For");
 //	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
@@ -77,17 +75,14 @@ public class ChatController {
 	    
 //		System.out.println(ip);
 		Member m = (Member) session.getAttribute("loginMember");
-		System.out.println(m.toString());
-//		Server server = new Server();
-//		server.setServerNo(server.getServerNo());
-//
-//		System.out.println(server.getServerNo());
 
 		ArrayList<Server> selectServerList = sService.selectServerList(m);
 		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);
 		}
-		
+
+
+
 //		model.addAttribute("ip", ip);
 //		model.addAttribute("server", server);
 		
@@ -117,8 +112,20 @@ public class ChatController {
 //		System.out.println(channel.toString());
 		model.addAttribute("channel", channel);
 
-		ArrayList<ServerMember> ServerMember = smService.serverMemberList(serverNo);
-		model.addAttribute("ServerMember", ServerMember);
+		ArrayList<ServerMember> memberList = smService.serverMemberList(serverNo);
+		System.out.println("memberList : "+memberList);
+		model.addAttribute("memberList", memberList);
+		
+		//로그인멤버의 서버관리자 여부
+		for(ServerMember member : memberList) {
+			if(loginMember.getMemberNo() == member.getMemberNo()) {
+				if(member.getIsServerAdmin().equals("Y")) {
+					model.addAttribute("admin", true);
+				}else {
+					model.addAttribute("admin", false);
+				}
+			}
+		}
 
 		// 채널 message 가져오자
 //		Integer channelNum = (Integer)channelNo;
@@ -126,9 +133,15 @@ public class ChatController {
 		model.addAttribute("chatList", chatList);
 
 		//서버멤버 가져오기
-		ArrayList<Integer> memberNumberList = sService.selectMemberNumbers(serverNo);
-		ArrayList<Member> memberList = mService.selectMembers(memberNumberList);
+		for(int i=0; i<memberList.size(); i++) {
+			ProfileImage img = mService.selectImage(memberList.get(i).getMemberNo());
+//			System.out.println(img);
+			if(img != null) {
+				memberList.get(i).setImageUrl(img.getImgRename());
+			}
+		}
 		model.addAttribute("memberList", memberList);
+
 		
 		
 		// 채널이 Voice인지 Chat인지 확인
@@ -307,5 +320,8 @@ public class ChatController {
 		response.put("message", "메시지가 전송되었습니다!");
 		return response;
 	}
+
+
+
 
 }

@@ -74,3 +74,17 @@
 	gap: 10px;
 	width: 100%;
 }
+
+
+
+
+
+.mention-highlight {
+	background-color: #ffeb3b; /* 노란색 배경 */
+	padding: 5px;
+	border-radius: 5px;
+}
+.mention {
+	font-weight: bold;
+	color: blue;
+}
