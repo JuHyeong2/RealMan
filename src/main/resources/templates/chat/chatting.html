@@ -72,7 +72,7 @@
           <div class="chatContent">
             <div class="textArea" th:each="c, cStat:${chatList}">
             	<div class="chatContent-1">
-            		<img src="/image/member/no-profile.svg" width="40px">
+            		<img th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}" width="40px" height="40px">
             		<div class='chatContent-2'>
 		            	<b th:utext="${c.sender}"></b>
 		            	<p th:utext="${c.message}" style="margin: 0"></p>
@@ -237,6 +237,11 @@
                 } else if (event.key === "Escape") {
                   removeMentionBox();
                 }
+              }else{
+              	if(event.key == 'Enter' && !event.shiftKey){
+						event.preventDefault();
+						document.querySelector('#button-send').click();
+			  	}
               }
             });
 

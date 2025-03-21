@@ -130,6 +130,15 @@ public class ChatController {
 		// 채널 message 가져오자
 //		Integer channelNum = (Integer)channelNo;
 		ArrayList<ChatMessage> chatList = cService.selectChatList(channelNo);
+		for(int i=0; i<chatList.size(); i++) {
+			Member m = mService.selectMemberNo(chatList.get(i).getSender());
+			if(m != null) {
+				ProfileImage img = mService.selectImage(m.getMemberNo());
+				if(img != null) {
+					chatList.get(i).setProfileUrl(img.getImgRename());
+				}
+			} 
+		}
 		model.addAttribute("chatList", chatList);
 
 		//서버멤버 가져오기
