@@ -122,10 +122,10 @@
 
           // 특정 채팅방(roomId) 구독
           stompClient.subscribe("/sub/chatroom/" + channelNo, (message) => {
+        	// chatMessage는 JSON으로 parse해서 가져옴
             const chatMessage = JSON.parse(message.body);
-            console.log(
-              "새 메시지:" + chatMessage.sender + ": " + chatMessage.message
-            );
+            
+            // 현재 시간 받아오기
             let today = new Date();
 
             let hour = String(today.getHours());
@@ -146,12 +146,12 @@
 
             let HMS = hour + ":" + minute + ":" + second;
             // 					<div style='margin:0;  padding: 0; flex-grow: 1;'>${chatMessage.message}</div>
-            console.log(chatMessage);
+            // 받아온 메시지 채팅방에 출력하기
             let str = `<div class='chatContent-1'>
             						  <img src=${userProfileImage != null ? userProfileImage : '/image/member/noprofile.svg'} width="40px" height="40px">
             						  <div class='chatContent-2'>
 	      								  <b>${chatMessage.sender}</b>
-	      								  <div style='display:flex; justify-content:space-between; align-items:center;'>
+	      								  <div style='display:flex; justify-content:space-between; align-items:flex-end;'>
 	      								  	${chatMessage.message}
 	      								  	<p>${HMS}</p>
 	      								  </div>
@@ -160,25 +160,22 @@
             document.querySelector(".chatContent").insertAdjacentHTML("afterbegin", str);
 
             // 스크롤 이동
-            document.querySelector(".chatContent").scrollTop =
-              document.querySelector(".chatContent").scrollHeight;
+            document.querySelector(".chatContent").scrollTop = document.querySelector(".chatContent").scrollHeight;
           });
 
+          // 메시지 전송하는 메서드
           const sendMessage = (sender, message, roomId) => {
             if (!message || message.trim() === "" || message === "<p></p>") {
               alert("메시지를 입력하세요!");
               return;
             }
 
+            // 객체화
             const sendData = { roomId, sender, message };
 
             console.log(`✅ 전송 데이터:`, sendData);
 
-            stompClient.send(
-              `/pub/chat/${roomId}/C`,
-              {},
-              JSON.stringify(sendData)
-            );
+            stompClient.send(`/pub/chat/${roomId}/C`, {}, JSON.stringify(sendData));
           };
 
           document.querySelector("#button-send").addEventListener("click", () => {
