@@ -35,8 +35,7 @@
     	</nav>
     	
     	<div class="connect">
-    		<b>음성 연결됨</b>
-    		<img src="/image/member/closeVoice.png" width="30px">
+    		
     	</div>
 
 
@@ -92,6 +91,7 @@
 
 		const channelStompClient = Stomp.over(channelSocket);
 
+		
 		channelStompClient.connect({}, ()=>{
 
 			// 보이스 채널 사용자 목록 구독
@@ -108,6 +108,9 @@
 		// 보이스 채널 입장 함수
 		const joinVoiceChannel=(username, clickServerNo)=>{
 			channelStompClient.send("/pub/chat/joinVoice", {}, JSON.stringify({ username, clickServerNo }));
+// 			const connect = document.querySelectorAll('.connect')[0];
+// 			connect.innerHTML = `<b>음성 연결됨</b>
+// 	    		<img src="/image/member/closeVoice.png" width="30px">`;
 		}
 
 		// 보이스 채널 퇴장 함수
@@ -135,6 +138,9 @@
 					if(channelNo.value == key){
 // 						console.log(channelNo.parentElement);
 						channelNo.parentElement.querySelector('ul>li>ul').innerHTML = '';
+// 						const connect = document.querySelectorAll('.connect')[0];
+// 						connect.innerHTML = `<b>음성 연결됨</b>
+// 				    		<img src="/image/member/closeVoice.png" width="30px">`;
 						for(const user of users[channelNo.value]){
 							channelNo.parentElement.querySelector('ul>li>ul').innerHTML += '<li><img src="/image/profile.png">&nbsp' + user + '</li>';
 						}
@@ -206,7 +212,7 @@
 // 			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
 			
 			for(const chatRoom of chatRooms){
-				if(chatRoom.style.display == '' || chatRoom.style.display == 'none'){
+				if(chatRoom.style.display == 'none'){
 					chatRoom.style.display = 'block';
 // 					people.style.display = 'block';	
 				}else{
@@ -216,26 +222,7 @@
 			}
 		})
 		
-		// 음성연결 끊기 버튼 클릭 시 가장 상단 채팅채널로 이동
-		console.log('---------------------');
-		console.log(document.querySelectorAll('.connect')[0].querySelector('img'));
-		document.querySelectorAll('.connect')[0].querySelector('img').addEventListener('click', ()=>{
-			console.log('나가기 버튼 클릭!');
-			console.log(document.querySelectorAll('.profile')[0].querySelector('b').innerText);
-			const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
-			leaveVoiceChannel(myNickname);
-			$.ajax({
-            	url: "/chat/selectSmallestChatNo",
-            	method: 'post',
-            	data: {serverNo:serverNo},
-            	success: data=>{
-            		console.log(data);
-            		if(data != 0){
-            			location.href='/chat/main/' + serverNo + "/" + data;
-            		}
-            	}
-            })
-		})
+		
 		
 	</script>
 
