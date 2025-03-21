@@ -370,8 +370,8 @@ public class MemberController {
 			 loginMember.setImageUrl(userImage.getImgRename().toString());
 		 }
 		 
-		 System.out.println(amazonS3.getUrl(bucket, userImage.getImgRename()).toString());
-		 System.out.println(loginMember.getImageUrl());
+//		 System.out.println(amazonS3.getUrl(bucket, userImage.getImgRename()).toString());
+//		 System.out.println(loginMember.getImageUrl());
 
 
 	     if (loginMember != null) {
