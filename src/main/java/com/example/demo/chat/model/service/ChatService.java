@@ -36,6 +36,8 @@ public class ChatService {
         return mapper.chattingSidebar(no);
     }
 
+
+
 	public void insertChat(ChatMessage message) {
 		// 현재 날짜/시간        
 		LocalDateTime now = LocalDateTime.now();         
@@ -46,12 +48,12 @@ public class ChatService {
 		String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));         
 		// 포맷팅 현재 날짜/시간 출력        
 		System.out.println(formatedNow);  // 2021년 06월 17일 06시 43분 21초
-		
-		
-		
+
+
 		Firestore db = FirestoreClient.getFirestore();
 
-		
+
+
 		DocumentReference docRef = db.collection("RealMan01").document();
 		
 		
@@ -76,6 +78,7 @@ public class ChatService {
 	}
 
 	public ArrayList<ChatMessage> selectChatList(int channelNo) {
+
 		Firestore db = FirestoreClient.getFirestore();
 
 		// asynchronously retrieve all users
@@ -117,7 +120,50 @@ public class ChatService {
 		return mapper.selectChannel(channelNo);
 	}
 
-    public ArrayList<DM> selectDm(int memberNo) {
-		return mapper.selectDm(memberNo);
-    }
+
+
+	public void insertDM(DM message) {
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("dm_memberNickname", message.getMemberNickname());
+		data.put("dm_otherMemberNickname", message.getOtherMemberNickname());
+		data.put("dm_no", message.getDmNo());
+
+	}
+
+	public ArrayList<DM> selectDmList(int memberNo) {
+		return mapper.selectDmList(memberNo);
+	}
+
+	public ArrayList<DM> selectDm(int dmNo) {
+		Firestore db = FirestoreClient.getFirestore();
+
+		ApiFuture<QuerySnapshot> query = db.collection("RealMan01").whereEqualTo("dm_no", dmNo).orderBy("chat_createdate", Query.Direction.DESCENDING).get();
+		// ...
+		// query.get() blocks on response
+		QuerySnapshot querySnapshot;
+		ArrayList<DM> selectDm = new ArrayList<DM>();
+		try {
+			querySnapshot = query.get();
+			List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+			for (QueryDocumentSnapshot document : documents) {
+				DM message = new DM();
+				message.setDmNo(document.getLong("dm_no").intValue());
+				message.setMemberNickname(document.getString("dm_memberNickname"));
+				message.setOtherMemberNickname(document.getString("dm_otherMemberNickname"));
+
+				selectDm.add(message);
+			}
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return selectDm;
+	}
+
+
+
+
 }
+

@@ -9,12 +9,14 @@
 <body>
     <div class="directMassage" th:fragment="directMassage">
         <div class="dm">다이렉트 메시지</div>
-        <button class="creatDm">+</button>
+        <button class="createDM">+</button>
 
         <table class="dmTable">
 
 
-            <tbody id="dmList">
+            <tbody id="dmList" th:each="d:${DM}">
+                <img>
+                <b th:text="${d.otherMemberNickname}"></b>
 
             </tbody>
         </table>
@@ -32,38 +34,16 @@
     </div>
 
 <script>
-    const dmList = () => {
-        $.ajax({
-            url: '/dmList',
-            method: 'GET',
-            dataType: 'json',
-            success: (data) => {
-                const tbody = $('#dmList');
+    onload=()=>{
+
+        const sendDM = document.getElementById('createDM').onclick{
+
+        }
 
 
-                if (data.length === 0) {
-                    tbody.append('<tr><td colspan="2">받은 메시지가 없습니다.</td></tr>');
-                    return;
-                }
 
-                data.forEach(dm => {
-                    const row = `
-                            <tr>
-                                <td><img src="${dm.profileImg}" alt="프로필" width="40"></td>
-                                <td>${dm.nickname}</td>
-                            </tr>
-                        `;
-                    tbody.append(row);
-                });
-            },
-            error: (eooro) => {
-                console.error('DM 리스트 가져오기 실패:', error);
-            }
-        });
-    };
 
-    // 페이지 로드 시 DM 리스트 가져오기
-    $(document).ready(dmList);
+    }
 
 </script>
 </body>

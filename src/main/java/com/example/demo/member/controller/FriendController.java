@@ -35,11 +35,11 @@ public class FriendController {
 		
 		// 친구목록
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-		ArrayList<Member> list = friendNumberList.isEmpty()? null : mService.selectMembers(friendNumberList);
-		for(int i = 0; i < list.size(); i++) {
-			ProfileImage img = mService.selectImage(list.get(i).getMemberNo());
+		ArrayList<Member> flist = friendNumberList.isEmpty()? null : mService.selectMembers(friendNumberList);
+		for(int i = 0; i < flist.size(); i++) {
+			ProfileImage img = mService.selectImage(flist.get(i).getMemberNo());
 			if(img != null) {
-				list.get(i).setImageUrl(img.getImgRename());
+				flist.get(i).setImageUrl(img.getImgRename());
 			}
 		}
 		// 내가 보낸 요청 목록
@@ -49,7 +49,7 @@ public class FriendController {
 		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
 		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectMembers(receivedRequestList);
 		
-		map.put("list", list);
+		map.put("flist", flist);
 		map.put("wlist", wlist);
 		map.put("rlist", rlist);
 

@@ -8,15 +8,19 @@ import java.sql.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class DM {
     private int dmNo;
     private Date dmCreateDate;
     private char dmStatus;
     private int memberNo;
     private int otherMemberNo;
+
     private String memberNickname;
-    private String memberId;
+    private String otherMemberNickname;
+    private String message;
+
+
+
 
 
 }
