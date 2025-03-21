@@ -9,7 +9,7 @@
 <body>
     <div class="directMassage" th:fragment="directMassage">
         <div class="dm">다이렉트 메시지</div>
-        <button class="createDM">+</button>
+        <button class="createDM" onclick="sendDM()">+</button>
 
         <table class="dmTable">
 
@@ -35,10 +35,41 @@
 
 <script>
     onload=()=>{
+        const memberList = /*[[${memberList}]]*/ null;
+        const flist = /*[[${flist}]]*/ null;
 
-        const sendDM = document.getElementById('createDM').onclick{
+        function sendDM(){
+            fetch('/friend')
+                .then(response => response.json())
+                .then(friends => {
+                    const friendListContainer = document.createElement('div');
+                    friendListContainer.classList.add('friendListContainer');
 
+                    friends.forEach(friend => {
+                        const friendDiv = document.createElement('div');
+                        friendDiv.innerHTML = `<img src="${flist.icon}" alt="친구 아이콘"> ${flist.nickname} (${flist.id})`;
+                        friendDiv.addEventListener('click', () => {
+                            startDM(friend.dmNo);
+                            document.body.removeChild(friendListContainer); // 박스 제거
+                        });
+                        friendListContainer.appendChild(friendDiv);
+                    });
+
+                    // 4. 생성된 박스를 body에 추가
+                    document.body.appendChild(friendListContainer);
+                })
+                .catch(error => {
+                    console.error('친구 목록을 가져오는 중 오류 발생:', error);
+                });
+
+
+            function startDM(dmNo) {
+                window.location.href = `/dm/${dmNo}`;
+            }
         }
+
+
+
 
 
 

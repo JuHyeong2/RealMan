@@ -75,7 +75,7 @@ public class HomeController {
 		return 0;
 	}
 
-	@GetMapping("/main/{dmNo}")
+	@GetMapping("/dm/{dmNo}")
 	public String dm(@PathVariable int dmNo, Model model, HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 
