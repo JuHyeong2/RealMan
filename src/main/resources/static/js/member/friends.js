@@ -141,7 +141,11 @@ const getFriendList = () => {
           for (let f of data.list) {
             const fli = fLi.cloneNode(true);
             fli.querySelector("input").value = f.memberNo;
-            fli.querySelector("img").src = f.imageUrl != null ? f.imageUrl : '/image/member/no-profile.svg';
+			const imgTag = fli.querySelector("img");
+			imgTag.src = f.imageUrl != null ? f.imageUrl : '/image/member/no-profile.svg';
+			imgTag.setAttribute("data-user-id", f.memberId);     
+			imgTag.setAttribute("data-nickname", f.memberNickname); 
+			imgTag.classList.add("friend-profile");             
             fli.querySelector(".nickname").innerText = f.memberNickname;
             fli.querySelector(".id").innerText = f.memberId;
             flist.append(fli);
@@ -227,6 +231,16 @@ function setupEventHandlers() {
           break;
       }
     });
+  });
+  
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("friend-profile")) {
+      const imageSrc = e.target.getAttribute("src");
+      const nickname = e.target.getAttribute("data-nickname");
+      const userId = e.target.getAttribute("data-user-id");
+
+      openMiniProfile(imageSrc, nickname, userId);
+    }
   });
 
   //======================검색======================

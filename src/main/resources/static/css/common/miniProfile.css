@@ -6,8 +6,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px;
-    height: 160px;
+    width: 355px;
+    height: 155px;
+    overflow: hidden;
     background-color: #bdd3E2;
     border-radius : 15px;
     z-index: 99999;
@@ -37,8 +38,8 @@
 .modal-content {
     background-color: white;
     border-radius: 15px;
-    width: 380px; 
-    min-height: 140px; 
+    width: 340px; 
+    height: 140px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -76,7 +77,7 @@
     font-size: 20px; /* ✅ 크기 키움 */
     font-weight: bold;
     color: #23272A;
-    margin-bottom: 3px;
+    margin-top: -65px;
 }
 
 /* ✅ 사용자 ID 스타일 */
@@ -94,13 +95,13 @@
 }
 
 .profile-actions button {
-    width: 90%;
     padding: 12px;
     font-size: 15px; /* ✅ 폰트 키움 */
+    margin-top: -30px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background: #f3f3f3;
+    background: white;
     text-align: center; /* ✅ 버튼 내 글씨 가운데 정렬 */
     display: flex;
     align-items: center;

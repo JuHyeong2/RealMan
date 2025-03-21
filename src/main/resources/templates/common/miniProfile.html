@@ -36,23 +36,25 @@
     </div>
 
     <!-- ✅ 프로필 모달 -->
-    <div id="miniProfileModal" class="modal">
-	    <div class="modal-content">
-	        <div class="modal-header">
-	            <img id="miniProfileImage" src="" class="profile-avatar">
-	        </div>
-	
-	        <div class="modal-body">
-	            <h2 id="miniProfileNickname">사용자0413</h2>
-	            <p id="miniProfileId">ballpython11201106</p>
-	        </div>
-	
-	        <div class="profile-actions">
-	            <button id="editProfile" onclick="goToMyAccount()">
-	                <span>✏️ 프로필 편집</span>
-	            </button>
-	        </div>
-	    </div>
+    <div th:fragment="miniProfile">
+	    <div id="miniProfileModal" class="modal">
+		    <div class="modal-content">
+		        <div class="modal-header">
+		            <img id="miniProfileImage" src="" class="profile-avatar">
+		        </div>
+		
+		        <div class="modal-body">
+		            <h2 id="miniProfileNickname">사용자0413</h2>
+		            <p id="miniProfileId">ballpython11201106</p>
+		        </div>
+		
+		        <div class="profile-actions">
+		            <button id="editProfile" onclick="goToMyAccount()">
+		                <span>✏️ 프로필 편집</span>
+		            </button>
+		        </div>
+		    </div>
+		</div>
 	</div>
 
 </body>

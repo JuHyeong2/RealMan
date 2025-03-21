@@ -11,9 +11,15 @@
     <link href="/css/main.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/css/member/friends.css" />
     <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>
+    <style>
+    	.top-bar {
+        	height: 40px;
+        	background-color: #e4edf3;
+      	}
+    </style>
   </head>
   <body>
-  <div class="topbar_wrap" th:replace="../common/top.html"></div>
+  <div class="topbar_wrap" th:replace="~{/common/top :: html}"></div>
   <div class="main-container">
         <div class="sidebar_wrap">
           <div th:replace="~{../common/sidebar.html}"></div>
@@ -23,7 +29,10 @@
         <!-- 친구 목록 -->
         <div th:replace="~{../member/friends.html::friends}"></div>
   </div>
+  
+   <div th:replace="~{/common/miniProfile :: miniProfile}"></div>
 
+	<script src="/js/common/miniProfile.js"></script> 
     <script src="/js/member/friends.js"></script>
   </body>
 </html>

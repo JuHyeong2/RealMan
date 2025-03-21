@@ -61,6 +61,11 @@
 .chatContent-1 {
 	display: flex;
 	margin-bottom: 10px;
+	width: 100%;
+}
+
+.chatContent-1 img {
+	border-radius: 100px;
 }
 
 .chatContent-1 img {
@@ -74,6 +79,7 @@
 .chatContent-2 {
 	align-items: center;
 	align-content: center;
+	width: 100%;
 }
 
 #remoteStreamDiv {
