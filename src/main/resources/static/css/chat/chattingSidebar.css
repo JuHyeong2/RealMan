@@ -46,6 +46,7 @@ html, body {
 	border-radius: 10px;
 }
 
+
 .voiceChat ui li{
 	margin-left: 50px;
 }
@@ -60,7 +61,6 @@ html, body {
 /* } */
 
 .voiceChat > ul > li {
-	display: none;
 }
 
 .channel {
@@ -71,7 +71,6 @@ html, body {
 	display: none;  /* 기본적으로 숨김 */
 	padding: 0;
 }
-
 
 
 .chatSidebar nav ul li.channel:hover + .voiceList,

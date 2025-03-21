@@ -11,5 +11,6 @@ public class ChatMessage {
 	private String message;
 	private String separetor;
 	private String createDate;
+	private String profileUrl;
 
 }
