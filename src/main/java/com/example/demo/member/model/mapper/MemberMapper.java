@@ -93,4 +93,6 @@ public interface MemberMapper {
 
 
     int getMemberNo(String memberId);
+
+	Member selectMemberNo(String sender);
 }

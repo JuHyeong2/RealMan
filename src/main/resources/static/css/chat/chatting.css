@@ -56,13 +56,15 @@
 
 .video-preview {
 	width: 100%;
-	
-	
 }
 
 .chatContent-1 {
 	display: flex;
 	margin-bottom: 10px;
+}
+
+.chatContent-1 img {
+	border-radius: 100px;
 }
 
 .chatContent-2 p{
