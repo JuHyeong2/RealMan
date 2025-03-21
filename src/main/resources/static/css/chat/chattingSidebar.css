@@ -13,6 +13,12 @@ html, body {
 	overflow-y: auto;
 }
 
+.voiceChat ul {
+	list-style: none;
+	padding: 0;
+	margin-left: 5px;
+	font-size: 25px;
+}
 
 .voiceChat > ul > li > b {
 	display: block;
@@ -40,13 +46,9 @@ html, body {
 	border-radius: 10px;
 }
 
-.chatSidebar nav ul ul li{
-	list-style: none;
-	padding: 0;
-	margin-left: 30px;
-	font-size: 20px;
-	background-color: transparent;
-	border-radius: 10px;
+
+.voiceChat ui li{
+	margin-left: 50px;
 }
 
 /* nav ul ul li{ */
@@ -70,36 +72,6 @@ html, body {
 	padding: 0;
 }
 
-.voiceList table, .chatList table {
-	width: 100%;
-}
-
-.voiceList td, .chatList td {
-	padding: 8px;
-}
-
-.voiceList td img, .chatList td img {
-	width: 20px;
-	height: 20px;
-}
-
-.voiceList th, .chatList th {
-	text-align: left;
-}
-
-.chatList a {
-	text-decoration: none;
-	color: inherit; /* 링크 색상 상속 */
-}
-
-.chatList table {
-	border-spacing: 0;
-	width: 100%;
-}
-
-.chatList td {
-	text-align: center;
-}
 
 .chatSidebar nav ul li.channel:hover + .voiceList,
 .chatSidebar nav ul li.channel:hover + .chatList {
@@ -127,6 +99,14 @@ html, body {
 	background-color: #dbe9f4;
 }
 
+.profile {
+	display: flex;
+  	align-items: center; /* 수직 중앙 정렬 */
+  	gap: 5px;
+  	position: absolute;
+  	width: 350px;
+  	bottom: 0px; 
+}
 
 .profile b{
 	font-size: 20px;

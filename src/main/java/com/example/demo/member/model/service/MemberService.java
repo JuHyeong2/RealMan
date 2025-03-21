@@ -212,6 +212,7 @@ public class MemberService {
 	}
 
 	public Member selectMemberNo(String sender) {
+
 		return mapper.selectMemberNo(sender);
 	}
 }

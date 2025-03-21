@@ -101,7 +101,6 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background: white;
     text-align: center; /* ✅ 버튼 내 글씨 가운데 정렬 */
     display: flex;
     align-items: center;
