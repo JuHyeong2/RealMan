@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.demo.member.model.vo.Friend;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,19 +36,39 @@ public class FriendController {
 		// 친구목록
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
 		ArrayList<Member> flist = friendNumberList.isEmpty()? null : mService.selectMembers(friendNumberList);
-		for(int i = 0; i < flist.size(); i++) {
-			ProfileImage img = mService.selectImage(flist.get(i).getMemberNo());
-			if(img != null) {
-				flist.get(i).setImageUrl(img.getImgRename());
+		if(flist != null) {
+			for(int i = 0; i < flist.size(); i++) {
+				ProfileImage img = mService.selectImage(flist.get(i).getMemberNo());
+				if(img != null) {
+					flist.get(i).setImageUrl(img.getImgRename());
+				}
 			}
 		}
+
 		// 내가 보낸 요청 목록
 		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
 		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectMembers(sentRequestList);
+		if(wlist != null) {
+			for(int i=0; i< wlist.size(); i++) {
+				ProfileImage img = mService.selectImage(wlist.get(i).getMemberNo());
+				if(img != null) {
+					wlist.get(i).setImageUrl(img.getImgRename());
+				}
+			}
+		}
+
 		// 나한테 온 요청 목록
 		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
 		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectMembers(receivedRequestList);
-		
+		if(rlist != null) {
+			for(int i=0; i< rlist.size(); i++) {
+				ProfileImage img = mService.selectImage(rlist.get(i).getMemberNo());
+				if(img != null) {
+					rlist.get(i).setImageUrl(img.getImgRename());
+				}
+			}
+		}
+
 		map.put("flist", flist);
 		map.put("wlist", wlist);
 		map.put("rlist", rlist);
