@@ -151,9 +151,15 @@ public class MemberController {
 		Map<String, String> searchMap = new HashMap<String, String>();
 		searchMap.put("search", search);
 		searchMap.put("myMemberNo", loginMember.getMemberNo()+"");
-		ArrayList<Member> list = mService.findMember(searchMap);
-		System.out.println("list : "+list);
-		return list;
+		ArrayList<Member> slist = mService.findMember(searchMap);
+		for(int i=0; i< slist.size(); i++) {
+			ProfileImage img = mService.selectImage(slist.get(i).getMemberNo());
+			if(img != null) {
+				slist.get(i).setImageUrl(img.getImgRename());
+			}
+		}
+		System.out.println("slist : "+slist);
+		return slist;
 	}
 	
 	// 회원 차단

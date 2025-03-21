@@ -172,6 +172,13 @@ window.onload = () => {
       editMemberInfo("member_pwd", newInput2.value, pwd);
     });
   });
+  //======================로그아웃======================
+  const logoutBtn = document.querySelector("#logoutBtn");
+  logoutBtn.addEventListener("click", function () {
+    if (confirm("로그아웃 하시겠습니까?")) {
+      location.href = "/member/logout";
+    }
+  });
 
   //======================계정삭제======================
   // 계정 삭제하기

@@ -41,8 +41,8 @@ li {
   background-color: rgb(240, 240, 240);
 }
 
-.memberList-li img{
-	border-radius: 100px;
+.memberList-li img {
+  border-radius: 100px;
 }
 
 .nickname {
@@ -164,7 +164,7 @@ li {
   position: relative;
   width: 100%;
   height: 3rem;
-  padding-left: 0.5rem;
+  padding: 0.5rem;
 }
 
 .li-friends:hover {
@@ -187,11 +187,17 @@ li {
 }
 
 .profile-div {
-  height: 80%;
+  height: 2.5rem;
+  width: 2.5rem;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
 }
 
 .profile-div > img {
-  height: 100%;
+  width: 100%;
+  height: auto;
 }
 
 .li-friends > button {
