@@ -46,33 +46,26 @@ public class HomeController {
 	}
 	
 
-	@GetMapping("/main")
-	public String mainPage(Model model, HttpSession session, DM dmContent) {
-		Member m = (Member) session.getAttribute("loginMember");
-		ArrayList<Server> selectServerList = sService.selectServerList(m);
+  @GetMapping("/main")
+  public String mainPage(Model model, HttpSession session, DM dmContent) {
+  	Member m = (Member) session.getAttribute("loginMember");
+  
+	  ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(m);
+	  ArrayList<DM> d = cService.selectDmList(m.getMemberNo());
 
-		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(m);
-		ArrayList<DM> d = cService.selectDmList(m.getMemberNo());
+	  for (DM a : d) {
+		  System.out.println("DM 내용: " + a.toString());
+	  }
 
-		for(DM a : d){
-			System.out.println("ㅋㅋㅋㅋㅋㅋㅋㅋㅋ" + a.toString());
-		}
+	  model.addAttribute("loginMember", m)
+		  	.addAttribute("DM", d)
+			  .addAttribute("friendNumberList", friendNumberList);
 
-		model.addAttribute("loginMember", m)
-				.addAttribute("DM",d)
-		.addAttribute("friendNumberList", friendNumberList);
+	  cService.insertDM(dmContent);
 
-		if(selectServerList != null || !selectServerList.isEmpty()) {
-			model.addAttribute("selectServerList", selectServerList);
-			
-			
-		}
+	  return "/main/main";
+  }
 
-		cService.insertDM(dmContent);
-
-
-		return "/main/main";
-	}
 	
 	public int smallestTextChatNo() {
 		
