@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.demo.member.model.vo.Friend;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -214,4 +215,8 @@ public class MemberService {
 	public Member selectMemberNo(String sender) {
 		return mapper.selectMemberNo(sender);
 	}
+
+    public ArrayList<Friend> friendList(int memberNo) {
+		return	mapper.friendList(memberNo);
+    }
 }

@@ -313,7 +313,7 @@
               }
 
               let filteredMembers = memberList.filter((member) =>
-                member.memberNickName
+                member.memberNickname
                   .toLowerCase()
                   .includes(mentionText.toLowerCase())
               );
@@ -328,8 +328,8 @@
               filteredMembers.forEach((member) => {
                 let item = document.createElement("div");
                 item.classList.add("mention-item");
-                item.dataset.nickname = member.memberNickName;
-                item.innerHTML = member.memberNickName.replace(
+                item.dataset.nickname = member.memberNickname;
+                item.innerHTML = member.memberNickname.replace(
                   new RegExp(mentionText, "gi"),
                   (match) =>
                     `<span style="color: blue; font-weight: bold;">${match}</span>`
@@ -338,7 +338,7 @@
                 item.style.cursor = "pointer";
 
                 item.addEventListener("click", function () {
-                  insertMention(editor, member.memberNickName);
+                  insertMention(editor, member.memberNickname);
                 });
                 mentionBox.appendChild(item);
               });

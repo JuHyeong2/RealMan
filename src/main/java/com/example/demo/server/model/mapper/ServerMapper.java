@@ -2,6 +2,7 @@ package com.example.demo.server.model.mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,6 +16,8 @@ public interface ServerMapper {
 
     ArrayList<Server> selectServerList(Member m);
 
+	ArrayList<Map<String, Object>> loadServerList(int memberNo);
+
 	ArrayList<Integer> selectChannelNo(int serverNo);
 
 	ArrayList<Integer> selectMemberNumbers(int serverNo);
@@ -27,4 +30,13 @@ public interface ServerMapper {
 
 	int ejectMember(HashMap<String, Integer> map);
 
+	void insertServer(String name);
+
+	int selectCreateServerNo();
+
+	void insertServerMember(int memberNo, int serverNo);
+
+	void insertDefaultTextChannel(int serverNo);
+
+	void insertDefaultVoiceChannel(int serverNo);
 }

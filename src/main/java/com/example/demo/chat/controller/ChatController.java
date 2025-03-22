@@ -56,46 +56,6 @@ public class ChatController {
 	private Map<Integer, Set<String>> videoInChannel = new ConcurrentHashMap<>();
 	private int memberInchannelNo = 0;
 
-	@GetMapping("/main")
-	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
-//		String ip = request.getHeader("X-Forwarded-For");
-//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-//	        ip = request.getHeader("Proxy-Client-IP");
-//	    }
-//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-//	        ip = request.getHeader("WL-Proxy-Client-IP");
-//	    }
-//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-//	        ip = request.getHeader("HTTP_CLIENT_IP");
-//	    }
-//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-//	        ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-//	    }
-//	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-//	        ip = request.getRemoteAddr();
-//	    }
-	    
-	    
-//		System.out.println(ip);
-		Member m = (Member) session.getAttribute("loginMember");
-
-		ArrayList<Server> selectServerList = sService.selectServerList(m);
-		if(selectServerList != null || !selectServerList.isEmpty()) {
-			model.addAttribute("selectServerList", selectServerList);
-		}
-
-
-
-//		model.addAttribute("ip", ip);
-//		model.addAttribute("server", server);
-		
-		model.addAttribute("member", m);
-
-		return "chat/chatting";
-	}
-
-
-
 	@GetMapping("/main/{serverNo}/{channelNo}")
 	public String chatting(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
