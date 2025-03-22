@@ -171,11 +171,11 @@
   background-color: #6073ee;
 }
 
-#deactivateBtn {
-  background-color: #fd3d3d;
+#logoutBtn {
+  background-color: #f88f8f;
 }
-#deactivateBtn:hover {
-  background-color: #dd0101;
+#logoutBtn:hover {
+  background-color: #ffafaf;
 }
 
 #deleteBtn {

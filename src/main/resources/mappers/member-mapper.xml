@@ -209,7 +209,7 @@
 	
 	<insert id="insertProfileImage">
 		insert into image(img_no,img_originalname,img_rename,img_path,img_separator,mcd_no)
-		values(image_seq.nextval,#{imgOriginalname},#{imgPath},#{imgRename},#{imgSeparator},#{mcdNo})
+		values(image_seq.nextval,#{imgName},#{imgRename},#{imgPath},#{imgSeparator},#{mcdNo})
 	</insert>
 	
 	<update id="updateProfileImage">
@@ -243,4 +243,9 @@
 		where member_nickname = #{sender}
 	</select>
 
+	<select id="friendList">
+		select *
+		from friend
+		where member_no= #{memberNo}
+	</select>
 </mapper>

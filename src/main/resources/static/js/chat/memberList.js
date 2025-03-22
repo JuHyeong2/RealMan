@@ -15,7 +15,7 @@ inviteModalBtn.addEventListener("click", function () {
     .then((response) => response.json())
     .then((data) => {
       friendList.innerHTML = "";
-      data.list.forEach((f) => {
+      data.flist.forEach((f) => {
         const li = document.createElement("li");
         li.className = "li-friends";
 
@@ -27,7 +27,8 @@ inviteModalBtn.addEventListener("click", function () {
         const profileImgDiv = document.createElement("div");
         profileImgDiv.className = "profile-div";
         const profileImg = document.createElement("img");
-        profileImg.src = "/profile-images/" + f.profileImage;
+        profileImg.src =
+          f.imageUrl == null ? "/image/member/no-profile.svg" : f.imageUrl;
         profileImgDiv.append(profileImg);
         li.append(profileImgDiv);
 

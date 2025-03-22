@@ -1,241 +1,267 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8" />
-<script src="https://code.jquery.com/jquery-3.7.1.js"
-	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-	crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/css/preferences/myProfile.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/preferences/myProfile.css" />
 
-<title>환경설정</title>
-</head>
-<body>
-	<div class="main">
-		<div th:insert="preferences/preferencesSidebar.html"></div>
+    <title>환경설정</title>
+  </head>
+  <body>
+    <div class="main">
+      <div th:insert="preferences/preferencesSidebar.html"></div>
 
-		<div class="profile-main">
-			<div class="profile-top">
-				<div>
-					<h1>내 계정</h1>
-				</div>
-				<img alt="Xcircle" src="/image/preferences/Xcircle.png" width="50px"
-					height="50px" onclick="location.href='/main'" />
-			</div>
+      <div class="profile-main">
+        <div class="profile-top">
+          <div>
+            <h1>내 계정</h1>
+          </div>
+          <img
+            alt="Xcircle"
+            src="/image/preferences/Xcircle.png"
+            width="50px"
+            height="50px"
+            onclick="location.href='/main'"
+          />
+        </div>
 
-			<div class="myprofile">
-				<div class="myprofile-top"></div>
+        <div class="myprofile">
+          <div class="myprofile-top"></div>
 
-				<div class="myprofile-main">
-					<div class="profile-pic-outer">
-						<div class="profile-pic-inner">
-							<div class="profile-pic-container">
-								<img
-									class="profile-pic"
-									th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}" />
-							</div>
-						</div>
-					</div>
+          <div class="myprofile-main">
+            <div class="profile-pic-outer">
+              <div class="profile-pic-inner">
+                <div class="profile-pic-container">
+                  <img
+                    class="profile-pic"
+                    th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}"
+                  />
+                </div>
+              </div>
+            </div>
 
-					<div class="profile-info">
-						<div class="profile-info-row">
-							<b>별명</b>
-							<h2>[[${session.loginMember.memberNickname}]]</h2>
-							<button id="nickNameBtn">수정</button>
-						</div>
-						<div class="profile-info-row">
-							<b>이메일</b>
-							<h2>[[${session.loginMember.memberEmail}]]</h2>
-							<button id="emailBtn">수정</button>
-						</div>
-						<div class="profile-info-row">
-							<b>전화번호</b>
-							<h2>[[${session.loginMember.memberPhone}]]</h2>
-							<button id="phoneBtn">수정</button>
-						</div>
-					</div>
-				</div>
-				<div class="manage-div">
-					<button id="changePassword">비밀번호 변경하기</button>
-					<button id="deactivateBtn">계정 비활성화</button>
-					<button id="deleteBtn">계정 삭제하기</button>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="profile-info">
+              <div class="profile-info-row">
+                <b>별명</b>
+                <h2>[[${session.loginMember.memberNickname}]]</h2>
+                <button id="nickNameBtn">수정</button>
+              </div>
+              <div class="profile-info-row">
+                <b>이메일</b>
+                <h2>[[${session.loginMember.memberEmail}]]</h2>
+                <button id="emailBtn">수정</button>
+              </div>
+              <div class="profile-info-row">
+                <b>전화번호</b>
+                <h2>[[${"0"+session.loginMember.memberPhone}]]</h2>
+                <button id="phoneBtn">수정</button>
+              </div>
+            </div>
+          </div>
+          <div class="manage-div">
+            <button id="changePassword">비밀번호 변경하기</button>
+            <button id="logoutBtn">로그아웃</button>
+            <button id="deleteBtn">계정 삭제하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-	<!------------------------프사 모달------------------------>
-	<div class="modal" id="profile-pic-modal">
-		<div class="modal-content">
-			<div>
-				<div>
-					<img th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/member/no-profile.svg'}" />
-				</div>
-			</div>
-			<div>
-				<button type="button">변경하기</button>
-				<button type="button">삭제하기</button>
-			</div>
-			<button class="cancle-button" type="button">취소</button>
-		</div>
-	</div>
+    <!------------------------프사 모달------------------------>
+    <div class="modal" id="profile-pic-modal">
+      <div class="modal-content">
+        <div>
+          <div>
+            <img
+              th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/member/no-profile.svg'}"
+            />
+          </div>
+        </div>
+        <div>
+          <button type="button">변경하기</button>
+          <button type="button">삭제하기</button>
+        </div>
+        <button class="cancle-button" type="button">취소</button>
+      </div>
+    </div>
 
-	<!------------------------닉넴 모달------------------------>
-	<div class="modal" id="nickNameModal">
-		<div class="modal-content">
-			<form>
-				<div class="modalTitle">
-					<b>별명 변경하기</b>
-					<p>새 별명과 기존 비밀번호를 입력하세요.</p>
-				</div>
-				<b>별명</b><br /> <input type="text" name="memberNickname" /><br />
-				<b>현재 비밀번호</b><br /> <input type="password" name="memberPwd" />
-				<div class="modal-btn">
-					<button class="cancle-button" type="button">취소</button>
-					<button class="completeBtn" type="button" id="nick-complete">
-						완료</button>
-				</div>
-			</form>
-		</div>
-	</div>
+    <!------------------------닉넴 모달------------------------>
+    <div class="modal" id="nickNameModal">
+      <div class="modal-content">
+        <form>
+          <div class="modalTitle">
+            <b>별명 변경하기</b>
+            <p>새 별명과 기존 비밀번호를 입력하세요.</p>
+          </div>
+          <b>별명</b><br />
+          <input type="text" name="memberNickname" /><br />
+          <b>현재 비밀번호</b><br />
+          <input type="password" name="memberPwd" />
+          <div class="modal-btn">
+            <button class="cancle-button" type="button">취소</button>
+            <button class="completeBtn" type="button" id="nick-complete">
+              완료
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
-	<!------------------------이메일 모달------------------------>
-	<div class="modal" id="emailModal-1">
-		<div class="modal-content">
-			<div class="modalTitle">
-				<img alt="email" src="/image/preferences/Mail.png" /><br /> <b>이메일
-					주소를 인증하세요</b>
-				<p>
-					이메일 주소를 변경하려면 이전 이메일 주소 <span class="email-span">[[${session.loginMember.memberEmail}]]</span>
-					부터 인증해야해요. <br /> 해당 이메일에 엑세스할 수 없나요? 다시 엑세스하려면 <br /> 이메일 제공업체에
-					문의하세요.
-				</p>
-				<div class="modal-btn">
-					<button class="cancle-button" type="button">취소</button>
-					<button id="sendBtn">인증코드 전송</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    <!------------------------이메일 모달------------------------>
+    <div class="modal" id="emailModal-1">
+      <div class="modal-content">
+        <div class="modalTitle">
+          <img alt="email" src="/image/preferences/Mail.png" /><br />
+          <b>이메일 주소를 인증하세요</b>
+          <p>
+            이메일 주소를 변경하려면 이전 이메일 주소
+            <span class="email-span"
+              >[[${session.loginMember.memberEmail}]]</span
+            >
+            부터 인증해야해요. <br />
+            해당 이메일에 엑세스할 수 없나요? 다시 엑세스하려면 <br />
+            이메일 제공업체에 문의하세요.
+          </p>
+          <div class="modal-btn">
+            <button class="cancle-button" type="button">취소</button>
+            <button id="sendBtn">인증코드 전송</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-	<div class="modal" id="emailModal-2">
-		<div class="modal-content">
-			<div class="modalTitle">
-				<b>코드 입력</b>
-				<p>
-					이메일 확인 : 방금 인증코드를 보냈어요. 해당 코드를 <br /> 입력하여 본인임을 인증하세요.
-				</p>
-				<input type="text" name="certification" />
-				<p id="clickP" align="left">코드를 받지 못했거나 코드가 만료되었나요? 다시 보내세요.</p>
-				<div class="modal-btn">
-					<button class="cancle-button" type="button">취소</button>
-					<button id="nextBtn">다음</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="modal" id="emailModal-2">
+      <div class="modal-content">
+        <div class="modalTitle">
+          <b>코드 입력</b>
+          <p>
+            이메일 확인 : 방금 인증코드를 보냈어요. 해당 코드를 <br />
+            입력하여 본인임을 인증하세요.
+          </p>
+          <input type="text" name="certification" />
+          <p id="clickP" align="left">
+            코드를 받지 못했거나 코드가 만료되었나요? 다시 보내세요.
+          </p>
+          <div class="modal-btn">
+            <button class="cancle-button" type="button">취소</button>
+            <button id="nextBtn">다음</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-	<div class="modal" id="emailModal-3">
-		<div class="modal-content">
-			<div class="modalTitle">
-				<b>이메일 주소를 입력하세요.</b>
-				<p>새로운 이메일 주소와 기존 비밀번호를 입력하세요.</p>
-			</div>
-			<b>이메일</b><br /> <input type="email" name="email" /><br /> <b>현재
-				비밀번호</b><br /> <input type="password" name="password" /><br />
-			<div class="modal-btn">
-				<button class="cancle-button" type="button">취소</button>
-				<button class="completeBtn" id="email-complete">완료</button>
-			</div>
-		</div>
-	</div>
+    <div class="modal" id="emailModal-3">
+      <div class="modal-content">
+        <div class="modalTitle">
+          <b>이메일 주소를 입력하세요.</b>
+          <p>새로운 이메일 주소와 기존 비밀번호를 입력하세요.</p>
+        </div>
+        <b>이메일</b><br />
+        <input type="email" name="email" /><br />
+        <b>현재 비밀번호</b><br />
+        <input type="password" name="password" /><br />
+        <div class="modal-btn">
+          <button class="cancle-button" type="button">취소</button>
+          <button class="completeBtn" id="email-complete">완료</button>
+        </div>
+      </div>
+    </div>
 
-	<!------------------------전번 모달------------------------>
-	<div class="modal" id="phoneModal-1">
-		<div class="modal-content">
-			<div class="modalTitle">
-				<img alt="phone" src="/image/preferences/Phone.png" /><br /> <b>전화번호
-					입력하기</b>
-				<p>
-					인증 코드가 적힌 문자 메시지를 받을 거에요.<br />
-					<br /> 전화번호는 한번에 RealMan계정 하나를 인증하는데 사용되며<br /> 인증과 로그인용으로만
-					사용됩니다.
-				</p>
-			</div>
-			<div class="input-container">
-				<input type="number" name="phone" /><br />
-				<button id="sendPhoneBtn" type="button">보내기</button>
-			</div>
-			<button class="cancle-button" type="button">취소</button>
-		</div>
-	</div>
+    <!------------------------전번 모달------------------------>
+    <div class="modal" id="phoneModal-1">
+      <div class="modal-content">
+        <div class="modalTitle">
+          <img alt="phone" src="/image/preferences/Phone.png" /><br />
+          <b>전화번호 입력하기</b>
+          <p>
+            인증 코드가 적힌 문자 메시지를 받을 거에요.<br />
+            <br />
+            전화번호는 한번에 RealMan계정 하나를 인증하는데 사용되며<br />
+            인증과 로그인용으로만 사용됩니다.
+          </p>
+        </div>
+        <div class="input-container">
+          <input type="number" name="phone" /><br />
+          <button id="sendPhoneBtn" type="button">보내기</button>
+        </div>
+        <button class="cancle-button" type="button">취소</button>
+      </div>
+    </div>
 
-	<div class="modal" id="phoneModal-2">
-		<div class="modal-content">
-			<div class="modalTitle">
-				<img alt="phone" src="/image/preferences/Phone.png" /><br /> <b>전화번호
-					인증하기</b>
-				<p>문자로 전송된 6자리 코드 입력하기.</p>
-			</div>
-			<div class="input-container2">
-				<input type="number" maxlength="1" class="phoneInput" /> <input
-					type="number" maxlength="1" class="phoneInput" /> <input
-					type="number" maxlength="1" class="phoneInput" /> <input
-					type="number" maxlength="1" class="phoneInput" /> <input
-					type="number" maxlength="1" class="phoneInput" /> <input
-					type="number" maxlength="1" class="phoneInput" />
-			</div>
-		</div>
-		<button class="cancle-button" type="button">취소</button>
-	</div>
+    <div class="modal" id="phoneModal-2">
+      <div class="modal-content">
+        <div class="modalTitle">
+          <img alt="phone" src="/image/preferences/Phone.png" /><br />
+          <b>전화번호 인증하기</b>
+          <p>문자로 전송된 6자리 코드 입력하기.</p>
+        </div>
+        <div class="input-container2">
+          <input type="number" maxlength="1" class="phoneInput" />
+          <input type="number" maxlength="1" class="phoneInput" />
+          <input type="number" maxlength="1" class="phoneInput" />
+          <input type="number" maxlength="1" class="phoneInput" />
+          <input type="number" maxlength="1" class="phoneInput" />
+          <input type="number" maxlength="1" class="phoneInput" />
+        </div>
+      </div>
+      <button class="cancle-button" type="button">취소</button>
+    </div>
 
-	<div class="modal" id="phoneModal-3">
-		<div class="modal-content">
-			<div class="modalTitle">
-				<b>변경을 확인하려면 비밀번호를 입력하세요</b>
-				<p></p>
-			</div>
-			<b>비밀번호</b> <input type="password" name="password" /><br />
-			<div class="modal-btn">
-				<button class="cancle-button" type="button">취소</button>
-				<button class="completeBtn">완료</button>
-			</div>
-		</div>
-	</div>
+    <div class="modal" id="phoneModal-3">
+      <div class="modal-content">
+        <div class="modalTitle">
+          <b>변경을 확인하려면 비밀번호를 입력하세요</b>
+          <p></p>
+        </div>
+        <b>비밀번호</b> <input type="password" name="password" /><br />
+        <div class="modal-btn">
+          <button class="cancle-button" type="button">취소</button>
+          <button class="completeBtn">완료</button>
+        </div>
+      </div>
+    </div>
 
-	<!------------------------비번 모달------------------------>
-	<div class="modal" id="passwordModal">
-		<div class="modal-content">
-			<div class="modalTitle">
-				<b>비밀번호를 바꿔주세요</b>
-				<p>현재 비밀번호와 새 비밀번호를 입력하세요.</p>
-			</div>
-			<b>현재 비밀번호</b> <input type="password" name="password" /> <b>새
-				비밀번호</b> <input type="password" name="newPassword" /> <b>새 비밀번호 확인</b>
-			<input type="password" name="newPassword2" />
-			<div class="modal-btn">
-				<button class="cancle-button" type="button">취소</button>
-				<button class="completeBtn" id="pwd-complete">완료</button>
-			</div>
-		</div>
-	</div>
+    <!------------------------비번 모달------------------------>
+    <div class="modal" id="passwordModal">
+      <div class="modal-content">
+        <div class="modalTitle">
+          <b>비밀번호를 바꿔주세요</b>
+          <p>현재 비밀번호와 새 비밀번호를 입력하세요.</p>
+        </div>
+        <b>현재 비밀번호</b> <input type="password" name="password" />
+        <b>새 비밀번호</b> <input type="password" name="newPassword" />
+        <b>새 비밀번호 확인</b>
+        <input type="password" name="newPassword2" />
+        <div class="modal-btn">
+          <button class="cancle-button" type="button">취소</button>
+          <button class="completeBtn" id="pwd-complete">완료</button>
+        </div>
+      </div>
+    </div>
 
-	<!------------------------삭제 모달------------------------>
-	<div class="modal" id="deleteModal">
-		<div class="modal-content">
-			<div class="modalTitle">
-				<b>계정 삭제하기</b>
-				<p id="deleteP">정말로 계정을 삭제하시겠어요? 즉시 계정에서 로그아웃 되며 다시 로그인하실 수 없어요.
-				</p>
-			</div>
-			<b>현재 비밀번호</b> <input type="password" name="password" />
-			<div class="modal-btn">
-				<button id="cancelDeleteBtn" type="button">취소</button>
-				<button id="deleteBtn2">계정 삭제하기</button>
-			</div>
-		</div>
-	</div>
+    <!------------------------삭제 모달------------------------>
+    <div class="modal" id="deleteModal">
+      <div class="modal-content">
+        <div class="modalTitle">
+          <b>계정 삭제하기</b>
+          <p id="deleteP">
+            정말로 계정을 삭제하시겠어요? 즉시 계정에서 로그아웃 되며 다시
+            로그인하실 수 없어요.
+          </p>
+        </div>
+        <b>현재 비밀번호</b> <input type="password" name="password" />
+        <div class="modal-btn">
+          <button id="cancelDeleteBtn" type="button">취소</button>
+          <button id="deleteBtn2">계정 삭제하기</button>
+        </div>
+      </div>
+    </div>
 
-	<script src="/js/pref/myProfile.js"></script>
-</body>
+    <script src="/js/pref/myProfile.js"></script>
+  </body>
 </html>
 \
