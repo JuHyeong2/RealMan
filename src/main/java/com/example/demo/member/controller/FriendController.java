@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.demo.member.model.vo.Friend;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,7 @@ public class FriendController {
 				}
 			}
 		}
-		
+
 		// 내가 보낸 요청 목록
 		ArrayList<Integer> sentRequestList = mService.selectRequestSent(loginMember.getMemberNo());
 		ArrayList<Member> wlist = sentRequestList.isEmpty() ? null : mService.selectMembers(sentRequestList);
@@ -56,7 +57,7 @@ public class FriendController {
 				}
 			}
 		}
-		
+
 		// 나한테 온 요청 목록
 		ArrayList<Integer> receivedRequestList = mService.selectRequestReceived(loginMember.getMemberNo());
 		ArrayList<Member> rlist = receivedRequestList.isEmpty() ? null : mService.selectMembers(receivedRequestList);
@@ -68,7 +69,7 @@ public class FriendController {
 				}
 			}
 		}
-		
+
 		map.put("flist", flist);
 		map.put("wlist", wlist);
 		map.put("rlist", rlist);
@@ -132,6 +133,17 @@ public class FriendController {
 		int result = mService.approveRequest(map);
 
 		return result;
+	}
+
+	@GetMapping("/friendList")
+	public String friendList(HttpSession session, Model model){
+		Member m = (Member) session.getAttribute("loginMember");
+
+		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
+
+		model.addAttribute("loginMember", m)
+				.addAttribute("friendList", friendList);
+		return "friendList";
 	}
 
 

@@ -243,4 +243,9 @@
 		where member_nickname = #{sender}
 	</select>
 
+	<select id="friendList">
+		select *
+		from friend
+		where member_no= #{memberNo}
+	</select>
 </mapper>

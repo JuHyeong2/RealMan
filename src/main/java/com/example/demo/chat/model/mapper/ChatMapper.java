@@ -14,5 +14,6 @@ public interface ChatMapper {
 
 	Channel selectChannel(int channelNo);
 
-    ArrayList<DM> selectDm(int memberNo);
+    ArrayList<DM> selectDmList(int memberNo);
+
 }
