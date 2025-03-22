@@ -18,7 +18,9 @@ window.onload = () => {
 
     if (validateEmail(email.value)) {
       console.log(email.value + " 로 이메일 전송 시작");
+
       document.querySelector(".modal-container").style.display = "flex";
+
       fetch("/member/sendEmail?email=" + email.value)
         .then((response) => response.text())
         .then((data) => {
@@ -111,6 +113,7 @@ window.onload = () => {
         if (verified) {
           const response = await fetch("/member/findId?email=" + email.value);
           const data = await response.text();
+          console.log("data : ", data);
           alert("아이디 찾기에 성공했습니다 : " + data);
         } else {
           alert("인증번호가 일치하지 않습니다.");
