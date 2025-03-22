@@ -1,8 +1,11 @@
 package com.example.demo.member.model.vo;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Friend {
 
     private int friendNo;

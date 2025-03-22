@@ -25,6 +25,7 @@
     <select id="selectDmList">
         select *
         from DM
+        join member using(member_no)
         where member_no = #{memberNo}
 
     </select>

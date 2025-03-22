@@ -1,10 +1,12 @@
 package com.example.demo.chat.model.vo;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class ChatMessage {
 	private int roomId;
 	private String sender;

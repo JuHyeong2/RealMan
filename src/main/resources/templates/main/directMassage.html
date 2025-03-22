@@ -15,9 +15,10 @@
 
 
     <table class="dmTable">
-        <tbody id="dmList" th:each="d:${DM}">
+        <tbody id="dmList" th:each="d:${DM}" th:attr="data-roomno=${d.dmNo}" >
 
             <p th:text="${d.otherMemberNo}"></p>
+            <p th:text="${d.otherMemberNickname}"></p>
 
         </tbody>
     </table>
@@ -28,9 +29,17 @@
     // const memberList = /*[[${memberList}]]*/ null;
     // const flist = /*[[${flist}]]*/ null;
 
-    function sendDM(){
-
+    function sendDM(dmNo) {
+        // 방 번호를 인자로 받아 링크를 생성하고 이동합니다.
+        window.location.href = "/main/sendDM/" + dmNo;
     }
+
+    document.querySelectorAll("#dmList").forEach(function(element) {
+        element.addEventListener("click", function() {
+            const dmNo = element.getAttribute("data-dmNo");
+            sendDM(dmNo);
+        });
+    });
 
 
 
