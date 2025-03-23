@@ -137,8 +137,8 @@ const getFriendList = () => {
     .then((data) => {
       if (data != undefined) {
         //친구목록
-        if (data.list != null) {
-          for (let f of data.list) {
+        if (data.flist != null) {
+          for (let f of data.flist) {
             const fli = fLi.cloneNode(true);
             fli.querySelector("input").value = f.memberNo;
 			const imgTag = fli.querySelector("img");
@@ -157,10 +157,12 @@ const getFriendList = () => {
           for (let w of data.wlist) {
             const wli = wLi.cloneNode(true);
             wli.querySelector("input").value = w.memberNo;
-            wli.querySelector("img").src = "/profile-images/" + w.profileImage;
+            wli.querySelector("img").src =
+              w.imageUrl != null ? w.imageUrl : "/image/member/no-profile.svg";
             wli.querySelector(".nickname").innerText = w.memberNickname;
             wli.querySelector(".id").innerText = w.memberId;
             wlist.append(wli);
+            console.log(w.imageUrl);
           }
         } else {
           wlist.innerText = "비어있음";
@@ -169,7 +171,8 @@ const getFriendList = () => {
           for (let r of data.rlist) {
             const rli = rLi.cloneNode(true);
             rli.querySelector("input").value = r.memberNo;
-            rli.querySelector("img").src = "/profile-images/" + r.profileImage;
+            rli.querySelector("img").src =
+              r.imageUrl != null ? r.imageUrl : "/image/member/no-profile.svg";
             rli.querySelector(".nickname").innerText = r.memberNickname;
             rli.querySelector(".id").innerText = r.memberId;
             rlist.append(rli);
@@ -273,7 +276,9 @@ function setupEventHandlers() {
                 const sli = sLi.cloneNode(true);
                 sli.querySelector("input").value = s.memberNo;
                 sli.querySelector("img").src =
-                  "/profile-images/" + s.profileImage;
+                  s.imageUrl != null
+                    ? s.imageUrl
+                    : "/image/member/no-profile.svg";
                 sli.querySelector(".nickname").innerText = s.memberNickname;
                 sli.querySelector(".id").innerText = s.memberId;
                 slist.append(sli);
@@ -383,13 +388,13 @@ function setupEventHandlers() {
         //친구삭제
         menu1.onclick = function () {
           if (confirm("정말로 친구 삭제를 진행하시겠습니까?")) {
-            delteFriend(friendMemberNo);
+            delteFriend(thisRow, friendMemberNo);
           }
         };
         //차단
         menu2.onclick = function () {
           if (confirm("정말로 회원을 차단하시겠습니까?")) {
-            blockMember(friendMemberNo);
+            blockMember(thisRow, friendMemberNo);
           }
         };
       } else {
@@ -397,7 +402,7 @@ function setupEventHandlers() {
         //차단
         menu1.onclick = function () {
           if (confirm("정말로 회원을 차단하시겠습니까?")) {
-            blockMember(friendMemberNo);
+            blockMember(thisRow, friendMemberNo);
           }
         };
       }
@@ -424,7 +429,7 @@ function setupEventHandlers() {
           .then((data) => {
             if (data == 1) {
               alert("친구 요청을 수락하셨습니다.");
-              location.reload();
+              thisRow.remove();
             }
           });
       }
@@ -439,7 +444,7 @@ function setupEventHandlers() {
         this.parentElement.parentElement.parentElement.parentElement;
       const friendMemberNo = thisRow.querySelector("input[type=hidden]").value;
       if (confirm("요청을 거절하시겠습니까?")) {
-        delteFriend(friendMemberNo);
+        delteFriend(thisRow, friendMemberNo);
       }
     });
   }
@@ -453,7 +458,7 @@ function setupEventHandlers() {
         this.parentElement.parentElement.parentElement.parentElement;
       const friendMemberNo = thisRow.querySelector("input[type=hidden]").value;
       if (confirm("보낸 요청을 취소하시겠습니까?")) {
-        delteFriend(friendMemberNo);
+        delteFriend(thisRow, friendMemberNo);
       }
     });
   }
@@ -488,7 +493,7 @@ function setupEventHandlers() {
 }
 
 // 친구 삭제 (요청 거절, 보낸 요청 취소)
-function delteFriend(friendMemberNo) {
+function delteFriend(thisRow, friendMemberNo) {
   fetch("/friend", {
     method: "delete",
     headers: { "content-type": "application/json; charset=UTF-8" },
@@ -499,14 +504,14 @@ function delteFriend(friendMemberNo) {
     .then((response) => response.json())
     .then((data) => {
       if (data == 1) {
-        alert("친구 요청이 취소되었습니다.");
-        location.reload();
+        alert("완료되었습니다.");
+        thisRow.remove();
       }
     });
 }
 
 // 회원 차단
-function blockMember(blockMemberNo) {
+function blockMember(thisRow, blockMemberNo) {
   fetch("/member/block", {
     method: "post",
     headers: { "content-type": "application/json; charset=UTF-8" },
@@ -518,7 +523,7 @@ function blockMember(blockMemberNo) {
     .then((data) => {
       if (data == 1) {
         alert("차단이 완료되었습니다.");
-        location.reload();
+        thisRow.remove();
       }
     });
 }

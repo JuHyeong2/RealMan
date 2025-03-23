@@ -15,7 +15,18 @@
         	join server_member using(server_no)
         where server_status = 'Y' and member_no = #{memberNo}
     </select>
-    
+
+    <select id="loadServerList" resultType="hashmap">
+        SELECT s.*, i.img_rename
+        FROM server s
+                 JOIN server_member sm ON s.server_no = sm.server_no
+                 LEFT JOIN image i
+                           ON s.server_no = i.mcd_no
+                               AND i.img_separator = 'C'
+        WHERE s.server_status = 'Y'
+          AND sm.member_no = #{memberNo}
+    </select>
+
     <select id="selectChannelNo">
     	select channel_no
     	from channel
@@ -48,6 +59,28 @@
     	where member_no = #{memberNo}
     		and server_no = #{serverNo}
     </delete>
-    
+
+    <insert id="insertServer">
+        INSERT INTO server (server_no, server_name, server_status, server_createdate)
+        VALUES (server_seq.nextval, #{serverName}, 'Y', SYSDATE)
+    </insert>
+
+    <select id="selectCreateServerNo" resultType="int">
+        SELECT MAX(server_no) FROM server
+    </select>
+
+    <insert id="insertServerMember">
+        INSERT INTO server_member (member_no, server_no, is_admin)
+        VALUES (#{memberNo}, #{serverNo}, 'Y')
+    </insert>
+
+    <insert id="insertDefaultTextChannel">
+        INSERT INTO CHANNEL
+        VALUES (channel_seq.nextval, #{serverNo}, '일반', SYSDATE, 'T', 'Y')
+    </insert>
+    <insert id="insertDefaultVoiceChannel">
+        INSERT INTO CHANNEL
+        VALUES (channel_seq.nextval, #{serverNo}, '음성', SYSDATE, 'V', 'Y')
+    </insert>
 
 </mapper>

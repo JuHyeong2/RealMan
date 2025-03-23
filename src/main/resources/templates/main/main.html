@@ -25,7 +25,39 @@
   <div class="main-container">
         <div class="sidebar_wrap">
           <div th:replace="~{../common/sidebar.html}"></div>
-          <div th:replace="~{/main/directMassage.html :: directMassage}"></div>
+          <!DOCTYPE html>
+          <html xmlns:th="http://www.thymeleaf.org">
+          <head>
+            <meta charset="UTF-8">
+            <title>directMassage</title>
+            <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+            <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>
+          </head>
+          <body>
+          <div class="directMassage" th:replace="~{/main/directMassage :: body}">
+
+            <div class="dm">다이렉트 메시지</div>
+            <button class="createDM" onclick="sendDM()">+</button>
+            <div id="dmWrapper"></div>
+
+          </div>
+          </table>
+
+
+
+          <script th:inline="javascript">
+            // const memberList = /*[[${memberList}]]*/ null;
+            // const flist = /*[[${flist}]]*/ null;
+
+            function sendDM(){
+
+            }
+
+
+
+          </script>
+          </body>
+          </html>
         </div>
 
         <!-- 친구 목록 -->

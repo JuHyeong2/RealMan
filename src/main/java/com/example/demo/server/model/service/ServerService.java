@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,9 @@ public class ServerService {
     public ArrayList<Server> selectServerList(Member m) {
         return mapper.selectServerList(m);
     }
+	public ArrayList<Map<String, Object>> loadServerList(int memberNo) {
+		return mapper.loadServerList(memberNo);
+	}
 
 	public ArrayList<Integer> selectChannelNo(int serverNo) {
 		
@@ -50,4 +54,16 @@ public class ServerService {
 		return mapper.ejectMember(map);
 	}
 
+	public int createServer(String name, int memberNo) {
+		// 이름으로 서버생성
+		mapper.insertServer(name);
+		// 방금 생성된 서버 번호 불러오기
+		int serverNo = mapper.selectCreateServerNo();
+		// 불러온 서버 번호에 관리자로 현재 사용자 등록하기
+		mapper.insertServerMember(memberNo, serverNo);
+		// 기본 채널 생성 (채팅, 보이스)
+		mapper.insertDefaultTextChannel(serverNo);
+		mapper.insertDefaultVoiceChannel(serverNo);
+		return serverNo;
+	}
 }
