@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.demo.chat.model.vo.Channel;
 import com.example.demo.member.model.vo.Member;
 import com.example.demo.server.model.vo.Server;
 import com.example.demo.serverMember.model.vo.ServerMember;
@@ -39,4 +40,10 @@ public interface ServerMapper {
 	void insertDefaultTextChannel(int serverNo);
 
 	void insertDefaultVoiceChannel(int serverNo);
+
+	int insertChannel(Channel ch);
+
+	int editChannel(HashMap<String, String> map);
+
+	int deleteChannel(int channelNo);
 }

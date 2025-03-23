@@ -1,235 +1,454 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>chattingSidebar</title>
-    <link rel="stylesheet" href="/css/chat/chattingSidebar.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-</head>
-<body>
+    <link rel="stylesheet" href="/css/chat/chattingSidebar.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="channel-list bg-light d-flex flex-column" style="width: 320px">
+      <nav>
+        <div class="voiceChat-div">
+          <div class="channel-title">
+            <h4><img src="/image/Dropdown.png" />음성 채널</h4>
+            <button th:if="${admin}" class="add-channel">+</button>
+            <input type="hidden" value="V" />
+          </div>
 
-	<div class="channel-list bg-light d-flex flex-column" style="width: 320px;">
-	    <nav>
-	    	<h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
-	    	<div class="voiceChat" th:each="c : ${channel}" th:if='${c.channelSeparator eq "V"}' th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|">
-	    		<input class="chatInput" type="hidden" th:value="${c.channelNo}">
-	    		<ul>
-		    		<li>
-		    			<b><img src="/image/Voice.png">&nbsp[[${c.channelName}]]</b>
-		    			<ul>
-		    			</ul>
-		    		</li>
-	    		</ul>
-	    	</div>
-	
-	    	<h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
-		    <div class="textChat">
-				<li th:each="c : ${channel}" th:if="${c.channelSeparator == 'T'}" onclick="goToChat(event);">
-					<a th:href="@{'/chat/main/'+${serverNo}+'/'+${c.channelNo}}">
-						<img src="/image/chat.png">&nbsp[[${c.channelName}]]
-					</a>
-				</li>
-			</div>
+          <div
+            class="voiceChat channel"
+            th:each="c : ${channel}"
+            th:if='${c.channelSeparator eq "V"}'
+          >
+            <input class="chatInput" type="hidden" th:value="${c.channelNo}" />
+            <b
+              th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|"
+              ><img src="/image/Voice.png" />[[${c.channelName}]]</b
+            >
+            <button th:if="${admin}" class="channel-menu-button">...</button>
+            <div class="channel-menu">
+              <div>채널명 변경</div>
+              <div>채널 삭제</div>
+            </div>
+          </div>
+        </div>
 
-    	</nav>
-    	
-    	<div class="connect">
-    		
-    	</div>
+        <div class="textChat-div">
+          <div class="channel-title">
+            <h4><img src="/image/Dropdown.png" />채팅 채널</h4>
+            <button th:if="${admin}" class="add-channel">+</button>
+            <input type="hidden" value="T" />
+          </div>
 
+          <div
+            class="textChat channel"
+            th:each="c : ${channel}"
+            th:if="${c.channelSeparator == 'T'}"
+          >
+            <input class="chatInput" type="hidden" th:value="${c.channelNo}" />
+            <b
+              th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|"
+              ><img src="/image/chat.png" />[[${c.channelName}]]</b
+            >
+            <button th:if="${admin}" class="channel-menu-button">...</button>
+            <div class="channel-menu">
+              <div>채널명 변경</div>
+              <div>채널 삭제</div>
+            </div>
+          </div>
+        </div>
+      </nav>
 
-    	<div class="profile">
-    		<img th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}" width="50px" height="50px" onclick="ProfileModal()">
-    		<b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b>
-    		<img id="micImg" src="/image/preferences/mic.png" width="30px">
-    		<img src="/image/preferences/Headphones.png" width="30px">
-    		<img src="/image/preferences/Preferences.png" width="30px" onclick="location.href='/prefs/myProfile'">
-    	</div>
-	</div>
+      <div class="connect"></div>
 
+      <div class="profile">
+        <img
+          th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}"
+          width="50px"
+          height="50px"
+          onclick="ProfileModal()"
+        />
+        <b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b>
+        <img id="micImg" src="/image/preferences/mic.png" width="30px" />
+        <img src="/image/preferences/Headphones.png" width="30px" />
+        <img
+          src="/image/preferences/Preferences.png"
+          width="30px"
+          onclick="location.href='/prefs/myProfile'"
+        />
+      </div>
+    </div>
 
+    <!-- 프로필 모달 -->
+    <div id="profileModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeProfileModal()">&times;</span>
+        <h2>프로필 설정</h2>
+        <button onclick="goToMyAccount()">내 정보 수정</button>
+      </div>
+    </div>
 
-	<!-- 프로필 모달 -->
-	<div id="profileModal" class="modal">
-	    <div class="modal-content">
-	        <span class="close" onclick="closeProfileModal()">&times;</span>
-	        <h2>프로필 설정</h2>
-	        <button onclick="goToMyAccount()">내 정보 수정</button>
-	    </div>
-	</div>
-	
-	
-	<script th:inline="javascript">
-		
-		/*<![CDATA[*/
-		const username = /*[[${member.memberNickname}]]*/null;
-		const userid = /*[[${member.memberId}]]*/null;
-		const serverNo = /*[[${serverNo}]]*/0;
-		const channelNo = /*[[${channelNo}]]*/0;
-		/*]]*/
-		// 최초에 채널에 입장해 있는 사람들 목록 보이게 하기
-		window.addEventListener('load', ()=>{
-			fetch("/chat/api/voiceUsers")
-			.then(response=>response.json())
-			.then(data => {
-				joinVoiceChannel(username, channelNo);
-				updateUserList(data);
-			})
-		})
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      const username = /*[[${member.memberNickname}]]*/ null;
+      const userid = /*[[${member.memberId}]]*/ null;
+      const serverNo = /*[[${serverNo}]]*/ 0;
+      const channelNo = /*[[${channelNo}]]*/ 0;
+      /*]]*/
+      // 최초에 채널에 입장해 있는 사람들 목록 보이게 하기
+      window.addEventListener("load", () => {
+        fetch("/chat/api/voiceUsers")
+          .then((response) => response.json())
+          .then((data) => {
+            joinVoiceChannel(username, channelNo);
+            updateUserList(data);
+          });
 
-		// 음성 채팅방 드롭다운
-		let voiceChannels = null;
-		let voiceChannel = null;
-		let clickChannel = null;
-		let clickServerNo = 0;
-		const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
+        //채널 추가
+        document.querySelectorAll(".add-channel").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const channelSeparator =
+              this.parentElement.querySelector("input[type=hidden]").value;
+            const channelRow = document.createElement("div");
+            channelRow.classList.add("channel");
+            const channelName = document.createElement("b");
+            const icon = document.createElement("img");
+            icon.src =
+              channelSeparator == "T" ? "/image/chat.png" : "/image/Voice.png";
+            channelName.append(icon);
+            const input = document.createElement("input");
+            input.type = "text";
+            input.classList.add("channel-name-input");
+            input.placeholder = "채널명 입력후 'enter'";
+            channelName.append(input);
+            channelRow.append(channelName);
+            if (channelSeparator == "V") {
+              document.querySelector(".voiceChat-div").append(channelRow);
+            } else {
+              document.querySelector(".textChat-div").append(channelRow);
+            }
+            input.focus();
+            input.addEventListener("keydown", function (e) {
+              if (e.key == "Enter") {
+                const channelNames = [];
+                document.querySelectorAll("b").forEach((b) => {
+                  channelNames.push(b.innerText);
+                });
+                const val = this.value;
+                if (channelNames.includes(val)) {
+                  alert("이미 사용중인 채널명입니다.");
+                  this.value = "";
+                  this.focus;
+                } else {
+                  fetch("/server/channel", {
+                    method: "post",
+                    headers: {
+                      "content-type": "application/json;charset=UTF-8",
+                    },
+                    body: JSON.stringify({
+                      serverNo: serverNo,
+                      channelName: val,
+                      channelSeparator: channelSeparator,
+                    }),
+                  })
+                    .then((response) => response.json())
+                    .then((data) => {
+                      //채널 추가 성공하면 data == channelNo
+                      if (data != 0) {
+                        input.remove();
+                        channelName.append(val);
+                        channelName.addEventListener("click", function () {
+                          location.href = "/chat/main/" + serverNo + "/" + data;
+                        });
+                        const menuBtn = document.createElement("button");
+                        menuBtn.innerText = "...";
+                        menuBtn.classList.add("channel-menu-button");
+                        menuBtn.addEventListener("click", channelMenu);
+                        const menu = document.createElement("div");
+                        menu.classList.add("channel-menu");
+                        const menu1 = document.createElement("div");
+                        menu1.innerText = "채널명 변경";
+                        menu1.addEventListener("click", () =>
+                          editChannel(e, data)
+                        );
+                        menu.append(menu1);
+                        const menu2 = document.createElement("div");
+                        menu2.innerText = "채널 삭제";
+                        menu2.addEventListener("click", () =>
+                          deleteChannel(e, data)
+                        );
+                        menu.append(menu2);
+                        channelRow.append(menuBtn);
+                      }
+                    });
+                }
+              }
+            });
+          });
+        });
 
-// 		const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
-		const channelSocket = new SockJS("https://192.168.140.22:9090/stomp/channel");
-		const channelStompClient = Stomp.over(channelSocket);
+        document.querySelectorAll(".channel-menu-button").forEach((btn) => {
+          btn.addEventListener("click", channelMenu);
+        });
 
-		
-		channelStompClient.connect({}, ()=>{
+        //메뉴 열려있는거 닫기 +
+        //채널 추가중에 다른곳 누르면 취소
+        document.querySelector("body").addEventListener("click", function (e) {
+          if (
+            !e.target.classList.contains("add-channel") &&
+            !e.target.classList.contains("channel-menu-button") &&
+            !e.target.parentElement.classList.contains("channel-menu") &&
+            !e.target.classList.contains("channel-name-input")
+          ) {
+            const openedMenu = document.querySelector(".channel-menu-show");
+            document.querySelectorAll("b").forEach((b) => {
+              if (b.querySelector("input")) {
+                b.parentElement.remove();
+              }
+            });
 
-			// 보이스 채널 사용자 목록 구독
-			channelStompClient.subscribe("/sub/voice", (message)=>{
-				console.log("message.body 는");
-				console.log(message.body);
-				updateUserList(JSON.parse(message.body));
-				console.log("message.body 는");
-				console.log(message.body);
-			});
-		});
+            openedMenu.classList.remove("channel-menu-show");
+          }
+        });
+      });
 
+      //""..."버튼 누르면 메뉴 나오게
+      function channelMenu(e) {
+        const menu = e.target.parentElement.querySelector(".channel-menu");
+        if (
+          !menu.classList.contains("channel-menu-show") &&
+          document.querySelector(".channel-menu-show")
+        ) {
+          document
+            .querySelector(".channel-menu-show")
+            .classList.remove("channel-menu-show");
+        }
+        menu.classList.toggle("channel-menu-show");
+        const channelNo = menu.parentElement.querySelector(".chatInput").value;
+        const [menu1, menu2] = menu.querySelectorAll("div");
+        menu1.addEventListener("click", () => editChannel(e, channelNo));
+        menu2.addEventListener("click", () => deleteChannel(e, channelNo));
+      }
 
-		// 보이스 채널 입장 함수
-		const joinVoiceChannel=(username, clickServerNo)=>{
-			channelStompClient.send("/pub/chat/joinVoice", {}, JSON.stringify({ username, clickServerNo }));
-// 			const connect = document.querySelectorAll('.connect')[0];
-// 			connect.innerHTML = `<b>음성 연결됨</b>
-// 	    		<img src="/image/member/closeVoice.png" width="30px">`;
-		}
+      //채널 수정
+      function editChannel(e, channelNo) {
+        const channelRow = e.target.parentElement;
+        const input = document.createElement("input");
+        input.type = Text;
+        input.classList = "new-channel-name";
+        input.value = channelRow.querySelector("b").innerText;
+        channelRow.append(input);
+        input.addEventListener("keydown", function (e) {
+          if (e.key == "Enter") {
+            if (confirm("정말로 이름을 변경하시겠습니까?")) {
+              const newName = input.value;
+              fetch("/server/channel", {
+                method: "put",
+                headers: { "content-type": "application/json;chatset=UTF-8" },
+                body: JSON.stringify({
+                  channelNo: channelNo,
+                  newName: newName,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data == 1) {
+                    input.remove();
+                    const html = channelRow.querySelector("b").innerHTML;
+                    channelRow.querySelector("b").innerHTML =
+                      html.substring(0, html.lastIndexOf(">") + 1) + newName;
+                  }
+                });
+            }
+          }
+        });
+      }
 
-		// 보이스 채널 퇴장 함수
-		const leaveVoiceChannel=(username)=>{
-			console.log('나갑니다 : ' + username);
-			channelStompClient.send("/pub/chat/leaveVoice", {}, username);
-		}
-		
-		window.addEventListener('beforeunload', e=>{
-			leaveVoiceChannel(username);
-		})
+      //채널 삭제
+      function deleteChannel(e, channelNo) {
+        const channelRow = e.target.parentElement;
+        if (confirm("정말로 채널을 삭제하시겠습니까?")) {
+          fetch("/server/channel", {
+            method: "delete",
+            headers: { "content-type": "application/json;chatset=UTF-8" },
+            body: JSON.stringify({
+              channelNo: channelNo,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              if (data == 1) {
+                alert("채널이 삭제되었습니다.");
+                channelRow.remove();
+              }
+            });
+        }
+      }
 
-		// 사용자 목록 업데이트
-		const updateUserList=(users)=> {
-// 			if(users[clickServerNo])
-			const channelNos = document.querySelectorAll('.chatInput');
-// 			console.log(channelNos);
-			const keys = Object.keys(users);
-// 			console.log(keys);
+      // 음성 채팅방 드롭다운
+      let voiceChannels = null;
+      let voiceChannel = null;
+      let clickChannel = null;
+      let clickServerNo = 0;
+      const myNickname = document
+        .querySelectorAll(".profile")[0]
+        .querySelector("b").innerText;
 
-			// 채널 번호 비교
-			for(const channelNo of channelNos){
-				console.log(channelNo.value);
-				for(const key of keys){
-					if(channelNo.value == key){
-// 						console.log(channelNo.parentElement);
-						channelNo.parentElement.querySelector('ul>li>ul').innerHTML = '';
-// 						const connect = document.querySelectorAll('.connect')[0];
-// 						connect.innerHTML = `<b>음성 연결됨</b>
-// 				    		<img src="/image/member/closeVoice.png" width="30px">`;
-						for(const user of users[channelNo.value]){
-							channelNo.parentElement.querySelector('ul>li>ul').innerHTML += '<li><img src="/image/profile.png">&nbsp' + user + '</li>';
-						}
-					}
-				}
-			}
-		}
-		
-		voiceChannels = document.querySelectorAll('.voiceChat');
-		for(voiceChannel of voiceChannels){
-			voiceChannel.addEventListener('click', (e)=>{
-				console.log("voice채널 클릭!");
-				clickChannel = e.currentTarget;
-				clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
-	//				console.log(typeof clickServerNo);
-				joinVoiceChannel(myNickname, clickServerNo);
-	//				location.href = '/chat/voiceChat/2';
-			})
-		}
-		
-		document.querySelectorAll('.channel')[0].addEventListener('click', ()=>{
-// 			const chatRoom = voiceChannel.querySelector('li');
-//				console.log(chatRoom);
-// 			if(chatRoom.style.display == 'none'){
-// 				chatRoom.style.display = 'block';
-// //					people.style.display = 'block';	
-// 			}else{
-// 				chatRoom.style.display = 'none';
-// //					people.style.display = 'none';
-// 			}	
-			for(voiceChannel of voiceChannels){
-// 				console.log(voiceChannel);
-				const chatRoom = voiceChannel.querySelector('li');
-// 				console.log(chatRoom);
-				if(chatRoom.style.display == 'none'){
-					chatRoom.style.display = 'block';
-// 					people.style.display = 'block';	
-				}else{
-					chatRoom.style.display = 'none';
-// 					people.style.display = 'none';
-				}	
+      // 		const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
+      // const channelSocket = new SockJS("https://localhost:8080/stomp/channel");
+      const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
 
-// 				voiceChannel.addEventListener('click', (e)=>{
-// 					console.log("voice채널 클릭!");
-// 					clickChannel = e.currentTarget;
-// 					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
-// // 					console.log(typeof clickServerNo);
-// 					joinVoiceChannel(myNickname, clickServerNo);
-// // 					location.href = '/chat/voiceChat/2';
-// 				})
-			}
-		})
-		
-		/*<![CDATA[*/
-			const channels = /*[[${channel}]]*/null;
-		/*]]*/
-		
-// 		for(const channel of channels){
-// 			if(channel.channelSeparator == 'V'){
-				
-// 			}
-// 		}
-		
-		
-		
-		// 채팅 채팅방 드롭다운
-		document.querySelectorAll('.channel')[1].addEventListener('click', ()=>{
-			const chatRooms = document.querySelectorAll('.textChat')[0].querySelectorAll('li');
-// 			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
-			
-			for(const chatRoom of chatRooms){
-				if(chatRoom.style.display == 'none'){
-					chatRoom.style.display = 'block';
-// 					people.style.display = 'block';	
-				}else{
-					chatRoom.style.display = 'none';
-// 					people.style.display = 'none';
-				}
-			}
-		})
-		
-		// 프로필 사진, 닉네임, 톱니바퀴 클릭시 내계정 페이지로 이동
-		const goToMyAccount=()=>{
-			location.href = '/prefs/myProfile';
-		}
-		
-		
-		
-	</script>
+      const channelStompClient = Stomp.over(channelSocket);
 
+      channelStompClient.connect({}, () => {
+        // 보이스 채널 사용자 목록 구독
+        channelStompClient.subscribe("/sub/voice", (message) => {
+          console.log("message.body 는");
+          console.log(message.body);
+          updateUserList(JSON.parse(message.body));
+          console.log("message.body 는");
+          console.log(message.body);
+        });
+      });
 
+      // 보이스 채널 입장 함수
+      const joinVoiceChannel = (username, clickServerNo) => {
+        channelStompClient.send(
+          "/pub/chat/joinVoice",
+          {},
+          JSON.stringify({ username, clickServerNo })
+        );
+        // 			const connect = document.querySelectorAll('.connect')[0];
+        // 			connect.innerHTML = `<b>음성 연결됨</b>
+        // 	    		<img src="/image/member/closeVoice.png" width="30px">`;
+      };
 
-</body>
+      // 보이스 채널 퇴장 함수
+      const leaveVoiceChannel = (username) => {
+        console.log("나갑니다 : " + username);
+        channelStompClient.send("/pub/chat/leaveVoice", {}, username);
+      };
+
+      window.addEventListener("beforeunload", (e) => {
+        leaveVoiceChannel(username);
+      });
+
+      // 사용자 목록 업데이트
+      const updateUserList = (users) => {
+        // 			if(users[clickServerNo])
+        const channelNos = document.querySelectorAll(".chatInput");
+        // 			console.log(channelNos);
+        const keys = Object.keys(users);
+        // 			console.log(keys);
+
+        // 채널 번호 비교
+        for (const channelNo of channelNos) {
+          console.log(channelNo.value);
+          for (const key of keys) {
+            if (channelNo.value == key) {
+              // 						console.log(channelNo.parentElement);
+              channelNo.parentElement.querySelector("ul>li>ul").innerHTML = "";
+              // 						const connect = document.querySelectorAll('.connect')[0];
+              // 						connect.innerHTML = `<b>음성 연결됨</b>
+              // 				    		<img src="/image/member/closeVoice.png" width="30px">`;
+              for (const user of users[channelNo.value]) {
+                channelNo.parentElement.querySelector("ul>li>ul").innerHTML +=
+                  '<li><img src="/image/profile.png">&nbsp' + user + "</li>";
+              }
+            }
+          }
+        }
+      };
+
+      voiceChannels = document.querySelectorAll(".voiceChat");
+      for (voiceChannel of voiceChannels) {
+        voiceChannel.addEventListener("click", (e) => {
+          console.log("voice채널 클릭!");
+          clickChannel = e.currentTarget;
+          clickServerNo = Number(
+            clickChannel.querySelector('input[type="hidden"]').value
+          );
+          //				console.log(typeof clickServerNo);
+          joinVoiceChannel(myNickname, clickServerNo);
+          //				location.href = '/chat/voiceChat/2';
+        });
+      }
+
+      document.querySelectorAll(".channel")[0].addEventListener("click", () => {
+        // 			const chatRoom = voiceChannel.querySelector('li');
+        //				console.log(chatRoom);
+        // 			if(chatRoom.style.display == 'none'){
+        // 				chatRoom.style.display = 'block';
+        // //					people.style.display = 'block';
+        // 			}else{
+        // 				chatRoom.style.display = 'none';
+        // //					people.style.display = 'none';
+        // 			}
+        for (voiceChannel of voiceChannels) {
+          // 				console.log(voiceChannel);
+          const chatRoom = voiceChannel.querySelector("li");
+          // 				console.log(chatRoom);
+          if (chatRoom.style.display == "none") {
+            chatRoom.style.display = "block";
+            // 					people.style.display = 'block';
+          } else {
+            chatRoom.style.display = "none";
+            // 					people.style.display = 'none';
+          }
+
+          // 				voiceChannel.addEventListener('click', (e)=>{
+          // 					console.log("voice채널 클릭!");
+          // 					clickChannel = e.currentTarget;
+          // 					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
+          // // 					console.log(typeof clickServerNo);
+          // 					joinVoiceChannel(myNickname, clickServerNo);
+          // // 					location.href = '/chat/voiceChat/2';
+          // 				})
+        }
+      });
+
+      /*<![CDATA[*/
+      const channels = /*[[${channel}]]*/ null;
+      /*]]*/
+
+      // 		for(const channel of channels){
+      // 			if(channel.channelSeparator == 'V'){
+
+      // 			}
+      // 		}
+
+      // 채팅 채팅방 드롭다운
+      document.querySelectorAll(".channel")[1].addEventListener("click", () => {
+        const chatRooms = document
+          .querySelectorAll(".textChat")[0]
+          .querySelectorAll("li");
+        // 			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
+
+        for (const chatRoom of chatRooms) {
+          if (chatRoom.style.display == "none") {
+            chatRoom.style.display = "block";
+            // 					people.style.display = 'block';
+          } else {
+            chatRoom.style.display = "none";
+            // 					people.style.display = 'none';
+          }
+        }
+      });
+
+      // 프로필 사진, 닉네임, 톱니바퀴 클릭시 내계정 페이지로 이동
+      const goToMyAccount = () => {
+        location.href = "/prefs/myProfile";
+      };
+    </script>
+  </body>
 </html>

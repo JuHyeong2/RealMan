@@ -1,6 +1,7 @@
 package com.example.demo.server.model.service;
 
 
+import com.example.demo.chat.model.vo.Channel;
 import com.example.demo.member.model.vo.Member;
 import com.example.demo.server.model.mapper.ServerMapper;
 import com.example.demo.server.model.vo.Server;
@@ -65,5 +66,19 @@ public class ServerService {
 		mapper.insertDefaultTextChannel(serverNo);
 		mapper.insertDefaultVoiceChannel(serverNo);
 		return serverNo;
+	}
+	
+	
+	//
+	public int insertChannel(Channel ch) {
+		return mapper.insertChannel(ch);
+	}
+
+	public int editChannel(HashMap<String, String> map) {
+		return mapper.editChannel(map);
+	}
+
+	public int deleteChannel(int channelNo) {
+		return mapper.deleteChannel(channelNo);
 	}
 }

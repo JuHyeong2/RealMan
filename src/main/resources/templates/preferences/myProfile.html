@@ -38,7 +38,7 @@
                 <div class="profile-pic-container">
                   <img
                     class="profile-pic"
-                    th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}"
+                    th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/member/no-profile.svg'}"
                   />
                 </div>
               </div>
@@ -172,7 +172,27 @@
     </div>
 
     <!------------------------전번 모달------------------------>
-    <div class="modal" id="phoneModal-1">
+    <div class="modal" id="phoneModal">
+      <div class="modal-content">
+        <form>
+          <div class="modalTitle">
+            <b>전화번호 변경하기</b>
+            <p>새 전화번호와 기존 비밀번호를 입력하세요.</p>
+          </div>
+          <b>전화번호</b><br />
+          <input type="text" name="memberPhone" /><br />
+          <b>현재 비밀번호</b><br />
+          <input type="password" name="memberPwd" />
+          <div class="modal-btn">
+            <button class="cancle-button" type="button">취소</button>
+            <button class="completeBtn" type="button" id="phone-complete">
+              완료
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- <div class="modal" id="phoneModal-1">
       <div class="modal-content">
         <div class="modalTitle">
           <img alt="phone" src="/image/preferences/Phone.png" /><br />
@@ -190,9 +210,9 @@
         </div>
         <button class="cancle-button" type="button">취소</button>
       </div>
-    </div>
+    </div> -->
 
-    <div class="modal" id="phoneModal-2">
+    <!-- <div class="modal" id="phoneModal-2">
       <div class="modal-content">
         <div class="modalTitle">
           <img alt="phone" src="/image/preferences/Phone.png" /><br />
@@ -211,7 +231,7 @@
       <button class="cancle-button" type="button">취소</button>
     </div>
 
-    <div class="modal" id="phoneModal-3">
+    <div class="modal" id="phoneModal-2">
       <div class="modal-content">
         <div class="modalTitle">
           <b>변경을 확인하려면 비밀번호를 입력하세요</b>
@@ -223,7 +243,7 @@
           <button class="completeBtn">완료</button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!------------------------비번 모달------------------------>
     <div class="modal" id="passwordModal">

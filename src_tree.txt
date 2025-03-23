@@ -103,6 +103,7 @@
     │   │   │   ├── chattingSidebar.css
     │   │   │   └── memberList.css
     │   │   ├── common
+    │   │   │   ├── miniProfile.css
     │   │   │   ├── sidebar.css
     │   │   │   ├── sidebar54.css
     │   │   │   └── top.css
@@ -127,8 +128,9 @@
     │   │   └── preferences.css
     │   └── js
     │       ├── chat
-    │       │   ├── chattingSidebar.js
     │       │   └── memberList.js
+    │       ├── common
+    │       │   └── miniProfile.js
     │       ├── member
     │       │   ├── findMy.js
     │       │   └── friends.js
@@ -143,6 +145,7 @@
         │   ├── tiny.html
         │   └── videoChatting.html
         ├── common
+        │   ├── miniProfile.html
         │   ├── sidebar.html
         │   └── top.html
         ├── index.html
@@ -167,7 +170,6 @@
         └── voice
             └── voice.html
 
-63 directories, 105 files
-cd src/main
-(윈도우에서는 git bash 사용)
+64 directories, 107 files
+
 tree -I 'image' > ../../src_tree.txt
