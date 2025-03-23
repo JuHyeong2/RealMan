@@ -2,6 +2,7 @@ package com.example.demo.preferences.model.mapper;
 
 import com.example.demo.preferences.model.vo.Device;
 import com.example.demo.preferences.model.vo.Notification;
+import com.example.demo.preferences.model.vo.Theme;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -22,4 +23,8 @@ public interface PrefsMapper {
     int insertTheme(int memberNo);
 
     int updateMsg(Notification msg);
+
+    int updateTheme(Theme theme);
+
+    Theme getThemePrefs(int memberNo);
 }

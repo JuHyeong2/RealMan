@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import com.example.demo.preferences.model.vo.Theme;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.example.demo.preferences.model.service.PrefsService;
@@ -389,6 +390,8 @@ public class MemberController {
 
 
 	     if (loginMember != null) {
+			 Theme theme = pService.getThemePrefs(loginMember.getMemberNo());
+			 session.setAttribute("theme", theme);
 	         session.setAttribute("loginMember", loginMember);
 			 session.setAttribute("fingerprint", fingerprint);
 			 pService.saveDevice(loginMember.getMemberNo(), fingerprint);
