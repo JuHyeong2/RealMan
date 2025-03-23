@@ -239,7 +239,7 @@ function setupEventHandlers() {
       const nickname = e.target.getAttribute("data-nickname");
       const userId = e.target.getAttribute("data-user-id");
 
-      openMiniProfile(imageSrc, nickname, userId);
+      openUserProfile(imageSrc, nickname, userId);;
     }
   });
 

@@ -11,6 +11,7 @@
     <link href="/css/main.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/css/member/friends.css" />
     <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/css/common/userProfile.css">
     <style>
     	.top-bar {
         	height: 40px;
@@ -31,9 +32,9 @@
         <div th:replace="~{../member/friends.html::friends}"></div>
   </div>
   
-   <div th:replace="~{/common/miniProfile :: miniProfile}"></div>
+  	<div th:replace="~{/common/userProfile :: userProfile}"></div>
 
-	<script src="/js/common/miniProfile.js"></script> 
+	<script src="/js/common/userProfile.js"></script>	
     <script src="/js/member/friends.js"></script>
   </body>
 </html>

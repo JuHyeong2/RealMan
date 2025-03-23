@@ -79,4 +79,5 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
   window.openMiniProfile = openMiniProfile;
+  window.closeMiniProfileModal = closeMiniProfileModal;
 });
