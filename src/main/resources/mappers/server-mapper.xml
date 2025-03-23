@@ -82,5 +82,20 @@
         INSERT INTO CHANNEL
         VALUES (channel_seq.nextval, #{serverNo}, '음성', SYSDATE, 'V', 'Y')
     </insert>
-
+	<insert id="insertChannel">
+		<selectKey resultType="_int" keyProperty="channelNo" order="BEFORE">
+			select channel_seq.nextval from dual
+		</selectKey>
+		insert into channel
+		values (#{channelNo}, #{serverNo}, #{channelName}, SYSDATE, #{channelSeparator}, 'Y')
+	</insert>
+	<update id="editChannel">
+		update channel
+		set channel_name = #{newName}
+		where channel_no = #{channelNo}
+	</update>
+	<delete id="deleteChannel">
+		delete from channel
+		where channel_no = #{channelNo}
+	</delete>
 </mapper>

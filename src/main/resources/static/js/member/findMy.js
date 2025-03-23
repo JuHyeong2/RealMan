@@ -167,7 +167,8 @@ window.onload = () => {
             alert("비밀번호 변경 성공");
             resetPwdBtn.innerText = "로그인";
             resetPwdBtn.classList.add("to-login");
-            resetPwdBtn.onclick = () => (window.location.href = "/");
+            resetPwdBtn.onclick = () =>
+              (window.location.href = "/member/signin");
             break;
           default:
             console.log(data);
