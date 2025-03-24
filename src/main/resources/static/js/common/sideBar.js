@@ -26,8 +26,9 @@ function renderServerList(list) {
         const imgtag = document.createElement("img");
         imgtag.src= server.IMG_RENAME;
         const imgTag = server.IMG_RENAME
-            ? `<img src="${server.IMG_RENAME}" width="50" height="50" class="rounded-circle" />`
-            : `<span>${server.SERVER_NAME}</span>`;
+            ? `<img src="${server.IMG_RENAME}" width="50" height="50" class="rounded-circle" style="cursor: pointer"/>`
+            : `<span title="${server.SERVER_NAME}" style="cursor: pointer">${server.SERVER_NAME.length > 5 ? server.SERVER_NAME.slice(0, 5) + '…' : server.SERVER_NAME}</span>`;
+
 
         const html = `
             <div class="mb-2">
