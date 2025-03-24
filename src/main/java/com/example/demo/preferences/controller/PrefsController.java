@@ -4,6 +4,7 @@ import com.example.demo.member.model.vo.Member;
 import com.example.demo.preferences.model.service.PrefsService;
 import com.example.demo.preferences.model.vo.Device;
 import com.example.demo.preferences.model.vo.Notification;
+import com.example.demo.preferences.model.vo.Theme;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -138,8 +139,30 @@ public class PrefsController {
     public Notification getMsgPrefs(HttpSession session){
         Member loginMember = (Member) session.getAttribute("loginMember");
         Notification msg = pService.getNotifyPrefs(loginMember.getMemberNo());
-
+        session.setAttribute("chatType", msg.getChatType());
+        session.setAttribute("timeType", msg.getTimeType());
         return msg;
+    }
+
+    @PostMapping("/ui-theme")
+    @ResponseBody
+    public void updateTheme(@RequestBody Theme theme, HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginMember");
+        theme.setMemberNo(loginUser.getMemberNo());
+        int resultUdtTheme = pService.updateTheme(theme);
+        System.out.println("테마 업데이트 : " + (resultUdtTheme ==1?"성공":"실패"));
+        if(resultUdtTheme == 1){
+            session.setAttribute("theme", theme);
+        }
+    }
+
+    @GetMapping("/ui-theme/getPrefs")
+    @ResponseBody
+    public Theme getThemePrefs(HttpSession session){
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        Theme getTheme = pService.getThemePrefs(loginMember.getMemberNo());
+
+        return getTheme;
     }
 
 }
