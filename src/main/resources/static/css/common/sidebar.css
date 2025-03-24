@@ -50,7 +50,46 @@ div[serverNo] img {
     height: 60px;
     background-color: #BDD3E2;
     cursor: pointer;
+    align-self: center;
     /*justify-content: center;*/
     /*align-items: center;*/
     margin: 10px;
+}
+
+/* 모달 오버레이 */
+.add-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: 9998;
+    display: none;
+}
+
+/* 모달 본체 */
+.add-modal {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    width: 400px;
+    height: 400px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    z-index: 9999;
+    display: none;
+}
+
+.add-modal .close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+.add-modalbtn{
+    background: #699fff;
+}
+.add-modalbtn:hover{
+    background: #2c58a2;
 }

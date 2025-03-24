@@ -84,12 +84,16 @@
   height: 90%;
   border-radius: 50%;
   overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profile-pic-container > img {
   width: 100%;
-  height: auto;
-  cursor: pointer;
+  height: 100%;
+  object-fit: cover;
 }
 
 #profile-pic-modal > .modal-content > div:first-child {
@@ -329,8 +333,8 @@
   cursor: pointer;
 }
 
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 .input-container2 {

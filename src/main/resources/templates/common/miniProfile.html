@@ -1,37 +1,62 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>미니 프로필</title>
-    <link rel="stylesheet" href="/css/common/miniProfile.css">
+    <title>chattingSidebar</title>
+    <link rel="stylesheet" href="/css/chat/chattingSidebar.css"/>
+    <link rel="stylesheet" href="/css/common/miniProfile.css"/>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="/js/common/miniProfile.js"></script>
 </head>
 <body>
 
-<div th:fragment="body">
-    <div id="miniProfileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeMiniProfileModal()">×</span>
-            <div class="profile">
-                <img id="miniProfileImage" src="" class="profile-avatar">
-                <h2 id="miniProfileNickname">
-                    <span id="miniProfileStatus" class="status-indicator offline">●</span> 
-                </h2>
-                <p id="miniProfileId">#0000</p>
-
-                <div id="miniProfileActions">
-                    <button id="miniStatusButton" onclick="toggleStatusDropdown()">온라인</button>
-                    <div id="statusDropdown">
-                        <button onclick="updateStatus('online')">온라인</button>
-                        <button onclick="updateStatus('offline')">오프라인</button>
-                    </div>
-                    <button id="miniEditProfile" onclick="goToMyAccount()">프로필 편집</button>
-                </div>
+    <div class="channel-list bg-light d-flex flex-column" style="width: 320px;">
+        <nav>
+            <h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
+            <div class="voiceChat" th:each="c : ${channel}" th:if='${c.channelSeparator eq "V"}' 
+                th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|">
+                <input class="chatInput" type="hidden" th:value="${c.channelNo}">
+                <ul>
+                    <li>
+                        <b><img src="/image/Voice.png">&nbsp[[${c.channelName}]]</b>
+                        <ul></ul>
+                    </li>
+                </ul>
             </div>
+        </nav>
+
+        <div class="profile">
+            <img id="profileImg" th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}" width="50px" height="50px">
+            <b id="profileName" th:text="${member.memberNickname}"></b>
+            <img id="micImg" src="/image/preferences/mic.png" width="30px">
+            <img src="/image/preferences/Headphones.png" width="30px">
+            <img src="/image/preferences/Preferences.png" width="30px" onclick="goToMyAccount()">
         </div>
     </div>
-</div>
 
-<script src="/js/common/miniProfile.js"></script>
+    <!-- ✅ 프로필 모달 -->
+    <div th:fragment="miniProfile">
+	    <div id="miniProfileModal" class="modal">
+		    <div class="modal-content">
+		    	<span class="close" onclick="closeMiniProfileModal()">&times;</span>
+		        <div class="modal-header">
+		            <img id="miniProfileImage" src="" class="profile-avatar">
+		        </div>
+		
+		        <div class="modal-body">
+		            <h2 id="miniProfileNickname">사용자0413</h2>
+		            <p id="miniProfileId">ballpython11201106</p>
+		        </div>
+		
+		        <div class="profile-actions">
+		            <button id="editProfile" onclick="goToMyAccount()">
+		                <span>✏️ 프로필 편집</span>
+		            </button>
+		        </div>
+		    </div>
+		</div>
+	</div>
 
 </body>
 </html>

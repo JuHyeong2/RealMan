@@ -63,4 +63,18 @@
             TIME_TYPE = #{timeType}
         WHERE MEMBER_NO = #{memberNo}
     </update>
+
+    <select id="getThemePrefs" resultType="com.example.demo.preferences.model.vo.Theme">
+        SELECT *
+        FROM theme
+        WHERE member_no = #{memberNo}
+    </select>
+
+    <update id="updateTheme" parameterType="com.example.demo.preferences.model.vo.Theme">
+        UPDATE theme
+        SET theme_color = #{themeColor},
+            font_type = #{fontType},
+            font_size = #{fontSize}
+        WHERE member_no = #{memberNo}
+    </update>
 </mapper>

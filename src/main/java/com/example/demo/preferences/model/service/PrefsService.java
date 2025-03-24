@@ -3,6 +3,7 @@ package com.example.demo.preferences.model.service;
 import com.example.demo.preferences.model.mapper.PrefsMapper;
 import com.example.demo.preferences.model.vo.Device;
 import com.example.demo.preferences.model.vo.Notification;
+import com.example.demo.preferences.model.vo.Theme;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -66,6 +67,14 @@ public class PrefsService {
 
     public int updateMsg(Notification msg) {
         return prefsMapper.updateMsg(msg);
+    }
+
+    public int updateTheme(Theme theme) {
+        return prefsMapper.updateTheme(theme);
+    }
+
+    public Theme getThemePrefs(int memberNo) {
+        return prefsMapper.getThemePrefs(memberNo);
     }
 }
 

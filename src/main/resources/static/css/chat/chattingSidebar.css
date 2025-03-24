@@ -1,56 +1,87 @@
 @charset "UTF-8";
 
-html, body {
-	height: calc(100vh - 97px);
+html,
+body {
+  height: calc(100vh - 97px);
 }
 
 .chatSidebar {
-	width: 360px;
-	background-color: #f2f6f9;
-	height: 90vh;
-	padding: 2rem 0;
-	box-sizing: border-box;
-	overflow-y: auto;
+  width: 360px;
+  background-color: #f2f6f9;
+  height: 90vh;
+  padding: 2rem 0;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
-.voiceChat ul {
-	list-style: none;
-	padding: 0;
-	margin-left: 5px;
-	font-size: 25px;
+.channel {
+  display: flex;
+  position: relative;
+  align-items: center;
+  background-color: #bdd3e2;
+  border-radius: 0.8rem;
+  padding: 0.8rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  width: 90%;
+  margin-left: 1rem;
+  height: 2.8rem;
 }
 
-.voiceChat > ul > li > b {
-	display: block;
-	list-style: none;
-	padding: 10px;
-	margin: 1rem;
-	font-size: 20px;
-	background-color: #bdd3e2;
-	border-radius: 10px;
-	width: 90%;
-	font-weight: normal;
-	cursor: pointer;
+.channel > b {
+  font-weight: normal;
+  cursor: pointer;
 }
 
-.voiceChat > ul > li > ul {
-	margin-left: 30px;
+.channel > b > img {
+  margin-right: 0.3rem;
 }
 
-.textChat > li {
-	list-style: none;
-	padding: 10px;
-	margin: 1rem;
-	font-size: 20px;
-	background-color: #bdd3e2;
-	border-radius: 10px;
+.channel > button {
+  position: absolute;
+  right: 1rem;
+  width: 1rem;
+  height: 1rem;
+  border: 0;
+  border-radius: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.5rem;
 }
 
-
-.voiceChat ui li{
-	margin-left: 50px;
+.channel-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  right: -5rem;
+  top: 1.3rem;
+  background-color: #f2f6f9;
+  padding: 0;
+  width: 35%;
+  overflow: hidden;
+  max-height: 0;
+  z-index: 2;
+  transition: all 0.3s ease;
 }
 
+.channel-menu-show {
+  max-height: 100px;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  transition: all 0.3s ease;
+}
+
+.channel-menu > div:hover {
+  cursor: pointer;
+  background-color: rgb(219, 219, 219);
+  padding-left: 0.2rem;
+}
+
+.new-channel-name {
+  position: absolute;
+  z-index: 2;
+}
 /* nav ul ul li{ */
 /* 	list-style: none; */
 /* 	padding: 0; */
@@ -60,116 +91,79 @@ html, body {
 /* 	border-radius: 10px; */
 /* } */
 
-.voiceChat > ul > li {
+.voiceList,
+.chatList {
+  display: none; /* 기본적으로 숨김 */
+  padding: 0;
 }
-
-.channel {
-	cursor: pointer;
-}
-
-.voiceList, .chatList {
-	display: none;  /* 기본적으로 숨김 */
-	padding: 0;
-}
-
 
 .chatSidebar nav ul li.channel:hover + .voiceList,
 .chatSidebar nav ul li.channel:hover + .chatList {
-	display: block;
+  display: block;
 }
 
 .connect {
-	display: flex;
-	align-items: center;
-	background-color: #f2f6f9;
-	margin-top: auto;
-	margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  background-color: #f2f6f9;
+  margin-top: auto;
+  margin-bottom: 3rem;
 }
 
-.connect b{
-	color: #2dc771;
+.connect b {
+  color: #2dc771;
 }
 
-.connect img{
-	margin-left: auto;
-	cursor: pointer;
+.connect img {
+  margin-left: auto;
+  cursor: pointer;
 }
 
-.connect img:hover{
-	background-color: #dbe9f4;
+.connect img:hover {
+  background-color: #dbe9f4;
 }
 
 .profile {
-	display: flex;
-  	align-items: center; /* 수직 중앙 정렬 */
-  	gap: 5px;
-  	position: absolute;
-  	width: 350px;
-  	bottom: 0px; 
+  display: flex;
+  align-items: center; /* 수직 중앙 정렬 */
+  gap: 5px;
+  position: absolute;
+  width: 350px;
+  bottom: 0px;
 }
 
-.profile b{
-	font-size: 20px;
-	cursor: pointer;
+.profile b {
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .profile img {
-	cursor: pointer;
-	border-radius: 100px;
+  cursor: pointer;
+  border-radius: 100px;
 }
 
 #micImg {
-	margin-left: 50px;
+  margin-left: 50px;
 }
 
-.modal {
-    display: none; 
-    position: fixed;
-    z-index: 1000;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    text-align: center;
+.channel-title {
+  display: flex;
+  position: relative;
+  align-items: center;
 }
 
-.modal-content {
-    position: relative;
+.channel-title > button {
+  position: absolute;
+  right: 1rem;
+  top: 0.2rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  border: 1px rgb(113, 93, 158) solid;
+  border-radius: 20%;
+  background-color: white;
+  color: rgb(113, 93, 158);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.modal button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    background-color: #bdd3e2;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.modal button:hover {
-    background-color: #91b2c3;
-}
-
-#statusMessage {
-    width: 100%;
-    height: 60px;
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    resize: none;
-}

@@ -18,6 +18,8 @@ li {
   display: flex;
   position: relative;
   margin-top: 0.3rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
   border-radius: 0.2rem;
   width: 90%;
   align-items: center;
@@ -193,11 +195,13 @@ li {
   border-radius: 50%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .profile-div > img {
   width: 100%;
   height: auto;
+  object-fit: cover;
 }
 
 .li-friends > button {

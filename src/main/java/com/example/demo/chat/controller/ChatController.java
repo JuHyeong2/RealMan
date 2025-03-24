@@ -57,23 +57,6 @@ public class ChatController {
 	private Map<Integer, Set<String>> videoInChannel = new ConcurrentHashMap<>();
 	private int memberInchannelNo = 0;
 
-	@GetMapping("/main")
-	public String mainView(HttpServletRequest request, Model model, HttpSession session) {
-
-		Member m = (Member) session.getAttribute("loginMember");
-
-		ArrayList<Server> selectServerList = sService.selectServerList(m);
-		if(selectServerList != null || !selectServerList.isEmpty()) {
-			model.addAttribute("selectServerList", selectServerList);
-		}
-		
-		model.addAttribute("member", m);
-
-		return "chat/chatting";
-	}
-
-
-
 	@GetMapping("/main/{serverNo}/{channelNo}")
 	public String chatting(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
