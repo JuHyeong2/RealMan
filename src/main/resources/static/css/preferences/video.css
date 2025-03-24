@@ -80,3 +80,12 @@ select {
 .test-button:hover, .stop-button:hover {
 	background-color: #e5ecf3;
 }
+
+.request-permission{
+	background-color: white;
+	border: 1px solid black;
+	font-size: 14px;
+	padding: 1rem;
+	border-radius: 3px;
+	cursor: pointer;
+}

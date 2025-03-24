@@ -126,3 +126,12 @@ select {
 .radio-option.selected {
 	background-color: #d8d8d8;
 }
+
+.request-permission{
+	background-color: white;
+	border: 1px solid black;
+	font-size: 14px;
+	padding: 1rem;
+	border-radius: 3px;
+	cursor: pointer;
+}
