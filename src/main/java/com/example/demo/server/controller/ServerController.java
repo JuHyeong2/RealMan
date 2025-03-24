@@ -3,24 +3,35 @@ package com.example.demo.server.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.example.demo.member.model.vo.ProfileImage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.example.demo.member.model.service.MemberService;
-import com.example.demo.member.model.vo.Member;
-import com.example.demo.server.model.exception.ServerException;
-import com.example.demo.server.model.service.ServerService;
-import com.example.demo.server.model.vo.Server;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.example.demo.chat.model.vo.Channel;
+import com.example.demo.member.model.service.MemberService;
+import com.example.demo.member.model.vo.Member;
+import com.example.demo.member.model.vo.ProfileImage;
+import com.example.demo.server.model.service.ServerService;
+import com.example.demo.server.model.vo.Server;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -184,5 +195,33 @@ public class ServerController {
 
 		return returnArr;
 	}
-
+	
+	//채널 추가
+	@PostMapping("/channel")
+	@ResponseBody
+	public int insertChannel(@RequestBody Channel ch) {
+		int result = sService.insertChannel(ch);
+		System.out.println(ch.getChannelNo());
+		if (result == 1) {
+			return ch.getChannelNo();
+		}else {
+			return 0;
+		}
+	}
+	
+	//채널 수정
+	@PutMapping("/channel")
+	@ResponseBody
+	public int editChannel(@RequestBody HashMap<String, String> map) {
+		int result = sService.editChannel(map);
+		return result;
+	}
+	//채널 삭제 
+	@DeleteMapping("/channel")
+	@ResponseBody
+	public int deleteChannel(@RequestBody HashMap<String,Integer> map) {
+		int channelNo = map.get("channelNo");
+		int result = sService.deleteChannel(channelNo);
+		return result;
+	}
 }
