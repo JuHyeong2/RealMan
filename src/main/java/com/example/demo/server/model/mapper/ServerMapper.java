@@ -35,7 +35,7 @@ public interface ServerMapper {
 
 	int selectCreateServerNo();
 
-	void insertServerMember(int memberNo, int serverNo);
+	void insertServerMember(HashMap<String, Integer> map);
 
 	void insertDefaultTextChannel(int serverNo);
 
