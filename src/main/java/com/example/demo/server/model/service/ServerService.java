@@ -61,7 +61,11 @@ public class ServerService {
 		// 방금 생성된 서버 번호 불러오기
 		int serverNo = mapper.selectCreateServerNo();
 		// 불러온 서버 번호에 관리자로 현재 사용자 등록하기
-		mapper.insertServerMember(memberNo, serverNo);
+		HashMap<String, Integer>map = new HashMap<String, Integer>();
+		map.put("memberNo", memberNo);
+		map.put("serverNo", serverNo);
+
+		mapper.insertServerMember(map);
 		// 기본 채널 생성 (채팅, 보이스)
 		mapper.insertDefaultTextChannel(serverNo);
 		mapper.insertDefaultVoiceChannel(serverNo);
