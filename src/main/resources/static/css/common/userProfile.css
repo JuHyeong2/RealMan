@@ -1,0 +1,80 @@
+@charset "UTF-8";
+#userProfileModal {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  max-width: 350px;
+  min-width: 280px;
+  height: auto;
+  max-height: 160px;
+  overflow: hidden;
+  background-color: #bdd3E2;
+  border-radius: 15px;
+  z-index: 99999;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+#userProfileModal.active {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  align-items: center;
+  justify-content: center;
+}
+
+#userProfileModal .modal-content {
+  background-color: white;
+  border-radius: 15px;
+  width: auto;
+  max-width: 340px;
+  min-width: 280px;
+  height: auto;
+  max-height: 140px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  position: relative;
+}
+
+#userProfileImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  border: 3px solid white;
+  object-fit: cover; /* ✅ 이미지 비율 유지하면서 자르기 */
+  margin-bottom: auto;
+  margin-left: -127px;
+}
+
+#userProfileNickname {
+  font-size: 18px;
+  font-weight: bold;
+  color: #23272A;
+  margin-top: -100px;
+  margin-left: 35px;
+}
+
+#userProfileId {
+  font-size: 14px;
+  color: #b9bbbe;
+  margin-left: 30px;
+}
+
+#userProfileModal .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}

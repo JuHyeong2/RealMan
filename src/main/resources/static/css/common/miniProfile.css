@@ -1,152 +1,116 @@
 #miniProfileModal {
-    position: absolute;
+    display: none;        
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px;
-    height: 300px;
+    width: 355px;
+    height: 155px;
+    overflow: hidden;
     background-color: #bdd3E2;
-    border-radius: 5px;
-    padding: 5px;
-    text-align: center;
-    display: none; /* ✅ 기본적으로 숨김 */
+    border-radius : 15px;
+    z-index: 99999;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+
+/* ✅ 모달 활성화 시 */
+#miniProfileModal.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#miniProfileModal .profile {
+    padding: 10px;
+    border-radius: 10px;
+    max-height: 100px;
+}
+
+/* ✅ 사이드바 프로필에는 배경색을 없애기 */
+.channel-list .profile {
+    background-color: transparent !important; /* ✅ 투명하게 유지 */
+    padding: 10px;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 15px;
+    width: 340px; 
+    height: 140px;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
 }
 
-#miniProfileModal.active {
-    display: flex !important;
-}
 
-/* #miniProfileModal::before { */
-/*     display: none;  */
-/* } */
-
-
-
+/* ✅ 프로필 이미지 스타일 */
 #miniProfileImage {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-    border: 2px solid #ccc;
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    border: 3px solid white;
+    position: absolute;
+    bottom: 20px;
+    left : 10px;
+    background-color: white;
 }
 
+/* ✅ 본문 스타일 */
+.modal-body {
+    width: 100%;
+    padding: 60px 20px 20px; /* ✅ 내용과 헤더 간격 조정 */
+    text-align: center;
+}
+
+
+/* ✅ 닉네임 스타일 */
 #miniProfileNickname {
-    font-size: 18px;
+    font-size: 20px; /* ✅ 크기 키움 */
     font-weight: bold;
-    color: black;
-    margin-bottom: 5px;
+    color: #23272A;
+    margin-top: -80px;
 }
 
+/* ✅ 사용자 ID 스타일 */
 #miniProfileId {
     font-size: 14px;
-    color: #aaa;
-    margin-bottom: 10px;
+    color: #b9bbbe;
 }
 
-#miniProfileActions {
-    margin-left: 80px;
-    gap: 100px; 
-    margin-top: 10px;
-}
-
-#miniProfileActions button {
-    padding: 8px 12px;
-    font-size: 14px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s ease-in-out;
-}
-
-#miniStatusButton {
-    background: #9d9dee;
-    color: white;
-}
-
-#miniStatusButton:hover {
-    background: darkgreen;
-}
-
-#miniEditProfile {
-    background: #fdc1cb;
-    color: white;
-}
-
-#miniEditProfile:hover {
-    background: darkblue;
-}
-
-/* ✅ 상태 아이콘 스타일 (초록불 / 회색불) */
-#miniProfileStatus {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-left: 5px;
-}
-
-/* ✅ 온라인 상태 (초록불) */
-.online {
-    background-color: green;
-}
-
-/* ✅ 오프라인 상태 (회색불) */
-.offline {
-    background-color: gray;
-}
-
-/* ✅ 상태 변경 드롭다운 */
-#statusDropdown {
-    display: none; /* 기본적으로 숨김 */
-    position: absolute;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    padding: 5px;
-    width: 120px;
-    z-index: 1000;
-}
-
-/* ✅ 상태 표시 아이콘 */
-.status-indicator {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-left: 8px;
-}
-
-/* ✅ 온라인 상태 (초록불) */
-.online {
-    background-color: green;
-}
-
-/* ✅ 오프라인 상태 (회색불) */
-.offline {
-    background-color: gray;
-}
-
-#statusDropdown button {
+/* ✅ 버튼 스타일 */
+.profile-actions {
     width: 100%;
-    padding: 5px;
-    border: none;
-    background: none;
-    text-align: left;
-    cursor: pointer;
+    display: flex;
+    justify-content: center; /* ✅ 가운데 정렬 */
+    padding: 0 20px 20px;
 }
 
-#statusDropdown button:hover {
-    background: #f0f0f0;
-}
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.profile-actions button {
+    padding: 12px;
+    font-size: 15px; /* ✅ 폰트 키움 */
+    margin-top: -48px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
-    color: black;
+    text-align: center; /* ✅ 버튼 내 글씨 가운데 정렬 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: white;
 }
+
+.profile-actions button:hover {
+    background: #e3e3e3;
+}
+
+

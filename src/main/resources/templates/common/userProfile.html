@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>userProfile 모달</title>
+  <link rel="stylesheet" href="/css/common/userProfile.css">
+</head>
+<body>
+  <div th:fragment="userProfile">
+  <div id="userProfileModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeUserProfileModal()">&times;</span>
+      <div class="modal-header">
+        <img id="userProfileImage" src="" class="profile-avatar user-profile-img" />
+      </div>
+      <div class="modal-body">
+        <h2 id="userProfileNickname">닉네임</h2>
+        <p id="userProfileId">#0000</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
