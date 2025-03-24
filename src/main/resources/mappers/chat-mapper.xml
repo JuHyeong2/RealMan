@@ -30,4 +30,15 @@
 
     </select>
 
+    <select id="findDMByMembers">
+        select *
+        from dm
+        join friend using(member_no)
+        where member_no = #{memberNo}
+            AND FRIEND_MEMBER_NO = #{otherMemberNo}
+            AND OTHER_MEMBER_NO = #{otherMemberNo}
+
+    </select>
+
+
 </mapper>

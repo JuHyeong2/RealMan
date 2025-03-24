@@ -82,7 +82,8 @@ public class ChatService {
 		Firestore db = FirestoreClient.getFirestore();
 
 		// asynchronously retrieve all users
-		ApiFuture<QuerySnapshot> query = db.collection("RealMan01").whereEqualTo("dc_no", channelNo).orderBy("chat_createdate", Query.Direction.DESCENDING).get();
+		ApiFuture<QuerySnapshot> query = db.collection("RealMan01").whereEqualTo("dc_no", channelNo)
+				.orderBy("chat_createdate", Query.Direction.DESCENDING).get();
 		// ...
 		// query.get() blocks on response
 		QuerySnapshot querySnapshot;
@@ -121,17 +122,42 @@ public class ChatService {
 	}
 
 
+	public DM createDM(int memberNo, int otherMemberNo) {
+		DM dm = new DM();
+		dm.setMemberNickname(dm.getMemberNickname()); // 여기에 실제 닉네임을 넣어야 함
+		dm.setOtherMemberNickname(dm.getOtherMemberNickname());
+		dm.setDmNo(dm.getDmNo());
+
+		insertDM(dm);
+		return dm;
+	}
+
 
 	public void insertDM(DM message) {
+		Firestore db = FirestoreClient.getFirestore();
+
+		DocumentReference docRef = db.collection("RealMan01").document();
+
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("dm_memberNickname", message.getMemberNickname());
 		data.put("dm_otherMemberNickname", message.getOtherMemberNickname());
 		data.put("dm_no", message.getDmNo());
 
+		ApiFuture<WriteResult> result = docRef.set(data);
+
+		try {
+			System.out.println("Update time : " + result.get().getUpdateTime());
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 	}
 
 	public ArrayList<DM> selectDmList(int memberNo) {
+
 		return mapper.selectDmList(memberNo);
 	}
 
@@ -163,7 +189,8 @@ public class ChatService {
 	}
 
 
-
-
+	public DM findDMByMembers(int memberNo, int otherMemberNo) {
+		return mapper.findDMByMembers(memberNo, otherMemberNo);
+	}
 }
 

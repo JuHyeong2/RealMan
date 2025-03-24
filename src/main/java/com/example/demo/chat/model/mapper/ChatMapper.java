@@ -16,4 +16,5 @@ public interface ChatMapper {
 
     ArrayList<DM> selectDmList(int memberNo);
 
+    DM findDMByMembers(int memberNo, int otherMemberNo);
 }

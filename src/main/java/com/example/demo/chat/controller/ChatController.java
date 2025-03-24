@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.example.demo.chat.model.vo.DM;
+import com.example.demo.member.model.vo.Friend;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -169,6 +170,7 @@ public class ChatController {
 		cService.insertChat(message);
 		messagingTemplate.convertAndSend("/sub/chatroom/" + channelNo, message);
 	}
+
 	
 	// 입장시 추가 후 목록반환
 	@MessageMapping("/chat/joinVoice")
@@ -292,25 +294,29 @@ public class ChatController {
 
 
 
-	@GetMapping("/tiny")
-	public String tiny () {
-			return "/tiny";
-	}
+//	@GetMapping("/tiny")
+//	public String tiny () {
+//			return "/tiny";
+//	}
+//
+//
+//	@PostMapping("/tiny2")
+//	@ResponseBody
+//	public Map<String, String> sendMessage(@RequestBody Map<String, String> request) {
+//		String message = request.get("message"); // TinyMCE에서 보낸 메시지 받기
+//		System.out.println("받은 메시지: " + message);
+//
+//		// 메시지를 DB에 저장하거나 WebSocket을 통해 전송 가능
+//
+//
+//		Map<String, String> response = new HashMap<>();
+//		response.put("message", "메시지가 전송되었습니다!");
+//		return response;
+//	}
 
 
-	@PostMapping("/tiny2")
-	@ResponseBody
-	public Map<String, String> sendMessage(@RequestBody Map<String, String> request) {
-		String message = request.get("message"); // TinyMCE에서 보낸 메시지 받기
-		System.out.println("받은 메시지: " + message);
-
-		// 메시지를 DB에 저장하거나 WebSocket을 통해 전송 가능
 
 
-		Map<String, String> response = new HashMap<>();
-		response.put("message", "메시지가 전송되었습니다!");
-		return response;
-	}
 
 
 
