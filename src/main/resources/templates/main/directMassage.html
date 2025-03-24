@@ -74,8 +74,11 @@
     <!-- DM 목록 -->
     <table class="dmTable">
         <tbody id="dmList">
-        <tr th:each="d : ${dmList}" th:attr="data-dmNo=${d.dmNo}, data-otherMemberNo=${d.otherMemberNo} " onclick="enterDM(this)">
-            <td th:text="${d.otherMemberNickname}"></td>
+        <tr th:each="d:${DM}" th:attr="data-dmNo=${d.dmNo}, data-otherMemberNo=${d.otherMemberNo} " onclick="enterDM(this)">
+            <td>
+                <img th:src="${d.imgRename == null? '/image/member/no-profile.svg': d.imgRename}" width="30px" height="30px"/>
+                <td th:text="${d.memberNickname}"></td>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -147,20 +150,62 @@
 
 
 
-
-
 </script>
 <style>
-    /*.modal { display: none; position: fixed; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); }*/
-    /*.modal-content { background: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 50%; }*/
-    /*.close { color: red; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }*/
-    /*#dmFriendList li {*/
-    /*    display: block !important;*/
-    /*    color: red !important;*/
-    /*    font-size: 20px !important;*/
-    /*    background-color: yellow !important;*/
-    /*    border: 1px solid black !important;*/
-    /*}*/
+
+    .directMassage {
+        width: 300px; /* 적절한 너비 설정 */
+        border: 1px solid #ddd;
+        padding: 10px;
+        font-family: Arial, sans-serif;
+    }
+
+    .dm {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .createDM {
+        background-color: #d8e7f3;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        float: right; /* 오른쪽에 배치 */
+        margin-top: -30px; /* dm div와 겹치게 위로 올림 */
+    }
+
+    .createDM:hover {
+        background-color: #0056b3;
+    }
+
+    #dmWrapper {
+        clear: both; /* float 속성 해제 */
+    }
+
+    .dmTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .dmTable th, .dmTable td {
+        border: 1px solid #eee;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .dmTable th {
+        background-color: #f2f2f2;
+    }
+
+    .dmTable tr:hover {
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
     #dmFriendList{
         display: block ; /* 명시적으로 block으로 설정 */
         font-size: 20px ;

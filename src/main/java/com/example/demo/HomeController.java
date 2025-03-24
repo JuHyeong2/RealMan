@@ -17,6 +17,9 @@ import com.example.demo.chat.model.service.ChatService;
 import com.example.demo.chat.model.vo.DM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +45,8 @@ public class HomeController {
 	private final MemberService mService;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private final SimpMessagingTemplate messagingTemplate;
+
 
 
 	@GetMapping("home")
@@ -58,6 +63,16 @@ public class HomeController {
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(m);
 		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
 		ArrayList<DM> d = cService.selectDmList(m.getMemberNo());
+
+
+		for(int i=0; i<d.size(); i++) {
+			ProfileImage img = mService.selectImage(d.get(i).getMemberNo());
+//			System.out.println(img);
+			if(img != null) {
+				d.get(i).setImageUrl(img.getImgRename());
+			}
+		}
+
 
 
 		for(DM a : d){
@@ -153,6 +168,15 @@ public class HomeController {
 	}
 
 
+
+	@MessageMapping("/chat/{dmNo}/C")
+	@SendTo("/sub/chatroom/{dmNo}")
+	public DM sendMessage(DM message, @RequestParam("dmNo") String dmNo) {
+		cService.insertDM(message); // 서비스 계층을 통해 Firestore에 메시지 저장
+		messagingTemplate.convertAndSend("/sub/chatroom/" + dmNo, message);
+		return message; // 클라이언트에 메시지 전송
+
+	}
 
 
 
