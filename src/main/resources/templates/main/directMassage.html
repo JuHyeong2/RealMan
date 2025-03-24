@@ -76,7 +76,7 @@
         <tbody id="dmList">
         <tr th:each="d:${DM}" th:attr="data-dmNo=${d.dmNo}, data-otherMemberNo=${d.otherMemberNo} " onclick="enterDM(this)">
             <td>
-                <img th:src="${d.imgRename == null? '/image/member/no-profile.svg': d.imgRename}" width="30px" height="30px"/>
+                <img th:src="${d.imgRename == null? '/image/member/no-profile.svg': d.imgRename}" width="30px" height="30px" style="border-radius: 50%;"/>
                 <td th:text="${d.memberNickname}"></td>
             </td>
         </tr>
