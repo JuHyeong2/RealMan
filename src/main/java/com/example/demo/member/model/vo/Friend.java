@@ -9,9 +9,10 @@ import lombok.*;
 public class Friend {
 
     private int friendNo;
-    private int memberNo;
+    private String friendNickname;
     private int friendMemberNo;
     private String friendStatus;
-    private String friendName;
-    private String memberName;
+
+    private int memberNo;
+    private String memberNickname;
 }

@@ -164,10 +164,8 @@
         console.log("memberList:" + memberList[0]);
 
         // WebSocket 연결
-        //         const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
-        // const socket = new SockJS("https://localhost:8080/stomp/chat");
-        const socket = new SockJS("https://192.168.140.22:9090/stomp/chat");
-
+        const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
+        //const socket = new SockJS("https://192.168.140.22:9090/stomp/chat");
         const stompClient = Stomp.over(socket);
 
         stompClient.connect({}, () => {
@@ -201,7 +199,7 @@
             // 					<div style='margin:0;  padding: 0; flex-grow: 1;'>${chatMessage.message}</div>
             // 받아온 메시지 채팅방에 출력하기
             let str = `<div class='chatContent-1'>
-            						  <img src=${userProfileImage != null ? userProfileImage : '/image/member/noprofile.svg'} width="40px" height="40px">
+            						  <img src=${userProfileImage != null ? userProfileImage : '/image/member/no-profile.svg'} width="40px" height="40px">
             						  <div class='chatContent-2'>
 	      								  <b>${chatMessage.sender}</b>
 	      								  <div style='display:flex; justify-content:space-between; align-items:flex-end;'>
@@ -301,7 +299,7 @@
               	  }
             });
 
-            // ✨ `input` 이벤트에서 mentionText 업데이트
+            //  `input` 이벤트에서 mentionText 업데이트
             editor.on("input", function () {
               let content = editor.getContent({ format: "text" }); // 현재 텍스트 가져오기
               let words = content.split(/\s+/); // 공백 기준으로 분리
@@ -355,8 +353,6 @@
             function updateMentionList() {
               mentionBox.innerHTML = "";
 
-              console.log("현재 입력한 텍스트:", mentionText);
-              console.log("전체 멤버 리스트:", memberList);
 
               if (!mentionText) {
                 mentionBox.innerHTML = "<div>검색어를 입력하세요.</div>";
@@ -368,8 +364,6 @@
                   .toLowerCase()
                   .includes(mentionText.toLowerCase())
               );
-
-              console.log("🔍 필터링된 멤버 리스트:", filteredMembers);
 
               if (filteredMembers.length === 0) {
                 mentionBox.innerHTML = "<div>검색 결과가 없습니다.</div>";

@@ -1,48 +1,261 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>directMassage</title>-->
+<!--    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>-->
+<!--    <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="directMassage" th:fragment="directMassage">-->
+
+<!--    <div class="dm">다이렉트 메시지</div>-->
+<!--    <button class="createDM" onclick="sendDM()">+</button>-->
+<!--    <div id="dmWrapper"></div>-->
+
+
+<!--    <table class="dmTable">-->
+<!--        <tbody id="dmList" th:each="d:${DM}" th:attr="data-dmNo=${d.dmNo}" >-->
+
+<!--            <p th:text="${d.otherMemberNo}"></p>-->
+<!--            <p th:text="${d.otherMemberNickname}"></p>-->
+
+<!--        </tbody>-->
+<!--    </table>-->
+
+<!--</div>-->
+
+<!--<script th:inline="javascript">-->
+<!--    // const memberList = /*[[${memberList}]]*/ null;-->
+<!--    // const flist = /*[[${flist}]]*/ null;-->
+
+<!--    function sendDM(dmNo) {-->
+<!--        // 방 번호를 인자로 받아 링크를 생성하고 이동합니다.-->
+
+
+
+
+<!--        // window.location.href = "/main/sendDM/" + dmNo;-->
+<!--    }-->
+
+<!--    document.querySelectorAll("#dmList").forEach(function(element) {-->
+<!--        element.addEventListener("click", function() {-->
+<!--            const dmNo = element.getAttribute("data-dmNo");-->
+<!--            sendDM(dmNo);-->
+<!--        });-->
+<!--    });-->
+
+
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>directMassage</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <title>Direct Message</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
-<div class="directMassage" th:fragment="directMassage">
+<style>
 
+
+</style>
+
+<body>
+
+<div class="directMassage" th:fragment="directMassage">
     <div class="dm">다이렉트 메시지</div>
-    <button class="createDM" onclick="sendDM()">+</button>
+    <button class="createDM" onclick="openModal()">+</button>
     <div id="dmWrapper"></div>
 
-
+    <!-- DM 목록 -->
     <table class="dmTable">
-        <tbody id="dmList" th:each="d:${DM}" th:attr="data-roomno=${d.dmNo}" >
-
-            <p th:text="${d.otherMemberNo}"></p>
-            <p th:text="${d.otherMemberNickname}"></p>
-
+        <tbody id="dmList">
+        <tr th:each="d:${DM}" th:attr="data-dmNo=${d.dmNo}, data-otherMemberNo=${d.otherMemberNo} " onclick="enterDM(this)">
+            <td>
+                <img th:src="${d.imgRename == null? '/image/member/no-profile.svg': d.imgRename}" width="30px" height="30px" style="border-radius: 50%;"/>
+                <td th:text="${d.memberNickname}"></td>
+            </td>
+        </tr>
         </tbody>
     </table>
+</div>
 
+<!-- 친구 선택 모달 -->
+<div id="friendListModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>친구 목록</h2>
+        <ul id="dmFriendList">
+            <li th:if="${friendList == null or #lists.isEmpty(friendList)}">친구 목록이 없습니다.</li>
+            <li th:each="f:${friendList}" th:attr="data-memberNo=${f.memberNo}, data-friendMemberNo=${f.friendMemberNo}"
+                th:text="|친구: ${f.friendMemberNo}|" onclick="createChatRoom(this)">
+            </li>
+        </ul>
+    </div>
 </div>
 
 <script th:inline="javascript">
-    // const memberList = /*[[${memberList}]]*/ null;
-    // const flist = /*[[${flist}]]*/ null;
-
-    function sendDM(dmNo) {
-        // 방 번호를 인자로 받아 링크를 생성하고 이동합니다.
-        window.location.href = "/main/sendDM/" + dmNo;
+    function openModal() {
+        document.getElementById("friendListModal").style.display = "block";
     }
 
-    document.querySelectorAll("#dmList").forEach(function(element) {
-        element.addEventListener("click", function() {
-            const dmNo = element.getAttribute("data-dmNo");
-            sendDM(dmNo);
-        });
-    });
+    function closeModal() {
+
+        document.getElementById("friendListModal").style.display = "none";
+    }
+
+
+
+    function createChatRoom(element) {
+        let friendMemberNo = element.getAttribute("data-friendMemberNo");
+        console.log("friendMemberNo"+friendMemberNo);
+        fetch("/dm/createDM", {
+            method: "POST",
+            headers: {
+                "Content-Type": 'application/json; charset=UTF-8'
+            },
+
+            body: JSON.stringify({
+                otherMemberNo:friendMemberNo
+            }) // 폼 데이터 형식으로 전송
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data.dmNo);
+                window.location.href = "/dm/" + data.dmNo;
+            })
+            .catch(error => {
+                console.error("채팅방 생성 실패:", error);
+                alert("채팅방 생성 실패");
+            });
+    }
+
+    function enterDM(element) {
+        let dmNo = element.getAttribute("data-dmNo");
+
+        console.log(dmNo);
+        window.location.href = "/dm/" + dmNo;
+    }
+
+
 
 
 
 </script>
+<style>
+
+    .directMassage {
+        width: 300px; /* 적절한 너비 설정 */
+        border: 1px solid #ddd;
+        padding: 10px;
+        font-family: Arial, sans-serif;
+    }
+
+    .dm {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .createDM {
+        background-color: #d8e7f3;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        float: right; /* 오른쪽에 배치 */
+        margin-top: -30px; /* dm div와 겹치게 위로 올림 */
+    }
+
+    .createDM:hover {
+        background-color: #0056b3;
+    }
+
+    #dmWrapper {
+        clear: both; /* float 속성 해제 */
+    }
+
+    .dmTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .dmTable th, .dmTable td {
+        border: 1px solid #eee;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .dmTable th {
+        background-color: #f2f2f2;
+    }
+
+    .dmTable tr:hover {
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    #dmFriendList{
+        display: block ; /* 명시적으로 block으로 설정 */
+        font-size: 20px ;
+        border: 1px solid black ;
+    }
+
+    #dmFriendList li {
+        display: block;
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee; /* 각 항목 아래에 구분선 추가 */
+        cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
+        transition: background-color 0.3s ease; /* 배경색 변경 시 부드러운 전환 효과 */
+    }
+
+    #dmFriendList li:hover {
+        background-color: #f0f0f0; /* 마우스 호버 시 배경색 변경 */
+    }
+
+    #dmFriendList li:last-child {
+        border-bottom: none; /* 마지막 항목의 구분선 제거 */
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1000; /* 모달이 다른 요소 위에 표시되도록 z-index 추가 */
+    }
+
+    .modal-content {
+        background: white;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 50%;
+        z-index: 1001; /* 모달 내용이 모달 위에 표시되도록 z-index 추가 */
+    }
+
+    .close {
+        color: red;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+</style>
+
+
 </body>
 </html>
