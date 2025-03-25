@@ -301,7 +301,7 @@
               	  }
             });
 
-            // ✨ `input` 이벤트에서 mentionText 업데이트
+            //  `input` 이벤트에서 mentionText 업데이트
             editor.on("input", function () {
               let content = editor.getContent({ format: "text" }); // 현재 텍스트 가져오기
               let words = content.split(/\s+/); // 공백 기준으로 분리
@@ -355,8 +355,6 @@
             function updateMentionList() {
               mentionBox.innerHTML = "";
 
-              console.log("현재 입력한 텍스트:", mentionText);
-              console.log("전체 멤버 리스트:", memberList);
 
               if (!mentionText) {
                 mentionBox.innerHTML = "<div>검색어를 입력하세요.</div>";
@@ -368,8 +366,6 @@
                   .toLowerCase()
                   .includes(mentionText.toLowerCase())
               );
-
-              console.log("🔍 필터링된 멤버 리스트:", filteredMembers);
 
               if (filteredMembers.length === 0) {
                 mentionBox.innerHTML = "<div>검색 결과가 없습니다.</div>";

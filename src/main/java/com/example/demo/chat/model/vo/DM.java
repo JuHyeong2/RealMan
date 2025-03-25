@@ -20,6 +20,10 @@ public class DM {
     private String otherMemberNickname;
     private String message;
 
+    private String profileImage;
+    private String imageUrl;
+    private String imgRename;
+
 
 
 
