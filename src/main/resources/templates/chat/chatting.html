@@ -138,7 +138,7 @@
         </div>
         <div class="p-3 d-flex">
           <textarea class="flex-grow-1" id="mytextarea"></textarea>
-          <button id="button-send">입력</button>
+<!--           <button id="button-send">입력</button> -->
         </div>
       </div>
       <input type="hidden" id="serverNo" th:value="${serverNo}" />
@@ -163,6 +163,8 @@
         const channelNo = /*[[${channelNo}]]*/ 0;
         /*]]>*/
         console.log("memberList:" + memberList[0]);
+        
+        let enterText;
 
         // WebSocket 연결
 //         const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
@@ -229,9 +231,9 @@
 
             stompClient.send(`/pub/chat/${roomId}/C`, {}, JSON.stringify(sendData));
           };
-
-          document.querySelector("#button-send").addEventListener("click", () => {
-              let msg = tinymce.get("mytextarea").getContent({ format: "html" }).trim(); // HTML 가져오기
+          
+          enterText=()=>{
+        	  let msg = tinymce.get("mytextarea").getContent({ format: "html" }).trim(); // HTML 가져오기
 
               let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
               if (imgTagMatch) {
@@ -244,7 +246,23 @@
               }
 
               tinymce.get("mytextarea").setContent("");
-            });
+          }
+
+//           document.querySelector("#button-send").addEventListener("click", () => {
+//               let msg = tinymce.get("mytextarea").getContent({ format: "html" }).trim(); // HTML 가져오기
+
+//               let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
+//               if (imgTagMatch) {
+//                 let imgSrc = imgTagMatch[1];
+//                 let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`;
+//                 let newContent = msg.replace(/<img[^>]+>/, imgTag);
+//                 sendMessage(username, newContent, channelNo);
+//               } else {
+//                 sendMessage(username, msg, channelNo);
+//               }
+
+//               tinymce.get("mytextarea").setContent("");
+//             });
         });
 
         // TinyMCE 초기화
@@ -257,6 +275,7 @@
           height: "70px",
           width: "100%",
           resize: false,
+          content_css: "/css/common/tinymce.css",
           images_upload_handler: function (blobInfo, success, failure) {
             let reader = new FileReader();
             reader.onload = function () {
@@ -295,7 +314,8 @@
               }else{
 	              	if(event.key == 'Enter' && !event.shiftKey){
 						        event.preventDefault();
-						        document.querySelector('#button-send').click();
+// 						        document.querySelector('#button-send').click();
+								enterText();
 			  		        }
               	  }
             });
