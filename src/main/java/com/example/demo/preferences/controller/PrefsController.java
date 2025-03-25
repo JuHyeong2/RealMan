@@ -124,13 +124,17 @@ public class PrefsController {
         Notification notify = pService.getNotifyPrefs(loginMember.getMemberNo());
         return notify;
     }
-    
+    s
     @PostMapping("/messages")
     @ResponseBody
     public void updateMessage(@RequestBody Notification msg, HttpSession session){
         Member loginUser = (Member) session.getAttribute("loginMember");
         msg.setMemberNo(loginUser.getMemberNo());
         int resultUdtMsg = pService.updateMsg(msg);
+        Notification notify = (Notification) session.getAttribute("notify");
+        notify.setTimeType(msg.getTimeType());
+        notify.setChatType(msg.getChatType());
+        session.setAttribute("notify", notify);
         System.out.println("메세지타입 업데이트 : " + (resultUdtMsg ==1?"성공":"실패"));
     }
 

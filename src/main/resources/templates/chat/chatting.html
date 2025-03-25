@@ -122,6 +122,14 @@
           <input type="hidden" th:value="${no}" />
           <div class="chatContent">
             <div class="textArea" th:each="c, cStat:${chatList}">
+              <div th:if="${(cStat.index > 0 and cStat.index + 1 < chatList.size() and
+                #strings.substring(chatList[cStat.index + 1].createDate,0,10) != #strings.substring(c.createDate,0,10))
+              or (cStat.index + 1 == chatList.size())}"
+                   class="date-separator">
+                <span th:text="${#strings.substring(c.createDate,0,10)}"></span>
+              </div>
+
+
               <div class="chatContent-1">
                 <img
                   th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
@@ -129,7 +137,7 @@
                   height="40px"
                 />
                 <div class="chatContent-2">
-                  <b th:utext="${c.sender}"></b>
+                  <b th:utext="${c.sender}"></b>&nbsp;<span th:utext="${c.createDate}" style="font-size: 14px;"></span>
                   <p th:utext="${c.message}" style="margin: 0"></p>
                 </div>
               </div>

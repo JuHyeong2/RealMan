@@ -108,3 +108,23 @@
 }
 
 
+.date-separator {
+	text-align: center;
+	font-size: 13px;
+	color: #888;
+	margin: 10px 0;
+	position: relative;
+}
+
+.date-separator::before,
+.date-separator::after {
+	content: "";
+	height: 1px;
+	background-color: #ccc;
+	position: absolute;
+	top: 50%;
+	width: 40%;
+}
+
+.date-separator::before { left: 0; }
+.date-separator::after { right: 0; }

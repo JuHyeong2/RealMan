@@ -20,6 +20,8 @@ import com.example.demo.chat.model.mapper.ChatMapper;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +79,7 @@ public class ChatService {
 		
 	}
 
-	public ArrayList<ChatMessage> selectChatList(int channelNo) {
+	public ArrayList<ChatMessage> selectChatList(int channelNo, String timeType) {
 
 		Firestore db = FirestoreClient.getFirestore();
 
@@ -99,14 +101,24 @@ public class ChatService {
 //			  System.out.println("chat_separator: " + document.getString("chat_separator"));
 //			  System.out.println("dc_no: " + document.getLong("dc_no"));
 //			  System.out.println();
-			  ChatMessage message = new ChatMessage();
-			  message.setMessage(document.getString("chat_content"));
-			  message.setRoomId(document.getLong("dc_no").intValue());
-			  message.setSender(document.getString("chat_memberNickname"));
-//			  message.setCreateDate(document.getTimestamp("chat_createdate"));
-			  message.setSeparetor(document.getString("chat_separator"));
-			  message.setCreateDate(document.getTimestamp("chat_createdate").toString());
-			  chatList.add(message);
+			String inputTime = String.valueOf(document.getTimestamp("chat_createdate"));
+			// ISO 형태의 문자열을 ZonedDateTime으로 파싱
+			ZonedDateTime dateTime = ZonedDateTime.parse(inputTime).withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+			// 24시간제 포맷 지정
+			DateTimeFormatter formatter24 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			String formatted24 = dateTime.format(formatter24);
+			// 12시간제 포맷 지정 (오전/오후 포함)
+			DateTimeFormatter formatter12 = DateTimeFormatter.ofPattern("yyyy-MM-dd a h:mm");
+			String formatted12 = dateTime.format(formatter12);
+			ChatMessage message = new ChatMessage();
+			message.setMessage(document.getString("chat_content"));
+			message.setRoomId(document.getLong("dc_no").intValue());
+			message.setSender(document.getString("chat_memberNickname"));
+			message.setCreateDate(timeType.equals("24H")? formatted24:formatted12);
+			message.setSeparetor(document.getString("chat_separator"));
+//			message.setCreateDate(document.getTimestamp("chat_createdate").toString());
+			chatList.add(message);
+				System.out.println(timeType+ " : "+ message.getCreateDate());
 			}
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
