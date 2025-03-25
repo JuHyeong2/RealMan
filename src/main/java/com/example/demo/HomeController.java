@@ -76,28 +76,19 @@ public class HomeController {
 
 
 
-//		for(DM a : d){
-//			System.out.println("ㅋㅋㅋㅋㅋㅋㅋㅋㅋ" + a.toString());
-//		}
+		for(DM a : d){
+			System.out.println("ㅋㅋㅋㅋㅋㅋㅋㅋㅋ" + a.toString());
+		}
 
 		model.addAttribute("loginMember", m)
 		.addAttribute("DM",d)
 		.addAttribute("friendNumberList", friendNumberList)
 		.addAttribute("friendList", friendList);
 
-
-
-
-
 		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);
 			
-
-
-
-
-
-
+			
 		}
 
 //		cService.insertDM(dmContent);
@@ -165,7 +156,7 @@ public class HomeController {
 	public String dm(@PathVariable("dmNo") int dmNo, Model model, HttpSession session) {
 		Member m = (Member) session.getAttribute("loginMember");
 
-//		System.out.println("내가누구야 ;" + m);
+		System.out.println("내가누구야 ;" + m);
 //		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
 //		System.out.println(friendList);
 		// 1. dm 했던거 가져오기 (상대방 닉네임(fireBase에서), 프사(oracle))
@@ -175,104 +166,21 @@ public class HomeController {
 //				.addAttribute("friendList", friendList);
 //		System.out.println("칭기목록:" + friendList);
 
-
-		// 채널 message 가져오자
-//		Integer channelNum = (Integer)channelNo;
-		ArrayList<DM> DMList = cService.selectDm(dmNo);
-
-		System.out.println("존내게도 졸리노" + DMList);
-
-		for(int i=0; i<DMList.size(); i++) {
-			m = mService.selectMemberNo(DMList.get(i).getSender());
-			if(m != null) {
-				ProfileImage img = mService.selectImage(m.getMemberNo());
-				if(img != null) {
-					DMList.get(i).setProfileUrl(img.getImgRename());
-				}
-			}
-		}
-
-		//상대방 이름가져오기
-		ProfileImage img = mService.selectImage(DMList.getFirst().getOtherMemberNo());
-		if(img != null) {
-			DMList.get(0).setImageUrl(img.getImgRename());
-			System.out.println(DMList.getFirst().getOtherMemberNickname()+" : "+DMList.getFirst().getImageUrl());
-		}
-
-
-		model.addAttribute("DMList", DMList);
-
-
-
 		return "/main/sendDM";
 
 	}
-//
-//
-//
-//	@MessageMapping("/dm/{dmNo}/D")
-////	@SendTo("/sub/dm/{dmNo}")
-//	public void sendMessage(DM message, @DestinationVariable("dmNo") int dmNo) {
-//		System.out.println("dmNo : " + dmNo);
-//		System.out.println(message.toString());
-//		message.setDmNo(dmNo);
-//
-//		cService.insertDM(message); // 서비스 계층을 통해 Firestore에 메시지 저장
-//
-//		messagingTemplate.convertAndSend("/sub/dm/" + dmNo, message);
-//
-//	}
 
 
-
-
-//@GetMapping("/dm/{dmNo}")
-//public String dm(@PathVariable("dmNo") int dmNo, Model model, HttpSession session) {
-//	Member m = (Member) session.getAttribute("loginMember");
-//
-//
-//
-//	ArrayList<DM> DMList = cService.selectDm(dmNo);
-//
-//
-//	if (!DMList.isEmpty()) {
-//		for (DM dm : DMList) {
-//			Member senderMember = mService.selectMemberNo(dm.getSender());
-//			if (senderMember != null) {
-//				ProfileImage senderImage = mService.selectImage(senderMember.getMemberNo());
-//				if (senderImage != null) {
-//					dm.setProfileUrl(senderImage.getImgRename());
-//				}
-//
-//			}
-//		}
-//		ProfileImage otherImage = mService.selectImage(DMList.getFirst().getOtherMemberNo());
-//		if (otherImage != null) {
-//			DMList.get(0).setImageUrl(otherImage.getImgRename());
-//			System.out.println(DMList.getFirst().getOtherMemberNickname() + " : " + DMList.getFirst().getImageUrl());
-//		}
-//	}
-//	model.addAttribute("dmNo", dmNo)
-//			.addAttribute("loginMember", m)
-//			.addAttribute("DMList", DMList);
-//
-//	System.out.println("최종 전달되는 DMList: " + DMList);
-//	return "/main/sendDM";
-//}
 
 	@MessageMapping("/dm/{dmNo}/D")
 	public void sendMessage(DM message, @DestinationVariable("dmNo") int dmNo) {
 		System.out.println("dmNo : " + dmNo);
 		System.out.println(message.toString());
-		message.setDmNo(dmNo);
+		cService.insertDM(message); // 서비스 계층을 통해 Firestore에 메시지 저장
+		messagingTemplate.convertAndSend("/sub/chatroom/" + dmNo, message);
+//		return message; // 클라이언트에 메시지 전송
 
-			cService.insertDM(message);
-			messagingTemplate.convertAndSend("/sub/dm/" + dmNo, message);
 	}
-
-
-
-
 
 
 

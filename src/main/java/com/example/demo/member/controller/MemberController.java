@@ -392,9 +392,10 @@ public class MemberController {
 
 	     if (loginMember != null) {
 			 Theme theme = pService.getThemePrefs(loginMember.getMemberNo());
-			 Notification msg = pService.getNotifyPrefs(loginMember.getMemberNo());
-			 session.setAttribute("chatType", msg.getChatType());
-			 session.setAttribute("timeType", msg.getTimeType());
+			 Notification notify = pService.getNotifyPrefs(loginMember.getMemberNo());
+//			 session.setAttribute("chatType", msg.getChatType());
+//			 session.setAttribute("timeType", msg.getTimeType());
+			 session.setAttribute("notify", notify);
 			 session.setAttribute("theme", theme);
 	         session.setAttribute("loginMember", loginMember);
 			 session.setAttribute("fingerprint", fingerprint);

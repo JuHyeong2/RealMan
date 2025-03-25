@@ -7,10 +7,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.example.demo.chat.model.vo.DM;
 import com.example.demo.member.model.vo.Friend;
+import com.example.demo.preferences.model.vo.Notification;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,7 +62,7 @@ public class ChatController {
 	@GetMapping("/main/{serverNo}/{channelNo}")
 	public String chatting(@PathVariable("serverNo") int serverNo, @PathVariable("channelNo") int channelNo, Model model, HttpSession session) {
 		Member loginMember = (Member)session.getAttribute("loginMember");
-		
+		Notification notify = (Notification) session.getAttribute("notify");
 		ArrayList<Server> selectServerList = sService.selectServerList(loginMember);
 		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);
@@ -93,7 +95,7 @@ public class ChatController {
 
 		// 채널 message 가져오자
 //		Integer channelNum = (Integer)channelNo;
-		ArrayList<ChatMessage> chatList = cService.selectChatList(channelNo);
+		ArrayList<ChatMessage> chatList = cService.selectChatList(channelNo, notify.getTimeType());
 		for(int i=0; i<chatList.size(); i++) {
 			Member m = mService.selectMemberNo(chatList.get(i).getSender());
 			if(m != null) {
@@ -141,12 +143,17 @@ public class ChatController {
 	}
 
 	@MessageMapping("/chat/{channelNo}/{separetor}")
-	public void sendMessage(@DestinationVariable("channelNo") int channelNo, @DestinationVariable("separetor") String separetor, ChatMessage message) {
+	public void sendMessage(@DestinationVariable("channelNo") int channelNo, @DestinationVariable("separetor") String separetor, ChatMessage message, SimpMessageHeaderAccessor headerAccessor) {
 		// 특정  채팅방(roomId)에 메시지를 전송
 		System.out.println("channelNo : " + channelNo);
 		System.out.println("separetor : " + separetor);
 		System.out.println("nickName : " + message.getSender());
 		System.out.println("message : " + message.getMessage());
+		HttpSession session = (HttpSession) headerAccessor.getSessionAttributes().get("HTTP_SESSION");
+		Member m = (Member)session.getAttribute("loginMember");
+		
+		System.out.println(m.toString());
+		message.setProfileUrl(m.getImageUrl());
 		message.setRoomId(channelNo);
 		message.setSeparetor(separetor);
 		// firebaseStore
