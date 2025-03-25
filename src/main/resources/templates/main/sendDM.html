@@ -1,61 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <script
-            src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js"
-            referrerpolicy="origin"
-    >
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+	crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script
+	src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js"
+	referrerpolicy="origin">
     </script>
 
-    <title>sendDM</title>
+<title>sendDM</title>
 </head>
 <body>
-    <div class="profile">
-      <img>
-      <b>닉네임</b>
-    </div>
+	<div class="profile">
+		<img> <b>닉네임</b>
+	</div>
 
-    <div class="send" th:each="d : ${DM}" >
-        <img>
-        <b th:text="${d.memberNickname}">닉네임</b>
-        <b th:utext="${d.message}"></b>
-    </div>
+	<div class="send" th:each="d : ${DM}">
+		<img> <b th:text="${d.memberNickname}">닉네임</b> <b
+			th:utext="${d.message}"></b>
+	</div>
 
-    <div class="dm-area d-flex flex-column">
-        <div class="flex-grow-1 overflow-auto p-3">
-            <input type="hidden" th:value="${no}" />
-            <div class="dmContent">
-                <div class="textArea" th:each="c, cStat:${chatList}">
-                    <div class="dmContent-1">
-                        <img
-                                th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
-                                width="40px"
-                                height="40px"
-                        />
-                        <div class="dmContent-2">
-                            <b th:utext="${c.sender}"></b>
-                            <p th:utext="${c.message}" style="margin: 0"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="p-3 d-flex">
-            <textarea class="flex-grow-1" id="mytextarea"></textarea>
-            <button id="button-send">입력</button>
-        </div>
-    </div>
+	<div class="dm-area d-flex flex-column">
+		<div class="flex-grow-1 overflow-auto p-3">
+			<input type="hidden" th:value="${no}" />
+			<div class="dmContent">
+				<div class="textArea" th:each="c, cStat:${chatList}">
+					<div class="dmContent-1">
+						<img
+							th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
+							width="40px" height="40px" />
+						<div class="dmContent-2">
+							<b th:utext="${c.sender}"></b>
+							<p th:utext="${c.message}" style="margin: 0"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="p-3 d-flex">
+			<textarea class="flex-grow-1" id="mytextarea"></textarea>
+			<button id="button-send">입력</button>
+		</div>
+	</div>
 
 
 
-    <script th:inline="javascript">
+	<script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
+        	
+        	// dmNo 선언
+        	/*<![CDATA[*/
+	        const dmNo = /*[[${dmNo}]]*/ 0;
+	        const username = /*[[${loginMember.memberNickname}]]*/ null;
+	        const userProfileImage = /*[[${loginMember.imageUrl}]]*/ null;
 
-            const socket = new SockJS("https://192.168.140.22:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
+	        /*]]>*/
+
+            const socket = new SockJS("https://192.168.40.6:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
             const stompClient = Stomp.over(socket);
 
 
@@ -91,9 +97,9 @@
                     let str = `<div class='dmContent-1'>
             						  <img src=${userProfileImage != null ? userProfileImage : '/image/member/noprofile.svg'} width="40px" height="40px">
             						  <div class='dmContent-2'>
-	      								  <b>${chatMessage.sender}</b>
+	      								  <b>${message.sender}</b>
 	      								  <div style='display:flex; justify-content:space-between; align-items:flex-end;'>
-	      								  	${chatMessage.message}
+	      								  	${message.message}
 	      								  	<p>${HMS}</p>
 	      								  </div>
       								  </div>
@@ -114,7 +120,7 @@
 
                     console.log(`✅ 전송 데이터:`, sendData);
 
-                    stompClient.send(`/pub/dm/${dmNo}/C`, {}, JSON.stringify(sendData));
+                    stompClient.send(`/pub/dm/${dmNo}/D`, {}, JSON.stringify(sendData));
                 };
 
                 document.querySelector("#button-send").addEventListener("click", () => {

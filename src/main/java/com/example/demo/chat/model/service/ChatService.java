@@ -105,6 +105,7 @@ public class ChatService {
 			  message.setSender(document.getString("chat_memberNickname"));
 //			  message.setCreateDate(document.getTimestamp("chat_createdate"));
 			  message.setSeparetor(document.getString("chat_separator"));
+			  message.setCreateDate(document.getTimestamp("chat_createdate").toString());
 			  chatList.add(message);
 			}
 		} catch (InterruptedException | ExecutionException e) {
@@ -147,7 +148,7 @@ public class ChatService {
 		ApiFuture<WriteResult> result = docRef.set(data);
 
 		try {
-			System.out.println("Update time : " + result.get().getUpdateTime());
+			System.out.println("Update timess : " + result.get().getUpdateTime());
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

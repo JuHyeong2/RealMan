@@ -61,13 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
     closeModal.addEventListener("click", closeMiniProfileModal);
   }
 
-  // ✅ 프로필 편집, 환경설정 버튼
-  document.querySelectorAll("#miniEditProfile, #settingsBtn").forEach(btn => {
-    if (btn) {
-      btn.addEventListener("click", goToMyAccount);
-    }
-  });
-
   // ✅ [🔹추가된 부분] 친구 프로필 이미지 클릭 시 모달 열기
   document.addEventListener("click", function (e) {
     if (e.target.classList.contains("friend-profile")) {
@@ -80,4 +73,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   window.openMiniProfile = openMiniProfile;
   window.closeMiniProfileModal = closeMiniProfileModal;
+});
+document.addEventListener("click", function (e) {
+  if (e.target && e.target.id === "miniEditProfile") {
+    console.log("✅ 프로필 편집 버튼 클릭됨");
+    location.href = "/prefs/myProfile";
+  }
 });

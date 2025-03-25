@@ -17,15 +17,11 @@ public class DM {
     private int otherMemberNo;
 
     private String memberNickname;
+    private String sender;
     private String otherMemberNickname;
     private String message;
 
     private String profileImage;
     private String imageUrl;
     private String imgRename;
-
-
-
-
-
 }

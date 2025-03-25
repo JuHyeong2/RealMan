@@ -1,47 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>chattingSidebar</title>
-    <link rel="stylesheet" href="/css/chat/chattingSidebar.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<meta charset="UTF-8" />
+<title>chattingSidebar</title>
+<link rel="stylesheet" href="/css/chat/chattingSidebar.css" />
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link rel="stylesheet" href="/css/common/miniProfile.css" />
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+	crossorigin="anonymous"></script>
 </head>
 <body>
+	<div class="channel-list bg-light d-flex flex-column"
+		style="width: 320px">
+		<nav>
+			<div class="voiceChat-div">
+				<div class="channel-title">
+					<h4>
+						<img src="/image/Dropdown.png" />음성 채널
+					</h4>
+					<button class="add-channel-btn" value="V" onclick="addChannel(this)">+</button>
+				</div>
 
-	<div class="channel-list bg-light d-flex flex-column" style="width: 320px;">
-	    <nav>
-        <div class="channel-title">
-          <h4 class="channel"><img src="/image/Dropdown.png">&nbsp음성 채널</h4>
-          <button class="add-channel-btn" value="V" onclick="addChannel(this)">+</button>
-        </div>
-	    	<div class="voiceChat" 
-          th:each="c : ${channel}" 
-          th:if='${c.channelSeparator eq "V"}'
-          th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|"
-         >
-	    		<input class="chatInput" type="hidden" th:value="${c.channelNo}">
-	    		  <ul>
-              <li>
-                <b>
-                  <img src="/image/Voice.png">&nbsp[[${c.channelName}]]
-                </b>
-                <ul>
-                </ul>
-              </li>
-	    		  </ul>
-          <button class="channel-menu-btn">...</button>
-          <div class="channel-menu">
-            <div>채널명 변경</div>
-            <div>채널삭제</div>
-          </div>
-	    	</div>
-        
-        <div class="channel-title">
-          <h4 class="channel"><img src="/image/Dropdown.png">&nbsp채팅 채널</h4>
-          <button class="add-channel-btn" value="T" onclick="addChannel(this)">+</button>
-        </div>
-		    <div class="textChat">
+				<div class="voiceChat channel" 
+          th:each="c : ${channel}"
+					th:if='${c.channelSeparator eq "V"}'
+          th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|">
+					<input class="chatInput" type="hidden" th:value="${c.channelNo}" />
+					<ul>
+            <li>
+              <b>
+                <img src="/image/Voice.png">&nbsp[[${c.channelName}]]
+              </b>
+              <ul>
+              </ul>
+            </li>
+          </ul>
+					<button th:if="${admin}" class="channel-menu-button">...</button>
+					<div class="channel-menu">
+						<div>채널명 변경</div>
+						<div>채널 삭제</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="textChat-div">
+				<div class="channel-title">
+					<h4>
+						<img src="/image/Dropdown.png" />채팅 채널
+					</h4>
+					<button class="add-channel-btn" value="T" onclick="addChannel(this)">+</button>
+				</div>
+
+				<div class="textChat">
           <li th:each="c : ${channel}" th:if="${c.channelSeparator == 'T'}" onclick="goToChat(event);">
             <a th:href="@{'/chat/main/'+${serverNo}+'/'+${c.channelNo}}">
               <img src="/image/chat.png">&nbsp[[${c.channelName}]]
@@ -53,47 +66,44 @@
             </div>
           </li>
 			  </div>
-    	</nav>
-    	
-    	<div class="connect">
-    	</div>
-    	<div class="profile">
-    		<img th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}" width="50px" height="50px" onclick="ProfileModal()">
-    		<b th:text="${member.memberNickname}" onclick="goToMyAccount()"></b>
-    		<img id="micImg" src="/image/preferences/mic.png" width="30px">
-    		<img src="/image/preferences/Headphones.png" width="30px">
-    		<img src="/image/preferences/Preferences.png" width="30px" onclick="location.href='/prefs/myProfile'">
-    	</div>
+			</div>
+		</nav>
+
+		<div class="connect"></div>
+
+
+		<div class="profile">
+			<img id="profileImg"
+				th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}"
+				width="50px" height="50px" /> <b id="profileName"
+				th:text="${member.memberNickname}"
+				th:data-user-id="${member.memberId}"></b> <img id="micImg"
+				src="/image/preferences/mic.png" width="30px" /> <img
+				src="/image/preferences/Headphones.png" width="30px" />
+			<!--        <img-->
+			<!--          src="/image/preferences/Preferences.png"-->
+			<!--          width="30px"-->
+			<!--          onclick="location.href='/prefs/myProfile'"-->
+			<!--        />-->
+		</div>
 	</div>
 
-	<!-- 프로필 모달 -->
-	<div id="profileModal" class="modal">
-	    <div class="modal-content">
-	        <span class="close" onclick="closeProfileModal()">&times;</span>
-	        <h2>프로필 설정</h2>
-	        <button onclick="goToMyAccount()">내 정보 수정</button>
-	    </div>
-	</div>
-	
+
 	<script th:inline="javascript">
-		/*<![CDATA[*/
-		const username = /*[[${member.memberNickname}]]*/null;
-		const userid = /*[[${member.memberId}]]*/null;
-		const serverNo = /*[[${serverNo}]]*/0;
-		const channelNo = /*[[${channelNo}]]*/0;
-		/*]]*/
-
-		// 최초에 채널에 입장해 있는 사람들 목록 보이게 하기
-		window.addEventListener('load', ()=>{
-      console.log("-----------chattingSidebar script");
-			fetch("/chat/api/voiceUsers")
-			.then(response=>response.json())
-			.then(data => {
-        console.log("--data : ",data);
-				joinVoiceChannel(username, channelNo);
-				updateUserList(data);
-			})
-		})
+      /*<![CDATA[*/
+      const username = /*[[${member.memberNickname}]]*/ null;
+      const userid = /*[[${member.memberId}]]*/ null;
+      const serverNo = /*[[${serverNo}]]*/ 0;
+      const channelNo = /*[[${channelNo}]]*/ 0;
+      /*]]*/
+      // 최초에 채널에 입장해 있는 사람들 목록 보이게 하기
+      window.addEventListener("load", () => {
+        fetch("/chat/api/voiceUsers")
+          .then((response) => response.json())
+          .then((data) => {
+            joinVoiceChannel(username, channelNo);
+            updateUserList(data);
+          });
 
 		// 음성 채팅방 드롭다운
 		let voiceChannels = null;
@@ -204,58 +214,63 @@
 // 					people.style.display = 'none';
 				}	
 
-// 				voiceChannel.addEventListener('click', (e)=>{
-// 					console.log("voice채널 클릭!");
-// 					clickChannel = e.currentTarget;
-// 					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
-// // 					console.log(typeof clickServerNo);
-// 					joinVoiceChannel(myNickname, clickServerNo);
-// // 					location.href = '/chat/voiceChat/2';
-// 				})
-			}
-		})
-		
-		/*<![CDATA[*/
-			const channels = /*[[${channel}]]*/null;
-		/*]]*/
-		
-// 		for(const channel of channels){
-// 			if(channel.channelSeparator == 'V'){
-				
-// 			}
-// 		}
-		
-		
-		
-		// 채팅 채팅방 드롭다운
-		document.querySelectorAll('.channel')[1].addEventListener('click', ()=>{
-			const chatRooms = document.querySelectorAll('.textChat')[0].querySelectorAll('li');
-// 			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
-			
-			for(const chatRoom of chatRooms){
-				if(chatRoom.style.display == 'none'){
-					chatRoom.style.display = 'block';
-// 					people.style.display = 'block';	
-				}else{
-					chatRoom.style.display = 'none';
-// 					people.style.display = 'none';
-				}
-			}
-		})
-		
-		// 프로필 사진, 닉네임, 톱니바퀴 클릭시 내계정 페이지로 이동
-		const goToMyAccount=()=>{
-			location.href = '/prefs/myProfile';
-		}
-		
-    function addChannel(btn){
+          // 				voiceChannel.addEventListener('click', (e)=>{
+          // 					console.log("voice채널 클릭!");
+          // 					clickChannel = e.currentTarget;
+          // 					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
+          // // 					console.log(typeof clickServerNo);
+          // 					joinVoiceChannel(myNickname, clickServerNo);
+          // // 					location.href = '/chat/voiceChat/2';
+          // 				})
+        }
+      });
 
-    }
-		
-		
-	</script>
+      /*<![CDATA[*/
+      const channels = /*[[${channel}]]*/ null;
+      /*]]*/
 
+      // 		for(const channel of channels){
+      // 			if(channel.channelSeparator == 'V'){
 
+      // 			}
+      // 		}
 
+      // 채팅 채팅방 드롭다운
+      document.querySelectorAll(".channel")[1].addEventListener("click", () => {
+        const chatRooms = document
+          .querySelectorAll(".textChat")[0]
+          .querySelectorAll("li");
+        // 			const people = document.querySelector('nav > ul:nth-of-type(2) ul li');
+
+        for (const chatRoom of chatRooms) {
+          if (chatRoom.style.display == "none") {
+            chatRoom.style.display = "block";
+            // 					people.style.display = 'block';
+          } else {
+            chatRoom.style.display = "none";
+            // 					people.style.display = 'none';
+          }
+        }
+      });
+
+      // 프로필 사진, 닉네임, 톱니바퀴 클릭시 내계정 페이지로 이동
+      const goToMyAccount = () => {
+        location.href = "/prefs/myProfile";
+      };
+      $(document).ready(function () {
+    	  $("#profileImg, #profileName").on("click", function () {
+    	    console.log("✅ 프로필 이미지 또는 닉네임 클릭됨");
+
+    	    const imageSrc = $("#profileImg").attr("src") || "/images/default-avatar.png";
+    	    const nickname = $("#profileName").text().trim() || "사용자";
+    	    const userId = $("#profileName").data("user-id") || "unknown";
+
+    	    openMiniProfile(imageSrc, nickname, userId);
+    	  });
+      });
+
+    </script>
+	<div th:replace="~{/common/miniProfile :: miniProfile}"></div>
+	<script src="/js/common/miniProfile.js"></script>
 </body>
 </html>
