@@ -24,4 +24,5 @@ public class DM {
     private String profileImage;
     private String imageUrl;
     private String imgRename;
+    private String profileUrl;
 }

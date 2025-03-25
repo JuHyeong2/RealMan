@@ -17,11 +17,11 @@
 </head>
 <body>
 	<div class="profile">
-		<img> <b>닉네임</b>
+		<img><b>닉네임</b>
 	</div>
 
-	<div class="send" th:each="d : ${DM}">
-		<img> <b th:text="${d.memberNickname}">닉네임</b> <b
+	<div class="send" th:each="d : ${DMList}">
+		<img> <b th:text="${d.otherMemberNo}">d</b> <b
 			th:utext="${d.message}"></b>
 	</div>
 
@@ -29,14 +29,14 @@
 		<div class="flex-grow-1 overflow-auto p-3">
 			<input type="hidden" th:value="${no}" />
 			<div class="dmContent">
-				<div class="textArea" th:each="c, cStat:${chatList}">
+				<div class="textArea" th:each="d, dStat:${DMList}">
 					<div class="dmContent-1">
 						<img
-							th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
+							th:src="${d.profileUrl != null ? d.profileUrl : '/image/member/no-profile.svg'}"
 							width="40px" height="40px" />
 						<div class="dmContent-2">
-							<b th:utext="${c.sender}"></b>
-							<p th:utext="${c.message}" style="margin: 0"></p>
+							<b th:utext="${d.sender}"></b>
+							<p th:utext="${d.message}" style="margin: 0"></p>
 						</div>
 					</div>
 				</div>
@@ -61,7 +61,7 @@
 
 	        /*]]>*/
 
-            const socket = new SockJS("https://192.168.40.6:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
+            const socket = new SockJS("https://192.168.140.22:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
             const stompClient = Stomp.over(socket);
 
 
@@ -97,9 +97,9 @@
                     let str = `<div class='dmContent-1'>
             						  <img src=${userProfileImage != null ? userProfileImage : '/image/member/noprofile.svg'} width="40px" height="40px">
             						  <div class='dmContent-2'>
-	      								  <b>${message.sender}</b>
+	      								  <b>${dmMessage.sender}</b>
 	      								  <div style='display:flex; justify-content:space-between; align-items:flex-end;'>
-	      								  	${message.message}
+	      								  	${dmMessage.message}
 	      								  	<p>${HMS}</p>
 	      								  </div>
       								  </div>
@@ -109,14 +109,14 @@
                     document.querySelector(".dmContent").scrollTop = document.querySelector(".dmContent").scrollHeight;
                 });
 
-                const sendMessage = (sender, message, dmNo) => {
+                const sendMessage = (sender, message, dmNo ) => {
                     if (!message || message.trim() === "" || message === "<p></p>") {
                         alert("메시지를 입력하세요!");
                         return;
                     }
 
                     // 객체화
-                    const sendData = {dmNo, sender, message};
+                    const sendData = {dmNo, sender, message };
 
                     console.log(`✅ 전송 데이터:`, sendData);
 
@@ -131,9 +131,9 @@
                         let imgSrc = imgTagMatch[1];
                         let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`;
                         let newContent = msg.replace(/<img[^>]+>/, imgTag);
-                        sendMessage(username, newContent, dmNo);
+                        sendMessage(username, newContent, dmNo );
                     } else {
-                        sendMessage(username, msg, dmNo);
+                        sendMessage(username, msg, dmNo );
                     }
 
                     tinymce.get("mytextarea").setContent("");

@@ -152,6 +152,30 @@
 
 
 
+    function createDM(otherMemberNo) {
+        fetch('/dm/createDM', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ otherMemberNo: otherMemberNo }),
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.dmNo) {
+                    window.location.href = `/dm/${result.dmNo}`; // dmNo를 사용하여 새 주소로 이동
+                } else {
+                    console.error('채팅방 생성 실패:', result.error);
+                    alert('채팅방 생성에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('오류 발생:', error);
+                alert('오류가 발생했습니다.');
+            });
+    }
+
+
 
 
 </script>

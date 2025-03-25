@@ -15,12 +15,12 @@
 		where channel_no = #{channelNo} and channel_status='Y'
 	</select>
 
-    <select id="selectDm">
-        select *
-        from DM
-        join member using(member_no)
-        where member_no = #{memberNo}
-    </select>
+<!--    <select id="selectDm">-->
+<!--        select *-->
+<!--        from DM-->
+<!--        join member using(member_no)-->
+<!--        where member_no = #{memberNo}-->
+<!--    </select>-->
 
     <select id="selectDmList">
         select *
@@ -37,11 +37,33 @@
               on (member_no =other_member_no)
 
         left join
-             (select mcd_no, img_rename
+             (select *
               from image
               where img_separator='M')
         on (member_no = mcd_no)
     </select>
+
+<!--    <select id="selectDm">-->
+<!--        select *-->
+<!--        from member-->
+<!--                 join (select dm_no, other_member_no-->
+<!--                       from dm-->
+<!--                       where member_no =#{memberNo}-->
+
+<!--                       union-->
+
+<!--                       select dm_no, member_no-->
+<!--                       from dm-->
+<!--                       where other_member_no = #{memberNo})-->
+<!--                      on (member_no =other_member_no)-->
+
+<!--                 left join-->
+<!--             (select mcd_no, img_rename-->
+<!--              from image-->
+<!--              where img_separator='M')-->
+<!--             on (member_no = mcd_no)-->
+<!--    </select>-->
+
 
     <select id="findDMByMembers">
         select *

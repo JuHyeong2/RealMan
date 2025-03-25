@@ -19,6 +19,7 @@ import com.example.demo.chat.model.mapper.ChatMapper;
 
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -141,10 +142,18 @@ public class ChatService {
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("dm_memberNickname", message.getMemberNickname());
-		data.put("dm_otherMemberNickname", message.getOtherMemberNickname());
+		data.put("otherMemberNickname", message.getOtherMemberNickname());
 		data.put("dm_no", message.getDmNo());
-
+		data.put("sender", message.getSender());
+		data.put("message", message.getMessage());
+		data.put("img_profileImage", message.getProfileImage());
+		data.put("img_imageUrl", message.getImageUrl());
+		data.put("img_imgRename", message.getImgRename());
 		ApiFuture<WriteResult> result = docRef.set(data);
+
+		System.out.println( "지금" + message.getMemberNickname());
+		System.out.println( "지금" +  message.getMemberNickname());
+		System.out.println( "지금" +   message.getOtherMemberNickname());
 
 		try {
 			System.out.println("Update timess : " + result.get().getUpdateTime());
@@ -164,11 +173,11 @@ public class ChatService {
 	public ArrayList<DM> selectDm(int dmNo) {
 		Firestore db = FirestoreClient.getFirestore();
 
-		ApiFuture<QuerySnapshot> query = db.collection("RealMan01").whereEqualTo("dm_no", dmNo).orderBy("chat_createdate", Query.Direction.DESCENDING).get();
+		ApiFuture<QuerySnapshot> query = db.collection("RealMan01").whereEqualTo("dm_no", dmNo).get();
 		// ...
 		// query.get() blocks on response
 		QuerySnapshot querySnapshot;
-		ArrayList<DM> selectDm = new ArrayList<DM>();
+		ArrayList<DM> DMList = new ArrayList<DM>();
 		try {
 			querySnapshot = query.get();
 			List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
@@ -176,21 +185,32 @@ public class ChatService {
 				DM message = new DM();
 				message.setDmNo(document.getLong("dm_no").intValue());
 				message.setMemberNickname(document.getString("dm_memberNickname"));
-				message.setOtherMemberNickname(document.getString("dm_otherMemberNickname"));
+				message.setOtherMemberNickname(document.getString("otherMemberNickname"));
+				message.setSender(document.getString("sender"));
+				message.setMessage(document.getString("message"));
+				message.setProfileImage(document.getString("img_profileImage"));
+				message.setImageUrl(document.getString("img_imageUrl"));
+				message.setImgRename(document.getString("img_imgRename"));
 
-				selectDm.add(message);
+				System.out.println("불러온 메시지: " + message.toString()); // 콘솔에서 데이터 확인
+
+
+
+				DMList.add(message);
 			}
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return selectDm;
+		return DMList;
 	}
 
 
 	public DM findDMByMembers(int memberNo, int otherMemberNo) {
 		return mapper.findDMByMembers(memberNo, otherMemberNo);
 	}
+
+
 }
 
