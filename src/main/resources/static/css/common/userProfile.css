@@ -7,11 +7,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: auto;
-  max-width: 350px;
-  min-width: 280px;
-  height: auto;
-  max-height: 160px;
+  width: 308px;
+  height: 186px;
   overflow: hidden;
   background-color: #bdd3E2;
   border-radius: 15px;
@@ -30,18 +27,13 @@
 #userProfileModal .modal-content {
   background-color: white;
   border-radius: 15px;
-  width: auto;
-  max-width: 340px;
-  min-width: 280px;
-  height: auto;
-  max-height: 140px;
-  min-height: 100px;
+  width: 300px;
+  height: 135px;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 20px;
   position: relative;
 }
 
