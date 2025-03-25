@@ -152,16 +152,18 @@ public class HomeController {
 
 
 	@GetMapping("/dm/{dmNo}")
-	public String dm(@PathVariable int dmNo, Model model, HttpSession session) {
+	public String dm(@PathVariable("dmNo") int dmNo, Model model, HttpSession session) {
 		Member m = (Member) session.getAttribute("loginMember");
 
 		System.out.println("내가누구야 ;" + m);
-		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
-		System.out.println(friendList);
+//		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
+//		System.out.println(friendList);
+		// 1. dm 했던거 가져오기 (상대방 닉네임(fireBase에서), 프사(oracle))
+		// 2. 프사 = 닉네임으로 memberNo를 가져와서 프사 가져오면 될듯
 		model.addAttribute("dmNo", dmNo)
-				.addAttribute("loginMember", m)
-				.addAttribute("friendList", friendList);
-		System.out.println("칭기목록:" + friendList);
+				.addAttribute("loginMember", m);
+//				.addAttribute("friendList", friendList);
+//		System.out.println("칭기목록:" + friendList);
 
 		return "/main/sendDM";
 
@@ -169,9 +171,11 @@ public class HomeController {
 
 
 
-	@MessageMapping("/chat/{dmNo}/C")
-	@SendTo("/sub/chatroom/{dmNo}")
+	@MessageMapping("/dm/{dmNo}/D")
+	@SendTo("/sub/dm/{dmNo}")
 	public DM sendMessage(DM message, @RequestParam("dmNo") String dmNo) {
+		System.out.println("dmNo : " + dmNo);
+		System.out.println(message.toString());
 		cService.insertDM(message); // 서비스 계층을 통해 Firestore에 메시지 저장
 		messagingTemplate.convertAndSend("/sub/chatroom/" + dmNo, message);
 		return message; // 클라이언트에 메시지 전송
