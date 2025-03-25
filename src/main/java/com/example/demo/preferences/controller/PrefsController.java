@@ -124,7 +124,7 @@ public class PrefsController {
         Notification notify = pService.getNotifyPrefs(loginMember.getMemberNo());
         return notify;
     }
-    s
+
     @PostMapping("/messages")
     @ResponseBody
     public void updateMessage(@RequestBody Notification msg, HttpSession session){
