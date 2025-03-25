@@ -17,6 +17,7 @@ import com.example.demo.chat.model.service.ChatService;
 import com.example.demo.chat.model.vo.DM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -172,13 +173,12 @@ public class HomeController {
 
 
 	@MessageMapping("/dm/{dmNo}/D")
-	@SendTo("/sub/dm/{dmNo}")
-	public DM sendMessage(DM message, @RequestParam("dmNo") String dmNo) {
+	public void sendMessage(DM message, @DestinationVariable("dmNo") int dmNo) {
 		System.out.println("dmNo : " + dmNo);
 		System.out.println(message.toString());
 		cService.insertDM(message); // 서비스 계층을 통해 Firestore에 메시지 저장
 		messagingTemplate.convertAndSend("/sub/chatroom/" + dmNo, message);
-		return message; // 클라이언트에 메시지 전송
+//		return message; // 클라이언트에 메시지 전송
 
 	}
 

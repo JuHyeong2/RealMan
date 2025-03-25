@@ -58,9 +58,10 @@
         height: 60px;
         background-color: #BDD3E2;
         cursor: pointer;
-        /*justify-content: center;*/
-        /*align-items: center;*/
-        margin: 10px;
+        border-radius: 100px;
+        align-content: center;
+        text-align: center;
+        font-size: 20px;
       }
 
       /* 모달 오버레이 */
@@ -283,6 +284,7 @@
           height: "70px",
           width: "100%",
           resize: false,
+          content_style: "body{border-radius: 50px;}",
           content_css: "/css/common/tinymce.css",
           images_upload_handler: function (blobInfo, success, failure) {
             let reader = new FileReader();

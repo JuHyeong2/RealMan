@@ -9,7 +9,7 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script
-	src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js"
+	src="https://cdn.tiny.cloud/1/jmkaysq4ipojkzfpfq42b973xt9flj39nsrcirdwfxnae0ch/tinymce/5/tinymce.min.js"
 	referrerpolicy="origin">
     </script>
 
@@ -61,7 +61,8 @@
 
 	        /*]]>*/
 
-            const socket = new SockJS("https://192.168.40.6:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
+//             const socket = new SockJS("https://192.168.40.6:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
+            const socket = new SockJS("https://192.168.140.22:9090/stomp/dm")
             const stompClient = Stomp.over(socket);
 
 

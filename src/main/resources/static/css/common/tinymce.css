@@ -11,5 +11,12 @@ body {
   font-family: 'Josefin Sans', sans-serif; 
   line-height: 1.4;
   color: black;
-  border-radius: 50px;
+/*   border-radius: 50px !important; */
+  border-color: #E4EDF3;
+}
+
+/* border-radius 개같은거 왜안먹는지 모르겠음 도와주셈 */
+.tox-tinymce {
+	border-radius: 50px !important;
+	overflow: hidden;
 }
