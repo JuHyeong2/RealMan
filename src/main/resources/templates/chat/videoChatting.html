@@ -208,8 +208,8 @@
 		}
 		
 		const connectSocket = async () =>{
-// 		     const socket = new SockJS('https://192.168.40.6:9090/stomp/signaling');
-		     const socket = new SockJS('https://192.168.140.22:9090/stomp/signaling');
+				const socket = new SockJS('https://192.168.40.6:9090/stomp/signaling');
+		     //const socket = new SockJS('https://192.168.140.22:9090/stomp/signaling');
 		     stompClient = Stomp.over(socket);
 		     stompClient.debug = null;
 		    
@@ -360,7 +360,7 @@
 		     return pc;
 		 }
 		    
-		 let onIceCandidate = (event, otherKey) => {
+		 const onIceCandidate = (event, otherKey) => {
 		     if (event.candidate) {
 		         console.log('ICE candidate');
 		         stompClient.send('/pub/peer/iceCandidate/' + otherKey + '/' + roomId,{}, JSON.stringify({
@@ -370,7 +370,7 @@
 		     }
 		 };
 		    
-		 let sendOffer = (pc ,otherKey) => {
+		 const sendOffer = (pc ,otherKey) => {
 			 console.log('pc : ' + pc);
 			 console.log('otherKey : ' + otherKey);
 		     pc.createOffer().then(offer =>{
@@ -383,7 +383,7 @@
 		     });
 		 };
 		    
-		 let sendAnswer = (pc,otherKey) => {
+		 const sendAnswer = (pc,otherKey) => {
 		     pc.createAnswer().then( answer => {
 		         setLocalAndSendMessage(pc ,answer);
 		         stompClient.send('/pub/peer/answer/' + otherKey + '/' + roomId, {}, JSON.stringify({
