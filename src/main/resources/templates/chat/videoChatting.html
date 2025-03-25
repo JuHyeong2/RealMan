@@ -154,12 +154,40 @@
 		                console.log('Stream found');
 						 //웹캠, 마이크의 스트림 정보를 글로벌 변수로 저장한다.
 		                localStream = stream;
+						console.log(localStream);
 		                // Disable the microphone by default
 		                stream.getAudioTracks()[0].enabled = true;
 		                localStreamElement.srcObject = localStream;
 		                localStreamElement.style.display = "block"; // 비디오 화면 표시
 
 		                // Connect after making sure that local stream is availble
+		                
+		                // 마이크 mute, unmute
+		                document.querySelectorAll('.profile')[0].innerHTML += '<img id="micImg" src="/image/preferences/Microphone.png" width="30px" /> <img id="speakerImg" src="/image/preferences/SpeakerSimpleHigh.png" width="30px" />';
+		                document.querySelector('#micImg').addEventListener('click', (e)=>{
+					   	  const imgSrc = e.target.src;
+					   	  console.log(imgSrc);
+					   	  // src에 특정 문자열 포함되어있는지 확인하자!!!!
+					   	  if(imgSrc.includes('Slash')){
+					   		unmuteMic();
+					   	  	e.target.src = '/image/preferences/Microphone.png';
+					   	  }else{
+					   	 	muteMic();
+					   		e.target.src = '/image/preferences/MicrophoneSlash.png';
+					   	  }
+					    })
+					    
+					    // 스피커 mute, unmute
+					    document.querySelector('#speakerImg').addEventListener('click', (e)=>{
+						  const imgSrc = e.target.src;
+						  if(imgSrc.includes('Slash')){
+					   		unmuteSpeaker();
+					   	  	e.target.src = '/image/preferences/SpeakerSimpleHigh.png';
+					   	  }else{
+					   	 	muteSpeaker();
+					   		e.target.src = '/image/preferences/SpeakerSimpleSlash.png';
+					   	  }
+					    })
 		   
 		            }).catch(error => {
 		                console.error("Error accessing media devices:", error);
@@ -176,7 +204,7 @@
 		    	console.log('나가기 버튼 클릭!');
 		    	console.log(document.querySelectorAll('.profile')[0].querySelector('b').innerText);
 		    	const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
-		    	leaveVoiceChannel(myNickname);
+// 		    	leaveVoiceChannel(myNickname);
 		    	$.ajax({
 		            	url: "/chat/selectSmallestChatNo",
 		            	method: 'post',
@@ -207,9 +235,31 @@
 		   
 		}
 		
+		const muteMic=()=>{
+			if(localStream){
+				localStream.getAudioTracks().forEach(track => track.enabled = false);
+				console.log('마이크 음소거');
+			}
+		}
+		
+		const unmuteMic=()=>{
+			if(localStream){
+				localStream.getAudioTracks().forEach(track => track.enabled = true);
+				console.log('마이크 음소거 해제');
+			}
+		}
+		
+		const muteSpeaker=()=>{
+			document.querySelectorAll('video').forEach(video => video.muted = true);
+		}
+		
+		const unmuteSpeaker=()=>{
+			document.querySelectorAll('video').forEach(video => video.muted = false);
+		}
+		
 		const connectSocket = async () =>{
-				const socket = new SockJS('https://192.168.40.6:9090/stomp/signaling');
-		     //const socket = new SockJS('https://192.168.140.22:9090/stomp/signaling');
+// 				const socket = new SockJS('https://192.168.40.6:9090/stomp/signaling');
+		     const socket = new SockJS('https://192.168.140.22:9090/stomp/signaling');
 		     stompClient = Stomp.over(socket);
 		     stompClient.debug = null;
 		    
