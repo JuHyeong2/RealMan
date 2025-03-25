@@ -1,95 +1,89 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <title>chattingSidebar</title>
-    <link rel="stylesheet" href="/css/chat/chattingSidebar.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/css/common/miniProfile.css"/>
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.js"
-      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
-    <div class="channel-list bg-light d-flex flex-column" style="width: 320px">
-      <nav>
-        <div class="voiceChat-div">
-          <div class="channel-title">
-            <h4><img src="/image/Dropdown.png" />음성 채널</h4>
-            <button th:if="${admin}" class="add-channel">+</button>
-            <input type="hidden" value="V" />
-          </div>
+<head>
+<meta charset="UTF-8" />
+<title>chattingSidebar</title>
+<link rel="stylesheet" href="/css/chat/chattingSidebar.css" />
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link rel="stylesheet" href="/css/common/miniProfile.css" />
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+	crossorigin="anonymous"></script>
+</head>
+<body>
+	<div class="channel-list bg-light d-flex flex-column"
+		style="width: 320px">
+		<nav>
+			<div class="voiceChat-div">
+				<div class="channel-title">
+					<h4>
+						<img src="/image/Dropdown.png" />음성 채널
+					</h4>
+					<button th:if="${admin}" class="add-channel">+</button>
+					<input type="hidden" value="V" />
+				</div>
 
-          <div
-            class="voiceChat channel"
-            th:each="c : ${channel}"
-            th:if='${c.channelSeparator eq "V"}'
-          >
-            <input class="chatInput" type="hidden" th:value="${c.channelNo}" />
-            <b
-              th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|"
-              ><img src="/image/Voice.png" />[[${c.channelName}]]</b
-            >
-            <button th:if="${admin}" class="channel-menu-button">...</button>
-            <div class="channel-menu">
-              <div>채널명 변경</div>
-              <div>채널 삭제</div>
-            </div>
-          </div>
-        </div>
+				<div class="voiceChat channel" th:each="c : ${channel}"
+					th:if='${c.channelSeparator eq "V"}'>
+					<input class="chatInput" type="hidden" th:value="${c.channelNo}" />
+					<b
+						th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|"><img
+						src="/image/Voice.png" />[[${c.channelName}]]</b>
+					<button th:if="${admin}" class="channel-menu-button">...</button>
+					<div class="channel-menu">
+						<div>채널명 변경</div>
+						<div>채널 삭제</div>
+					</div>
+				</div>
+			</div>
 
-        <div class="textChat-div">
-          <div class="channel-title">
-            <h4><img src="/image/Dropdown.png" />채팅 채널</h4>
-            <button th:if="${admin}" class="add-channel">+</button>
-            <input type="hidden" value="T" />
-          </div>
+			<div class="textChat-div">
+				<div class="channel-title">
+					<h4>
+						<img src="/image/Dropdown.png" />채팅 채널
+					</h4>
+					<button th:if="${admin}" class="add-channel">+</button>
+					<input type="hidden" value="T" />
+				</div>
 
-          <div
-            class="textChat channel"
-            th:each="c : ${channel}"
-            th:if="${c.channelSeparator == 'T'}"
-          >
-            <input class="chatInput" type="hidden" th:value="${c.channelNo}" />
-            <b
-              th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|"
-              ><img src="/image/chat.png" />[[${c.channelName}]]</b
-            >
-            <button th:if="${admin}" class="channel-menu-button">...</button>
-            <div class="channel-menu">
-              <div>채널명 변경</div>
-              <div>채널 삭제</div>
-            </div>
-          </div>
-        </div>
-      </nav>
+				<div class="textChat channel" th:each="c : ${channel}"
+					th:if="${c.channelSeparator == 'T'}">
+					<input class="chatInput" type="hidden" th:value="${c.channelNo}" />
+					<b
+						th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|"><img
+						src="/image/chat.png" />[[${c.channelName}]]</b>
+					<button th:if="${admin}" class="channel-menu-button">...</button>
+					<div class="channel-menu">
+						<div>채널명 변경</div>
+						<div>채널 삭제</div>
+					</div>
+				</div>
+			</div>
+		</nav>
 
-      <div class="connect"></div>
+		<div class="connect"></div>
 
-      
+
 		<div class="profile">
-		<img id="profileImg"
-		   th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}"
-		   width="50px"
-		   height="50px" />
-        <b id="profileName" th:text="${member.memberNickname}" th:data-user-id="${member.memberId}"></b>
-        <img id="micImg" src="/image/preferences/mic.png" width="30px" />
-        <img src="/image/preferences/Headphones.png" width="30px" />
-<!--        <img-->
-<!--          src="/image/preferences/Preferences.png"-->
-<!--          width="30px"-->
-<!--          onclick="location.href='/prefs/myProfile'"-->
-<!--        />-->
-      </div>
-    </div>
+			<img id="profileImg"
+				th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}"
+				width="50px" height="50px" /> <b id="profileName"
+				th:text="${member.memberNickname}"
+				th:data-user-id="${member.memberId}"></b> <img id="micImg"
+				src="/image/preferences/mic.png" width="30px" /> <img
+				src="/image/preferences/Headphones.png" width="30px" />
+			<!--        <img-->
+			<!--          src="/image/preferences/Preferences.png"-->
+			<!--          width="30px"-->
+			<!--          onclick="location.href='/prefs/myProfile'"-->
+			<!--        />-->
+		</div>
+	</div>
 
 
-    <script th:inline="javascript">
+	<script th:inline="javascript">
       /*<![CDATA[*/
       const username = /*[[${member.memberNickname}]]*/ null;
       const userid = /*[[${member.memberId}]]*/ null;
@@ -208,7 +202,7 @@
               }
             });
 
-            openedMenu.classList.remove("channel-menu-show");
+//             openedMenu.classList.remove("channel-menu-show");
           }
         });
       });
@@ -226,6 +220,7 @@
         }
         menu.classList.toggle("channel-menu-show");
         const channelNo = menu.parentElement.querySelector(".chatInput").value;
+        console.log('channelNo : ' + channelNo);
         const [menu1, menu2] = menu.querySelectorAll("div");
         menu1.addEventListener("click", () => editChannel(e, channelNo));
         menu2.addEventListener("click", () => deleteChannel(e, channelNo));
@@ -296,9 +291,9 @@
         .querySelectorAll(".profile")[0]
         .querySelector("b").innerText;
 
-      // 		const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
+      const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
       // const channelSocket = new SockJS("https://localhost:8080/stomp/channel");
-      const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
+      //const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
 
       const channelStompClient = Stomp.over(channelSocket);
 
@@ -454,7 +449,7 @@
       });
 
     </script>
-    <div th:replace="~{/common/miniProfile :: miniProfile}"></div>
-    <script src="/js/common/miniProfile.js"></script>
-  </body>
+	<div th:replace="~{/common/miniProfile :: miniProfile}"></div>
+	<script src="/js/common/miniProfile.js"></script>
+</body>
 </html>
