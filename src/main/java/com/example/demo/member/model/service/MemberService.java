@@ -220,4 +220,10 @@ public class MemberService {
     public ArrayList<Friend> friendList(int memberNo) {
 		return	mapper.friendList(memberNo);
     }
+
+	public String getProfileImgUrlbyNickname(String memberNickname) {
+		return mapper.getProfileImgUrlbyNickname(memberNickname);
+	}
+    
+    
 }

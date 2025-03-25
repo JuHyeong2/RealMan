@@ -248,4 +248,13 @@
 		from friend
 		where member_no= #{memberNo}
 	</select>
+	
+	<select id="getProfileImgUrlbyNickname">
+		select img_rename
+		from image
+		where img_separator = 'M'
+		and mcd_no = (select member_no
+						from member
+						where member_nickname=#{memberNickname})
+	</select>
 </mapper>

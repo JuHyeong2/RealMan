@@ -208,8 +208,9 @@
 		}
 		
 		const connectSocket = async () =>{
-				const socket = new SockJS('https://192.168.40.6:9090/stomp/signaling');
-		     //const socket = new SockJS('https://192.168.140.22:9090/stomp/signaling');
+			// const socket = new SockJS('https://192.168.40.6:9090/stomp/signaling');
+		    // const socket = new SockJS('https://192.168.140.22:9090/stomp/signaling');
+			const socket = new SockJS("https://localhost:8080/stomp/signaling");
 		     stompClient = Stomp.over(socket);
 		     stompClient.debug = null;
 		    

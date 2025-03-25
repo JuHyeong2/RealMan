@@ -60,8 +60,8 @@
 	        const userProfileImage = /*[[${loginMember.imageUrl}]]*/ null;
 
 	        /*]]>*/
-
-            const socket = new SockJS("https://192.168.40.6:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
+            const socket = new SockJS("https://localhost:8080/stomp/dm")
+            //const socket = new SockJS("https://192.168.40.6:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
             const stompClient = Stomp.over(socket);
 
 

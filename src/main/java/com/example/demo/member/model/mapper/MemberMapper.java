@@ -98,4 +98,6 @@ public interface MemberMapper {
 	Member selectMemberNo(String sender);
 
     ArrayList<Friend> friendList(int memberNo);
+
+	String getProfileImgUrlbyNickname(String memberNickname);
 }

@@ -250,6 +250,17 @@ public class MemberController {
 		return result;
 	}
 	
+	
+	@GetMapping("/profileImg")
+	@ResponseBody
+	public String getProfileImgUrlbyNickname(@RequestParam("nickname") String memberNickname) {
+		System.out.println("닉네임 : "+memberNickname);
+		String imgUrl = mService.getProfileImgUrlbyNickname(memberNickname);
+		System.out.println("프로필 url : "+imgUrl);
+		return imgUrl;
+	}
+	
+	
 	// 프사 변경
 	@PutMapping("/profileImg")
 	@ResponseBody
