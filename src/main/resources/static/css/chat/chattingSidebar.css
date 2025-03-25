@@ -107,7 +107,7 @@ body {
   align-items: center;
   background-color: #f2f6f9;
   margin-top: auto;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .connect b {
@@ -137,13 +137,16 @@ body {
   cursor: pointer;
 }
 
-.profile img {
-  cursor: pointer;
+.profile img:first-of-type {
   border-radius: 100px;
 }
 
+.profile img{
+	cursor: pointer;
+}
+
 #micImg {
-  margin-left: 50px;
+  margin-left: 5rem;
 }
 
 .channel-title {
