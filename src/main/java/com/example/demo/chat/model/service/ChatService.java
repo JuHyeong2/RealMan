@@ -147,7 +147,7 @@ public class ChatService {
 		ApiFuture<WriteResult> result = docRef.set(data);
 
 		try {
-			System.out.println("Update time : " + result.get().getUpdateTime());
+			System.out.println("Update timess : " + result.get().getUpdateTime());
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
