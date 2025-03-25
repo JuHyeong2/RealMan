@@ -163,7 +163,7 @@
 		                // Connect after making sure that local stream is availble
 		                
 		                // 마이크 mute, unmute
-		                document.querySelectorAll('.profile')[0].innerHTML += '<img id="micImg" src="/image/preferences/Microphone.png" width="30px" /> <img id="speakerImg" src="/image/preferences/SpeakerSimpleHigh.png" width="30px" />';
+		                document.querySelectorAll('.profile-1')[0].innerHTML += '<img id="micImg" src="/image/preferences/Microphone.png" width="30px" /> <img id="speakerImg" src="/image/preferences/SpeakerSimpleHigh.png" width="30px" />';
 		                document.querySelector('#micImg').addEventListener('click', (e)=>{
 					   	  const imgSrc = e.target.src;
 					   	  console.log(imgSrc);
@@ -202,8 +202,8 @@
 		    // 음성연결 끊기 버튼 클릭 시 가장 상단 채팅채널로 이동
 		    document.querySelectorAll('.connect')[0].querySelector('img').addEventListener('click', ()=>{
 		    	console.log('나가기 버튼 클릭!');
-		    	console.log(document.querySelectorAll('.profile')[0].querySelector('b').innerText);
-		    	const myNickname = document.querySelectorAll('.profile')[0].querySelector('b').innerText;
+		    	console.log(document.querySelectorAll('.profile-1')[0].querySelector('b').innerText);
+		    	const myNickname = document.querySelectorAll('.profile-1')[0].querySelector('b').innerText;
 // 		    	leaveVoiceChannel(myNickname);
 		    	$.ajax({
 		            	url: "/chat/selectSmallestChatNo",
