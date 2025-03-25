@@ -244,8 +244,21 @@
 	</select>
 
 	<select id="friendList">
-		select *
-		from friend
-		where member_no= #{memberNo}
+
+		SELECT
+			f.friend_member_no,
+			f.friend_status,
+			m.member_nickname,
+			m.member_id,
+			i.img_rename
+		FROM
+			friend f
+				LEFT JOIN
+			member m ON f.friend_member_no = m.member_no
+				LEFT JOIN
+			image i ON m.member_no = i.mcd_no
+		WHERE
+			f.member_no = #{memberNo} and f.friend_status = 'A'
+		order by m.member_no asc
 	</select>
 </mapper>
