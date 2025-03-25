@@ -1,0 +1,15 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+
+html {
+	border-radius: 50px;
+}
+
+body { 
+/*   color: #E4EDF3;  */
+  background-color: #E4EDF3; 
+  font-family: 'Josefin Sans', sans-serif; 
+  line-height: 1.4;
+  color: black;
+  border-radius: 50px;
+}

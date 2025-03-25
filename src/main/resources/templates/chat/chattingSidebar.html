@@ -287,7 +287,7 @@
       // const channelSocket = new SockJS("https://localhost:8080/stomp/channel");
       const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
 
-      const channelStompClient = Stomp.over(channelSocket);
+      const channelStompClient = Stomp.over(socket);
 
       channelStompClient.connect({}, () => {
         // 보이스 채널 사용자 목록 구독
