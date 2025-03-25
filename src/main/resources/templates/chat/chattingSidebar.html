@@ -96,7 +96,7 @@
 
       <div class="connect"></div>
 
-      <div class="profile">
+      <div class="profile-1">
         <img
           id="profileImg"
           th:src="${session.loginMember.imageUrl != null ? session.loginMember.imageUrl : '/image/profile.png'}"
@@ -108,13 +108,8 @@
           th:text="${member.memberNickname}"
           th:data-user-id="${member.memberId}"
         ></b>
-        <img id="micImg" src="/image/preferences/mic.png" width="30px" />
-        <img src="/image/preferences/Headphones.png" width="30px" />
-        <!--        <img-->
-        <!--          src="/image/preferences/Preferences.png"-->
-        <!--          width="30px"-->
-        <!--          onclick="location.href='/prefs/myProfile'"-->
-        <!--        />-->
+        <!-- 			<img id="micImg" src="/image/preferences/Microphone.png" width="30px" />  -->
+        <!-- 			<img id='speakerImg' src="/image/preferences/SpeakerSimpleHigh.png" width="30px" /> -->
       </div>
     </div>
 
@@ -185,13 +180,11 @@
         .querySelectorAll(".profile")[0]
         .querySelector("b").innerText;
 
-      // const channelSocket = new SockJS(
-      //   "https://192.168.40.6:9090/stomp/channel"
-      // );
-      const channelSocket = new SockJS("https://localhost:8080/stomp/channel");
-      // const channelsocket = new SockJS("https://192.168.140.22:9090/stomp/channel");
+      //       const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
+      // const channelSocket = new SockJS("https://localhost:8080/stomp/channel");
+      const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
 
-      const channelStompClient = Stomp.over(channelSocket);
+      const channelStompClient = Stomp.over(socket);
 
       channelStompClient.connect({}, () => {
         console.log("----------channelStompClient");
@@ -375,6 +368,17 @@
           openMiniProfile(imageSrc, nickname, userId);
         });
       });
+
+      //       document.querySelector('#micImg').addEventListener('click', (e)=>{
+      //     	  const imgSrc = e.target.src;
+      //     	  console.log(imgSrc);
+      //     	  // src에 특정 문자열 포함되어있는지 확인하자!!!!
+      //     	  if(imgSrc.includes('Slash')){
+      //     		  e.target.src = '/image/preferences/Microphone.png';
+      //     	  }else{
+      //     		  e.target.src = '/image/preferences/MicrophoneSlash.png';
+      //     	  }
+      //       })
     </script>
     <script src="/js/chat/chattingSidebar.js"></script>
     <div th:replace="~{/common/miniProfile :: miniProfile}"></div>

@@ -26,14 +26,14 @@ function renderServerList(list) {
         const imgtag = document.createElement("img");
         imgtag.src= server.IMG_RENAME;
         const imgTag = server.IMG_RENAME
-            ? `<img src="${server.IMG_RENAME}" width="50" height="50" class="rounded-circle" style="cursor: pointer"/>`
+            ? `<img src="${server.IMG_RENAME}" width="50" height="50" class="rounded-circle" style="cursor: pointer; border-radius: 100px;"/>`
             : `<span title="${server.SERVER_NAME}" style="cursor: pointer">${server.SERVER_NAME.length > 5 ? server.SERVER_NAME.slice(0, 5) + '…' : server.SERVER_NAME}</span>`;
 
 
         const html = `
             <div class="mb-2">
                 <div class="server-btn bg-light rounded-circle mx-auto"
-                     style="width: 50px; height: 50px; cursor: pointer;">
+                     style="width: 50px; height: 50px; cursor: pointer; text-align: center; align-content: center;">
                     ${imgTag}
                 </div>
                 <input type="hidden" value="${server.SERVER_NO}">

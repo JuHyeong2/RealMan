@@ -133,7 +133,7 @@ body {
   align-items: center;
   background-color: #f2f6f9;
   margin-top: auto;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .connect b {
@@ -149,27 +149,31 @@ body {
   background-color: #dbe9f4;
 }
 
-.profile {
+.profile-1 {
   display: flex;
   align-items: center; /* 수직 중앙 정렬 */
   gap: 5px;
   position: absolute;
-  width: 350px;
+  width: 320px;
   bottom: 0px;
+  background-color: #E4EDF3;
 }
 
-.profile b {
+.profile-1 b {
   font-size: 20px;
   cursor: pointer;
 }
 
-.profile img {
-  cursor: pointer;
+.profile-1 img:first-of-type {
   border-radius: 100px;
 }
 
+.profile-1 img{
+	cursor: pointer;
+}
+
 #micImg {
-  margin-left: 50px;
+  margin-left: 5rem;
 }
 
 .channel-title {

@@ -5,7 +5,7 @@
     <title>chatting</title>
     <link rel="stylesheet" href="/css/chat/chatting.css" />
     <link rel="stylesheet" href="/css/chat/memberList.css" />
-<!--    <link href="/css/common/sidebar.css" rel="stylesheet" type="text/css" />-->
+    <!--    <link href="/css/common/sidebar.css" rel="stylesheet" type="text/css" />-->
     <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <link
@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script
-      src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js"
+      src="https://cdn.tiny.cloud/1/jmkaysq4ipojkzfpfq42b973xt9flj39nsrcirdwfxnae0ch/tinymce/5/tinymce.min.js"
       referrerpolicy="origin"
     ></script>
 
@@ -53,23 +53,25 @@
         }
       }
 
-      .addServer{
+      .addServer {
         width: 60px;
         height: 60px;
-        background-color: #BDD3E2;
+        background-color: #bdd3e2;
         cursor: pointer;
-        /*justify-content: center;*/
-        /*align-items: center;*/
-        margin: 10px;
+        border-radius: 100px;
+        align-content: center;
+        text-align: center;
+        font-size: 20px;
       }
 
       /* 모달 오버레이 */
       .add-modal-overlay {
         position: fixed;
-        top: 0; left: 0;
+        top: 0;
+        left: 0;
         width: 100vw;
         height: 100vh;
-        background: rgba(0,0,0,0.4);
+        background: rgba(0, 0, 0, 0.4);
         z-index: 9998;
         display: none;
       }
@@ -77,13 +79,14 @@
       /* 모달 본체 */
       .add-modal {
         position: fixed;
-        top: 50%; left: 50%;
+        top: 50%;
+        left: 50%;
         transform: translate(-50%, -50%);
         background: white;
         padding: 20px;
         width: 400px;
         height: 400px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         border-radius: 10px;
         z-index: 9999;
         display: none;
@@ -94,13 +97,12 @@
         font-size: 20px;
         cursor: pointer;
       }
-      .add-modalbtn{
+      .add-modalbtn {
         background: #699fff;
       }
-      .add-modalbtn:hover{
+      .add-modalbtn:hover {
         background: #2c58a2;
       }
-
     </style>
   </head>
   <body>
@@ -122,6 +124,15 @@
           <input type="hidden" th:value="${no}" />
           <div class="chatContent">
             <div class="textArea" th:each="c, cStat:${chatList}">
+              <div
+                th:if="${(cStat.index > 0 and cStat.index + 1 < chatList.size() and
+                #strings.substring(chatList[cStat.index + 1].createDate,0,10) != #strings.substring(c.createDate,0,10))
+              or (cStat.index + 1 == chatList.size())}"
+                class="date-separator"
+              >
+                <span th:text="${#strings.substring(c.createDate,0,10)}"></span>
+              </div>
+
               <div class="chatContent-1">
                 <img
                   th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
@@ -129,7 +140,10 @@
                   height="40px"
                 />
                 <div class="chatContent-2">
-                  <b th:utext="${c.sender}"></b>
+                  <b th:utext="${c.sender}"></b>&nbsp;<span
+                    th:utext="${c.createDate}"
+                    style="font-size: 14px"
+                  ></span>
                   <p th:utext="${c.message}" style="margin: 0"></p>
                 </div>
               </div>
@@ -138,7 +152,7 @@
         </div>
         <div class="p-3 d-flex">
           <textarea class="flex-grow-1" id="mytextarea"></textarea>
-          <button id="button-send">입력</button>
+          <!--           <button id="button-send">입력</button> -->
         </div>
       </div>
       <input type="hidden" id="serverNo" th:value="${serverNo}" />
@@ -164,10 +178,12 @@
         /*]]>*/
         console.log("memberList:" + memberList[0]);
 
+        let enterText;
+
         // WebSocket 연결
         // const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
-        // const socket = new SockJS("https://192.168.140.22:9090/stomp/chat");
-        const socket = new SockJS("https://localhost:8080/stomp/chat");
+        const socket = new SockJS("https://192.168.140.22:9090/stomp/chat");
+        //const socket = new SockJS("https://localhost:8080/stomp/chat");
         const stompClient = Stomp.over(socket);
 
         stompClient.connect({}, () => {
@@ -175,9 +191,9 @@
 
           // 특정 채팅방(roomId) 구독
           stompClient.subscribe("/sub/chatroom/" + channelNo, (message) => {
-        	// chatMessage는 JSON으로 parse해서 가져옴
+            // chatMessage는 JSON으로 parse해서 가져옴
             const chatMessage = JSON.parse(message.body);
-            
+
             // 현재 시간 받아오기
             let today = new Date();
 
@@ -201,7 +217,11 @@
             // 					<div style='margin:0;  padding: 0; flex-grow: 1;'>${chatMessage.message}</div>
             // 받아온 메시지 채팅방에 출력하기
             let str = `<div class='chatContent-1'>
-            						  <img src=${chatMessage.profileUrl != null ? chatMessage.profileUrl : '/image/member/no-profile.svg'} width="40px" height="40px">
+            						  <img src=${
+                            chatMessage.profileUrl != null
+                              ? chatMessage.profileUrl
+                              : "/image/member/no-profile.svg"
+                          } width="40px" height="40px">
             						  <div class='chatContent-2'>
 	      								  <b>${chatMessage.sender}</b>
 	      								  <div style='display:flex; justify-content:space-between; align-items:flex-end;'>
@@ -210,10 +230,13 @@
 	      								  </div>
       								  </div>
                  		</div>`;
-            document.querySelector(".chatContent").insertAdjacentHTML("afterbegin", str);
+            document
+              .querySelector(".chatContent")
+              .insertAdjacentHTML("afterbegin", str);
 
             // 스크롤 이동
-            document.querySelector(".chatContent").scrollTop = document.querySelector(".chatContent").scrollHeight;
+            document.querySelector(".chatContent").scrollTop =
+              document.querySelector(".chatContent").scrollHeight;
           });
 
           // 메시지 전송하는 메서드
@@ -228,24 +251,47 @@
 
             console.log(`✅ 전송 데이터:`, sendData);
 
-            stompClient.send(`/pub/chat/${roomId}/C`, {}, JSON.stringify(sendData));
+            stompClient.send(
+              `/pub/chat/${roomId}/C`,
+              {},
+              JSON.stringify(sendData)
+            );
           };
 
-          document.querySelector("#button-send").addEventListener("click", () => {
-              let msg = tinymce.get("mytextarea").getContent({ format: "html" }).trim(); // HTML 가져오기
+          enterText = () => {
+            let msg = tinymce
+              .get("mytextarea")
+              .getContent({ format: "html" })
+              .trim(); // HTML 가져오기
 
-              let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
-              if (imgTagMatch) {
-                let imgSrc = imgTagMatch[1];
-                let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`;
-                let newContent = msg.replace(/<img[^>]+>/, imgTag);
-                sendMessage(username, newContent, channelNo);
-              } else {
-                sendMessage(username, msg, channelNo);
-              }
+            let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
+            if (imgTagMatch) {
+              let imgSrc = imgTagMatch[1];
+              let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`;
+              let newContent = msg.replace(/<img[^>]+>/, imgTag);
+              sendMessage(username, newContent, channelNo);
+            } else {
+              sendMessage(username, msg, channelNo);
+            }
 
-              tinymce.get("mytextarea").setContent("");
-            });
+            tinymce.get("mytextarea").setContent("");
+          };
+
+          //           document.querySelector("#button-send").addEventListener("click", () => {
+          //               let msg = tinymce.get("mytextarea").getContent({ format: "html" }).trim(); // HTML 가져오기
+
+          //               let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
+          //               if (imgTagMatch) {
+          //                 let imgSrc = imgTagMatch[1];
+          //                 let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`;
+          //                 let newContent = msg.replace(/<img[^>]+>/, imgTag);
+          //                 sendMessage(username, newContent, channelNo);
+          //               } else {
+          //                 sendMessage(username, msg, channelNo);
+          //               }
+
+          //               tinymce.get("mytextarea").setContent("");
+          //             });
         });
 
         // TinyMCE 초기화
@@ -258,6 +304,8 @@
           height: "70px",
           width: "100%",
           resize: false,
+          content_style: "body{border-radius: 50px;}",
+          content_css: "/css/common/tinymce.css",
           images_upload_handler: function (blobInfo, success, failure) {
             let reader = new FileReader();
             reader.onload = function () {
@@ -293,12 +341,13 @@
                 } else if (event.key === "Escape") {
                   removeMentionBox();
                 }
-              }else{
-	              	if(event.key == 'Enter' && !event.shiftKey){
-						        event.preventDefault();
-						        document.querySelector('#button-send').click();
-			  		        }
-              	  }
+              } else {
+                if (event.key == "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  // 						        document.querySelector('#button-send').click();
+                  enterText();
+                }
+              }
             });
 
             //  `input` 이벤트에서 mentionText 업데이트
@@ -354,7 +403,6 @@
 
             function updateMentionList() {
               mentionBox.innerHTML = "";
-
 
               if (!mentionText) {
                 mentionBox.innerHTML = "<div>검색어를 입력하세요.</div>";
