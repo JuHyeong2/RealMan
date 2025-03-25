@@ -200,7 +200,7 @@
             // 					<div style='margin:0;  padding: 0; flex-grow: 1;'>${chatMessage.message}</div>
             // 받아온 메시지 채팅방에 출력하기
             let str = `<div class='chatContent-1'>
-            						  <img src=${userProfileImage != null ? userProfileImage : '/image/member/no-profile.svg'} width="40px" height="40px">
+            						  <img src=${chatMessage.profileUrl != null ? chatMessage.profileUrl : '/image/member/no-profile.svg'} width="40px" height="40px">
             						  <div class='chatContent-2'>
 	      								  <b>${chatMessage.sender}</b>
 	      								  <div style='display:flex; justify-content:space-between; align-items:flex-end;'>

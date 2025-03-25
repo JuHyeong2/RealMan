@@ -11,6 +11,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 import com.example.demo.common.handler.ChatHandler;
+import com.example.demo.common.interceptor.HttpSessionHandshakeInterceptor;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +30,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/stomp/chat").setAllowedOriginPatterns("*").withSockJS();
+		registry.addEndpoint("/stomp/chat").setAllowedOriginPatterns("*").addInterceptors(new HttpSessionHandshakeInterceptor()).withSockJS();
 		registry.addEndpoint("/stomp/channel").setAllowedOriginPatterns("*").withSockJS();
 		registry.addEndpoint("/stomp/signaling").setAllowedOriginPatterns("*").withSockJS();
 		registry.addEndpoint("/stomp/dm").setAllowedOriginPatterns("*").withSockJS();
