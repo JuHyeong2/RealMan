@@ -132,6 +132,12 @@ public class ServerController {
 
 		// 1. 서버 생성
 		int serverNo = sService.createServer(name, loginMember.getMemberNo());
+		
+		Channel channel = new Channel();
+		channel.setServerNo(serverNo);
+		
+		int channelNo = sService.createChannel(channel);
+//		System.out.println("channelNo : " + channel.getChannelNo());
 
 		// 2. 이미지 업로드 (선택)
 //		if (image != null && !image.isEmpty()) {
@@ -167,7 +173,7 @@ public class ServerController {
 		}
 
 		// 3. 생성된 서버의 첫 채널로 이동
-		return "redirect:/chat/main/" + serverNo + "/" + 1;
+		return "redirect:/chat/main/" + serverNo + "/" + channel.getChannelNo();
 		// return "redirect:/chat/main/" + serverNo;
 	}
 

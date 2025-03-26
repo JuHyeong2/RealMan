@@ -67,8 +67,8 @@ public class ServerService {
 
 		mapper.insertServerMember(map);
 		// 기본 채널 생성 (채팅, 보이스)
-		mapper.insertDefaultTextChannel(serverNo);
-		mapper.insertDefaultVoiceChannel(serverNo);
+//		mapper.insertDefaultTextChannel(serverNo);
+//		mapper.insertDefaultVoiceChannel(serverNo);
 		return serverNo;
 	}
 	
@@ -84,5 +84,14 @@ public class ServerService {
 
 	public int deleteChannel(int channelNo) {
 		return mapper.deleteChannel(channelNo);
+	}
+
+	public int createChannel(Channel channel) {
+		int result2 = mapper.insertDefaultTextChannel(channel);
+		int result = mapper.insertDefaultVoiceChannel(channel);
+		if(result2 != 0 && result != 0) {
+			return result;
+		}
+		return 0;
 	}
 }

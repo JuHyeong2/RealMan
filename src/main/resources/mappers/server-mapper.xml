@@ -74,10 +74,14 @@
         VALUES (#{memberNo}, #{serverNo}, 'Y')
     </insert>
 
-    <insert id="insertDefaultTextChannel">
+    <insert id="insertDefaultTextChannel" parameterType="Channel">
+    	<selectKey keyProperty="channelNo" resultType="_int" order="BEFORE"> 
+    		select channel_seq.nextval from dual
+    	</selectKey>
         INSERT INTO CHANNEL
-        VALUES (channel_seq.nextval, #{serverNo}, '일반', SYSDATE, 'T', 'Y')
+        VALUES (#{channelNo}, #{serverNo}, '일반', SYSDATE, 'T', 'Y')
     </insert>
+    
     <insert id="insertDefaultVoiceChannel">
         INSERT INTO CHANNEL
         VALUES (channel_seq.nextval, #{serverNo}, '음성', SYSDATE, 'V', 'Y')
