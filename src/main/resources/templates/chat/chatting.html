@@ -52,16 +52,24 @@
 
               <div class="chatContent-1">
                 <img
-                  th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
-                  width="40px"
-                  height="40px"
+                        th:if="${session.notify.chatType == 'D'}"
+                        th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
+                        width="40px"
+                        height="40px"
                 />
-                <div class="chatContent-2">
-                  <b th:utext="${c.sender}"></b>&nbsp;<span
-                    th:utext="${c.createDate}"
-                    style="font-size: 14px"
+                <div class="chatContent-2" th:if="${session.notify.chatType == 'D'}">
+                  <b th:utext="${c.sender}"></b>&nbsp;
+                  <span style="font-size: 14px" th:utext="${c.createDate}"></span>
+                  <p style="margin: 0" th:utext="${c.message}"></p>
+                </div>
+
+                <div class="chatContent-2" th:if="${session.notify.chatType == 'S'}">
+                  <b th:utext="${c.sender}"></b>&nbsp;
+                  <span style="font-size: 14px" th:utext="${#strings.substring(c.createDate, 11)}"></span>
+                  <span
+                          th:utext="${#strings.replace(c.message, '<p>', '').replace('</p>', '')}"
+                          style="white-space: nowrap;"
                   ></span>
-                  <p th:utext="${c.message}" style="margin: 0"></p>
                 </div>
               </div>
             </div>
@@ -124,42 +132,75 @@
             // let HMS = hour + ":" + minute + ":" + second;
 
             /*<![CDATA[*/
-            let timeType = /*[[${session.notify.timeType}]]*/ "24H"; //
+            let timeType = /*[[${session.notify.timeType}]]*/ "24H";
+            let chatType = /*[[${session.notify.chatType}]]*/ "D";
             /*]]>*/
             // 현재 시간 받아오기
             let today = new Date();
 
-            // 날짜 포맷
             let year = today.getFullYear();
             let month = String(today.getMonth() + 1).padStart(2, "0");
             let date = String(today.getDate()).padStart(2, "0");
             let hour = today.getHours();
             let minute = String(today.getMinutes()).padStart(2, "0");
 
-            // timeType 적용
             let HMS = "";
-            if (timeType === "24H") {
-              let hourStr = String(hour).padStart(2, "0");
-              HMS = `${year}-${month}-${date} ${hourStr}:${minute}`;
-            } else if (timeType === "12H") {
-              let ampm = hour >= 12 ? "오후" : "오전";
-              let hour12 = hour % 12 || 12; // 0시는 12시로 표기
-              HMS = `${year}-${month}-${date} ${ampm} ${hour12}:${minute}`;
-            }
 
+            // chatType 에 따라 HMS 포맷 결정
+            if (chatType === "D") {
+              // 전체 날짜 + 시간
+              if (timeType === "24H") {
+                let hourStr = String(hour).padStart(2, "0");
+                HMS = `${year}-${month}-${date} ${hourStr}:${minute}`;
+              } else if (timeType === "12H") {
+                let ampm = hour >= 12 ? "오후" : "오전";
+                let hour12 = hour % 12 || 12;
+                HMS = `${year}-${month}-${date} ${ampm} ${hour12}:${minute}`;
+              }
+            } else if (chatType === "S") {
+              // 시간만 (날짜 제외)
+              if (timeType === "24H") {
+                let hourStr = String(hour).padStart(2, "0");
+                HMS = `${hourStr}:${minute}`;
+              } else if (timeType === "12H") {
+                let ampm = hour >= 12 ? "오후" : "오전";
+                let hour12 = hour % 12 || 12;
+                HMS = `${ampm} ${hour12}:${minute}`;
+              }
+            }
             // 					<div style='margin:0;  padding: 0; flex-grow: 1;'>${chatMessage.message}</div>
             // 받아온 메시지 채팅방에 출력하기
-            let str = `<div class='chatContent-1'>
-                                     <img src="${
-                                            chatMessage.profileUrl != null
-                                                    ? chatMessage.profileUrl
-                                                    : "/image/member/no-profile.svg"
-                                    }" width="40px" height="40px" />
-                          <div class='chatContent-2'>
-                            <b>${chatMessage.sender}</b>&nbsp;<span style="font-size: 14px">${HMS}</span>
-                            <p style="margin: 0">${chatMessage.message}</p>
-                          </div>
-                      </div>`;
+            let str = "";
+
+            if (chatType === "D") {
+              str = `<div class='chatContent-1'>
+                        <img src="${
+                          chatMessage.profileUrl != null
+                                  ? chatMessage.profileUrl
+                                  : "/image/member/no-profile.svg"
+                        }" width="40px" height="40px" />
+                      <div class='chatContent-2'>
+                        <b>${chatMessage.sender}</b>&nbsp;
+                        <span style="font-size: 14px">${HMS}</span>
+                        <p style="margin: 0">${chatMessage.message}</p>
+                      </div>
+                    </div>`;
+            } else if (chatType === "S") { // 줄바꿈 안하고 한줄로 나오게
+              // 메시지 내용에 포함된 HTML 제거 (p, br, span 등 포함 가능)
+              let plainText = chatMessage.message
+                      .replace(/<[^>]+>/g, "") // 모든 태그 제거
+                      .replace(/\n/g, " ");    // 혹시 줄바꿈 있어도 제거
+              str = `<div class='chatContent-1'>
+                <div class='chatContent-2'>
+                  <b>${chatMessage.sender}</b>&nbsp;
+                  <span style="font-size: 14px">${HMS}</span>
+                  <span style="white-space: nowrap;">${plainText}</span>
+                </div>
+              </div>`;
+            }
+
+
+
 
             document
               .querySelector(".chatContent")
