@@ -235,4 +235,8 @@ public class MemberService {
 		return mapper.acceptFriendList(memberNo);
 
 	}
+
+	public int deleteProfileImg(int memberNo) {
+		return mapper.deleteProfileImg(memberNo);
+	}
 }

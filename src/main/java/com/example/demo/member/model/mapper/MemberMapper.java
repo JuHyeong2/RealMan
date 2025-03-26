@@ -104,4 +104,6 @@ public interface MemberMapper {
     ArrayList<Friend> addFriendList(int memberNo);
 
     ArrayList<Friend> acceptFriendList(int memberNo);
+
+	int deleteProfileImg(int memberNo);
 }

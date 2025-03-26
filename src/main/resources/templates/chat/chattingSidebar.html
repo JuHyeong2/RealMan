@@ -265,13 +265,11 @@
                   .then((response) => response.text())
                   .then((data) => {
                     console.log("profile imgurl : ", data);
-                    const imgUrl =
-                      data == null ? "/image/member/no-profile.svg" : data;
                     channelNo.parentElement.querySelector(
                       ".voice-memberList>ul"
                     ).innerHTML +=
                       "<li><div><img src=" +
-                      imgUrl +
+                      data +
                       "></div>&nbsp" +
                       user +
                       "</li>";
