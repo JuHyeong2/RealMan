@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>chatting</title>
+    <link rel="stylesheet" href="/css/theme.css">
     <link rel="stylesheet" href="/css/chat/chatting.css" />
     <link rel="stylesheet" href="/css/chat/memberList.css" />
     <!--    <link href="/css/common/sidebar.css" rel="stylesheet" type="text/css" />-->
@@ -21,93 +22,12 @@
     ></script>
 
     <style>
-      body,
-      html {
-        height: 100%;
-      }
-      .top-bar {
-        height: 40px;
-        background-color: #e4edf3;
-      }
-      .sidebar {
-        height: calc(100vh - 40px);
-        background-color: #e4edf3;
-      }
-      .chat-area {
-        flex-grow: 1; /* 남은 공간 차지 */
-        width: 1120px;
-      }
-      .user-list {
-        width: 360px;
-      }
-      @media (max-width: 768px) {
-        .top-bar {
-          display: none !important;
-        }
-        .sidebar {
-          height: 100vh;
-        }
-        .chat-area,
-        .user-list {
-          display: none;
-        }
-      }
 
-      .addServer {
-        width: 60px;
-        height: 60px;
-        background-color: #bdd3e2;
-        cursor: pointer;
-        border-radius: 100px;
-        align-content: center;
-        text-align: center;
-        font-size: 20px;
-      }
-
-      /* 모달 오버레이 */
-      .add-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 9998;
-        display: none;
-      }
-
-      /* 모달 본체 */
-      .add-modal {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        width: 400px;
-        height: 400px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        border-radius: 10px;
-        z-index: 9999;
-        display: none;
-      }
-
-      .add-modal .close {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-      }
-      .add-modalbtn {
-        background: #699fff;
-      }
-      .add-modalbtn:hover {
-        background: #2c58a2;
-      }
     </style>
   </head>
-  <body>
+  <body th:class="'theme-' + ${session.theme.themeColor} + ' font-' + ${session.theme.fontType} + ' text-size-' + ${session.theme.fontSize.toLowerCase()}">
     <!-- 탑바 -->
-    <div th:replace="~{/common/top :: body}"></div>
+    <div th:replace="~{/common/top :: html}"></div>
     <!-- 메인 컨테이너-->
     <div class="main-container d-flex">
       <!-- 왼쪽 사이드바 -->
@@ -183,7 +103,7 @@
         // WebSocket 연결
         // const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
         const socket = new SockJS("https://192.168.140.22:9090/stomp/chat");
-        //const socket = new SockJS("https://localhost:8080/stomp/chat");
+        //const socket = new SockJS("https://localhost:9090/stomp/chat");
         const stompClient = Stomp.over(socket);
 
         stompClient.connect({}, () => {
@@ -304,7 +224,7 @@
           height: "70px",
           width: "100%",
           resize: false,
-          content_style: "body{border-radius: 50px;}",
+          content_style: 'body{} p{border-radius: 15px; display: inline-block;}',
           content_css: "/css/common/tinymce.css",
           images_upload_handler: function (blobInfo, success, failure) {
             let reader = new FileReader();

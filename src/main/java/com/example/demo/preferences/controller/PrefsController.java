@@ -143,8 +143,6 @@ public class PrefsController {
     public Notification getMsgPrefs(HttpSession session){
         Member loginMember = (Member) session.getAttribute("loginMember");
         Notification msg = pService.getNotifyPrefs(loginMember.getMemberNo());
-        session.setAttribute("chatType", msg.getChatType());
-        session.setAttribute("timeType", msg.getTimeType());
         return msg;
     }
 
@@ -158,6 +156,7 @@ public class PrefsController {
         if(resultUdtTheme == 1){
             session.setAttribute("theme", theme);
         }
+        
     }
 
     @GetMapping("/ui-theme/getPrefs")

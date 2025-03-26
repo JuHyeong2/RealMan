@@ -15,8 +15,8 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body>
-    <div class="channel-list bg-light d-flex flex-column" style="width: 320px">
+  <body th:class="'theme-' + ${session.theme.themeColor} + ' font-' + ${session.theme.fontType} + ' text-size-' + ${session.theme.fontSize.toLowerCase()}">
+    <div class="channel-list d-flex flex-column" style="width: 320px">
       <nav>
         <div class="voiceChat-div">
           <div class="channel-title">
