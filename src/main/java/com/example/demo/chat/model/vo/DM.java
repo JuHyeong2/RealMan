@@ -11,7 +11,7 @@ import java.sql.Date;
 @ToString
 public class DM {
     private int dmNo;
-    private Date dmCreateDate;
+    private String dmCreateDate;
     private char dmStatus;
     private int memberNo;
     private int otherMemberNo;
@@ -24,4 +24,5 @@ public class DM {
     private String profileImage;
     private String imageUrl;
     private String imgRename;
+    private String profileUrl;
 }
