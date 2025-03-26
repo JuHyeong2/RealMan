@@ -122,17 +122,13 @@
 <div class="main-container d-flex">
     <div class="sidebar d-flex">
         <div th:replace="~{/common/sidebar :: body}"></div>
+        <div class="directMassage" th:replace="~{/main/directMassage :: body}"></div>
 
-        <div class="directMassage" th:replace="~{/main/directMassage :: body}">
 
-
+        <div class="profile">
+            <img><b>닉네임</b>
         </div>
-
-
-    <div class="profile">
-        <img><b>닉네임</b>
     </div>
-
     <!--	<div class="send" th:each="d : ${dmList}">-->
     <!--		<img> <b th:text="${d.otherMemberNo}">d</b> <b-->
     <!--			th:utext="${d.message}"></b>-->
@@ -157,7 +153,6 @@
         </div>
         <div class="p-3 d-flex">
             <textarea class="flex-grow-1" id="mytextarea"></textarea>
-            <button id="button-send">입력</button>
         </div>
     </div>
 </div>
@@ -239,7 +234,7 @@
                 stompClient.send(`/pub/dm/${dmNo}/D`, {}, JSON.stringify(sendData));
             };
 
-            document.querySelector("#button-send").addEventListener("click", () => {
+            enterText = () => {
                 let msg = tinymce.get("mytextarea").getContent({format: "html"}).trim(); // HTML 가져오기
 
                 let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
@@ -253,7 +248,7 @@
                 }
 
                 tinymce.get("mytextarea").setContent("");
-            });
+            };
         });
 
         // TinyMCE 초기화
@@ -282,7 +277,14 @@
             images_upload_url: "/upload-image",
             automatic_uploads: true,
             paste_data_images: true,
-
+            setup: function (editor) {
+                editor.on("keydown", function (event) {
+                    if (event.key == "Enter" && !event.shiftKey) {
+                        event.preventDefault();
+                        enterText();
+                    }
+                })
+            }
 
         })
 
