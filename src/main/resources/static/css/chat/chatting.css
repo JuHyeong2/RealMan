@@ -2,6 +2,15 @@
 body,
 html {
 	height: 100%;
+/* 	overflow: hidden; */
+}
+
+/* .main-container { */
+/* 	height: 100%; */
+/* } */
+
+#memberList-container {
+	height: 100%;
 }
 .top-bar {
 	height: 40px;
@@ -13,6 +22,7 @@ html {
 .chat-area {
 	flex-grow: 1; /* 남은 공간 차지 */
 	width: 1120px;
+	height: 100%;
 }
 .user-list {
 	width: 360px;

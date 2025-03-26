@@ -7,11 +7,11 @@
   <body th:fragment="memberList">
     <input name="loginMemberNo" type="hidden" th:value="${session.loginMember.memberNo}"/>
     <div id="memberList-container">
-      <div th:if="${admin}" class="button-div">
-        <button class="manage-modal-button">
-          <img src="/image/member/team-member.svg"/>
-          회원 관리
-        </button>
+      <div class="button-div">
+<!--         <button class="manage-modal-button" th:if="${admin}"> -->
+<!--           <img src="/image/member/team-member.svg"/> -->
+<!--           회원 관리 -->
+<!--         </button> -->
       </div>
       <div class="ul-div">
         <ul class="memberList-ul">

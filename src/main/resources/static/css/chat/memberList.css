@@ -1,7 +1,11 @@
+/* body, html{ */
+/* 	height: 100vh; */
+/* } */
 #memberList-container {
   width: 15%;
   min-width: 14rem;
-  height: 100vh;
+  height: calc(100vh - 40px);
+  background-color: var(--theme-sub);
 }
 
 .ul-div {
@@ -46,6 +50,7 @@ li {
   display: flex;
   justify-content: space-between;
   padding: 0.5rem;
+  height: 3rem;
 }
 
 .manage-modal-button {
