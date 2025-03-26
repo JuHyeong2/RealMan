@@ -258,7 +258,8 @@
 				LEFT JOIN
 			image i ON m.member_no = i.mcd_no
 		WHERE
-			f.member_no = #{memberNo} and f.friend_status = 'A'
+			f.member_no = #{memberNo} and f.friend_status = 'A' or
+			f.friend_member_no = #{memberNo}
 		order by m.member_no asc
 	</select>
 	
