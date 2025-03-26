@@ -100,4 +100,6 @@ public interface MemberMapper {
     ArrayList<Friend> friendList(int memberNo);
 
 	String getProfileImgUrlbyNickname(String memberNickname);
+
+	int deleteProfileImg(int memberNo);
 }

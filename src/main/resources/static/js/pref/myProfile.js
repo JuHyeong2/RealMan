@@ -61,7 +61,14 @@ window.onload = () => {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
+            if (data == 1) {
+              alert("삭제 되었습니다.");
+              document
+                .querySelector(".modal-content")
+                .querySelector("img").src = "/image/member/no-profile.svg";
+              document.querySelector(".profile-pic").src =
+                "/image/member/no-profile.svg";
+            }
           });
       }
     });
@@ -144,14 +151,14 @@ window.onload = () => {
   document.querySelector("#phoneBtn").addEventListener("click", () => {
     phoneModal.style.display = "flex";
     const completeBtn = document.querySelector("#phone-complete");
-    completeBtn.addEventListener("click", function(){
-      const newPhone = phoneModal.querySelector("input[name=memberPhone]").value;
+    completeBtn.addEventListener("click", function () {
+      const newPhone = phoneModal.querySelector(
+        "input[name=memberPhone]"
+      ).value;
       const pwd = phoneModal.querySelector("input[type=password]").value;
       editMemberInfo("member_phone", newPhone, pwd);
     });
   });
-
-
 
   //======================비밀번호======================
   // 비밀번호 변경하기

@@ -256,6 +256,9 @@ public class MemberController {
 	public String getProfileImgUrlbyNickname(@RequestParam("nickname") String memberNickname) {
 		System.out.println("닉네임 : "+memberNickname);
 		String imgUrl = mService.getProfileImgUrlbyNickname(memberNickname);
+		if(imgUrl==null) {
+			imgUrl = "/image/member/no-profile.svg";
+		}
 		System.out.println("프로필 url : "+imgUrl);
 		return imgUrl;
 	}
@@ -316,8 +319,14 @@ public class MemberController {
 	
 	@DeleteMapping("/profileImg")
 	@ResponseBody
-	public boolean deleteProfileImg() {
-		return false;
+	public int deleteProfileImg(HttpSession session) {
+		int result = 0;
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		result = mService.deleteProfileImg(loginMember.getMemberNo());
+		if (result == 1) {
+			loginMember.setImageUrl(null);
+		}
+		return result;
 	}
 
 	// 회원가입 페이지로 이동
@@ -423,7 +432,7 @@ public class MemberController {
 	 //로그 아웃 처리
 	 @GetMapping("/logout")
 	 public String logout(HttpSession session, SessionStatus status) {
-
+		 
 	     session.removeAttribute("loginMember");
 	     status.setComplete();
 	     return "redirect:/";

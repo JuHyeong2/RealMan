@@ -5,7 +5,14 @@
   </head>
 
   <body th:fragment="memberList">
+    <input name="loginMemberNo" type="hidden" th:value="${session.loginMember.memberNo}"/>
     <div id="memberList-container">
+      <div th:if="${admin}" class="button-div">
+        <button class="manage-modal-button">
+          <img src="/image/member/team-member.svg"/>
+          회원 관리
+        </button>
+      </div>
       <div class="ul-div">
         <ul class="memberList-ul">
           <li class="memberList-li" th:each="m : ${memberList}">
@@ -21,28 +28,23 @@
             >
               [[${m.memberNickname}]]
             </label>
-            <button
-              class="eject-button"
-              th:if="${admin and m.isServerAdmin=='N'}"
-            >
-              <img src="/image/friend/deny.svg" />
-            </button>
+            <label class="memberId" style="display: none;">[[${m.memberId}]]</label>
           </li>
         </ul>
-      </div>
-      <div th:if="${admin}" class="button-div">
-        <button class="invite-modal-button">초대</button>
       </div>
     </div>
 
     <!-- 모달 -->
     <div class="modal-container">
       <!-- 초대 모달 -->
-      <div class="invite-modal">
-        <h1>회원 초대</h1>
-        <button class="cancle-button">x</button>
+      <div class="manage-modal">
+        <div class="manage-modal-top">
+          <h1>회원 초대</h1>
+          <h1>회원 추방</h1>
+          <button class="cancle-button">x</button>
+        </div>
         <div class="modal-ul-div">
-          <ul class="ul-friends"></ul>
+          <ul class="modal-ul"></ul>
         </div>
       </div>
     </div>
