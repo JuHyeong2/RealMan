@@ -140,15 +140,25 @@
 
         //메뉴 열기
         document.querySelectorAll(".channel-menu-button").forEach((btn) => {
-          btn.addEventListener("click", channelMenu);
+          btn.addEventListener("click", function(e){
+            channelMenu(e);
+            console.log(this.parentElement.querySelector(".channel-menu"));
+            setTimeout(()=>{
+              const menuDiv = this.parentElement.querySelector(".channel-menu");
+              menuDiv.classList.remove("channel-menu-show");
+            }, 1500);
+          });
         });
 
-        //채널 삭제
+        //채널 수정/삭제
         document.querySelectorAll(".channel-menu").forEach((menuDiv) => {
+
           const channelNo =
             menuDiv.parentElement.parentElement.querySelector(
               ".chatInput"
             ).value;
+          menuDiv.querySelectorAll("div")[0].
+            addEventListener("click", (e)=>editChannel(e,channelNo));
           menuDiv
             .querySelectorAll("div")[1]
             .addEventListener("click", (e) => deleteChannel(e, channelNo));
@@ -161,16 +171,20 @@
             !e.target.classList.contains("add-channel") &&
             !e.target.classList.contains("channel-menu-button") &&
             !e.target.parentElement.classList.contains("channel-menu") &&
-            !e.target.classList.contains("channel-name-input")
+            !e.target.classList.contains("channel-name-input") &&
+            !e.target.classList.contains("new-channel-name")
           ) {
             const openedMenu = document.querySelector(".channel-menu-show");
-            document.querySelectorAll("b").forEach((b) => {
-              if (b.querySelector("input")) {
-                b.parentElement.remove();
+            if(openedMenu!=null){
+              openedMenu.classList.remove("channel-menu-show");
+            }
+
+            document.querySelectorAll(".channel").forEach((c) => {
+              const newNameInput = c.querySelector(".new-channel-name")
+              if(newNameInput!=null){
+                newNameInput.remove("channel-menu-show");
               }
             });
-
-            //             openedMenu.classList.remove("channel-menu-show");
           }
         });
       });
@@ -184,8 +198,8 @@
         .querySelector("b").innerText;
 
       //       const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
-//       const socket = new SockJS("https://localhost:8080/stomp/channel");
-      const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
+       const socket = new SockJS("https://localhost:8080/stomp/channel");
+      //const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
 
       const channelStompClient = Stomp.over(socket);
 
@@ -296,52 +310,57 @@
       //       .classList.toggle("channel-ul-hide");
       //   });
 
-      voiceChannels = document.querySelectorAll(".voiceChat");
-      for (voiceChannel of voiceChannels) {
-        voiceChannel.addEventListener("click", (e) => {
-          console.log("voice채널 클릭!");
-          clickChannel = e.currentTarget;
-          clickServerNo = Number(
-            clickChannel.querySelector('input[type="hidden"]').value
-          );
-          //				console.log(typeof clickServerNo);
-          joinVoiceChannel(myNickname, clickServerNo);
-          //				location.href = '/chat/voiceChat/2';
-        });
-      }
+      // voiceChannels = document.querySelectorAll(".voiceChat");
+      // for (voiceChannel of voiceChannels) {
+      //   voiceChannel.addEventListener("click", (e) => {
+      //     console.log("voice채널 클릭!");
+      //     clickChannel = e.currentTarget;
+      //     const menuBtn = clickChannel.querySelector('button');
+      //     const menuDiv1 = clickChannel.querySelectorAll('.channel-menu')[0].querySelectorAll('div')[0];
+      //     const menuDiv2 = clickChannel.querySelectorAll('.channel-menu')[0].querySelectorAll('div')[1];
+      //     if(e.target != menuBtn && e.target != menuDiv1 && e.target != menuDiv2){
+      //        clickServerNo = Number(
+      //                  clickChannel.querySelector('input[type="hidden"]').value
+      //                );
+      //                //            console.log(typeof clickServerNo);
+      //                joinVoiceChannel(myNickname, clickServerNo);
+      //                //            location.href = '/chat/voiceChat/2';
+      //     }
+      //   });
+      // }
 
-      document.querySelectorAll(".channel")[0].addEventListener("click", () => {
-        // 			const chatRoom = voiceChannel.querySelector('li');
-        //				console.log(chatRoom);
-        // 			if(chatRoom.style.display == 'none'){
-        // 				chatRoom.style.display = 'block';
-        // //					people.style.display = 'block';
-        // 			}else{
-        // 				chatRoom.style.display = 'none';
-        // //					people.style.display = 'none';
-        // 			}
-        for (voiceChannel of voiceChannels) {
-          // 				console.log(voiceChannel);
-          const chatRoom = voiceChannel.querySelector("li");
-          // 				console.log(chatRoom);
-          if (chatRoom.style.display == "none") {
-            chatRoom.style.display = "block";
-            // 					people.style.display = 'block';
-          } else {
-            chatRoom.style.display = "none";
-            // 					people.style.display = 'none';
-          }
+      // document.querySelectorAll(".channel")[0].addEventListener("click", () => {
+      //   // 			const chatRoom = voiceChannel.querySelector('li');
+      //   //				console.log(chatRoom);
+      //   // 			if(chatRoom.style.display == 'none'){
+      //   // 				chatRoom.style.display = 'block';
+      //   // //					people.style.display = 'block';
+      //   // 			}else{
+      //   // 				chatRoom.style.display = 'none';
+      //   // //					people.style.display = 'none';
+      //   // 			}
+      //   for (voiceChannel of voiceChannels) {
+      //     // 				console.log(voiceChannel);
+      //     const chatRoom = voiceChannel.querySelector("li");
+      //     // 				console.log(chatRoom);
+      //     if (chatRoom.style.display == "none") {
+      //       chatRoom.style.display = "block";
+      //       // 					people.style.display = 'block';
+      //     } else {
+      //       chatRoom.style.display = "none";
+      //       // 					people.style.display = 'none';
+      //     }
 
-          // 				voiceChannel.addEventListener('click', (e)=>{
-          // 					console.log("voice채널 클릭!");
-          // 					clickChannel = e.currentTarget;
-          // 					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
-          // // 					console.log(typeof clickServerNo);
-          // 					joinVoiceChannel(myNickname, clickServerNo);
-          // // 					location.href = '/chat/voiceChat/2';
-          // 				})
-        }
-      });
+      //     // 				voiceChannel.addEventListener('click', (e)=>{
+      //     // 					console.log("voice채널 클릭!");
+      //     // 					clickChannel = e.currentTarget;
+      //     // 					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
+      //     // // 					console.log(typeof clickServerNo);
+      //     // 					joinVoiceChannel(myNickname, clickServerNo);
+      //     // // 					location.href = '/chat/voiceChat/2';
+      //     // 				})
+      //   }
+      // });
 
       /*<![CDATA[*/
       const channels = /*[[${channel}]]*/ null;

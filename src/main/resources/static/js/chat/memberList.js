@@ -66,6 +66,7 @@ manageModalBtn.addEventListener("click", function () {
   eject.addEventListener("click", function () {
     modalUl.parentElement.classList.add("modal-ul-div-eject");
     modalUl.innerHTML = "";
+    console.log(document.querySelector("input[name=loginMemberNo]"));
     document.querySelectorAll(".memberList-li").forEach((mem) => {
       if (
         mem.querySelector("input[type=hidden]").value !=
@@ -121,11 +122,8 @@ function inviteMember(e, memberNo) {
       .then((data) => {
         console.log("data : ", data);
         if (data == 1) {
-          const li = e.target.parentElement;
-          li.classList.add("li-friends-dark");
-          console.log(li);
-          e.target.remove();
           alert("초대 완료");
+          location.reload();
         }
       });
   }
@@ -146,9 +144,8 @@ function ejectMember(e, memberNo) {
       .then((data) => {
         console.log(data);
         if (data == 1) {
-          const li = e.target.parentElement;
-          li.remove();
           alert("추방 완료");
+          location.reload();
         }
       });
   }

@@ -5,7 +5,6 @@
   </head>
 
   <body th:fragment="memberList">
-    <input name="loginMemberNo" type="hidden" th:value="${session.loginMember.memberNo}"/>
     <div id="memberList-container">
       <div th:if="${admin}" class="button-div">
         <button class="manage-modal-button">
@@ -32,6 +31,7 @@
           </li>
         </ul>
       </div>
+      <input name="loginMemberNo" type="hidden" th:value="${session.loginMember.memberNo}"/>
     </div>
 
     <!-- 모달 -->
