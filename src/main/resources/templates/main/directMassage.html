@@ -58,13 +58,15 @@
     <title>Direct Message</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <style>
 
 
 </style>
 
-<body>
+<body th:class="'theme-' + ${session.theme.themeColor} + ' font-' + ${session.theme.fontType} + ' text-size-' + ${session.theme.fontSize.toLowerCase()}">
+
 
 <div class="directMassage" th:fragment="directMassage">
     <div class="dm">다이렉트 메시지</div>
@@ -185,7 +187,7 @@
         width: 300px; /* 적절한 너비 설정 */
         border: 1px solid #ddd;
         padding: 10px;
-        font-family: Arial, sans-serif;
+        font-family: var(--font-family),serif;
     }
 
     .dm {
@@ -195,7 +197,7 @@
     }
 
     .createDM {
-        background-color: #d8e7f3;
+        background-color: var(--theme-point);
         color: white;
         border: none;
         padding: 5px 10px;
@@ -205,9 +207,9 @@
         margin-top: -30px; /* dm div와 겹치게 위로 올림 */
     }
 
-    .createDM:hover {
-        background-color: #0056b3;
-    }
+    /*.createDM:hover {*/
+    /*    background-color: #0056b3;*/
+    /*}*/
 
     #dmWrapper {
         clear: both; /* float 속성 해제 */

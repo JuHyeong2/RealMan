@@ -1,32 +1,35 @@
 /* 통합 테마/폰트/사이즈 변수 정의 */
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
-body {
-    background-color: var(--theme-bg);
-    color: var(--theme-text);
-    font-family: var(--font-family);
-    font-size: var(--font-size-base);
-}
+
+/*body {*/
+/*    background-color: var(--theme-bg);*/
+/*    color: var(--theme-text);*/
+/*    font-family: var(--font-family);*/
+/*    font-size: var(--font-size-base);*/
+/*}*/
 
 /* 폰트 크기 단계 */
-.text-size-s {
+.text-size-S {
     --font-size-base: 14px;
     --font-size-small: 12px;
     --font-size-subtitle: 20px;
     --font-size-title: 24px;
 }
-.text-size-m {
+.text-size-M {
     --font-size-base: 15px;
     --font-size-small: 13px;
     --font-size-subtitle: 24px;
     --font-size-title: 30px;
 }
-.text-size-l {
+.text-size-L {
     --font-size-base: 20px;
     --font-size-small: 14px;
     --font-size-subtitle: 30px;
     --font-size-title: 36px;
 }
-.text-size-xl {
+.text-size-XL {
     --font-size-base: 24px;
     --font-size-small: 15px;
     --font-size-subtitle: 36px;
@@ -34,32 +37,33 @@ body {
 }
 
 /* 테마 컬러 변수 */
-.theme-black {
+.theme-BLACK {
     --theme-bg: #000000;
     --theme-text: #ffffff;
-    --theme-accent: #1a1a1a;
+    --theme-point: #1a1a1a;
     --theme-sub: #333333;
 }
-.theme-white {
-    --theme-bg: #ffffff;
+.theme-WHITE {
+    --theme-bg: #e1e3e5;
     --theme-text: #000000;
-    --theme-accent: #e9e9e9;
-    --theme-sub: #f5f5f5;
+    --theme-point: #dcdcdc;
+    --theme-sub: #f0f1f3;
 }
-.theme-sky {
-    --theme-bg: #e7f3ff;
+.theme-SKY {
+    --theme-bg: #dde6f1;
     --theme-text: #000000;
-    --theme-accent: #81b3ff;
-    --theme-sub: #b0d4ff;
+    --theme-point: #a4cfef;
+    --theme-sub: #f6f7f8;
 }
-.theme-rose {
-    --theme-bg: #ffeaea;
+.theme-ROSE {
+    --theme-bg: #f7dad5;
     --theme-text: #000000;
-    --theme-accent: #ff9d9d;
-    --theme-sub: #ffc5c5;
+    --theme-point: #f4c9c2;
+    --theme-sub: #fbefe9;
 }
 
 /* 폰트 종류 */
-.font-default { --font-family: sans-serif; }
-.font-gowun   { --font-family: 'Gowun Dodum', sans-serif; }
-.font-dohyeon { --font-family: 'Do Hyeon', sans-serif; }
+.font-DEFAULT { --font-family: sans-serif; }
+.font-GOWUN   { --font-family: 'Gowun Dodum'; }
+.font-DOHYEON { --font-family: 'Do Hyeon'; }
+.font-JOSEFIN { --font-family: 'Josefin Sans'; }
