@@ -75,12 +75,6 @@ public class MemberService {
         return count > 0;
     }
     
-    public boolean checkIdAvailable(String memberId) {
-        int count = mapper.checkMemberId(memberId);
-        System.out.println("🟡 checkMemberId: " + memberId + " → count = " + count);
-        return count == 0;
-    }
-    
     // 닉네임 중복 확인
     public boolean isMemberNicknameDuplicated(String memberNickname) {
         return mapper.checkMemberNickname(memberNickname) > 0;
