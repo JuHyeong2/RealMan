@@ -175,12 +175,6 @@ public class HomeController {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		Notification notify = (Notification) session.getAttribute("notify");
 
-//		System.out.println("내가누구야 ;" + loginMember);
-
-		// 1. dm 했던거 가져오기 (상대방 닉네임(fireBase에서), 프사(oracle))
-		// 2. 프사 = 닉네임으로 memberNo를 가져와서 프사 가져오면 될듯
-
-
 
 		ArrayList<DM> DMList = cService.selectDm(dmNo, notify.getTimeType());
 		for(int i=0; i<DMList.size(); i++) {
@@ -204,10 +198,11 @@ public class HomeController {
 
 		for(int i=0; i<d.size(); i++) {
 			ProfileImage img = mService.selectImage(d.get(i).getMemberNo());
-//			System.out.println(img);
 			if(img != null) {
 				d.get(i).setImageUrl(img.getImgRename());
 			}
+
+			System.out.println(img);
 		}
 
 		DM dm1 = new DM();
