@@ -1,10 +1,10 @@
 @charset "UTF-8";
-/* html, body { */
-/* 	overflow: hidden; */
-/* 	margin: 0;        페이지 마진 없애기 */
-/*     padding: 0;       페이지 패딩 없애기 */
-/*     height: 100%;     페이지 높이를 100%로 설정 */
-/* } */
+ /*html, body {*/
+ /*	overflow: hidden;*/
+ /*	margin: 0;        */
+ /*    padding: 0;*/
+ /*    height: 100%;*/
+ /*}*/
 
 .all{
 	display: flex;

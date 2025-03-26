@@ -75,5 +75,20 @@
 
     </select>
 
+    <insert id="createDM">
+        <selectKey order="BEFORE" resultType="_int" keyProperty="dmNo">
+            select dm_seq.nextval from dual
+        </selectKey>
+        insert into dm
+        values(#{dmNo}, default, default, #{memberNo}, #{otherMemberNo})
+    </insert>
+
+    <select id="selectDmUseNickname">
+        select *
+        from dm
+        where (member_no = #{memberNo} and other_member_no = #{otherMemberNo})
+            or (member_no = #{otherMemberNo} and other_member_no = #{memberNo})
+    </select>
+
 
 </mapper>

@@ -136,14 +136,9 @@ public class ChatService {
 	}
 
 
-	public DM createDM(int memberNo, int otherMemberNo) {
-		DM dm = new DM();
-		dm.setMemberNickname(dm.getMemberNickname()); // 여기에 실제 닉네임을 넣어야 함
-		dm.setOtherMemberNickname(dm.getOtherMemberNickname());
-		dm.setDmNo(dm.getDmNo());
+	public int createDM(Map<String, Integer> map) {
 
-		insertDM(dm);
-		return dm;
+		return mapper.createDM(map);
 	}
 
 
@@ -151,22 +146,20 @@ public class ChatService {
 		Firestore db = FirestoreClient.getFirestore();
 
 		DocumentReference docRef = db.collection("RealMan01").document();
+		System.out.println("ghkr"+ docRef);
 
 
 		Map<String, Object> data = new HashMap<>();
-		data.put("dm_memberNickname", message.getMemberNickname());
 		data.put("otherMemberNickname", message.getOtherMemberNickname());
 		data.put("dm_no", message.getDmNo());
 		data.put("sender", message.getSender());
 		data.put("message", message.getMessage());
-		data.put("img_profileImage", message.getProfileImage());
-		data.put("img_imageUrl", message.getImageUrl());
-		data.put("img_imgRename", message.getImgRename());
+		data.put("dm_createdate", Timestamp.now());
 		ApiFuture<WriteResult> result = docRef.set(data);
 
-		System.out.println( "지금" + message.getMemberNickname());
-		System.out.println( "지금" +  message.getMemberNickname());
-		System.out.println( "지금" +   message.getOtherMemberNickname());
+		System.out.println( "지금" + message.getSender());
+		System.out.println( "지금" +  message.getMessage());
+		System.out.println( "지금" +   message.getDmNo());
 
 		try {
 			System.out.println("Update timess : " + result.get().getUpdateTime());
@@ -183,10 +176,10 @@ public class ChatService {
 		return mapper.selectDmList(memberNo);
 	}
 
-	public ArrayList<DM> selectDm(int dmNo) {
+	public ArrayList<DM> selectDm(int dmNo, String timeType) {
 		Firestore db = FirestoreClient.getFirestore();
 
-		ApiFuture<QuerySnapshot> query = db.collection("RealMan01").whereEqualTo("dm_no", dmNo).get();
+		ApiFuture<QuerySnapshot> query = db.collection("RealMan01").whereEqualTo("dm_no", dmNo).orderBy("dm_createdate", Query.Direction.DESCENDING).get();
 		// ...
 		// query.get() blocks on response
 		QuerySnapshot querySnapshot;
@@ -194,16 +187,27 @@ public class ChatService {
 		try {
 			querySnapshot = query.get();
 			List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+			System.out.println("ehzb"+documents);
 			for (QueryDocumentSnapshot document : documents) {
+				String inputTime = String.valueOf(document.getTimestamp("dm_createdate"));
+				// ISO 형태의 문자열을 ZonedDateTime으로 파싱
+				ZonedDateTime dateTime = ZonedDateTime.parse(inputTime).withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+				// 24시간제 포맷 지정
+				DateTimeFormatter formatter24 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+				String formatted24 = dateTime.format(formatter24);
+				// 12시간제 포맷 지정 (오전/오후 포함)
+				DateTimeFormatter formatter12 = DateTimeFormatter.ofPattern("yyyy-MM-dd a h:mm");
+				String formatted12 = dateTime.format(formatter12);
+
+				System.out.println("document : "+document);
 				DM message = new DM();
 				message.setDmNo(document.getLong("dm_no").intValue());
-				message.setMemberNickname(document.getString("dm_memberNickname"));
 				message.setOtherMemberNickname(document.getString("otherMemberNickname"));
 				message.setSender(document.getString("sender"));
 				message.setMessage(document.getString("message"));
-				message.setProfileImage(document.getString("img_profileImage"));
-				message.setImageUrl(document.getString("img_imageUrl"));
-				message.setImgRename(document.getString("img_imgRename"));
+				message.setDmCreateDate(timeType.equals("24H")? formatted24:formatted12);
+
+
 
 				System.out.println("불러온 메시지: " + message.toString()); // 콘솔에서 데이터 확인
 
@@ -225,5 +229,8 @@ public class ChatService {
 	}
 
 
+	public DM selectDmUseNickname(HashMap<String, Integer> map) {
+		return mapper.selectDmUseNickname(map);
+	}
 }
 

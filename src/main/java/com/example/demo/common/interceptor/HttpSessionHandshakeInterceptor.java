@@ -20,7 +20,10 @@ public class HttpSessionHandshakeInterceptor implements HandshakeInterceptor{
             HttpSession session = servletRequest.getServletRequest().getSession(false);
             if (session != null) {
                 attributes.put("HTTP_SESSION", session);  // 💡 WebSocket 세션에 HttpSession 저장
-            }
+				System.out.println("세션이 존재합니다.");
+            }else{
+				System.out.println("세션이 존재하지 않습니다.");
+			}
         }
         return true;
 	}
