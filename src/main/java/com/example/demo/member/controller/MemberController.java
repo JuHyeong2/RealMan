@@ -376,6 +376,14 @@ public class MemberController {
 	        throw new MemberException("회원가입에 실패하였습니다.");
 	    }
 	}
+	
+	@GetMapping("/checkId")
+	@ResponseBody
+	public String checkId(@RequestParam("memberId") String memberId) {
+	    boolean isAvailable = mService.checkIdAvailable(memberId);
+	    System.out.println("🟡 checkMemberId: " + memberId + " → " + (isAvailable ? "available" : "duplicate"));
+	    return isAvailable ? "available" : "duplicate";
+	}
 
 	// 로그인 페이지로 이동
 	@GetMapping("/signin")
