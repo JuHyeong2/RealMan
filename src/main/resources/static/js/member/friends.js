@@ -141,11 +141,12 @@ const getFriendList = () => {
           for (let f of data.flist) {
             const fli = fLi.cloneNode(true);
             fli.querySelector("input").value = f.memberNo;
-			const imgTag = fli.querySelector("img");
-			imgTag.src = f.imageUrl != null ? f.imageUrl : '/image/member/no-profile.svg';
-			imgTag.setAttribute("data-user-id", f.memberId);     
-			imgTag.setAttribute("data-nickname", f.memberNickname); 
-			imgTag.classList.add("friend-profile");             
+            const imgTag = fli.querySelector("img");
+            imgTag.src =
+              f.imageUrl != null ? f.imageUrl : "/image/member/no-profile.svg";
+            imgTag.setAttribute("data-user-id", f.memberId);
+            imgTag.setAttribute("data-nickname", f.memberNickname);
+            imgTag.classList.add("friend-profile");
             fli.querySelector(".nickname").innerText = f.memberNickname;
             fli.querySelector(".id").innerText = f.memberId;
             flist.append(fli);
@@ -235,14 +236,14 @@ function setupEventHandlers() {
       }
     });
   });
-  
+
   document.addEventListener("click", function (e) {
     if (e.target.classList.contains("friend-profile")) {
       const imageSrc = e.target.getAttribute("src");
       const nickname = e.target.getAttribute("data-nickname");
       const userId = e.target.getAttribute("data-user-id");
 
-      openUserProfile(imageSrc, nickname, userId);;
+      openUserProfile(imageSrc, nickname, userId);
     }
   });
 
@@ -388,13 +389,13 @@ function setupEventHandlers() {
         //친구삭제
         menu1.onclick = function () {
           if (confirm("정말로 친구 삭제를 진행하시겠습니까?")) {
-            delteFriend(thisRow, friendMemberNo);
+            delteFriend(friendrow, friendMemberNo);
           }
         };
         //차단
         menu2.onclick = function () {
           if (confirm("정말로 회원을 차단하시겠습니까?")) {
-            blockMember(thisRow, friendMemberNo);
+            blockMember(friendrow, friendMemberNo);
           }
         };
       } else {
@@ -402,7 +403,7 @@ function setupEventHandlers() {
         //차단
         menu1.onclick = function () {
           if (confirm("정말로 회원을 차단하시겠습니까?")) {
-            blockMember(thisRow, friendMemberNo);
+            blockMember(friendrow, friendMemberNo);
           }
         };
       }

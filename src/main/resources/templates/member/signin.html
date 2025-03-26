@@ -6,11 +6,12 @@
     <title>Login Page</title>
 
     <link rel="stylesheet" href="/css/member/signin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   </head>
   <body>
     <!-- 상단바 -->
     <header class="topbar">
-      <div th:insert="common/top.html"></div>
+      <div th:insert="common/topbar.html"></div>
       <a href="/member/signup" class="signup">Sign up</a>
     </header>
 
@@ -113,6 +114,21 @@
           fingerprintInput.value = fingerprint;
         }
       });
+      
+      window.addEventListener("DOMContentLoaded", function () {
+    	    const urlParams = new URLSearchParams(window.location.search);
+    	    if (urlParams.get("joined") === "true") {
+    	      confetti({
+    	        particleCount: 200,
+    	        spread: 100,
+    	        origin: { y: 0.6 }
+    	      });
+
+    	      setTimeout(() => {
+    	        alert("🎉 회원가입이 완료되었습니다! 로그인해주세요 :)");
+    	      }, 500);
+    	    }
+    	  });
     </script>
   </body>
 </html>
