@@ -9,11 +9,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/common/miniProfile.css" />
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.js"
-      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
     <div class="channel-list bg-light d-flex flex-column" style="width: 320px">
@@ -21,7 +16,11 @@
         <div class="voiceChat-div">
           <div class="channel-title">
             <h4>
-              <img src="/image/Dropdown.png" alt="voice-dropdown" />음성 채널
+              <img
+                src="/image/Dropdown.png"
+                alt="voice-dropdown"
+                onclick="voiceDropdown()"
+              />음성 채널
             </h4>
             <button th:if="${admin}" class="add-channel">+</button>
             <input type="hidden" value="V" />
@@ -60,7 +59,11 @@
         <div class="textChat-div">
           <div class="channel-title">
             <h4>
-              <img src="/image/Dropdown.png" alt="text-dropdown" />채팅 채널
+              <img
+                src="/image/Dropdown.png"
+                alt="text-dropdown"
+                onclick="textDropdown()"
+              />채팅 채널
             </h4>
             <button th:if="${admin}" class="add-channel">+</button>
             <input type="hidden" value="T" />
@@ -177,12 +180,12 @@
       let clickChannel = null;
       let clickServerNo = 0;
       const myNickname = document
-        .querySelectorAll(".profile")[0]
+        .querySelectorAll(".profile-1")[0]
         .querySelector("b").innerText;
 
       //       const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
-      // const channelSocket = new SockJS("https://localhost:8080/stomp/channel");
-      const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
+      const socket = new SockJS("https://localhost:8080/stomp/channel");
+      //const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
 
       const channelStompClient = Stomp.over(socket);
 
@@ -279,6 +282,22 @@
         }
       };
 
+      //drop-down 따로 빼서 onclick으로 넣어주니까 작동함.
+      // document
+      //   .querySelector("img[alt='voice-dropdown']")
+      //   .addEventListener("click", function () {
+      //     document
+      //       .querySelector(".voiceChat-ul")
+      //       .classList.toggle("channel-ul-hide");
+      //   });
+      // document
+      //   .querySelector("img[alt='text-dropdown']")
+      //   .addEventListener("click", function () {
+      //     document
+      //       .querySelector(".textChat-ul")
+      //       .classList.toggle("channel-ul-hide");
+      //   });
+
       voiceChannels = document.querySelectorAll(".voiceChat");
       for (voiceChannel of voiceChannels) {
         voiceChannel.addEventListener("click", (e) => {
@@ -335,22 +354,6 @@
 
       // 			}
       // 		}
-
-      //drop-down
-      document
-        .querySelector("img[alt='voice-dropdown']")
-        .addEventListener("click", function () {
-          document
-            .querySelector(".voiceChat-ul")
-            .classList.toggle("channel-ul-hide");
-        });
-      document
-        .querySelector("img[alt='text-dropdown']")
-        .addEventListener("click", function () {
-          document
-            .querySelector(".textChat-ul")
-            .classList.toggle("channel-ul-hide");
-        });
 
       // 프로필 사진, 닉네임, 톱니바퀴 클릭시 내계정 페이지로 이동
       const goToMyAccount = () => {
