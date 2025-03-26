@@ -70,9 +70,11 @@ public class MemberService {
     
     // 아이디 중복 확인
     public boolean isMemberIdDuplicated(String memberId) {
-        return mapper.checkMemberId(memberId) > 0;
+        int count = mapper.checkMemberId(memberId);
+        System.out.println("🟡 checkMemberId: " + memberId + " → count = " + count);
+        return count > 0;
     }
-
+    
     // 닉네임 중복 확인
     public boolean isMemberNicknameDuplicated(String memberNickname) {
         return mapper.checkMemberNickname(memberNickname) > 0;
@@ -224,6 +226,4 @@ public class MemberService {
 	public String getProfileImgUrlbyNickname(String memberNickname) {
 		return mapper.getProfileImgUrlbyNickname(memberNickname);
 	}
-    
-    
 }

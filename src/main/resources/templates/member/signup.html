@@ -9,11 +9,7 @@
 </head>
 <body>
 
-<!--     <header class="topbar"> -->
-<!--        <div th:insert="~{common/top.html}"></div> -->
-<!--     </header> -->
-
-	<header th:replace="~{common/top}"></header>
+	<header th:replace="~{common/topbar}"></header>
 	
     <div class="container">
         <div class="image-container">
@@ -38,16 +34,16 @@
             <form th:action="@{/member/signup}" method="post">
                 <!-- 아이디 입력 -->
                 <div class="input-box">
-                    <input type="text" id="memberId" name="memberId" placeholder=" " required>
-                    <label for="memberId">아이디</label>
-                    <p id="idCheck" style="font-size: 12px; margin-top: 5px;"></p>
-                </div>
-
+				    <input type="text" id="memberId" name="memberId" placeholder=" " required>
+				    <label for="memberId">아이디</label>
+				</div>
+	
                 <!-- 비밀번호 입력 -->
                 <div class="input-box">
-                    <input type="password" id="memberPwd" name="memberPwd" placeholder=" " required>
-                    <label for="memberPwd">비밀번호</label>
-                </div>
+				    <input type="password" id="memberPwd" name="memberPwd" placeholder=" " required>
+				    <label for="memberPwd">비밀번호</label>
+				    <p id="pwdStrength" style="font-size: 12px; margin-top: 5px;"></p> <!-- ✅ 추가 -->
+				</div>
 
                 <!-- 비밀번호 확인 -->
                 <div class="input-box">
@@ -109,64 +105,92 @@
     </div>
 
     <script>
-    	
     document.addEventListener("DOMContentLoaded", function () {
-        const memberPwdInput = document.getElementById("memberPwd");
-        const confirmPwdInput = document.getElementById("confirmPassword");
-        const pwdCheck = document.getElementById("pwdCheck");
-        const signupBtn = document.getElementById("submitBtn");
-
-        // 비밀번호 확인
-        function checkPasswordMatch() {
-            if (memberPwdInput.value !== confirmPwdInput.value) {
-                pwdCheck.textContent = "비밀번호가 일치하지 않습니다.";
-                pwdCheck.style.color = "red";
-                signupBtn.disabled = true;
-            } else {
-                pwdCheck.textContent = "비밀번호가 일치합니다.";
-                pwdCheck.style.color = "green";
-                signupBtn.disabled = false;
-            }
-        }
-
-        memberPwdInput.addEventListener("input", checkPasswordMatch);
-        confirmPwdInput.addEventListener("input", checkPasswordMatch);
-    });	
-    
-        // 이메일 도메인 선택 이벤트
-        const emailDomainSelect = document.getElementById('emailDomainSelect');
-		const customDomainInput = document.getElementById('customEmailDomain');
-		
-		emailDomainSelect.addEventListener('change', function() {
-		    if (this.value === 'custom') {
-		        customDomainInput.style.display = 'inline-block';
-		        customDomainInput.required = true;
-		    } else {
-		        customDomainInput.style.display = 'none';
-		        customDomainInput.required = false;
-		        customDomainInput.value = ''; 
-		    }
-		});
-
-         // 생년월일 자동 변환 (YYYYMMDD 형식)
-         document.querySelector('form').addEventListener('submit', function(event) {
-             const birthInput = document.getElementById('memberBirthDate');
-             const hiddenBirthInput = document.getElementById('memberBirth');
-
-             if (!birthInput.value) {
-                 event.preventDefault();
-                 alert("생년월일을 입력해주세요.");
-                 return;
-             }
-
-             const birthDate = new Date(birthInput.value);
-             const year = birthDate.getFullYear();
-             const month = String(birthDate.getMonth() + 1).padStart(2, '0');
-             const day = String(birthDate.getDate()).padStart(2, '0');
-
-             hiddenBirthInput.value = `${year}${month}${day}`;
-         });
-</script> 
+    	const memberPwdInput = document.getElementById("memberPwd");
+	    const confirmPwdInput = document.getElementById("confirmPassword");
+	    const pwdCheck = document.getElementById("pwdCheck");
+	    const signupBtn = document.getElementById("submitBtn");
+	    const strengthMsg = document.getElementById("pwdStrength");
+	
+	    const memberIdInput = document.getElementById("memberId");
+	    const idCheckMsg = document.getElementById("idCheck");
+	
+	    const emailDomainSelect = document.getElementById('emailDomainSelect');
+	    const customDomainInput = document.getElementById('customEmailDomain');
+	
+	    // ✅ 비밀번호 강도 판단 함수
+	    function checkPasswordStrength(pwd) {
+	      if (pwd.length < 6) {
+	        return { text: "너무 짧습니다.", color: "gray" };
+	      }
+	      const hasNum = /\d/.test(pwd);
+	      const hasEng = /[a-zA-Z]/.test(pwd);
+	      const hasSpecial = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(pwd);
+	
+	      if (hasNum && hasEng && hasSpecial && pwd.length >= 10) {
+	        return { text: "강함 💪", color: "green" };
+	      } else if ((hasEng && hasNum) || (hasEng && hasSpecial) || (hasNum && hasSpecial)) {
+	        return { text: "보통 👍", color: "orange" };
+	      } else {
+	        return { text: "약함 😢", color: "red" };
+	      }
+	    }
+	
+	    // ✅ 비밀번호 입력 시 강도 체크
+	    memberPwdInput.addEventListener("input", function () {
+	      const pwd = memberPwdInput.value;
+	      const strength = checkPasswordStrength(pwd);
+	      strengthMsg.textContent = strength.text;
+	      strengthMsg.style.color = strength.color;
+	      checkPasswordMatch();
+	    });
+	
+	    // ✅ 비밀번호 확인 일치 여부 체크
+	    function checkPasswordMatch() {
+	      if (memberPwdInput.value !== confirmPwdInput.value) {
+	        pwdCheck.textContent = "비밀번호가 일치하지 않습니다.";
+	        pwdCheck.style.color = "red";
+	        signupBtn.disabled = true;
+	      } else {
+	        pwdCheck.textContent = "비밀번호가 일치합니다.";
+	        pwdCheck.style.color = "green";
+	        signupBtn.disabled = false;
+	      }
+	    }
+	
+	    confirmPwdInput.addEventListener("input", checkPasswordMatch);
+	    // ✅ 이메일 도메인 처리
+	    emailDomainSelect.addEventListener('change', function () {
+	      if (this.value === 'custom') {
+	        customDomainInput.style.display = 'inline-block';
+	        customDomainInput.required = true;
+	      } else {
+	        customDomainInput.style.display = 'none';
+	        customDomainInput.required = false;
+	        customDomainInput.value = '';
+	      }
+	    });
+	
+	    // ✅ 생년월일 변환 (YYYYMMDD로 히든에 저장)
+	    document.querySelector('form').addEventListener('submit', function (event) {
+	      const birthInput = document.getElementById('memberBirthDate');
+	      const hiddenBirthInput = document.getElementById('memberBirth');
+	
+	      if (!birthInput.value) {
+	        event.preventDefault();
+	        alert("생년월일을 입력해주세요.");
+	        return;
+	      }
+	
+	      const birthDate = new Date(birthInput.value);
+	      const year = birthDate.getFullYear();
+	      const month = String(birthDate.getMonth() + 1).padStart(2, '0');
+	      const day = String(birthDate.getDate()).padStart(2, '0');
+	
+	      hiddenBirthInput.value = `${year}${month}${day}`;
+	    });
+	  });
+</script>
 
 </body>
 </html>

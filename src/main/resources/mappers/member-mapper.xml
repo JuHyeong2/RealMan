@@ -53,7 +53,7 @@
 	</insert>
     
     <!-- 아이디 중복 체크 -->
-    <select id="checkMemberId" resultType="int">
+   <select id="checkMemberId" parameterType="string" resultType="int">
 	    select count(*)
 	    from member
 	    where member_id = #{memberId}
