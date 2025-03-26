@@ -1,7 +1,7 @@
 #friend-container {
   display: flex;
   flex-direction: column;
-  background-color: rgb(245, 245, 245);
+  background-color: var(--theme-base);
   flex-grow: 1;
   height: calc(100vh - 40px);
 }
@@ -26,7 +26,7 @@
   justify-content: center;
   width: 100%;
   padding: 0.5rem;
-  background-color: rgb(240, 240, 240);
+  background-color: var(--theme-bg);
 }
 
 #filter-div > button {
@@ -35,11 +35,11 @@
   border: 0;
   padding: 0.5rem 0;
   border-radius: 2rem;
-  background-color: rgb(230, 240, 250);
+  background-color: var(--theme-sub);
 }
 
 #filter-div > .selected {
-  background-color: rgb(110, 190, 220);
+  background-color: var(--theme-point);
 }
 
 #search-div {
@@ -48,7 +48,7 @@
   justify-content: center;
   width: 100%;
   padding: 1rem;
-  background-color: rgb(240, 240, 240);
+  background-color: var(--theme-sub);
 }
 
 #search-div > input {
@@ -65,7 +65,7 @@
 }
 
 #search-div > button:first-of-type {
-  background-color: white;
+  background-color: var(--theme-sub);
   width: 6rem;
   height: 2rem;
   border: 0;
@@ -73,7 +73,7 @@
 }
 
 #search-div > button:last-child {
-  background-color: rgb(110, 190, 220);
+  background-color: var(--theme-point);
   height: 2rem;
   width: 3rem;
   margin-left: 1rem;
@@ -83,11 +83,11 @@
 }
 
 #search-div > button:hover {
-  background-color: rgb(238, 242, 250);
+  background-color: var(--theme-bg);
 }
 
 #search-div > button:active {
-  background-color: rgb(233, 237, 245);
+  background-color: var(--theme-bg);
 }
 
 ul {
@@ -110,12 +110,12 @@ li {
   align-items: center;
   height: 4rem;
   border-radius: 0.8rem;
-  background-color: rgb(238, 238, 238);
+  background-color: var(--theme-sub);
   margin-bottom: 0.5rem;
 }
 
 .friend-row:hover {
-  background-color: rgb(228, 237, 243);
+  background-color: var(--theme-bg);
 }
 
 .profile-div {
@@ -197,7 +197,7 @@ li {
   padding-left: 1rem;
   letter-spacing: 15%;
   font-size: 0.8rem;
-  color: rgb(68, 68, 68);
+  color: var(--theme-text);
   overflow: hidden;
   transition: all 0.3s ease;
 }
@@ -216,7 +216,7 @@ li {
   left: 1.5rem;
   top: 1rem;
   width: 7rem;
-  background-color: beige;
+  background-color: var(--theme-sub);
   font-size: 0.8rem;
   max-height: 0;
   overflow: hidden;
@@ -234,12 +234,12 @@ li {
 
 .etc-menu > div:hover,
 .find-menu > div:hover {
-  background-color: rgb(218, 218, 181);
+  background-color: var(--theme-bg);
 }
 
 .etc-menu > div:active,
 .find-menu > div:active {
-  background-color: rgb(168, 168, 134);
+  background-color: var(--theme-point);
 }
 
 .menu-show {
