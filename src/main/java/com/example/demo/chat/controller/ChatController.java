@@ -175,6 +175,7 @@ public class ChatController {
 			}
 		}
 		userInChannel.computeIfAbsent(cMember.getClickServerNo(), k -> ConcurrentHashMap.newKeySet()).add(cMember.getUsername());
+		System.out.println("userInChannel : "+userInChannel);
 		return userInChannel;
 	}
 	
@@ -183,7 +184,7 @@ public class ChatController {
 	@ResponseBody
 	public Map<Integer, Set<String>> joinVoiceChannel () {
 		System.out.println("/api/voiceUsers 들어옴.");
-		System.out.println(userInChannel);
+		System.out.println("userInChannel"+userInChannel);
 	//messagingTemplate.convertAndSend("/sub/voice", userInChannel);
 		return userInChannel;
 	}

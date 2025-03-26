@@ -1,102 +1,104 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<script src="https://code.jquery.com/jquery-3.7.1.js"
-	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-	crossorigin="anonymous"></script>
-<meta charset="UTF-8">
-<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script
-	src="https://cdn.tiny.cloud/1/jmkaysq4ipojkzfpfq42b973xt9flj39nsrcirdwfxnae0ch/tinymce/5/tinymce.min.js"
-	referrerpolicy="origin">
-    </script>
+  <head>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script
+      src="https://cdn.tiny.cloud/1/jmkaysq4ipojkzfpfq42b973xt9flj39nsrcirdwfxnae0ch/tinymce/5/tinymce.min.js"
+      referrerpolicy="origin"
+    ></script>
 
-<title>sendDM</title>
-</head>
-<body>
-	<div class="profile">
-		<img> <b>닉네임</b>
-	</div>
+    <title>sendDM</title>
+  </head>
+  <body>
+    <div class="profile"><img /> <b>닉네임</b></div>
 
-	<div class="send" th:each="d : ${DM}">
-		<img> <b th:text="${d.memberNickname}">닉네임</b> <b
-			th:utext="${d.message}"></b>
-	</div>
+    <div class="send" th:each="d : ${DM}">
+      <img /> <b th:text="${d.memberNickname}">닉네임</b>
+      <b th:utext="${d.message}"></b>
+    </div>
 
-	<div class="dm-area d-flex flex-column">
-		<div class="flex-grow-1 overflow-auto p-3">
-			<input type="hidden" th:value="${no}" />
-			<div class="dmContent">
-				<div class="textArea" th:each="c, cStat:${chatList}">
-					<div class="dmContent-1">
-						<img
-							th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
-							width="40px" height="40px" />
-						<div class="dmContent-2">
-							<b th:utext="${c.sender}"></b>
-							<p th:utext="${c.message}" style="margin: 0"></p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="p-3 d-flex">
-			<textarea class="flex-grow-1" id="mytextarea"></textarea>
-			<button id="button-send">입력</button>
-		</div>
-	</div>
+    <div class="dm-area d-flex flex-column">
+      <div class="flex-grow-1 overflow-auto p-3">
+        <input type="hidden" th:value="${no}" />
+        <div class="dmContent">
+          <div class="textArea" th:each="c, cStat:${chatList}">
+            <div class="dmContent-1">
+              <img
+                th:src="${c.profileUrl != null ? c.profileUrl : '/image/member/no-profile.svg'}"
+                width="40px"
+                height="40px"
+              />
+              <div class="dmContent-2">
+                <b th:utext="${c.sender}"></b>
+                <p th:utext="${c.message}" style="margin: 0"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-3 d-flex">
+        <textarea class="flex-grow-1" id="mytextarea"></textarea>
+        <button id="button-send">입력</button>
+      </div>
+    </div>
 
+    <script th:inline="javascript">
+      document.addEventListener("DOMContentLoaded", function () {
+        // dmNo 선언
+        /*<![CDATA[*/
+        const dmNo = /*[[${dmNo}]]*/ 0;
+        const username = /*[[${loginMember.memberNickname}]]*/ null;
+        const userProfileImage = /*[[${loginMember.imageUrl}]]*/ null;
 
+        /*]]>*/
 
-	<script th:inline="javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-        	
-        	// dmNo 선언
-        	/*<![CDATA[*/
-	        const dmNo = /*[[${dmNo}]]*/ 0;
-	        const username = /*[[${loginMember.memberNickname}]]*/ null;
-	        const userProfileImage = /*[[${loginMember.imageUrl}]]*/ null;
+        // const socket = new SockJS("https://192.168.40.6:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
+        // const socket = new SockJS("https://localhost:8080/stomp/dm");
+        const socket = new SockJS("https://192.168.140.22:9090/stomp/dm");
+        const stompClient = Stomp.over(socket);
 
-	        /*]]>*/
+        stompClient.connect({}, () => {
+          console.log("WebSocket 연결 성공!");
 
-//             const socket = new SockJS("https://192.168.40.6:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
-            const socket = new SockJS("https://192.168.140.22:9090/stomp/dm")
-            const stompClient = Stomp.over(socket);
+          // DM방 구독
+          stompClient.subscribe("/sub/dm/" + dmNo, (message) => {
+            const dmMessage = JSON.parse(message.body);
 
+            // 현재 시간 받아오기
+            let today = new Date();
 
-            stompClient.connect({}, () => {
-                console.log("WebSocket 연결 성공!");
+            let hour = String(today.getHours());
+            let minute = String(today.getMinutes());
+            let second = String(today.getSeconds());
 
-                // DM방 구독
-                stompClient.subscribe("/sub/dm/" + dmNo, (message) => {
-                    const dmMessage = JSON.parse(message.body);
+            if (hour.length == 1) {
+              hour = "0" + hour;
+            }
 
-                    // 현재 시간 받아오기
-                    let today = new Date();
+            if (minute.length == 1) {
+              minute = "0" + minute;
+            }
 
-                    let hour = String(today.getHours());
-                    let minute = String(today.getMinutes());
-                    let second = String(today.getSeconds());
+            if (second.length == 1) {
+              second = "0" + second;
+            }
 
-                    if (hour.length == 1) {
-                        hour = "0" + hour;
-                    }
-
-                    if (minute.length == 1) {
-                        minute = "0" + minute;
-                    }
-
-                    if (second.length == 1) {
-                        second = "0" + second;
-                    }
-
-                    let HMS = hour + ":" + minute + ":" + second;
-                    // 					<div style='margin:0;  padding: 0; flex-grow: 1;'>${chatMessage.message}</div>
-                    // 받아온 메시지 채팅방에 출력하기
-                    let str = `<div class='dmContent-1'>
-            						  <img src=${userProfileImage != null ? userProfileImage : '/image/member/noprofile.svg'} width="40px" height="40px">
+            let HMS = hour + ":" + minute + ":" + second;
+            // 					<div style='margin:0;  padding: 0; flex-grow: 1;'>${chatMessage.message}</div>
+            // 받아온 메시지 채팅방에 출력하기
+            let str = `<div class='dmContent-1'>
+            						  <img src=${
+                            userProfileImage != null
+                              ? userProfileImage
+                              : "/image/member/noprofile.svg"
+                          } width="40px" height="40px">
             						  <div class='dmContent-2'>
 	      								  <b>${message.sender}</b>
 	      								  <div style='display:flex; justify-content:space-between; align-items:flex-end;'>
@@ -105,80 +107,78 @@
 	      								  </div>
       								  </div>
                  		</div>`;
-                    document.querySelector(".dmContent").insertAdjacentHTML("afterbegin", str);
+            document
+              .querySelector(".dmContent")
+              .insertAdjacentHTML("afterbegin", str);
 
-                    document.querySelector(".dmContent").scrollTop = document.querySelector(".dmContent").scrollHeight;
-                });
+            document.querySelector(".dmContent").scrollTop =
+              document.querySelector(".dmContent").scrollHeight;
+          });
 
-                const sendMessage = (sender, message, dmNo) => {
-                    if (!message || message.trim() === "" || message === "<p></p>") {
-                        alert("메시지를 입력하세요!");
-                        return;
-                    }
+          const sendMessage = (sender, message, dmNo) => {
+            if (!message || message.trim() === "" || message === "<p></p>") {
+              alert("메시지를 입력하세요!");
+              return;
+            }
 
-                    // 객체화
-                    const sendData = {dmNo, sender, message};
+            // 객체화
+            const sendData = { dmNo, sender, message };
 
-                    console.log(`✅ 전송 데이터:`, sendData);
+            console.log(`✅ 전송 데이터:`, sendData);
 
-                    stompClient.send(`/pub/dm/${dmNo}/D`, {}, JSON.stringify(sendData));
-                };
+            stompClient.send(`/pub/dm/${dmNo}/D`, {}, JSON.stringify(sendData));
+          };
 
-                document.querySelector("#button-send").addEventListener("click", () => {
-                    let msg = tinymce.get("mytextarea").getContent({format: "html"}).trim(); // HTML 가져오기
+          document
+            .querySelector("#button-send")
+            .addEventListener("click", () => {
+              let msg = tinymce
+                .get("mytextarea")
+                .getContent({ format: "html" })
+                .trim(); // HTML 가져오기
 
-                    let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
-                    if (imgTagMatch) {
-                        let imgSrc = imgTagMatch[1];
-                        let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`;
-                        let newContent = msg.replace(/<img[^>]+>/, imgTag);
-                        sendMessage(username, newContent, dmNo);
-                    } else {
-                        sendMessage(username, msg, dmNo);
-                    }
+              let imgTagMatch = msg.match(/<img[^>]+src="([^">]+)"/);
+              if (imgTagMatch) {
+                let imgSrc = imgTagMatch[1];
+                let imgTag = `<img src="${imgSrc}" style="width: 300px; height: 200px;">`;
+                let newContent = msg.replace(/<img[^>]+>/, imgTag);
+                sendMessage(username, newContent, dmNo);
+              } else {
+                sendMessage(username, msg, dmNo);
+              }
 
-                    tinymce.get("mytextarea").setContent("");
-                });
+              tinymce.get("mytextarea").setContent("");
             });
+        });
 
-            // TinyMCE 초기화
-            tinymce.init({
-                selector: "#mytextarea",
-                plugins: "image paste",
-                menubar: false,
-                toolbar: false,
-                statusbar: false,
-                height: "70px",
-                width: "100%",
-                resize: false,
-                images_upload_handler: function (blobInfo, success, failure) {
-                    let reader = new FileReader();
-                    reader.onload = function () {
-                        let base64URL = reader.result;
+        // TinyMCE 초기화
+        tinymce.init({
+          selector: "#mytextarea",
+          plugins: "image paste",
+          menubar: false,
+          toolbar: false,
+          statusbar: false,
+          height: "70px",
+          width: "100%",
+          resize: false,
+          images_upload_handler: function (blobInfo, success, failure) {
+            let reader = new FileReader();
+            reader.onload = function () {
+              let base64URL = reader.result;
 
-                        // ✅ 이미지 크기 조절 태그 추가
-                        let imgTag = `<img src="${base64URL}" style="width: 150px; height: 150px;">`;
+              // ✅ 이미지 크기 조절 태그 추가
+              let imgTag = `<img src="${base64URL}" style="width: 150px; height: 150px;">`;
 
-                        console.log("📷 업로드된 이미지:", imgTag);
-                        success(base64URL);
-                    };
-                    reader.readAsDataURL(blobInfo.blob());
-                },
-                images_upload_url: "/upload-image",
-                automatic_uploads: true,
-                paste_data_images: true,
-
-
-            })
-
-
-        })
-
-</script>
-
-
-
-
-
-</body>
+              console.log("📷 업로드된 이미지:", imgTag);
+              success(base64URL);
+            };
+            reader.readAsDataURL(blobInfo.blob());
+          },
+          images_upload_url: "/upload-image",
+          automatic_uploads: true,
+          paste_data_images: true,
+        });
+      });
+    </script>
+  </body>
 </html>
