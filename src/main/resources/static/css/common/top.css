@@ -14,9 +14,9 @@ body, html{
 
 
 .topbar-text {
-    font-family: 'Bungee Shade', cursive !important;
+    font-family: 'Bungee Shade', serif;
     font-size: 24px;
-    color: black;
+    color: var(--theme-text);
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;

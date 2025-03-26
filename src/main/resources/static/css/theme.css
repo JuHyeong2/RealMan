@@ -1,7 +1,7 @@
 /* 통합 테마/폰트/사이즈 변수 정의 */
 @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 
 /*body {*/
 /*    background-color: var(--theme-bg);*/
@@ -38,28 +38,44 @@
 
 /* 테마 컬러 변수 */
 .theme-BLACK {
-    --theme-bg: #000000;
+    --theme-bg: #181818;
     --theme-text: #ffffff;
-    --theme-point: #1a1a1a;
-    --theme-sub: #333333;
+    --theme-point: #414147;
+    --theme-sub: #25252a;
+    --theme-point2: #212121;
+    --theme-wb: #2e2e34;
+    --theme-border: #b3b3b3;
+    --theme-tinybolder: #f3f3f3;
 }
 .theme-WHITE {
     --theme-bg: #e1e3e5;
     --theme-text: #000000;
     --theme-point: #dcdcdc;
     --theme-sub: #f0f1f3;
+    --theme-point2: #fff;
+    --theme-wb: white;
+    --theme-border: #fff;
+    --theme-tinybolder: #f3f3f3;
 }
 .theme-SKY {
     --theme-bg: #dde6f1;
     --theme-text: #000000;
     --theme-point: #a4cfef;
     --theme-sub: #f6f7f8;
+    --theme-point2: #bdd3e2;
+    --theme-wb: white;
+    --theme-border: #fff;
+    --theme-tinybolder: #f3f3f3;
 }
 .theme-ROSE {
     --theme-bg: #f7dad5;
     --theme-text: #000000;
     --theme-point: #f4c9c2;
     --theme-sub: #fbefe9;
+    --theme-point2: #ffd0c8;
+    --theme-wb: white;
+    --theme-border: #fff;
+    --theme-tinybolder: #f3f3f3;
 }
 
 /* 폰트 종류 */

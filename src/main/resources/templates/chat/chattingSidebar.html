@@ -13,12 +13,20 @@
 	th:class="'theme-' + ${session.theme.themeColor} + ' font-' + ${session.theme.fontType} + ' text-size-' + ${session.theme.fontSize.toLowerCase()}">
 	<div class="channel-list d-flex flex-column" style="width: 320px">
 		<nav>
+			<div class="server-name">
+				<h3><b>[[${serverName}]]</b></h3>
+			</div>
 			<div class="voiceChat-div">
 				<div class="channel-title">
-					<h4>
-						<img src="/image/Dropdown.png" alt="voice-dropdown"
-							onclick="voiceDropdown()" />음성 채널
-					</h4>
+<!--					<h4>-->
+<!--						<img src="/image/Dropdown.png" alt="voice-dropdown"-->
+<!--							onclick="voiceDropdown()" />음성 채널-->
+<!--					</h4>-->
+					<svg xmlns="http://www.w3.org/2000/svg" class="channel-icon icon" id="voiceIcon" viewBox="0 0 24 24"
+						 fill="none" stroke="currentColor" stroke-width="1.5" onclick="voiceDropdown()">
+						<path d="M7.41 8.59 12 13.17 16.59 8.59" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					<h4> 음성 채널</h4>
 					<button th:if="${admin}" class="add-channel">+</button>
 					<input type="hidden" value="V" />
 				</div>
@@ -46,10 +54,15 @@
 
 			<div class="textChat-div">
 				<div class="channel-title">
-					<h4>
-						<img src="/image/Dropdown.png" alt="text-dropdown"
-							onclick="textDropdown()" />채팅 채널
-					</h4>
+<!--					<h4>-->
+<!--						<img src="/image/Dropdown.png" alt="text-dropdown"-->
+<!--							onclick="textDropdown()" />채팅 채널-->
+<!--					</h4>-->
+					<svg xmlns="http://www.w3.org/2000/svg" class="channel-icon icon" id="textIcon" viewBox="0 0 24 24"
+						 fill="none" stroke="currentColor" stroke-width="1.5" onclick="textDropdown()">
+						<path d="M7.41 8.59 12 13.17 16.59 8.59" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					<h4> 채팅 채널</h4>
 					<button th:if="${admin}" class="add-channel">+</button>
 					<input type="hidden" value="T" />
 				</div>

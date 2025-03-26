@@ -21,7 +21,7 @@
     </style>
   </head>
   <body th:class="'theme-' + ${session.theme.themeColor} + ' font-' + ${session.theme.fontType} + ' text-size-' + ${session.theme.fontSize.toLowerCase()}">
-  <div class="topbar_wrap" th:replace="~{/common/top :: body}"></div>
+  <div class="topbar_wrap" th:replace="~{/common/top :: html}"></div>
 
   <div class="main-container">
         <div class="sidebar_wrap">

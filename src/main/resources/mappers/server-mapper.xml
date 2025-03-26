@@ -102,4 +102,10 @@
 		delete from channel
 		where channel_no = #{channelNo}
 	</delete>
+
+    <select id="selectServerName" resultType="String" parameterType="int">
+        select server_name
+        from server
+        where server_no = #{serverNo}
+    </select>
 </mapper>

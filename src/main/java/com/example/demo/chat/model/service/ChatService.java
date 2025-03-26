@@ -232,5 +232,7 @@ public class ChatService {
 	public DM selectDmUseNickname(HashMap<String, Integer> map) {
 		return mapper.selectDmUseNickname(map);
 	}
+
+
 }
 

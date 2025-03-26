@@ -6,6 +6,8 @@
   min-width: 14rem;
   height: calc(100vh - 40px);
   background-color: var(--theme-sub);
+  color: var(--theme-text);
+  border-top: 1px solid var(--theme-border);
 }
 
 .ul-div {

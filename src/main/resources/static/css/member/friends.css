@@ -1,9 +1,10 @@
 #friend-container {
   display: flex;
   flex-direction: column;
-  background-color: var(--theme-base);
+  background-color: var(--theme-wb);
   flex-grow: 1;
   height: calc(100vh - 40px);
+  color: var(--theme-text);
 }
 
 #list-div {
@@ -27,6 +28,9 @@
   width: 100%;
   padding: 0.5rem;
   background-color: var(--theme-bg);
+  font-family: var(--font-family), serif;
+  color: var(--theme-text);
+  border-top: 1px solid var(--theme-border);
 }
 
 #filter-div > button {
@@ -36,6 +40,8 @@
   padding: 0.5rem 0;
   border-radius: 2rem;
   background-color: var(--theme-sub);
+  font-family: var(--font-family), serif;
+  color: var(--theme-text);
 }
 
 #filter-div > .selected {
@@ -58,6 +64,7 @@
   outline: none;
   padding-left: 2rem;
   width: 40%;
+  color: black;
 }
 
 #search-div > input:focus {
@@ -65,11 +72,13 @@
 }
 
 #search-div > button:first-of-type {
-  background-color: var(--theme-sub);
+  background-color: var(--theme-point);
   width: 6rem;
   height: 2rem;
   border: 0;
   border-radius: 0 1rem 1rem 0;
+  font-family: var(--font-family), serif;
+  color: var(--theme-text);
 }
 
 #search-div > button:last-child {
@@ -80,6 +89,8 @@
   border: 0;
   border-radius: 0.5rem;
   font-size: 0.7rem;
+  font-family: var(--font-family), serif;
+  color: var(--theme-text);
 }
 
 #search-div > button:hover {
@@ -197,6 +208,7 @@ li {
   padding-left: 1rem;
   letter-spacing: 15%;
   font-size: 0.8rem;
+  font-family: var(--font-family), serif;
   color: var(--theme-text);
   overflow: hidden;
   transition: all 0.3s ease;

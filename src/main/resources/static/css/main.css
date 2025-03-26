@@ -14,7 +14,7 @@
 .sidebar_wrap {
     display: flex;
     height: calc(100vh - 40px);
-    background-color: #E4EDF3;
+    background-color: var(--theme-bg);
     /*flex-direction: row;*/
     /*justify-content: flex-start;*/
 }

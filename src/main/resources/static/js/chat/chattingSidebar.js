@@ -186,7 +186,11 @@ function channelMenu(e) {
 //drop-down
 function voiceDropdown() {
   document.querySelector(".voiceChat-ul").classList.toggle("channel-ul-hide");
+  const icon = document.getElementById("voiceIcon");
+  icon.classList.toggle("rotate");
 }
 function textDropdown() {
   document.querySelector(".textChat-ul").classList.toggle("channel-ul-hide");
+  const icon = document.getElementById("textIcon");
+  icon.classList.toggle("rotate");
 }

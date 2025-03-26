@@ -101,7 +101,7 @@
         // const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
 
         // const socket = new SockJS("https://192.168.140.22:9090/stomp/chat");
-        const socket = new SockJS("https://localhost:8080/stomp/chat");
+        const socket = new SockJS("https://localhost:9090/stomp/chat");
 
         const stompClient = Stomp.over(socket);
 
@@ -216,6 +216,7 @@
         // TinyMCE 초기화
         tinymce.init({
           selector: "#mytextarea",
+          body_class: document.body.className,
           plugins: "image paste",
           menubar: false,
           toolbar: false,
@@ -224,7 +225,7 @@
           width: "100%",
           resize: false,
           content_style: 'body{} p{border-radius: 15px; display: inline-block;}',
-          content_css: "/css/common/tinymce.css",
+          content_css: ["/css/theme.css", "/css/common/tinymce.css"],
           images_upload_handler: function (blobInfo, success, failure) {
             let reader = new FileReader();
             reader.onload = function () {

@@ -1,14 +1,19 @@
 .mainLogo{
-    width:60px;
-    height:60px;
+    width:50px;
+    height:50px;
     margin: 10px;
     cursor: pointer;
     align-items: center;
-
-
+}
+.text-center{
+    display: flex;
+    justify-content: center;
 }
 .server-list{
   background-color: var(--theme-bg);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* 또는 고정 높이 */
 }
 .mb-2 div {
 	cursor: pointer;
@@ -40,14 +45,19 @@ div[serverNo] img {
 }
 
 .addServer {
+    display: flex;
     width: 60px;
     height: 60px;
-    background-color: #bdd3e2;
+    background-color: var(--theme-point2);
     cursor: pointer;
     border-radius: 100px;
-    align-content: center;
-    text-align: center;
-    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+.addServer > span{
+    transform: translateY(-5px);
+    color: var(--theme-text);
 }
 
 /* 모달 오버레이 */
@@ -86,4 +96,17 @@ div[serverNo] img {
 }
 .add-modalbtn:hover{
     background: #2c58a2;
+}
+.setting{
+    margin-top: auto;
+    cursor: pointer;
+    align-self: center;
+    margin-bottom: 30px;
+    background-color: white;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
 }

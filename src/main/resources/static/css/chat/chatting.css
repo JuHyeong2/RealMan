@@ -5,9 +5,9 @@ html {
 /* 	overflow: hidden; */
 }
 
-/* .main-container { */
-/* 	height: 100%; */
-/* } */
+ .main-container {
+ 	background-color: var(--theme-wb);
+ }
 
 #memberList-container {
 	height: 100%;
@@ -18,11 +18,16 @@ html {
 }
 .sidebar {
 	height: calc(100vh - 40px);
+	background-color: var(--theme-bg);
 }
 .chat-area {
 	flex-grow: 1; /* 남은 공간 차지 */
 	width: 1120px;
 	height: 100%;
+	border-top: 1px solid var(--theme-border);
+	background-color: var(--theme-wb);
+	color: var(--theme-text);
+	font-family: var(--font-family), sans-serif;
 }
 .user-list {
 	width: 360px;
@@ -42,17 +47,25 @@ html {
 
 .server-list{
 	background-color: var(--theme-bg);
+	display: flex;
+	flex-direction: column;
+	height: 100%; /* 또는 고정 높이 */
 }
 
 .addServer {
+	display: flex;
 	width: 60px;
 	height: 60px;
-	background-color: #bdd3e2;
+	background-color: var(--theme-point2);
 	cursor: pointer;
 	border-radius: 100px;
-	align-content: center;
-	text-align: center;
-	font-size: 20px;
+	align-items: center;
+	justify-content: center;
+	font-size: 30px;
+}
+.addServer > span{
+	transform: translateY(-5px);
+	color: var(--theme-text);
 }
 
 /* 모달 오버레이 */
@@ -94,7 +107,19 @@ html {
 .add-modalbtn:hover {
 	background: #2c58a2;
 }
-
+.setting{
+	margin-top: auto;
+	cursor: pointer;
+	align-self: center;
+	margin-bottom: 30px;
+	background-color: white;
+	height: 60px;
+	width: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 100px;
+}
 
 .all{
 	display: flex;
@@ -120,12 +145,14 @@ html {
 
 .chatContent {
 	height: 80vh;
-	background-color: white;
+	background-color: var(--theme-wb);
 	display: flex;
 	flex-direction: column-reverse;
 	align-items: flex-start;
 	overflow-y: auto;
-	overflow-x: hidden;  
+	overflow-x: hidden;
+	border: 30px solid var(--theme-wb);
+	border-radius: 20px;
 }
 
 .p-3 {
@@ -205,8 +232,8 @@ html {
 }
 
 /* .grid #remoteStreamDiv { */
-/* /*     transform: scale(0.5); 점점 커지면서 나타남 */ */
-/* /*     transition: all 5s ease-in-out; 크기 변경 시 부드럽게 */ */
+/* /*     transform: scale(0.5); 점점 커지면서 나타남 */
+/* /*     transition: all 5s ease-in-out; 크기 변경 시 부드럽게 */
 /* } */
 
 /* .grid #remoteStreamDiv.show { */
@@ -225,10 +252,12 @@ html {
 .mention {
 	font-weight: bold;
 	color: blue;
+	font-family: var(--font-family), sans-serif;
 }
 
 
 .date-separator {
+	font-family: var(--font-family), sans-serif;
 	text-align: center;
 	font-size: 13px;
 	color: #888;
@@ -252,7 +281,7 @@ html {
 .tox-tinymce {
 	border-radius: 25px !important;
 	overflow: hidden;
+	border: 1px solid var(--theme-tinybolder) !important;
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 15%), 0 4px 6px -4px rgb(0 0 0 / 5%) !important;
 }
-.tox-tinymce::-webkit-scrollbar {
-	display: none;
-}
+

@@ -81,7 +81,11 @@ public class ChatController {
 		ArrayList<ServerMember> memberList = smService.serverMemberList(serverNo);
 //		System.out.println("memberList : "+memberList);
 		model.addAttribute("memberList", memberList);
-		
+
+		// 서버에 서버제목 표시용
+		String serverName = sService.selectServerName(serverNo);
+		model.addAttribute("serverName", serverName);
+
 		//로그인멤버의 서버관리자 여부
 		for(ServerMember member : memberList) {
 			if(loginMember.getMemberNo() == member.getMemberNo()) {
