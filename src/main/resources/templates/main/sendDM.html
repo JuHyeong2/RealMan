@@ -129,9 +129,11 @@
         </div>
 
 
-        <div class="profile">
-            <img><b>닉네임</b>
-        </div>
+
+    <div class="profile">
+        
+    </div>
+
 
         <!--	<div class="send" th:each="d : ${dmList}">-->
         <!--		<img> <b th:text="${d.otherMemberNo}">d</b> <b-->
@@ -174,10 +176,13 @@
             let enterText;
 
             /*]]>*/
-            const socket = new SockJS("https://192.168.140.4:8080/stomp/dm"); // DM 관련 웹소켓 엔드포인트
+//             const socket = new SockJS("https://192.168.140.4:8080/stomp/dm"); // DM 관련 웹소켓 엔드포인트
 
-            // const socket = new SockJS("https://192.168.140.4:8080/stomp/dm"); // DM 관련 웹소켓 엔드포인트
-            const stompClient = Stomp.over(socket);
+
+//         const socket = new SockJS("https://192.168.140.4:8080/stomp/dm"); // DM 관련 웹소켓 엔드포인트
+	        const socket = new SockJS("https://192.168.140.22:9090/stomp/dm"); // DM 관련 웹소켓 엔드포인트
+	        const stompClient = Stomp.over(socket);
+
 
 
             stompClient.connect({}, () => {

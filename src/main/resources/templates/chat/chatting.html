@@ -37,7 +37,7 @@
 
       <!-- 채팅 공간 -->
       <div class="chat-area d-flex flex-column">
-        <div class="flex-grow-1 overflow-auto p-3">
+        <div class="flex-grow-1 overflow-auto p-3" style="height:'50%';">
           <input type="hidden" th:value="${no}" />
           <div class="chatContent">
             <div class="textArea" th:each="c, cStat:${chatList}">
@@ -100,8 +100,8 @@
         // WebSocket 연결
         // const socket = new SockJS("https://192.168.40.6:9090/stomp/chat");
 
-        const socket = new SockJS("https://192.168.140.22:9090/stomp/chat");
-//         const socket = new SockJS("https://localhost:8080/stomp/chat");
+        // const socket = new SockJS("https://192.168.140.22:9090/stomp/chat");
+        const socket = new SockJS("https://localhost:8080/stomp/chat");
 
         const stompClient = Stomp.over(socket);
 
