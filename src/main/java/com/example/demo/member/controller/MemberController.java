@@ -419,6 +419,7 @@ public class MemberController {
 			 session.setAttribute("notify", notify);
 			 session.setAttribute("theme", theme);
 	         session.setAttribute("loginMember", loginMember);
+			 model.addAttribute("loginMember", loginMember);
 			 session.setAttribute("fingerprint", fingerprint);
 			 pService.saveDevice(loginMember.getMemberNo(), fingerprint);
 	         return "redirect:/main";
