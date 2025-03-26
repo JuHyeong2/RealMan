@@ -148,6 +148,7 @@ html {
 
 .video-preview {
 	width: 100%;
+	height: auto;
 }
 
 .chatContent-1 {
@@ -171,19 +172,46 @@ html {
 }
 
 #remoteStreamDiv {
-	width: 100%;
-	height: 100%;
+/* 	width: 100%; */
+	
 	
 }
 
 .grid {
 	display: grid;
 /* 	grid-template-columns: 200px 200x 200x; */
-	grid-template-columns: repeat(2, 1fr);
+/* 	grid-template-columns: repeat(2, 1fr); */
+	grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+	grid-auto-rows: min-content; /* 자식 요소의 높이에 맞게 자동 조정 */
 /* 	grid-template-rows: 200px 200px; */
 	gap: 10px;
 	width: 100%;
+	transition: all 5s ease-in-out; /* 크기 변경 시 부드럽게 */
+/* 	height: auto; */
 }
+
+
+
+.grid #remoteStreamDiv, .gird .video-preview{
+/* 	transition: transform 5s ease-in-out, opacity 5s ease-in-out; */
+	transition: transform 2s ease-in-out, opacity 2s ease-in-out;
+    transform: scale(0.5);
+    opacity: 0;
+}
+
+.grid #remoteStreamDiv.show, .grid .video-preview.show{
+	transform: scale(1);
+    opacity: 1;
+}
+
+/* .grid #remoteStreamDiv { */
+/* /*     transform: scale(0.5); 점점 커지면서 나타남 */ */
+/* /*     transition: all 5s ease-in-out; 크기 변경 시 부드럽게 */ */
+/* } */
+
+/* .grid #remoteStreamDiv.show { */
+/*     transform: scale(1); 점점 커지면서 나타남 */
+/* } */
 
 
 

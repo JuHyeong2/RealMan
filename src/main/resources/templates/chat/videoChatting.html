@@ -51,7 +51,7 @@
           ></video>
         </div>
         <!-- WebRTC에 연결된 웹캠들이 추가되는 Div -->
-        <div id="remoteStreamDiv"></div>
+<!--         <div id="remoteStreamDiv"></div> -->
       </div>
 
       <!-- 유저 목록 -->
@@ -304,11 +304,13 @@
         });
       };
       let remoteVideo = null;
+      let div = null;
       let onTrack = (event, otherKey) => {
         console.log("otherKey : " + otherKey);
         console.log("event : " + event);
         if (document.getElementById(otherKey) === null) {
           console.log("otherkey가 null이 아니야!!!!");
+          
           const video = document.createElement("video");
 
           video.autoplay = true;
@@ -316,22 +318,27 @@
           // 		         video.muted = true;
           video.id = otherKey;
           video.srcObject = event.streams[0];
-          const element = document.querySelector("#" + otherKey);
-          // 같은 cameraKey값이 있는 video가 있으면 해당 video 삭제
-          console.log("element 확인");
-          console.log(element);
-          // 		         if(element){
-          // 		        	 console.log('존재하는 element');
-          // 		        	 console.log(element);
-          // 		        	 element.remove();
-          // 		         }
 
-          document.getElementById("remoteStreamDiv").appendChild(video);
-//           document.getElementById(otherKey).style.display = 'block';
+		  div = document.createElement('div');
+		  video.style.width='100%';
+		  div.id = "remoteStreamDiv";
+// 		  div.classList.toggle("show");
+		  div.appendChild(video);
+		  
+		  const grid = document.querySelector('.grid');
+		  grid.append(div);
+		  video.play();
           remoteVideo = document.getElementById(otherKey);
-//           remoteVideo.style.display = 'block';
-          
           console.log(remoteVideo);
+          
+          setTimeout(() => div.classList.add('show'), 50);
+          setTimeout(() => document.querySelector('.video-preview').classList.add('show'), 50);
+          
+       	  // 5. loadedmetadata 이벤트 후 play() 실행
+          video.onloadedmetadata = () => {
+              console.log("Metadata loaded, playing video...");
+              video.play();
+          };
         }
 
         //
@@ -387,7 +394,7 @@
               console.log("상대방이 네트워크 문제로 연결이 끊어졌습니다!");
               console.log(remoteVideo);
               remoteVideo.srcObject = null; // 비디오 스트림 제거
-              remoteVideo.remove(); // 화면에서 숨기기 (선택)
+              div.remove(); // 화면에서 숨기기 (선택)
             }else{
             	console.log('상대방과 네트워크가 연결됐습니다!')
 //             	remoteVideo.style.display = "block"; // 화면에서 보이기 (선택)
