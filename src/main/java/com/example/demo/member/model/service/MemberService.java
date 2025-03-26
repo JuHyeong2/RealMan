@@ -226,4 +226,13 @@ public class MemberService {
 	public String getProfileImgUrlbyNickname(String memberNickname) {
 		return mapper.getProfileImgUrlbyNickname(memberNickname);
 	}
+
+	public ArrayList<Friend> addFriendList(int memberNo) {
+		return mapper.addFriendList(memberNo);
+	}
+
+	public ArrayList<Friend> acceptFriendList(int memberNo) {
+		return mapper.acceptFriendList(memberNo);
+
+	}
 }

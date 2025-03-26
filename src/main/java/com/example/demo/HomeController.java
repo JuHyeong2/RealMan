@@ -64,7 +64,15 @@ public class HomeController {
 		ArrayList<Server> selectServerList = sService.selectServerList(m);
 
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(m);
-		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
+//		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
+		ArrayList<Friend> addFriendList = mService.addFriendList(m.getMemberNo());
+		ArrayList<Friend> acceptFriendList = mService.acceptFriendList(m.getMemberNo());
+		ArrayList<Friend> friendList = new ArrayList<>();
+			friendList.addAll(addFriendList);
+			friendList.addAll(acceptFriendList);
+
+
+
 		ArrayList<DM> d = cService.selectDmList(m.getMemberNo());
 
 
@@ -85,7 +93,9 @@ public class HomeController {
 		model.addAttribute("loginMember", m)
 		.addAttribute("DM",d)
 		.addAttribute("friendNumberList", friendNumberList)
-		.addAttribute("friendList", friendList);
+		.addAttribute("friendList", friendList)
+		.addAttribute("addFriendList", addFriendList)
+		.addAttribute("acceptFriendList", acceptFriendList);
 
 		if(selectServerList != null || !selectServerList.isEmpty()) {
 			model.addAttribute("selectServerList", selectServerList);

@@ -100,4 +100,8 @@ public interface MemberMapper {
     ArrayList<Friend> friendList(int memberNo);
 
 	String getProfileImgUrlbyNickname(String memberNickname);
+
+    ArrayList<Friend> addFriendList(int memberNo);
+
+    ArrayList<Friend> acceptFriendList(int memberNo);
 }

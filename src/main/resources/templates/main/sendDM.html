@@ -129,9 +129,7 @@
         </div>
 
 
-        <div class="profile">
-            <img><b>닉네임</b>
-        </div>
+
 
         <!--	<div class="send" th:each="d : ${dmList}">-->
         <!--		<img> <b th:text="${d.otherMemberNo}">d</b> <b-->
@@ -140,6 +138,11 @@
 
         <div class="dm-area d-flex flex-column">
             <div class="flex-grow-1 overflow-hidden p-3">
+<!--                <div class="profile">-->
+<!--                    <img height="40px" th:src="${otherMember.profileUrl != null ? otherMember.profileUrl : '/image/member/no-profile.svg'}" width="40px"/>-->
+<!--                </div>-->
+
+
                 <input th:value="${dmNo}" type="hidden"/>
                 <div class="dmContent" >
                     <div class="textArea" th:each="d, dStat:${dmList}">
