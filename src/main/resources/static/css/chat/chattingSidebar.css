@@ -14,7 +14,9 @@ body {
   box-sizing: border-box;
   overflow-y: auto;
 }
-
+.channel-list{
+    background-color: var(--theme-sub);
+}
 .channel {
   display: flex;
   flex-direction: column;
@@ -30,7 +32,7 @@ body {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	background-color: #bdd3e2;
+	background-color: var(--theme-point);
 	border-radius: 0.8rem;
 	padding: 0.8rem;
 	margin-top: 0.3rem;
@@ -156,7 +158,7 @@ body {
   position: absolute;
   width: 320px;
   bottom: 0px;
-  background-color: #E4EDF3;
+  background-color: var(--theme-point);
 }
 
 .profile-1 b {
