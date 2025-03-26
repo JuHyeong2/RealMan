@@ -256,6 +256,9 @@ public class MemberController {
 	public String getProfileImgUrlbyNickname(@RequestParam("nickname") String memberNickname) {
 		System.out.println("닉네임 : "+memberNickname);
 		String imgUrl = mService.getProfileImgUrlbyNickname(memberNickname);
+		if(imgUrl==null) {
+			imgUrl = "/image/member/no-profile.svg";
+		}
 		System.out.println("프로필 url : "+imgUrl);
 		return imgUrl;
 	}
