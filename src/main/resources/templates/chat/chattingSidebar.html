@@ -279,52 +279,52 @@
         }
       };
 
-      // voiceChannels = document.querySelectorAll(".voiceChat");
-      // for (voiceChannel of voiceChannels) {
-      //   voiceChannel.addEventListener("click", (e) => {
-      //     console.log("voice채널 클릭!");
-      //     clickChannel = e.currentTarget;
-      //     clickServerNo = Number(
-      //       clickChannel.querySelector('input[type="hidden"]').value
-      //     );
-      //     //				console.log(typeof clickServerNo);
-      //     joinVoiceChannel(myNickname, clickServerNo);
-      //     //				location.href = '/chat/voiceChat/2';
-      //   });
-      // }
+      voiceChannels = document.querySelectorAll(".voiceChat");
+      for (voiceChannel of voiceChannels) {
+        voiceChannel.addEventListener("click", (e) => {
+          console.log("voice채널 클릭!");
+          clickChannel = e.currentTarget;
+          clickServerNo = Number(
+            clickChannel.querySelector('input[type="hidden"]').value
+          );
+          //				console.log(typeof clickServerNo);
+          joinVoiceChannel(myNickname, clickServerNo);
+          //				location.href = '/chat/voiceChat/2';
+        });
+      }
 
-      // document.querySelectorAll(".channel")[0].addEventListener("click", () => {
-      //   // 			const chatRoom = voiceChannel.querySelector('li');
-      //   //				console.log(chatRoom);
-      //   // 			if(chatRoom.style.display == 'none'){
-      //   // 				chatRoom.style.display = 'block';
-      //   // //					people.style.display = 'block';
-      //   // 			}else{
-      //   // 				chatRoom.style.display = 'none';
-      //   // //					people.style.display = 'none';
-      //   // 			}
-      //   for (voiceChannel of voiceChannels) {
-      //     // 				console.log(voiceChannel);
-      //     const chatRoom = voiceChannel.querySelector("li");
-      //     // 				console.log(chatRoom);
-      //     if (chatRoom.style.display == "none") {
-      //       chatRoom.style.display = "block";
-      //       // 					people.style.display = 'block';
-      //     } else {
-      //       chatRoom.style.display = "none";
-      //       // 					people.style.display = 'none';
-      //     }
+      document.querySelectorAll(".channel")[0].addEventListener("click", () => {
+        // 			const chatRoom = voiceChannel.querySelector('li');
+        //				console.log(chatRoom);
+        // 			if(chatRoom.style.display == 'none'){
+        // 				chatRoom.style.display = 'block';
+        // //					people.style.display = 'block';
+        // 			}else{
+        // 				chatRoom.style.display = 'none';
+        // //					people.style.display = 'none';
+        // 			}
+        for (voiceChannel of voiceChannels) {
+          // 				console.log(voiceChannel);
+          const chatRoom = voiceChannel.querySelector("li");
+          // 				console.log(chatRoom);
+          if (chatRoom.style.display == "none") {
+            chatRoom.style.display = "block";
+            // 					people.style.display = 'block';
+          } else {
+            chatRoom.style.display = "none";
+            // 					people.style.display = 'none';
+          }
 
-      //     // 				voiceChannel.addEventListener('click', (e)=>{
-      //     // 					console.log("voice채널 클릭!");
-      //     // 					clickChannel = e.currentTarget;
-      //     // 					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
-      //     // // 					console.log(typeof clickServerNo);
-      //     // 					joinVoiceChannel(myNickname, clickServerNo);
-      //     // // 					location.href = '/chat/voiceChat/2';
-      //     // 				})
-      //   }
-      // });
+          // 				voiceChannel.addEventListener('click', (e)=>{
+          // 					console.log("voice채널 클릭!");
+          // 					clickChannel = e.currentTarget;
+          // 					clickServerNo = Number(clickChannel.querySelector('input[type="hidden"]').value);
+          // // 					console.log(typeof clickServerNo);
+          // 					joinVoiceChannel(myNickname, clickServerNo);
+          // // 					location.href = '/chat/voiceChat/2';
+          // 				})
+        }
+      });
 
       /*<![CDATA[*/
       const channels = /*[[${channel}]]*/ null;
