@@ -1,10 +1,90 @@
 @charset "UTF-8";
-/* html, body { */
-/* 	overflow: hidden; */
-/* 	margin: 0;        페이지 마진 없애기 */
-/*     padding: 0;       페이지 패딩 없애기 */
-/*     height: 100%;     페이지 높이를 100%로 설정 */
-/* } */
+body,
+html {
+	height: 100%;
+}
+.top-bar {
+	height: 40px;
+	background-color: #e4edf3;
+}
+.sidebar {
+	height: calc(100vh - 40px);
+}
+.chat-area {
+	flex-grow: 1; /* 남은 공간 차지 */
+	width: 1120px;
+}
+.user-list {
+	width: 360px;
+}
+@media (max-width: 768px) {
+	.top-bar {
+		display: none !important;
+	}
+	.sidebar {
+		height: 100vh;
+	}
+	.chat-area,
+	.user-list {
+		display: none;
+	}
+}
+
+.server-list{
+	background-color: var(--theme-bg);
+}
+
+.addServer {
+	width: 60px;
+	height: 60px;
+	background-color: #bdd3e2;
+	cursor: pointer;
+	border-radius: 100px;
+	align-content: center;
+	text-align: center;
+	font-size: 20px;
+}
+
+/* 모달 오버레이 */
+.add-modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.4);
+	z-index: 9998;
+	display: none;
+}
+
+/* 모달 본체 */
+.add-modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: white;
+	padding: 20px;
+	width: 400px;
+	height: 400px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	z-index: 9999;
+	display: none;
+}
+
+.add-modal .close {
+	float: right;
+	font-size: 20px;
+	cursor: pointer;
+}
+.add-modalbtn {
+	background: #699fff;
+}
+.add-modalbtn:hover {
+	background: #2c58a2;
+}
+
 
 .all{
 	display: flex;
@@ -51,6 +131,7 @@
 /* 	bottom: 50px; */
 /* 	z-index: 1; */
 	width: 100%;
+
 }
 
 
@@ -129,3 +210,11 @@
 
 .date-separator::before { left: 0; }
 .date-separator::after { right: 0; }
+
+.tox-tinymce {
+	border-radius: 25px !important;
+	overflow: hidden;
+}
+.tox-tinymce::-webkit-scrollbar {
+	display: none;
+}

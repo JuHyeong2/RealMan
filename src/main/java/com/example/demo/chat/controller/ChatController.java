@@ -79,7 +79,7 @@ public class ChatController {
 		model.addAttribute("channel", channel);
 
 		ArrayList<ServerMember> memberList = smService.serverMemberList(serverNo);
-		System.out.println("memberList : "+memberList);
+//		System.out.println("memberList : "+memberList);
 		model.addAttribute("memberList", memberList);
 		
 		//로그인멤버의 서버관리자 여부

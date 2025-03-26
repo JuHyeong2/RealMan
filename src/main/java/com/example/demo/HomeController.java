@@ -10,6 +10,7 @@ import com.example.demo.member.controller.FriendController;
 import com.example.demo.member.model.service.MemberService;
 import com.example.demo.member.model.vo.Friend;
 import com.example.demo.member.model.vo.ProfileImage;
+import com.example.demo.preferences.model.vo.Notification;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,7 +93,7 @@ public class HomeController {
 			
 		}
 
-		cService.insertDM(dmContent);
+//		cService.insertDM(dmContent);
 
 
 		return "/main/main";
@@ -130,16 +132,22 @@ public class HomeController {
 		Map<String, Object> result = new HashMap<>();
 		int otherMemberNo = map.get("otherMemberNo");
 		System.out.println(" 아더맴파" + otherMemberNo);
+		map.put("memberNo", loginMember.getMemberNo());
 		try {
 			DM existingDM = cService.findDMByMembers(loginMember.getMemberNo(), otherMemberNo);
 
 			if (existingDM == null) {
-				DM newDM = cService.createDM(loginMember.getMemberNo(), otherMemberNo);
-				result.put("dmNo", newDM.getDmNo());
-			} else {
-				result.put("dmNo", existingDM.getDmNo());
+				int num = cService.createDM(map);
+				System.out.println(map);
+				if(num > 0) {
+					result.put("dmNo", map.get("dmNo"));
+				}else{
+					throw new Exception();
+				}
+			}else{
+				DM dm = cService.selectDmUseNickname(map);
+				result.put("dmNo", dm.getDmNo());
 			}
-
 			return result;
 		} catch (Exception e) {
 			logger.error("채팅방 생성 중 오류 발생:", e);
@@ -154,17 +162,51 @@ public class HomeController {
 
 	@GetMapping("/dm/{dmNo}")
 	public String dm(@PathVariable("dmNo") int dmNo, Model model, HttpSession session) {
-		Member m = (Member) session.getAttribute("loginMember");
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		Notification notify = (Notification) session.getAttribute("notify");
 
-		System.out.println("내가누구야 ;" + m);
-//		ArrayList<Friend> friendList = mService.friendList(m.getMemberNo());
-//		System.out.println(friendList);
+//		System.out.println("내가누구야 ;" + loginMember);
+
 		// 1. dm 했던거 가져오기 (상대방 닉네임(fireBase에서), 프사(oracle))
 		// 2. 프사 = 닉네임으로 memberNo를 가져와서 프사 가져오면 될듯
+
+
+
+		ArrayList<DM> DMList = cService.selectDm(dmNo, notify.getTimeType());
+		for(int i=0; i<DMList.size(); i++) {
+			Member m = mService.selectMemberNo(DMList.get(i).getSender());
+			if(m != null) {
+				ProfileImage img = mService.selectImage(m.getMemberNo());
+				if(img != null) {
+					DMList.get(i).setProfileUrl(img.getImgRename());
+				}
+			}
+		}
+
+		ArrayList<DM> d = cService.selectDmList(loginMember.getMemberNo());
+		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
+		ArrayList<Friend> friendList = mService.friendList(loginMember.getMemberNo());
+
+
+		for(int i=0; i<d.size(); i++) {
+			ProfileImage img = mService.selectImage(d.get(i).getMemberNo());
+//			System.out.println(img);
+			if(img != null) {
+				d.get(i).setImageUrl(img.getImgRename());
+			}
+		}
+
+
+
 		model.addAttribute("dmNo", dmNo)
-				.addAttribute("loginMember", m);
-//				.addAttribute("friendList", friendList);
-//		System.out.println("칭기목록:" + friendList);
+				.addAttribute("loginMember", loginMember)
+				.addAttribute("dmList", DMList)
+				.addAttribute("DM",d)
+				.addAttribute("friendNumberList", friendNumberList)
+				.addAttribute("friendList", friendList);
+
+
+		System.out.println("가벼운남자"+DMList);
 
 		return "/main/sendDM";
 
@@ -173,12 +215,20 @@ public class HomeController {
 
 
 	@MessageMapping("/dm/{dmNo}/D")
-	public void sendMessage(DM message, @DestinationVariable("dmNo") int dmNo) {
-		System.out.println("dmNo : " + dmNo);
-		System.out.println(message.toString());
+	public void sendMessage(DM message, @DestinationVariable("dmNo") int dmNo, SimpMessageHeaderAccessor headerAccessor) {
+//		System.out.println("dmNo : " + dmNo);
+
+		HttpSession session = (HttpSession) headerAccessor.getSessionAttributes().get("HTTP_SESSION");
+		System.out.println(session);
+		Member m = (Member)session.getAttribute("loginMember");
+
+		System.out.println("채널에들어와서 메시지 "+message.toString());
+		message.setProfileUrl(m.getImageUrl());
+//		message.setDmNo(m.getDmNo());
+//		message.setOtherMemberNickname(m.getOtherMemberNickname());
+
 		cService.insertDM(message); // 서비스 계층을 통해 Firestore에 메시지 저장
-		messagingTemplate.convertAndSend("/sub/chatroom/" + dmNo, message);
-//		return message; // 클라이언트에 메시지 전송
+		messagingTemplate.convertAndSend("/sub/dm/" + dmNo, message);
 
 	}
 

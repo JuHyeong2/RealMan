@@ -25,5 +25,7 @@ public class Member {
 	private Date memberCreateDate;
 	private String profileImage;
 	private String imageUrl;
+	private int dmNo;
+	private String otherMemberNickname;
 
 }

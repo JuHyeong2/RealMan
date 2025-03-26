@@ -15,30 +15,55 @@
 		where channel_no = #{channelNo} and channel_status='Y'
 	</select>
 
-    <select id="selectDm">
-        select *
-        from DM
-        join member using(member_no)
-        where member_no = #{memberNo}
-    </select>
+<!--    <select id="selectDm">-->
+<!--        select *-->
+<!--        from DM-->
+<!--        join member using(member_no)-->
+<!--        where member_no = #{memberNo}-->
+<!--    </select>-->
 
     <select id="selectDmList">
         select *
         from member
-                 join (select dm_no, other_member_no
-                       from dm
-                       where member_no =#{memberNo}
-                       union
-                       select dm_no, member_no
-                       from dm
-                       where other_member_no = #{memberNo})
-                      on (member_no =other_member_no)
-                 left join
-             (select mcd_no, img_rename
+             join (select dm_no, other_member_no
+                   from dm
+                   where member_no =#{memberNo}
+
+                   union
+
+                   select dm_no, member_no
+                   from dm
+                   where other_member_no = #{memberNo})
+              on (member_no =other_member_no)
+
+        left join
+             (select *
               from image
               where img_separator='M')
-             on (member_no = mcd_no)
+        on (member_no = mcd_no)
     </select>
+
+<!--    <select id="selectDm">-->
+<!--        select *-->
+<!--        from member-->
+<!--                 join (select dm_no, other_member_no-->
+<!--                       from dm-->
+<!--                       where member_no =#{memberNo}-->
+
+<!--                       union-->
+
+<!--                       select dm_no, member_no-->
+<!--                       from dm-->
+<!--                       where other_member_no = #{memberNo})-->
+<!--                      on (member_no =other_member_no)-->
+
+<!--                 left join-->
+<!--             (select mcd_no, img_rename-->
+<!--              from image-->
+<!--              where img_separator='M')-->
+<!--             on (member_no = mcd_no)-->
+<!--    </select>-->
+
 
     <select id="findDMByMembers">
         select *
@@ -48,6 +73,21 @@
             AND FRIEND_MEMBER_NO = #{otherMemberNo}
             AND OTHER_MEMBER_NO = #{otherMemberNo}
 
+    </select>
+
+    <insert id="createDM">
+        <selectKey order="BEFORE" resultType="_int" keyProperty="dmNo">
+            select dm_seq.nextval from dual
+        </selectKey>
+        insert into dm
+        values(#{dmNo}, default, default, #{memberNo}, #{otherMemberNo})
+    </insert>
+
+    <select id="selectDmUseNickname">
+        select *
+        from dm
+        where (member_no = #{memberNo} and other_member_no = #{otherMemberNo})
+            or (member_no = #{otherMemberNo} and other_member_no = #{memberNo})
     </select>
 
 

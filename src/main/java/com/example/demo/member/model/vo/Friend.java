@@ -15,4 +15,8 @@ public class Friend {
 
     private int memberNo;
     private String memberNickname;
+    private String imgRename;
+    private String memberName;
+    private String memberId;
+
 }

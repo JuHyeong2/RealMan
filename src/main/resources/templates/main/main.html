@@ -8,6 +8,7 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"
     </script>
+    <link rel="stylesheet" href="/css/theme.css">
     <link href="/css/main.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/css/member/friends.css" />
     <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>
@@ -15,11 +16,11 @@
     <style>
     	.top-bar {
         	height: 40px;
-        	background-color: #e4edf3;
+        	background-color: var(--theme-bg);
       	}
     </style>
   </head>
-  <body>
+  <body th:class="'theme-' + ${session.theme.themeColor} + ' font-' + ${session.theme.fontType} + ' text-size-' + ${session.theme.fontSize.toLowerCase()}">
   <div class="topbar_wrap" th:replace="~{/common/top :: body}"></div>
 
   <div class="main-container">

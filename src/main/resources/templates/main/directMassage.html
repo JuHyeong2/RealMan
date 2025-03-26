@@ -58,13 +58,15 @@
     <title>Direct Message</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <link href="/css/directMassage.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <style>
 
 
 </style>
 
-<body>
+<body th:class="'theme-' + ${session.theme.themeColor} + ' font-' + ${session.theme.fontType} + ' text-size-' + ${session.theme.fontSize.toLowerCase()}">
+
 
 <div class="directMassage" th:fragment="directMassage">
     <div class="dm">다이렉트 메시지</div>
@@ -89,12 +91,16 @@
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>친구 목록</h2>
-        <ul id="dmFriendList">
-            <li th:if="${friendList == null or #lists.isEmpty(friendList)}">친구 목록이 없습니다.</li>
-            <li th:each="f:${friendList}" th:attr="data-memberNo=${f.memberNo}, data-friendMemberNo=${f.friendMemberNo}"
-                th:text="|친구: ${f.friendMemberNo}|" onclick="createChatRoom(this)">
-            </li>
-        </ul>
+        <div id="dmFriendList">
+            <div th:if="${friendList == null or #lists.isEmpty(friendList)}">친구 목록이 없습니다.</div>
+            <div th:each="f:${friendList}"
+                 th:attr="data-memberNo=${f.memberNo}, data-friendMemberNo=${f.friendMemberNo}, onclick='createChatRoom(this)'">
+                 <td>
+                    <img th:src="${f.imgRename == null? '/image/member/no-profile.svg': f.imgRename}" width="30px" height="30px" style="border-radius: 50%;"/>
+                    <td th:text="${f.memberNickname}"></td>
+                 </td>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -148,6 +154,30 @@
 
 
 
+    function createDM(otherMemberNo) {
+        fetch('/dm/createDM', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ otherMemberNo: otherMemberNo }),
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.dmNo) {
+                    window.location.href = `/dm/${result.dmNo}`; // dmNo를 사용하여 새 주소로 이동
+                } else {
+                    console.error('채팅방 생성 실패:', result.error);
+                    alert('채팅방 생성에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('오류 발생:', error);
+                alert('오류가 발생했습니다.');
+            });
+    }
+
+
 
 
 </script>
@@ -157,7 +187,7 @@
         width: 300px; /* 적절한 너비 설정 */
         border: 1px solid #ddd;
         padding: 10px;
-        font-family: Arial, sans-serif;
+        font-family: var(--font-family),serif;
     }
 
     .dm {
@@ -167,7 +197,7 @@
     }
 
     .createDM {
-        background-color: #d8e7f3;
+        background-color: var(--theme-point);
         color: white;
         border: none;
         padding: 5px 10px;
@@ -177,9 +207,9 @@
         margin-top: -30px; /* dm div와 겹치게 위로 올림 */
     }
 
-    .createDM:hover {
-        background-color: #0056b3;
-    }
+    /*.createDM:hover {*/
+    /*    background-color: #0056b3;*/
+    /*}*/
 
     #dmWrapper {
         clear: both; /* float 속성 해제 */
