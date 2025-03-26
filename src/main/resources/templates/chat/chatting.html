@@ -22,7 +22,7 @@
     ></script>
 
   </head>
-  <body th:class="'theme-' + ${session.theme.themeColor} + ' font-' + ${session.theme.fontType} + ' text-size-' + ${session.theme.fontSize.toLowerCase()}">
+  <body th:class="'theme-' + ${session.theme.themeColor} + ' font-' + ${session.theme.fontType} + ' text-size-' + ${session.theme.fontSize}">
     <!-- 탑바 -->
     <div th:replace="~{/common/top :: html}"></div>
     <!-- 메인 컨테이너-->

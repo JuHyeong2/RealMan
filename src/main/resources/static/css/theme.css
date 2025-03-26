@@ -29,12 +29,7 @@
     --font-size-subtitle: 30px;
     --font-size-title: 36px;
 }
-.text-size-XL {
-    --font-size-base: 24px;
-    --font-size-small: 15px;
-    --font-size-subtitle: 36px;
-    --font-size-title: 40px;
-}
+
 
 /* 테마 컬러 변수 */
 .theme-BLACK {

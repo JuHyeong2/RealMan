@@ -296,3 +296,31 @@ html {
 	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 15%), 0 4px 6px -4px rgb(0 0 0 / 5%) !important;
 }
 
+.chatContent-2 p,
+.chatContent-2 span,
+.channel > div > b,
+.channel-menu > div,
+.voice-memberList li,
+.mention,
+.chatContent .mention-highlight {
+	font-size: var(--font-size-base);
+}
+
+.date-separator,
+.chatContent-2 span[style*="font-size: 14px"] {
+	font-size: var(--font-size-small) !important;
+}
+
+.server-name h3,
+.profile-1 b {
+	font-size: var(--font-size-title);
+}
+
+.channel-title h4 {
+	font-size: var(--font-size-subtitle);
+}
+
+.tox-tinymce,
+.tox-tinymce * {
+	font-size: var(--font-size-base) !important;
+}
