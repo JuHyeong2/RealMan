@@ -44,6 +44,17 @@ html {
 		display: none;
 	}
 }
+.text-center{
+	display: flex;
+	justify-content: center;
+}
+.mainLogo{
+	width:50px;
+	height:50px;
+	margin: 10px;
+	cursor: pointer;
+	align-items: center;
+}
 
 .server-list{
 	background-color: var(--theme-bg);
