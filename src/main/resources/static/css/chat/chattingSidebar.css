@@ -8,14 +8,19 @@ body {
 
 .chatSidebar {
   width: 360px;
-  background-color: #f2f6f9;
+  background-color: var(--theme-bg);
   height: 90vh;
   padding: 2rem 0;
   box-sizing: border-box;
   overflow-y: auto;
 }
 .channel-list{
+    border-left: 1px solid var(--theme-border);
+    border-top: 1px solid var(--theme-border);
+    border-top-left-radius: 20px;
     background-color: var(--theme-sub);
+    color: var(--theme-text);
+    font-family: var(--font-family), sans-serif;
 }
 .channel {
   display: flex;
@@ -23,6 +28,17 @@ body {
   position: relative;
   justify-content: center;
   
+}
+.server-name{
+    padding: 5px;
+    border-top-left-radius: 20px;
+    border-bottom: 1px solid var(--theme-border);
+    border-right: 1px solid var(--theme-border);
+}
+.server-name > h3{
+    color: var(--theme-text);
+    font-family: var(--font-family), sans-serif;
+    text-align: center;
 }
 
 .channel > .channel-info-main {
@@ -77,6 +93,7 @@ body {
   max-height: 0;
   z-index: 2;
   transition: all 0.3s ease;
+    color: black;
 }
 
 .channel-menu-show {
@@ -152,13 +169,17 @@ body {
 }
 
 .profile-1 {
-  display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  gap: 5px;
-  position: absolute;
-  width: 320px;
-  bottom: 0px;
-  background-color: var(--theme-point);
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 5px;
+    position: absolute;
+    width: 320px;
+    bottom: 0px;
+    background-color: var(--theme-point2);
+    padding: 10px;
+    border: 10px solid;
+    border-color: var(--theme-sub);
+    border-radius: 20px;
 }
 
 .profile-1 b {
@@ -182,6 +203,7 @@ body {
   display: flex;
   position: relative;
   align-items: center;
+    margin-top: 20px;
 }
 
 .channel-title > button {
@@ -190,13 +212,14 @@ body {
   top: 0.2rem;
   height: 1.5rem;
   width: 1.5rem;
-  border: 1px rgb(113, 93, 158) solid;
+  border: 1px var(--theme-text) solid;
   border-radius: 20%;
-  background-color: white;
-  color: rgb(113, 93, 158);
+  background-color: var(--theme-wb);
+  color: var(--theme-text);
   display: flex;
   justify-content: center;
   align-items: center;
+    font-family: var(--font-family), sans-serif;
 }
 
 .channel-title img{
@@ -233,4 +256,19 @@ body {
 .voice-memberList img{
 	height: 100%;
 	width: auto;
+}
+
+.icon {
+    color: var(--theme-text);  /* 테마 색상에 따라 변경 */
+}
+
+.channel-icon{
+    width: 36px;
+    height: 24px;
+    transition: transform 0.2s;
+}
+
+.channel-icon.rotate {
+    transform: rotate(-90deg); /* 드롭다운 열렸을 때 회전 */
+    transform-origin: center;
 }

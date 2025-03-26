@@ -248,3 +248,12 @@ function editMemberInfo(col, val, pwd) {
       }
     });
 }
+
+function goBack() {
+  const prev = sessionStorage.getItem("prevPage");
+  if (prev) {
+    window.location.href = prev;
+  } else {
+    window.location.href = "/main"; // fallback
+  }
+}

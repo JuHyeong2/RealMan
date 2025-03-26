@@ -46,4 +46,6 @@ public interface ServerMapper {
 	int editChannel(HashMap<String, String> map);
 
 	int deleteChannel(int channelNo);
+
+	String selectServerName(int serverNo);
 }

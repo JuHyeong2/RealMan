@@ -69,7 +69,7 @@
 			src="/image/preferences/Xcircle.png"
 			width="50px"
 			height="50px"
-			onclick="location.href='/main'"
+			onclick="goBack()"
 			style="margin-top: 17px; margin-left: 150px; cursor: pointer"
 	/>
 </div>
@@ -81,7 +81,7 @@
 	// 이벤트 리스너 등록
 	window.addEventListener("DOMContentLoaded", async function () {
 		await getAudioDevices();  // 장치 목록을 먼저 불러온 후
-		await loadAudioPreferences(); // 그 후에 DB에서 설정 값을 적용
+
 		document.querySelectorAll('.slider').forEach(slider => {
 			slider.addEventListener('input', function() { updateSliderStyle(this); });
 			updateSliderStyle(slider);
@@ -125,37 +125,40 @@
 				speakerSelect.appendChild(option);
 			}
 		});
+		await loadAudioPreferences(); // 그 후에 DB에서 설정 값을 적용
 	}
 
 	// 오디오 설정 불러오기
-	function loadAudioPreferences() {
-		fetch("/prefs/audio/getPrefs")
-				.then(response => response.json())
-				.then(data => {
-					if (data) {
-						micSelect.value = data.audioInput || "";
-						speakerSelect.value = data.audioOutput || "";
-						inputVolumeSlider.value = data.inputValue || 50;
-						outputVolumeSlider.value = data.outputValue || 50;
+	async function loadAudioPreferences() {
+		try {
+			const response = await fetch("/prefs/audio/getPrefs");
+			const data = await response.json();
 
-						//  슬라이더의 스타일을 강제로 업데이트하여 위치와 색이 일치하도록 함
-						setTimeout(() => {
-							updateSliderStyle(inputVolumeSlider);
-							updateSliderStyle(outputVolumeSlider);
-						}, 0);
+			if (data) {
+				micSelect.value = data.audioInput || "";
+				speakerSelect.value = data.audioOutput || "";
+				inputVolumeSlider.value = data.inputValue || 50;
+				outputVolumeSlider.value = data.outputValue || 50;
 
-						document.querySelectorAll('input[name="inputType"]').forEach(radio => {
-							if (radio.value === data.inputType) {
-								radio.checked = true;
-								radio.closest('.radio-option').classList.add('selected');
-							} else {
-								radio.closest('.radio-option').classList.remove('selected');
-							}
-						});
+				setTimeout(() => {
+					updateSliderStyle(inputVolumeSlider);
+					updateSliderStyle(outputVolumeSlider);
+				}, 0);
+
+				document.querySelectorAll('input[name="inputType"]').forEach(radio => {
+					if (radio.value === data.inputType) {
+						radio.checked = true;
+						radio.closest('.radio-option').classList.add('selected');
+					} else {
+						radio.closest('.radio-option').classList.remove('selected');
 					}
-				})
-				.catch(error => console.error("오디오 설정 로드 오류:", error));
+				});
+			}
+		} catch (error) {
+			console.error("오디오 설정 로드 오류:", error);
+		}
 	}
+
 
 
 	// 슬라이더 스타일 업데이트
@@ -250,6 +253,16 @@
 		element.classList.add('selected');
 		element.querySelector('input[type="radio"]').checked = true;
 	}
+
+	function goBack() {
+		const prev = sessionStorage.getItem("prevPage");
+		if (prev) {
+			window.location.href = prev;
+		} else {
+			window.location.href = "/main"; // fallback
+		}
+	}
+
 
 
 

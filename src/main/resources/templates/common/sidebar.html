@@ -24,25 +24,18 @@
       style="width: 80px; display: flex; flex-direction: column"
     >
       <h6 class="text-center" onclick="location.href='/main';">
-        <img src="/image/RealManLogo.png" width="60px" />
+        <img class="mainLogo" src="/image/RealManLogo.png" width="60px" />
       </h6>
 
       <div id="dynamic-server-list"></div>
 
 
-      <div class="addServer">+</div>
-
-      <img
-        src="/image/preferences/Preferences.png"
-        width="30px"
-        style="
-          margin-top: auto;
-          cursor: pointer;
-          align-self: center;
-          margin-bottom: 30px;
-        "
-        onclick="location.href='/prefs/myProfile'"
-      />
+      <div class="addServer"><span>+</span></div>
+      <div class="setting" onclick="goToSettings()">
+        <img src="/image/preferences/Preferences.png"
+             width="30px"
+        />
+      </div>
     </div>
 
     <!-- 모달 -->

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+
 
 html {
 	border-radius: 50px;
@@ -7,16 +7,15 @@ html {
 
 body { 
 /*   color: #E4EDF3;  */
-  background-color: var(--theme-sub);
+  background-color: var(--theme-wb);
   font-family: var(--font-family), serif;
   line-height: 1.4;
-  color: black;
+  color: var(--theme-text);
 /*   border-radius: 50px !important; */
   border-color: #E4EDF3;
 }
 
 /* border-radius 개같은거 왜안먹는지 모르겠음 도와주셈 */
-.tox-tinymce {
-	border-radius: 50px !important;
-	overflow: hidden;
+.mce-content-body::-webkit-scrollbar {
+    display: none;
 }

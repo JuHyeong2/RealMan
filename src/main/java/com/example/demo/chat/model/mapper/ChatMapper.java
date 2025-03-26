@@ -22,4 +22,6 @@ public interface ChatMapper {
     int createDM(Map<String, Integer> map);
 
     DM selectDmUseNickname(HashMap<String, Integer> map);
+
+
 }

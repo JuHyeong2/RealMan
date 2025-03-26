@@ -74,7 +74,7 @@
         VALUES (#{memberNo}, #{serverNo}, 'Y')
     </insert>
 
-    <insert id="insertDefaultTextChannel" parameterType="Channel">
+    <insert id="insertDefaultTextChannel" parameterType="com.example.demo.chat.model.vo.Channel">
     	<selectKey keyProperty="channelNo" resultType="_int" order="BEFORE"> 
     		select channel_seq.nextval from dual
     	</selectKey>
@@ -102,4 +102,10 @@
 		delete from channel
 		where channel_no = #{channelNo}
 	</delete>
+
+    <select id="selectServerName" resultType="String" parameterType="int">
+        select server_name
+        from server
+        where server_no = #{serverNo}
+    </select>
 </mapper>

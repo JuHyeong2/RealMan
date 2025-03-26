@@ -5,6 +5,8 @@
     padding: 2rem 0;
     box-sizing: border-box;
     overflow-y: auto;
+    color: var(--theme-text);
+    font-family: var(--font-family), serif;
 }
 
 

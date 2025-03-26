@@ -94,4 +94,8 @@ public class ServerService {
 		}
 		return 0;
 	}
+
+	public String selectServerName(int serverNo) {
+		return mapper.selectServerName(serverNo);
+	}
 }
