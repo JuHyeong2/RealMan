@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="/css/chat/memberList.css" />
     <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -138,6 +143,7 @@
       ></div>
     </div>
     <script src="/js/common/sideBar.js"></script>
+    <script src="/js/chat/memberList.js"></script>
     <script th:inline="javascript">
       // let remoteStreamElement = document.querySelector('#remoteStream');
       let localStreamElement = document.querySelector("#localStream");
@@ -284,10 +290,10 @@
 
       const connectSocket = async () => {
         // const socket = new SockJS('https://192.168.40.6:9090/stomp/signaling');
-        // const socket = new SockJS("https://localhost:8080/stomp/signaling");
-        const socket = new SockJS(
-          "https://192.168.140.22:9090/stomp/signaling"
-        );
+        const socket = new SockJS("https://localhost:8080/stomp/signaling");
+        // const socket = new SockJS(
+        //   "https://192.168.140.22:9090/stomp/signaling"
+        // );
         stompClient = Stomp.over(socket);
         stompClient.debug = null;
 
@@ -303,15 +309,13 @@
               const message = JSON.parse(candidate.body).body;
 
               // 해당 key에 해당되는 peer 에 받은 정보를 addIceCandidate 해준다.
-              pcListMap
-                .get(key)
-                .addIceCandidate(
-                  new RTCIceCandidate({
-                    candidate: message.candidate,
-                    sdpMLineIndex: message.sdpMLineIndex,
-                    sdpMid: message.sdpMid,
-                  })
-                );
+              pcListMap.get(key).addIceCandidate(
+                new RTCIceCandidate({
+                  candidate: message.candidate,
+                  sdpMLineIndex: message.sdpMLineIndex,
+                  sdpMid: message.sdpMid,
+                })
+              );
             }
           );
 
@@ -328,14 +332,12 @@
               pcListMap.set(key, createPeerConnection(key));
               // 생성한 peer 에 offer정보를 setRemoteDescription 해준다.
               console.log("Setting Remote Description for key: " + key);
-              pcListMap
-                .get(key)
-                .setRemoteDescription(
-                  new RTCSessionDescription({
-                    type: message.type,
-                    sdp: message.sdp,
-                  })
-                );
+              pcListMap.get(key).setRemoteDescription(
+                new RTCSessionDescription({
+                  type: message.type,
+                  sdp: message.sdp,
+                })
+              );
               //sendAnswer 함수를 호출해준다.
               sendAnswer(pcListMap.get(key), key);
             }

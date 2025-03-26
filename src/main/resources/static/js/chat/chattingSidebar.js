@@ -175,3 +175,11 @@ function channelMenu(e) {
   }
   menu.classList.toggle("channel-menu-show");
 }
+
+//drop-down
+function voiceDropdown() {
+  document.querySelector(".voiceChat-ul").classList.toggle("channel-ul-hide");
+}
+function textDropdown() {
+  document.querySelector(".textChat-ul").classList.toggle("channel-ul-hide");
+}
