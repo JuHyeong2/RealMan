@@ -270,4 +270,10 @@
 						from member
 						where member_nickname=#{memberNickname})
 	</select>
+	
+	<delete id="deleteProfileImg">
+		delete from image
+		where mcd_no = #{memberNo}
+		and img_separator='M'
+	</delete>
 </mapper>
