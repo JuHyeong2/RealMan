@@ -195,7 +195,11 @@ public class HomeController {
 
 		ArrayList<DM> d = cService.selectDmList(loginMember.getMemberNo());
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-		ArrayList<Friend> friendList = mService.friendList(loginMember.getMemberNo());
+		ArrayList<Friend> addFriendList = mService.addFriendList(loginMember.getMemberNo());
+		ArrayList<Friend> acceptFriendList = mService.acceptFriendList(loginMember.getMemberNo());
+		ArrayList<Friend> friendList = new ArrayList<>();
+			friendList.addAll(addFriendList);
+			friendList.addAll(acceptFriendList);
 
 
 		for(int i=0; i<d.size(); i++) {
@@ -206,6 +210,17 @@ public class HomeController {
 			}
 		}
 
+		DM dm1 = new DM();
+
+		for(DM dm : DMList){
+			System.out.println(dm.toString());
+			if(dm.getDmNo() == dmNo) {
+				dm1.setMemberNickname(dm.getMemberNickname());
+				dm1.setProfileUrl(dm.getProfileUrl());
+			}
+		}
+
+		System.out.println("dm1 : " + dm1.toString());
 
 
 		model.addAttribute("dmNo", dmNo)
@@ -213,7 +228,8 @@ public class HomeController {
 				.addAttribute("dmList", DMList)
 				.addAttribute("DM",d)
 				.addAttribute("friendNumberList", friendNumberList)
-				.addAttribute("friendList", friendList);
+				.addAttribute("friendList", friendList)
+				.addAttribute("dm1", dm1);
 
 
 		System.out.println("가벼운남자"+DMList);
