@@ -101,5 +101,9 @@ public interface MemberMapper {
 
 	String getProfileImgUrlbyNickname(String memberNickname);
 
+    ArrayList<Friend> addFriendList(int memberNo);
+
+    ArrayList<Friend> acceptFriendList(int memberNo);
+
 	int deleteProfileImg(int memberNo);
 }

@@ -243,24 +243,38 @@
 		where member_nickname = #{sender}
 	</select>
 
-	<select id="friendList">
+<!--	<select id="friendList">-->
+<!--		SELECT-->
+<!--			f.member_no,-->
+<!--			f.friend_member_no,-->
+<!--			f.friend_status,-->
+<!--			m.member_nickname,-->
+<!--			m.member_id,-->
+<!--			i.img_rename-->
+<!--		FROM-->
+<!--			friend f-->
+<!--				LEFT JOIN-->
+<!--			member m ON f.member_no = m.member_no-->
+<!--				LEFT JOIN-->
+<!--			image i ON m.member_no = i.mcd_no-->
+<!--		WHERE-->
+<!--			f.member_no = #{memberNo} or f.friend_member_no =#{memberNo} and f.friend_status = 'A'-->
+<!--		order by m.member_no asc-->
+<!--	</select>-->
 
-		SELECT
-			f.friend_member_no,
-			f.friend_status,
-			m.member_nickname,
-			m.member_id,
-			i.img_rename
-		FROM
-			friend f
-				LEFT JOIN
-			member m ON f.friend_member_no = m.member_no
-				LEFT JOIN
-			image i ON m.member_no = i.mcd_no
-		WHERE
-			f.member_no = #{memberNo} and f.friend_status = 'A' or
-			f.friend_member_no = #{memberNo}
-		order by m.member_no asc
+
+	<select id="addFriendList">
+		select *
+		from friend f
+				 join member m on(m.member_no=f.friend_member_no)
+		where f.member_no = #{memberNo} and friend_status='A'
+	</select>
+
+	<select id="acceptFriendList">
+		select *
+		from friend
+				 join member using(member_no)
+		where friend_member_no = #{memberNo} and friend_status='A'
 	</select>
 	
 	<select id="getProfileImgUrlbyNickname">
