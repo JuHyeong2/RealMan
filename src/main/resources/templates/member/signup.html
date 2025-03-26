@@ -60,7 +60,7 @@
 
                 <!-- 전화번호 입력 -->
                 <div class="input-box">
-                    <input type="text" name="memberPhone" pattern="[0-9]{10,11}" placeholder=" " required />
+                    <input type="text" id="memberPhone" name="memberPhone" pattern="[0-9]{10,11}" placeholder=" " required />
                     <label>전화번호</label>
                 </div>
 
@@ -190,6 +190,27 @@
 	      hiddenBirthInput.value = `${year}${month}${day}`;
 	    });
 	  });
+    
+    const phoneInput = document.getElementById("memberPhone");
+    phoneInput.addEventListener("input", function () {
+      let val = this.value.replace(/\D/g, ""); // 숫자만 남김
+
+      if (val.length < 4) {
+        this.value = val;
+      } else if (val.length < 7) {
+        this.value = val.replace(/(\d{3})(\d+)/, "$1-$2");
+      } else if (val.length <= 11) {
+        this.value = val.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
+      } else {
+        this.value = val.substring(0, 11).replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
+      }
+    });
+
+    // ✅ 폼 제출 시 하이픈 제거하고 서버로 전송
+    document.querySelector("form").addEventListener("submit", function () {
+      const cleaned = phoneInput.value.replace(/-/g, ""); // 하이픈 제거
+      phoneInput.value = cleaned;
+    });
 </script>
 
 </body>
