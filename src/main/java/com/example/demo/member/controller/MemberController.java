@@ -371,11 +371,12 @@ public class MemberController {
 	    if (result > 0) {
 			int getMemberNo = mService.getMemberNo(m.getMemberId());
 			pService.inesrtDefaultSetting(getMemberNo);
-	        return "redirect:/member/signin";
+			return "redirect:/member/signin?joined=true";
 	    } else {
 	        throw new MemberException("회원가입에 실패하였습니다.");
 	    }
 	}
+	
 
 	// 로그인 페이지로 이동
 	@GetMapping("/signin")
