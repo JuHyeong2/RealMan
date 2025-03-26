@@ -184,8 +184,8 @@
         .querySelector("b").innerText;
 
       //       const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
-      const socket = new SockJS("https://localhost:8080/stomp/channel");
-      //const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
+//       const socket = new SockJS("https://localhost:8080/stomp/channel");
+      const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
 
       const channelStompClient = Stomp.over(socket);
 
