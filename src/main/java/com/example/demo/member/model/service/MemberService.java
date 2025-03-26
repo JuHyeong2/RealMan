@@ -226,4 +226,8 @@ public class MemberService {
 	public String getProfileImgUrlbyNickname(String memberNickname) {
 		return mapper.getProfileImgUrlbyNickname(memberNickname);
 	}
+
+	public int deleteProfileImg(int memberNo) {
+		return mapper.deleteProfileImg(memberNo);
+	}
 }
