@@ -7,8 +7,8 @@ html {
 
 body { 
 /*   color: #E4EDF3;  */
-  background-color: #E4EDF3; 
-  font-family: 'Josefin Sans', sans-serif; 
+  background-color: var(--theme-sub);
+  font-family: var(--font-family), serif;
   line-height: 1.4;
   color: black;
 /*   border-radius: 50px !important; */
