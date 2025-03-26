@@ -307,7 +307,7 @@ function setupEventHandlers() {
           if (!idCheck && !nicknameCheck) {
             li.style.display = "none";
           } else {
-            li.style.display = "flex";
+            li.style.display = "block";
           }
         });
       });
