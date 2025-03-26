@@ -33,7 +33,7 @@ public interface MemberMapper {
     int insertMember(Member member);
 
     // 아이디 중복 체크
-    int checkMemberId(String memberId);
+    int checkMemberId(@Param("memberId") String memberId);
 
     // 닉네임 중복 체크
     int checkMemberNickname(String memberNickname);
@@ -98,4 +98,6 @@ public interface MemberMapper {
 	Member selectMemberNo(String sender);
 
     ArrayList<Friend> friendList(int memberNo);
+
+	String getProfileImgUrlbyNickname(String memberNickname);
 }

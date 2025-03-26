@@ -1,468 +1,533 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>chatting</title>
     <link rel="stylesheet" href="/css/chat/chatting.css" />
-	<link rel="stylesheet" href="/css/chat/memberList.css" />
+    <link rel="stylesheet" href="/css/chat/memberList.css" />
     <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- 	<script src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 	<script src="https://cdn.tiny.cloud/1/dmox8bb1ulyjmgc2jhvx42updw5ctl45g0dr1fbgc3ne7hwf/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
 
-	<style>
-		body, html {
-			height: 100%;
-		}
-		.top-bar {
-			height: 40px;
-			background-color: #E4EDF3;
-		}
-		.sidebar {
-			height: calc(100vh - 40px);
-			background-color: #E4EDF3;
-		}
-		.chat-area {
-			flex-grow: 1; /* 남은 공간 차지 */
-			width: 1120px;
-		}
-		.user-list {
-			width: 360px;
-		}
-		@media (max-width: 768px) {
-			.top-bar {
-				display: none !important;
-			}
-			.sidebar {
-				height: 100vh;
-			}
-			.chat-area, .user-list {
-				display: none;
-			}
-		}
-		.addServer{
-			width: 60px;
-			height: 60px;
-			background-color: #BDD3E2;
-			cursor: pointer;
-			/*justify-content: center;*/
-			/*align-items: center;*/
-			margin: 10px;
-		}
+    <style>
+      body,
+      html {
+        height: 100%;
+      }
+      .top-bar {
+        height: 40px;
+        background-color: #e4edf3;
+      }
+      .sidebar {
+        height: calc(100vh - 40px);
+        background-color: #e4edf3;
+      }
+      .chat-area {
+        flex-grow: 1; /* 남은 공간 차지 */
+        width: 1120px;
+      }
+      .user-list {
+        width: 360px;
+      }
+      @media (max-width: 768px) {
+        .top-bar {
+          display: none !important;
+        }
+        .sidebar {
+          height: 100vh;
+        }
+        .chat-area,
+        .user-list {
+          display: none;
+        }
+      }
+      .addServer {
+        width: 60px;
+        height: 60px;
+        background-color: #bdd3e2;
+        cursor: pointer;
+        /*justify-content: center;*/
+        /*align-items: center;*/
+        margin: 10px;
+      }
 
-		/* 모달 오버레이 */
-		.add-modal-overlay {
-			position: fixed;
-			top: 0; left: 0;
-			width: 100vw;
-			height: 100vh;
-			background: rgba(0,0,0,0.4);
-			z-index: 9998;
-			display: none;
-		}
+      /* 모달 오버레이 */
+      .add-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 9998;
+        display: none;
+      }
 
-		/* 모달 본체 */
-		.add-modal {
-			position: fixed;
-			top: 50%; left: 50%;
-			transform: translate(-50%, -50%);
-			background: white;
-			padding: 20px;
-			width: 400px;
-			height: 400px;
-			box-shadow: 0 0 10px rgba(0,0,0,0.3);
-			border-radius: 10px;
-			z-index: 9999;
-			display: none;
-		}
+      /* 모달 본체 */
+      .add-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        width: 400px;
+        height: 400px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        z-index: 9999;
+        display: none;
+      }
 
-		.add-modal .close {
-			float: right;
-			font-size: 20px;
-			cursor: pointer;
-		}
-		.add-modalbtn{
-			background: #699fff;
-		}
-		.add-modalbtn:hover{
-			background: #2c58a2;
-		}
-	</style>
-    
-</head>
-<body>
-<!--     <div th:replace="~{/common/sidebar.html :: sidebar}"></div> -->
-<!--     <div th:replace="~{/chat/chattingSidebar.html :: chattingSidebar}"></div> -->
-<!--     <div th:replace="~{/chat/friendSidebar.html :: friendSidebar}"></div> -->
+      .add-modal .close {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      .add-modalbtn {
+        background: #699fff;
+      }
+      .add-modalbtn:hover {
+        background: #2c58a2;
+      }
+    </style>
+  </head>
+  <body>
+    <!--     <div th:replace="~{/common/sidebar.html :: sidebar}"></div> -->
+    <!--     <div th:replace="~{/chat/chattingSidebar.html :: chattingSidebar}"></div> -->
+    <!--     <div th:replace="~{/chat/friendSidebar.html :: friendSidebar}"></div> -->
 
-	<!-- 탑바 -->
-	<div th:replace="~{/common/top :: html}"></div>
-	<!-- 메인 컨테이너-->
-	<div class="main-container d-flex">
-		<!-- 왼쪽 사이드바 -->
-		<div class="sidebar d-flex">
-			<!-- 서버 목록 (조각 코드 포함) -->
-			<div th:replace="~{/common/sidebar :: body}"></div>
-			<!-- 채팅 채널 목록 (조각 코드 포함) -->
-			<div th:replace="~{chattingSidebar :: html}"></div>
-		</div>
-	
-		<!-- 내 웹캠 화면을 보여주는 video html -->
-		<div class="grid">
-			<div class="video-preview">
-				<video class="video-preview" id="localStream" autoplay mute playsinline style="display: none;"></video>
-			</div>
-			<!-- WebRTC에 연결된 웹캠들이 추가되는 Div -->
-			<div id="remoteStreamDiv">
-				
-			</div>
-		</div>
-	
-		<!-- 유저 목록 -->
-		<div
-				th:replace="~{memberList :: div}"
-				class="user-list bg-light p-3 overflow-auto"
-		></div>
-	</div>
-	<script src="/js/common/sideBar.js"></script>
-	<script th:inline="javascript">
-	
-		
-		// let remoteStreamElement = document.querySelector('#remoteStream');
-		let localStreamElement = document.querySelector('#localStream');
-		//자신을 식별하기위한 랜덤한 key 
-// 		const myKey = Math.random().toString(36).substring(2, 11);
-		const myKey = userid;
-		let pcListMap = new Map();
-		let roomId = channelNo;
-		let otherKeyList = [];
-		let localStream = undefined;
-		console.log("둠칫 둠칫 : " + navigator.mediaDevices);
-		onload = () => {
-			startCam();
-			
-			
-		}
-		const startCam = async () =>{
-			await connectSocket();
-			
-		    if(navigator.mediaDevices !== undefined){
-		        await navigator.mediaDevices.getUserMedia({ audio: true, video : true })
-		            .then(async (stream) => {
-		                console.log('Stream found');
-						 //웹캠, 마이크의 스트림 정보를 글로벌 변수로 저장한다.
-		                localStream = stream;
-						console.log(localStream);
-		                // Disable the microphone by default
-		                stream.getAudioTracks()[0].enabled = true;
-		                localStreamElement.srcObject = localStream;
-		                localStreamElement.style.display = "block"; // 비디오 화면 표시
+    <!-- 탑바 -->
+    <div th:replace="~{/common/top :: html}"></div>
+    <!-- 메인 컨테이너-->
+    <div class="main-container d-flex">
+      <!-- 왼쪽 사이드바 -->
+      <div class="sidebar d-flex">
+        <!-- 서버 목록 (조각 코드 포함) -->
+        <div th:replace="~{/common/sidebar :: body}"></div>
+        <!-- 채팅 채널 목록 (조각 코드 포함) -->
+        <div th:replace="~{chattingSidebar :: html}"></div>
+      </div>
 
-		                // Connect after making sure that local stream is availble
-		                
-		                // 마이크 mute, unmute
-		                document.querySelectorAll('.profile-1')[0].innerHTML += '<img id="micImg" src="/image/preferences/Microphone.png" width="30px" /> <img id="speakerImg" src="/image/preferences/SpeakerSimpleHigh.png" width="30px" />';
-		                document.querySelector('#micImg').addEventListener('click', (e)=>{
-					   	  const imgSrc = e.target.src;
-					   	  console.log(imgSrc);
-					   	  // src에 특정 문자열 포함되어있는지 확인하자!!!!
-					   	  if(imgSrc.includes('Slash')){
-					   		unmuteMic();
-					   	  	e.target.src = '/image/preferences/Microphone.png';
-					   	  }else{
-					   	 	muteMic();
-					   		e.target.src = '/image/preferences/MicrophoneSlash.png';
-					   	  }
-					    })
-					    
-					    // 스피커 mute, unmute
-					    document.querySelector('#speakerImg').addEventListener('click', (e)=>{
-						  const imgSrc = e.target.src;
-						  if(imgSrc.includes('Slash')){
-					   		unmuteSpeaker();
-					   	  	e.target.src = '/image/preferences/SpeakerSimpleHigh.png';
-					   	  }else{
-					   	 	muteSpeaker();
-					   		e.target.src = '/image/preferences/SpeakerSimpleSlash.png';
-					   	  }
-					    })
-		   
-		            }).catch(error => {
-		                console.error("Error accessing media devices:", error);
-		            });
-		    }
-		    
-		    await stompClient.send('/pub/call/key', {}, {});
-		    const connect = document.querySelectorAll('.connect')[0];
-			connect.innerHTML = `<b>음성 연결됨</b>
+      <!-- 내 웹캠 화면을 보여주는 video html -->
+      <div class="grid">
+        <div class="video-preview">
+          <video
+            class="video-preview"
+            id="localStream"
+            autoplay
+            mute
+            playsinline
+            style="display: none"
+          ></video>
+        </div>
+        <!-- WebRTC에 연결된 웹캠들이 추가되는 Div -->
+        <div id="remoteStreamDiv"></div>
+      </div>
+
+      <!-- 유저 목록 -->
+      <div
+        th:replace="~{memberList :: div}"
+        class="user-list bg-light p-3 overflow-auto"
+      ></div>
+    </div>
+    <script src="/js/common/sideBar.js"></script>
+    <script src="/js/chat/memberList.js"></script>
+    <script th:inline="javascript">
+      // let remoteStreamElement = document.querySelector('#remoteStream');
+      let localStreamElement = document.querySelector("#localStream");
+      //자신을 식별하기위한 랜덤한 key
+      // 		const myKey = Math.random().toString(36).substring(2, 11);
+      const myKey = userid;
+      let pcListMap = new Map();
+      let roomId = channelNo;
+      let otherKeyList = [];
+      let localStream = undefined;
+      console.log("둠칫 둠칫 : " + navigator.mediaDevices);
+      onload = () => {
+        startCam();
+      };
+      const startCam = async () => {
+        await connectSocket();
+
+        if (navigator.mediaDevices !== undefined) {
+          await navigator.mediaDevices
+            .getUserMedia({ audio: true, video: true })
+            .then(async (stream) => {
+              console.log("Stream found");
+              //웹캠, 마이크의 스트림 정보를 글로벌 변수로 저장한다.
+              localStream = stream;
+              console.log(localStream);
+              // Disable the microphone by default
+              stream.getAudioTracks()[0].enabled = true;
+              localStreamElement.srcObject = localStream;
+              localStreamElement.style.display = "block"; // 비디오 화면 표시
+
+              // Connect after making sure that local stream is availble
+
+              // 마이크 mute, unmute
+              document.querySelectorAll(".profile-1")[0].innerHTML +=
+                '<img id="micImg" src="/image/preferences/Microphone.png" width="30px" /> <img id="speakerImg" src="/image/preferences/SpeakerSimpleHigh.png" width="30px" />';
+              document
+                .querySelector("#micImg")
+                .addEventListener("click", (e) => {
+                  const imgSrc = e.target.src;
+                  console.log(imgSrc);
+                  // src에 특정 문자열 포함되어있는지 확인하자!!!!
+                  if (imgSrc.includes("Slash")) {
+                    unmuteMic();
+                    e.target.src = "/image/preferences/Microphone.png";
+                  } else {
+                    muteMic();
+                    e.target.src = "/image/preferences/MicrophoneSlash.png";
+                  }
+                });
+
+              // 스피커 mute, unmute
+              document
+                .querySelector("#speakerImg")
+                .addEventListener("click", (e) => {
+                  const imgSrc = e.target.src;
+                  if (imgSrc.includes("Slash")) {
+                    unmuteSpeaker();
+                    e.target.src = "/image/preferences/SpeakerSimpleHigh.png";
+                  } else {
+                    muteSpeaker();
+                    e.target.src = "/image/preferences/SpeakerSimpleSlash.png";
+                  }
+                });
+            })
+            .catch((error) => {
+              console.error("Error accessing media devices:", error);
+            });
+        }
+
+        await stompClient.send("/pub/call/key", {}, {});
+        const connect = document.querySelectorAll(".connect")[0];
+        connect.innerHTML = `<b>음성 연결됨</b>
 	    		<img src="/image/member/closeVoice.png" width="30px">`;
-	    		
-		    // 음성연결 끊기 버튼 클릭 시 가장 상단 채팅채널로 이동
-		    document.querySelectorAll('.connect')[0].querySelector('img').addEventListener('click', ()=>{
-		    	console.log('나가기 버튼 클릭!');
-		    	console.log(document.querySelectorAll('.profile-1')[0].querySelector('b').innerText);
-		    	const myNickname = document.querySelectorAll('.profile-1')[0].querySelector('b').innerText;
-// 		    	leaveVoiceChannel(myNickname);
-		    	$.ajax({
-		            	url: "/chat/selectSmallestChatNo",
-		            	method: 'post',
-		            	data: {serverNo:serverNo},
-		            	success: data=>{
-		            		console.log(data);
-		            		if(data != 0){
-		            			location.href='/chat/main/' + serverNo + "/" + data;
-		            		}
-		            	}
-		            })
-		    })
-		    console.log('들어왔당.');
-		    setTimeout(() =>{
-		    
-		        otherKeyList.map((key) =>{
-// 		       	 console.log('들어왔당.');
-		       	 console.log(pcListMap);
-		            if(!pcListMap.has(key)){
-		            	console.log('pcListMap.has(key)가 true다!!!')
-		                pcListMap.set(key, createPeerConnection(key));
-		                sendOffer(pcListMap.get(key),key);
-		            }
-		    
-		        });
-		    
-		    },1000);
-		   
-		}
-		
-		const muteMic=()=>{
-			if(localStream){
-				localStream.getAudioTracks().forEach(track => track.enabled = false);
-				console.log('마이크 음소거');
-			}
-		}
-		
-		const unmuteMic=()=>{
-			if(localStream){
-				localStream.getAudioTracks().forEach(track => track.enabled = true);
-				console.log('마이크 음소거 해제');
-			}
-		}
-		
-		const muteSpeaker=()=>{
-			document.querySelectorAll('video').forEach(video => video.muted = true);
-		}
-		
-		const unmuteSpeaker=()=>{
-			document.querySelectorAll('video').forEach(video => video.muted = false);
-		}
-		
-		const connectSocket = async () =>{
-// 				const socket = new SockJS('https://192.168.40.6:9090/stomp/signaling');
-		     const socket = new SockJS('https://192.168.140.22:9090/stomp/signaling');
-		     stompClient = Stomp.over(socket);
-		     stompClient.debug = null;
-		    
-		     stompClient.connect({}, () => {
-		         console.log('Connected to WebRTC server');
-		            
-		 		 //iceCandidate peer 교환을 위한 subscribe
-		         stompClient.subscribe('/sub/peer/iceCandidate/' + myKey + '/' + roomId, candidate => {
-		        	 console.log("/sub/peer/iceCandidate/에 들어옴");
-		             const key = JSON.parse(candidate.body).key
-		             const message = JSON.parse(candidate.body).body;
-		    
-		 			 // 해당 key에 해당되는 peer 에 받은 정보를 addIceCandidate 해준다.
-		             pcListMap.get(key).addIceCandidate(new RTCIceCandidate({candidate:message.candidate,sdpMLineIndex:message.sdpMLineIndex,sdpMid:message.sdpMid}));
-		    
-		         });
-		    				
-		 		//offer peer 교환을 위한 subscribe
-		         stompClient.subscribe('/sub/peer/offer/' + myKey + '/' + roomId, offer => {
-		        	 console.log("sub/per/offer/에 들어옴");
-// 		        	 console.log("Received Offer:", offer.body);
-		             const key = JSON.parse(offer.body).key;
-		             const message = JSON.parse(offer.body).body;
-		    						
-		 			 // 해당 key에 새로운 peerConnection 를 생성해준후 pcListMap 에 저장해준다.
-		             pcListMap.set(key,createPeerConnection(key));
-		 			 // 생성한 peer 에 offer정보를 setRemoteDescription 해준다.
-		 			 console.log('Setting Remote Description for key: ' + key);
-		             pcListMap.get(key).setRemoteDescription(new RTCSessionDescription({type:message.type,sdp:message.sdp}));
-		             //sendAnswer 함수를 호출해준다.
-		 			 sendAnswer(pcListMap.get(key), key);
-		    
-		         });
-		    				
-		 				//answer peer 교환을 위한 subscribe
-		         stompClient.subscribe('/sub/peer/answer/' + myKey + '/' + roomId, answer =>{
-		             const key = JSON.parse(answer.body).key;
-		             const message = JSON.parse(answer.body).body;
-		             
-		             console.log("sub/peer/answer/에 들어옴 : " + message);
-		    						
-		 			// 해당 key에 해당되는 Peer 에 받은 정보를 setRemoteDescription 해준다.
-		             pcListMap.get(key).setRemoteDescription(new RTCSessionDescription(message));
-		    
-		         });
-		    				
-		 			  //key를 보내라는 신호를 받은 subscribe
-		         stompClient.subscribe('/sub/call/key', message =>{
-		        	 console.log("/sub/call/key에 들어옴 : " + message);
-		 						//자신의 key를 보내는 send
-		             stompClient.send('/pub/send/key', {}, JSON.stringify(myKey));
-		    
-		         });
-		    				
-		 				//상대방의 key를 받는 subscribe
-		         stompClient.subscribe('/sub/send/key', message => {
-		        	 console.log("/sub/send/key에 들어옴");
-		             const key = JSON.parse(message.body);
-		    						
-		 						//만약 중복되는 키가 ohterKeyList에 있는지 확인하고 없다면 추가해준다.
-		             if(myKey !== key && otherKeyList.find((mapKey) => mapKey === key) === undefined){
-		                 otherKeyList.push(key);
-		             }
-		 						
-		             console.log(otherKeyList);
-		         });
-		    
-		     });
-		 }
-		let remoteVideo = null;
-		 let onTrack = (event, otherKey) => {
-			 console.log('otherKey : ' + otherKey);
-			 console.log('event : ' + event);
-		     if(document.getElementById(otherKey) === null){
-		    	 console.log('otherkey가 null이 아니야!!!!');
-		         const video =  document.createElement('video');
-		    
-		         video.autoplay = true;
-// 		         video.controls = true;
-// 		         video.muted = true;
-		         video.id = otherKey;
-		         video.srcObject = event.streams[0];
-		         const element = document.querySelector('#' + otherKey);
-		         // 같은 cameraKey값이 있는 video가 있으면 해당 video 삭제
-		         console.log('element 확인');
-		         console.log(element);
-// 		         if(element){
-// 		        	 console.log('존재하는 element');
-// 		        	 console.log(element);
-// 		        	 element.remove();
-// 		         }
-		    
-		         document.getElementById('remoteStreamDiv').appendChild(video);
-		         remoteVideo = document.getElementById(otherKey);
-		         console.log(remoteVideo);
-		     }
-		    
-		     //
-		     // remoteStreamElement.srcObject = event.streams[0];
-		     // remoteStreamElement.play();
-		 };
-		    
-		 const createPeerConnection = (otherKey) =>{
-		     const pc = new RTCPeerConnection();
-		     try {
-		         pc.addEventListener('icecandidate', (event) =>{
-		             onIceCandidate(event, otherKey);
-		         });
-		         pc.addEventListener('track', (event) =>{
-		             onTrack(event, otherKey);
-		         });
-		         if(localStream !== undefined){
-		             localStream.getTracks().forEach(track => {
-		                 pc.addTrack(track, localStream);
-		             });
-		         }
-		         console.log("otherKey는 아래와 같습니다.");
-		         console.log(otherKey);
-// 		         const remoteVideo = document.getElementById(otherKey); // 상대방 비디오 요소
-		         console.log("remoteVieo의 값은 아래와 같습니다.");
-		         console.log(remoteVideo);
-		         
-				pc.addEventListener("connectionstatechange", () => {
-				    console.log("연결 상태:", pc.connectionState);
-				
-				    if (pc.connectionState === "disconnected" || pc.connectionState === "failed" || pc.connectionState === "closed") {
-				        console.log("상대방 연결이 끊어졌습니다. 비디오 제거!");
-				        remoteVideo.srcObject = null; // 비디오 스트림 제거
-				        remoteVideo.style.display = "none"; // 화면에서 숨기기 (선택)
-				    }
-				});
-		         
-				pc.addEventListener("iceconnectionstatechange", () => {
-				    console.log("ICE 상태:", pc.iceConnectionState);
 
-				    if (pc.iceConnectionState === "disconnected" || pc.iceConnectionState === "failed") {
-				        console.log("상대방이 네트워크 문제로 연결이 끊어졌습니다!");
-				        console.log(remoteVideo);
-				        remoteVideo.srcObject = null; // 비디오 스트림 제거
-				        remoteVideo.style.display = "none"; // 화면에서 숨기기 (선택)
-				    }
-				});
-		    
-		         console.log('PeerConnection created');
-		     } catch (error) {
-		         console.error('PeerConnection failed: ' + error);
-		     }
-		     return pc;
-		 }
-		    
-		 const onIceCandidate = (event, otherKey) => {
-		     if (event.candidate) {
-		         console.log('ICE candidate');
-		         stompClient.send('/pub/peer/iceCandidate/' + otherKey + '/' + roomId,{}, JSON.stringify({
-		             key : myKey,
-		             body : event.candidate
-		         }));
-		     }
-		 };
-		    
-		 const sendOffer = (pc ,otherKey) => {
-			 console.log('pc : ' + pc);
-			 console.log('otherKey : ' + otherKey);
-		     pc.createOffer().then(offer =>{
-		         setLocalAndSendMessage(pc, offer);
-		         stompClient.send('/pub/peer/offer/' + otherKey + '/' + roomId, {}, JSON.stringify({
-		             key : myKey,
-		             body : offer
-		         }));
-		         console.log('Send offer');
-		     });
-		 };
-		    
-		 const sendAnswer = (pc,otherKey) => {
-		     pc.createAnswer().then( answer => {
-		         setLocalAndSendMessage(pc ,answer);
-		         stompClient.send('/pub/peer/answer/' + otherKey + '/' + roomId, {}, JSON.stringify({
-		             key : myKey,
-		             body : answer
-		         }));
-		         console.log('Send answer');
-		     });
-		 };
-		    
-		 const setLocalAndSendMessage = (pc ,sessionDescription) =>{
-		     pc.setLocalDescription(sessionDescription);
-		 }
-		    
-		 window.addEventListener('beforeunload', ()=>{
-			 // webRTC 연결 종료
-			 if(peerConnection){
-				 console.log('연결이 끊깁니다.');
-				 peerConnection.cose();
-			 }
-		 })
-		 
-		 
-		 
-		
-	
-		    
-	
-	</script>
-	
-</body>
+        // 음성연결 끊기 버튼 클릭 시 가장 상단 채팅채널로 이동
+        document
+          .querySelectorAll(".connect")[0]
+          .querySelector("img")
+          .addEventListener("click", () => {
+            console.log("나가기 버튼 클릭!");
+            console.log(
+              document.querySelectorAll(".profile-1")[0].querySelector("b")
+                .innerText
+            );
+            const myNickname = document
+              .querySelectorAll(".profile-1")[0]
+              .querySelector("b").innerText;
+            // 		    	leaveVoiceChannel(myNickname);
+            $.ajax({
+              url: "/chat/selectSmallestChatNo",
+              method: "post",
+              data: { serverNo: serverNo },
+              success: (data) => {
+                console.log(data);
+                if (data != 0) {
+                  location.href = "/chat/main/" + serverNo + "/" + data;
+                }
+              },
+            });
+          });
+        console.log("들어왔당.");
+        setTimeout(() => {
+          otherKeyList.map((key) => {
+            // 		       	 console.log('들어왔당.');
+            console.log(pcListMap);
+            if (!pcListMap.has(key)) {
+              console.log("pcListMap.has(key)가 true다!!!");
+              pcListMap.set(key, createPeerConnection(key));
+              sendOffer(pcListMap.get(key), key);
+            }
+          });
+        }, 1000);
+      };
+
+      const muteMic = () => {
+        if (localStream) {
+          localStream
+            .getAudioTracks()
+            .forEach((track) => (track.enabled = false));
+          console.log("마이크 음소거");
+        }
+      };
+
+      const unmuteMic = () => {
+        if (localStream) {
+          localStream
+            .getAudioTracks()
+            .forEach((track) => (track.enabled = true));
+          console.log("마이크 음소거 해제");
+        }
+      };
+
+      const muteSpeaker = () => {
+        document
+          .querySelectorAll("video")
+          .forEach((video) => (video.muted = true));
+      };
+
+      const unmuteSpeaker = () => {
+        document
+          .querySelectorAll("video")
+          .forEach((video) => (video.muted = false));
+      };
+
+      const connectSocket = async () => {
+        // const socket = new SockJS('https://192.168.40.6:9090/stomp/signaling');
+        const socket = new SockJS("https://localhost:8080/stomp/signaling");
+        // const socket = new SockJS(
+        //   "https://192.168.140.22:9090/stomp/signaling"
+        // );
+        stompClient = Stomp.over(socket);
+        stompClient.debug = null;
+
+        stompClient.connect({}, () => {
+          console.log("Connected to WebRTC server");
+
+          //iceCandidate peer 교환을 위한 subscribe
+          stompClient.subscribe(
+            "/sub/peer/iceCandidate/" + myKey + "/" + roomId,
+            (candidate) => {
+              console.log("/sub/peer/iceCandidate/에 들어옴");
+              const key = JSON.parse(candidate.body).key;
+              const message = JSON.parse(candidate.body).body;
+
+              // 해당 key에 해당되는 peer 에 받은 정보를 addIceCandidate 해준다.
+              pcListMap.get(key).addIceCandidate(
+                new RTCIceCandidate({
+                  candidate: message.candidate,
+                  sdpMLineIndex: message.sdpMLineIndex,
+                  sdpMid: message.sdpMid,
+                })
+              );
+            }
+          );
+
+          //offer peer 교환을 위한 subscribe
+          stompClient.subscribe(
+            "/sub/peer/offer/" + myKey + "/" + roomId,
+            (offer) => {
+              console.log("sub/per/offer/에 들어옴");
+              // 		        	 console.log("Received Offer:", offer.body);
+              const key = JSON.parse(offer.body).key;
+              const message = JSON.parse(offer.body).body;
+
+              // 해당 key에 새로운 peerConnection 를 생성해준후 pcListMap 에 저장해준다.
+              pcListMap.set(key, createPeerConnection(key));
+              // 생성한 peer 에 offer정보를 setRemoteDescription 해준다.
+              console.log("Setting Remote Description for key: " + key);
+              pcListMap.get(key).setRemoteDescription(
+                new RTCSessionDescription({
+                  type: message.type,
+                  sdp: message.sdp,
+                })
+              );
+              //sendAnswer 함수를 호출해준다.
+              sendAnswer(pcListMap.get(key), key);
+            }
+          );
+
+          //answer peer 교환을 위한 subscribe
+          stompClient.subscribe(
+            "/sub/peer/answer/" + myKey + "/" + roomId,
+            (answer) => {
+              const key = JSON.parse(answer.body).key;
+              const message = JSON.parse(answer.body).body;
+
+              console.log("sub/peer/answer/에 들어옴 : " + message);
+
+              // 해당 key에 해당되는 Peer 에 받은 정보를 setRemoteDescription 해준다.
+              pcListMap
+                .get(key)
+                .setRemoteDescription(new RTCSessionDescription(message));
+            }
+          );
+
+          //key를 보내라는 신호를 받은 subscribe
+          stompClient.subscribe("/sub/call/key", (message) => {
+            console.log("/sub/call/key에 들어옴 : " + message);
+            //자신의 key를 보내는 send
+            stompClient.send("/pub/send/key", {}, JSON.stringify(myKey));
+          });
+
+          //상대방의 key를 받는 subscribe
+          stompClient.subscribe("/sub/send/key", (message) => {
+            console.log("/sub/send/key에 들어옴");
+            const key = JSON.parse(message.body);
+
+            //만약 중복되는 키가 ohterKeyList에 있는지 확인하고 없다면 추가해준다.
+            if (
+              myKey !== key &&
+              otherKeyList.find((mapKey) => mapKey === key) === undefined
+            ) {
+              otherKeyList.push(key);
+            }
+
+            console.log(otherKeyList);
+          });
+        });
+      };
+      let remoteVideo = null;
+      let onTrack = (event, otherKey) => {
+        console.log("otherKey : " + otherKey);
+        console.log("event : " + event);
+        if (document.getElementById(otherKey) === null) {
+          console.log("otherkey가 null이 아니야!!!!");
+          const video = document.createElement("video");
+
+          video.autoplay = true;
+          // 		         video.controls = true;
+          // 		         video.muted = true;
+          video.id = otherKey;
+          video.srcObject = event.streams[0];
+          const element = document.querySelector("#" + otherKey);
+          // 같은 cameraKey값이 있는 video가 있으면 해당 video 삭제
+          console.log("element 확인");
+          console.log(element);
+          // 		         if(element){
+          // 		        	 console.log('존재하는 element');
+          // 		        	 console.log(element);
+          // 		        	 element.remove();
+          // 		         }
+
+          document.getElementById("remoteStreamDiv").appendChild(video);
+          remoteVideo = document.getElementById(otherKey);
+          console.log(remoteVideo);
+        }
+
+        //
+        // remoteStreamElement.srcObject = event.streams[0];
+        // remoteStreamElement.play();
+      };
+
+      const createPeerConnection = (otherKey) => {
+        const pc = new RTCPeerConnection();
+        try {
+          pc.addEventListener("icecandidate", (event) => {
+            onIceCandidate(event, otherKey);
+          });
+          pc.addEventListener("track", (event) => {
+            onTrack(event, otherKey);
+          });
+          if (localStream !== undefined) {
+            localStream.getTracks().forEach((track) => {
+              pc.addTrack(track, localStream);
+            });
+          }
+          console.log("otherKey는 아래와 같습니다.");
+          console.log(otherKey);
+          // 		         const remoteVideo = document.getElementById(otherKey); // 상대방 비디오 요소
+          console.log("remoteVieo의 값은 아래와 같습니다.");
+          console.log(remoteVideo);
+
+          pc.addEventListener("connectionstatechange", () => {
+            console.log("연결 상태:", pc.connectionState);
+
+            if (
+              pc.connectionState === "disconnected" ||
+              pc.connectionState === "failed" ||
+              pc.connectionState === "closed"
+            ) {
+              console.log("상대방 연결이 끊어졌습니다. 비디오 제거!");
+              remoteVideo.srcObject = null; // 비디오 스트림 제거
+              remoteVideo.style.display = "none"; // 화면에서 숨기기 (선택)
+            }
+          });
+
+          pc.addEventListener("iceconnectionstatechange", () => {
+            console.log("ICE 상태:", pc.iceConnectionState);
+
+            if (
+              pc.iceConnectionState === "disconnected" ||
+              pc.iceConnectionState === "failed"
+            ) {
+              console.log("상대방이 네트워크 문제로 연결이 끊어졌습니다!");
+              console.log(remoteVideo);
+              remoteVideo.srcObject = null; // 비디오 스트림 제거
+              remoteVideo.style.display = "none"; // 화면에서 숨기기 (선택)
+            }
+          });
+
+          console.log("PeerConnection created");
+        } catch (error) {
+          console.error("PeerConnection failed: " + error);
+        }
+        return pc;
+      };
+
+      const onIceCandidate = (event, otherKey) => {
+        if (event.candidate) {
+          console.log("ICE candidate");
+          stompClient.send(
+            "/pub/peer/iceCandidate/" + otherKey + "/" + roomId,
+            {},
+            JSON.stringify({
+              key: myKey,
+              body: event.candidate,
+            })
+          );
+        }
+      };
+
+      const sendOffer = (pc, otherKey) => {
+        console.log("pc : " + pc);
+        console.log("otherKey : " + otherKey);
+        pc.createOffer().then((offer) => {
+          setLocalAndSendMessage(pc, offer);
+          stompClient.send(
+            "/pub/peer/offer/" + otherKey + "/" + roomId,
+            {},
+            JSON.stringify({
+              key: myKey,
+              body: offer,
+            })
+          );
+          console.log("Send offer");
+        });
+      };
+
+      const sendAnswer = (pc, otherKey) => {
+        pc.createAnswer().then((answer) => {
+          setLocalAndSendMessage(pc, answer);
+          stompClient.send(
+            "/pub/peer/answer/" + otherKey + "/" + roomId,
+            {},
+            JSON.stringify({
+              key: myKey,
+              body: answer,
+            })
+          );
+          console.log("Send answer");
+        });
+      };
+
+      const setLocalAndSendMessage = (pc, sessionDescription) => {
+        pc.setLocalDescription(sessionDescription);
+      };
+
+      window.addEventListener("beforeunload", () => {
+        // webRTC 연결 종료
+        if (peerConnection) {
+          console.log("연결이 끊깁니다.");
+          peerConnection.cose();
+        }
+      });
+    </script>
+  </body>
 </html>

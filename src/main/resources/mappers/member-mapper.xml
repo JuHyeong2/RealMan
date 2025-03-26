@@ -53,7 +53,7 @@
 	</insert>
     
     <!-- 아이디 중복 체크 -->
-    <select id="checkMemberId" resultType="int">
+   <select id="checkMemberId" parameterType="string" resultType="int">
 	    select count(*)
 	    from member
 	    where member_id = #{memberId}
@@ -260,5 +260,14 @@
 		WHERE
 			f.member_no = #{memberNo} and f.friend_status = 'A'
 		order by m.member_no asc
+	</select>
+	
+	<select id="getProfileImgUrlbyNickname">
+		select img_rename
+		from image
+		where img_separator = 'M'
+		and mcd_no = (select member_no
+						from member
+						where member_nickname=#{memberNickname})
 	</select>
 </mapper>
