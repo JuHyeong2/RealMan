@@ -124,3 +124,9 @@ function createServer() {
         $("#addServerForm").submit();
     });
 }
+
+// 설정 페이지로 이동할 때 이전 주소를 저장
+function goToSettings() {
+    sessionStorage.setItem("prevPage", window.location.href);
+    window.location.href = "/prefs/myProfile"; // location.href='/prefs/myProfile'
+}

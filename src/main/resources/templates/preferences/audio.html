@@ -69,7 +69,7 @@
 			src="/image/preferences/Xcircle.png"
 			width="50px"
 			height="50px"
-			onclick="location.href='/main'"
+			onclick="goBack()"
 			style="margin-top: 17px; margin-left: 150px; cursor: pointer"
 	/>
 </div>
@@ -253,6 +253,16 @@
 		element.classList.add('selected');
 		element.querySelector('input[type="radio"]').checked = true;
 	}
+
+	function goBack() {
+		const prev = sessionStorage.getItem("prevPage");
+		if (prev) {
+			window.location.href = prev;
+		} else {
+			window.location.href = "/main"; // fallback
+		}
+	}
+
 
 
 

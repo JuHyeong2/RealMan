@@ -55,7 +55,7 @@
 				src="/image/preferences/Xcircle.png"
 				width="50px"
 				height="50px"
-				onclick="location.href='/main'"
+				onclick="goBack()"
 				style="margin-top: 17px; margin-left: 150px; cursor: pointer"
 		/>
 	</div>
@@ -170,6 +170,14 @@
 	function testNotifyValues() {
 		console.log("푸시 알림 상태:", switchBtn.checked ? 'Y' : 'N');
 		console.log("선택된 알림 범위:", document.querySelector('input[name="alertRange"]:checked').value);
+	}
+	function goBack() {
+		const prev = sessionStorage.getItem("prevPage");
+		if (prev) {
+			window.location.href = prev;
+		} else {
+			window.location.href = "/main"; // fallback
+		}
 	}
 
 </script>
