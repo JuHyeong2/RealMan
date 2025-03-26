@@ -51,7 +51,7 @@ manageModalBtn.addEventListener("click", function () {
             const inviteBtn = document.createElement("button");
             inviteBtn.innerText = "+";
             inviteBtn.className = "invite-button";
-            inviteBtn.onclick = (e) => inviteMember(e, f.memberNo + "");
+            inviteBtn.onclick = (e) => inviteMember(e, f.memberNo);
             li.appendChild(inviteBtn);
           } else {
             li.classList.add("li-friends-dark");
@@ -76,7 +76,7 @@ manageModalBtn.addEventListener("click", function () {
 
         const memberNoInput = document.createElement("input");
         memberNoInput.type = "hidden";
-        memberNoInput.value = mem.querySelectorAll("input[type=hidden]").value;
+        memberNoInput.value = mem.querySelector("input[type=hidden]").value;
         li.appendChild(memberNoInput);
 
         const profileImgDiv = document.createElement("div");
@@ -97,7 +97,7 @@ manageModalBtn.addEventListener("click", function () {
         const ejectBtn = document.createElement("button");
         ejectBtn.innerText = "-";
         ejectBtn.className = "eject-button";
-        ejectBtn.onclick = (e) => ejectMember(e, memberNoInput.value + "");
+        ejectBtn.onclick = (e) => ejectMember(e, memberNoInput.value);
         li.appendChild(ejectBtn);
 
         modalUl.appendChild(li);
@@ -117,12 +117,7 @@ function inviteMember(e, memberNo) {
         serverNo: serverNo,
       }),
     })
-      .then((response) => {
-        if (!response.ok) {
-          alert("관리자가 아닙니다.");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         console.log("data : ", data);
         if (data == 1) {
@@ -147,13 +142,7 @@ function ejectMember(e, memberNo) {
         serverNo: serverNo,
       }),
     })
-      .then((response) => {
-        if (!response.ok) {
-          alert("관리자가 아닙니다.");
-        } else {
-          return response.json();
-        }
-      })
+      .then((response) => response.json())
       .then((data) => {
         console.log(data);
         if (data == 1) {

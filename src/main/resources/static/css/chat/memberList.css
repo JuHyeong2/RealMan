@@ -136,7 +136,7 @@ li {
   width: 95%;
   height: 80%;
   background-color: rgb(253, 253, 253);
-  border: 2px solid;
+  border: 0.3rem solid;
   border-color: rgb(160, 186, 234);
   border-radius: 0.5rem;
   display: flex;
