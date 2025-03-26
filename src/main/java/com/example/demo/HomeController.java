@@ -175,12 +175,6 @@ public class HomeController {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		Notification notify = (Notification) session.getAttribute("notify");
 
-//		System.out.println("내가누구야 ;" + loginMember);
-
-		// 1. dm 했던거 가져오기 (상대방 닉네임(fireBase에서), 프사(oracle))
-		// 2. 프사 = 닉네임으로 memberNo를 가져와서 프사 가져오면 될듯
-
-
 
 		ArrayList<DM> DMList = cService.selectDm(dmNo, notify.getTimeType());
 		for(int i=0; i<DMList.size(); i++) {
@@ -195,17 +189,33 @@ public class HomeController {
 
 		ArrayList<DM> d = cService.selectDmList(loginMember.getMemberNo());
 		ArrayList<Integer> friendNumberList = mService.selectFriendNumbers(loginMember);
-		ArrayList<Friend> friendList = mService.friendList(loginMember.getMemberNo());
+		ArrayList<Friend> addFriendList = mService.addFriendList(loginMember.getMemberNo());
+		ArrayList<Friend> acceptFriendList = mService.acceptFriendList(loginMember.getMemberNo());
+		ArrayList<Friend> friendList = new ArrayList<>();
+			friendList.addAll(addFriendList);
+			friendList.addAll(acceptFriendList);
 
 
 		for(int i=0; i<d.size(); i++) {
 			ProfileImage img = mService.selectImage(d.get(i).getMemberNo());
-//			System.out.println(img);
 			if(img != null) {
 				d.get(i).setImageUrl(img.getImgRename());
 			}
+
+			System.out.println(img);
 		}
 
+		DM dm1 = new DM();
+
+		for(DM dm : DMList){
+			System.out.println(dm.toString());
+			if(dm.getDmNo() == dmNo) {
+				dm1.setMemberNickname(dm.getMemberNickname());
+				dm1.setProfileUrl(dm.getProfileUrl());
+			}
+		}
+
+		System.out.println("dm1 : " + dm1.toString());
 
 
 		model.addAttribute("dmNo", dmNo)
@@ -213,7 +223,8 @@ public class HomeController {
 				.addAttribute("dmList", DMList)
 				.addAttribute("DM",d)
 				.addAttribute("friendNumberList", friendNumberList)
-				.addAttribute("friendList", friendList);
+				.addAttribute("friendList", friendList)
+				.addAttribute("dm1", dm1);
 
 
 		System.out.println("가벼운남자"+DMList);

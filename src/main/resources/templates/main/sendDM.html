@@ -123,29 +123,25 @@
     <div class="sidebar d-flex">
         <div th:replace="~{/common/sidebar :: body}"></div>
 
-        <div class="directMassage" th:replace="~{/main/directMassage :: body}">
-
-
-        </div>
+        <div class="directMassage" th:replace="~{/main/directMassage :: body}"></div>
 
 
 
-    <div class="profile">
-        
-    </div>
-
-
-        <!--	<div class="send" th:each="d : ${dmList}">-->
-        <!--		<img> <b th:text="${d.otherMemberNo}">d</b> <b-->
-        <!--			th:utext="${d.message}"></b>-->
-        <!--	</div>-->
 
         <div class="dm-area d-flex flex-column">
             <div class="flex-grow-1 overflow-hidden p-3">
+
+<!--                <div>-->
+<!--                    [[${dm1.memberNickname}]]-->
+<!--                    <input th:value="${dm1.memberNickname}" type="text"/>-->
+
+<!--                </div>-->
+
                 <input th:value="${dmNo}" type="hidden"/>
                 <div class="dmContent" >
                     <div class="textArea" th:each="d, dStat:${dmList}">
                         <div class="dmContent-1">
+
                             <img
                                     height="40px"
                                     th:src="${d.profileUrl != null ? d.profileUrl : '/image/member/no-profile.svg'}" width="40px"/>
@@ -159,13 +155,14 @@
             </div>
             <div class="p-3 d-flex">
                 <textarea class="flex-grow-1" id="mytextarea"></textarea>
-<!--                <button id="button-send">입력</button>-->
             </div>
         </div>
     </div>
+</div>
 
 
     <script th:inline="javascript">
+
         document.addEventListener('DOMContentLoaded', function () {
 
             // dmNo 선언
@@ -305,6 +302,11 @@
 
 
         })
+
+
+
+
+
 
 
     </script>
