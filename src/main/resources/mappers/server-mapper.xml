@@ -74,7 +74,7 @@
         VALUES (#{memberNo}, #{serverNo}, 'Y')
     </insert>
 
-    <insert id="insertDefaultTextChannel" parameterType="Channel">
+    <insert id="insertDefaultTextChannel" parameterType="com.example.demo.chat.model.vo.Channel">
     	<selectKey keyProperty="channelNo" resultType="_int" order="BEFORE"> 
     		select channel_seq.nextval from dual
     	</selectKey>
