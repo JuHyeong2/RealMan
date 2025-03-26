@@ -58,11 +58,13 @@ li {
   margin-left: 1rem;
   height: 2rem;
   border: 0;
-  border-radius: 0.3rem;
-}
-
-.button-div > button:first-child {
-  background-color: rgb(157, 157, 238);
+  border-radius: 1rem;
+  background-color: var(--theme-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: all 0.1s;
 }
 
 .manage-modal-button>img{
@@ -72,8 +74,9 @@ li {
 }
 
 .manage-modal-button:hover {
-  background-color: var(--theme-bg);
-  color: inherit;
+  background-color: var(--theme-point);
+  color: var(--theme-text);
+  transition: all 0.1s;
 }
 
 .manage-modal-button:active {

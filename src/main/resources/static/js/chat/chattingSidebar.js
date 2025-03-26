@@ -129,13 +129,17 @@ function deleteChannel(e, channelNo) {
 
 //채널 수정
 function editChannel(e, channelNo) {
+  console.log(e.target.parentElement.parentElement.parentElement);
   const channelRow = e.target.parentElement.parentElement.parentElement;
-  console.log(channelrow);
+
   const input = document.createElement("input");
   input.type = Text;
   input.classList = "new-channel-name";
   input.value = channelRow.querySelector("b").innerText;
-  channelRow.append(input);
+
+  channelRow.querySelector(".channel-info-main").append(input);
+  input.focus();
+
   input.addEventListener("keydown", function (e) {
     if (e.key == "Enter") {
       if (confirm("정말로 이름을 변경하시겠습니까?")) {
@@ -160,6 +164,9 @@ function editChannel(e, channelNo) {
       }
     }
   });
+  // input.addEventListener("blur", function(){
+  //   input.remove();
+  // })
 }
 
 // //""..."버튼 누르면 메뉴 나오게
