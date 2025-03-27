@@ -35,6 +35,7 @@
                     <option value="DEFAULT">기본 폰트</option>
                     <option value="GOWUN">고운돋움</option>
                     <option value="Do">배민 도현체</option>
+                    <option value="JOSEFIN">josefin sans</option>
                 </select>
             </div>
             <br/>
@@ -86,11 +87,19 @@
 
             if (data) {
                 console.log(data);
+
                 const themeBtn = document.querySelector(`.theme-button[value="${data.themeColor}"]`);
                 if (themeBtn) themeBtn.classList.add('active');
 
                 const fontSelect = document.querySelector('.select');
-                if (fontSelect) fontSelect.value = data.fontType;
+                if (fontSelect) {
+                    const validOption = fontSelect.querySelector(`option[value="${data.fontType}"]`);
+                    if (validOption) {
+                        validOption.selected = true; // 명시적 선택 (추천 방식)
+                    } else {
+                        console.warn(`옵션 중 ${data.fontType}에 해당하는 값이 없습니다.`);
+                    }
+                }
 
                 const textSizeBtn = document.querySelector(`.text-size-button[value="${data.fontSize}"]`);
                 if (textSizeBtn) textSizeBtn.classList.add('active');
@@ -99,6 +108,7 @@
             console.error("UI 설정 로딩 오류:", err);
         }
     }
+
 
     function sendThemePreferences() {
         try {

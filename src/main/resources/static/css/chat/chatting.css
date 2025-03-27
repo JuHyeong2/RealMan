@@ -14,7 +14,6 @@ html {
 }
 .top-bar {
 	height: 40px;
-	background-color: #e4edf3;
 }
 .sidebar {
 	height: calc(100vh - 40px);
