@@ -201,6 +201,7 @@ li {
 
 .nickname {
   letter-spacing: 15%;
+  font-family: var(--font-family), sans-serif;
 }
 
 .id {
@@ -208,7 +209,7 @@ li {
   padding-left: 1rem;
   letter-spacing: 15%;
   font-size: 0.8rem;
-  font-family: var(--font-family), serif;
+  font-family: var(--font-family), sans-serif;
   color: var(--theme-text);
   overflow: hidden;
   transition: all 0.3s ease;

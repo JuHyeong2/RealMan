@@ -56,3 +56,6 @@ body {
     /* 	z-index: 1; */
     width: 100%;
 }
+.text-area, .input-area{
+    background-color: var(--theme-wb);
+}
