@@ -139,12 +139,14 @@ public class HomeController {
 	@ResponseBody
 	public Map<String, Object> createDM(@RequestBody HashMap<String, Integer> map, HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
+		System.out.println(map);
+		System.out.println(loginMember);
 		Map<String, Object> result = new HashMap<>();
 		int otherMemberNo = map.get("otherMemberNo");
 		System.out.println(" 아더맴파" + otherMemberNo);
 		map.put("memberNo", loginMember.getMemberNo());
 		try {
-			DM existingDM = cService.findDMByMembers(loginMember.getMemberNo(), otherMemberNo);
+			DM existingDM = cService.findDMByMembers(map);
 
 			if (existingDM == null) {
 				int num = cService.createDM(map);

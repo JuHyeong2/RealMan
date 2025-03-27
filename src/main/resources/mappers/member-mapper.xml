@@ -273,10 +273,10 @@
 
 	<select id="acceptFriendList">
 		select *
-		from friend f
-				 join member m on(m.member_no=f.friend_member_no)
-				 left join image i on(m.member_no=i.mcd_no)
-		where f.friend_member_no = #{memberNo} and f.friend_status='A'
+       from friend f
+              join member m on(f.member_no=m.member_no)
+                 left join image i on (m.member_no = i.mcd_no)
+       where f.friend_member_no = #{memberNo} and friend_status='A'
 	</select>
 	
 	<select id="getProfileImgUrlbyNickname">
