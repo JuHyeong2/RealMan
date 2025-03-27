@@ -14,26 +14,30 @@
 	<div class="channel-list d-flex flex-column" style="width: 320px">
 		<nav>
 			<div class="server-name">
-				<h3><b>[[${serverName}]]</b></h3>
+				<h3>
+					<b>[[${serverName}]]</b>
+				</h3>
 			</div>
 			<div class="voiceChat-div">
 				<div class="channel-title">
-<!--					<h4>-->
-<!--						<img src="/image/Dropdown.png" alt="voice-dropdown"-->
-<!--							onclick="voiceDropdown()" />음성 채널-->
-<!--					</h4>-->
-					<svg xmlns="http://www.w3.org/2000/svg" class="channel-icon icon" id="voiceIcon" viewBox="0 0 24 24"
-						 fill="none" stroke="currentColor" stroke-width="1.5" onclick="voiceDropdown()">
-						<path d="M7.41 8.59 12 13.17 16.59 8.59" stroke-linecap="round" stroke-linejoin="round"/>
+					<!--					<h4>-->
+					<!--						<img src="/image/Dropdown.png" alt="voice-dropdown"-->
+					<!--							onclick="voiceDropdown()" />음성 채널-->
+					<!--					</h4>-->
+					<svg xmlns="http://www.w3.org/2000/svg" class="channel-icon icon"
+						id="voiceIcon" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="1.5" onclick="voiceDropdown()">
+						<path d="M7.41 8.59 12 13.17 16.59 8.59" stroke-linecap="round"
+							stroke-linejoin="round" />
 					</svg>
-					<h4> 음성 채널</h4>
+					<h4>음성 채널</h4>
 					<button th:if="${admin}" class="add-channel">+</button>
 					<input type="hidden" value="V" />
 				</div>
 				<ul class="voiceChat-ul">
 					<li class="voiceChat channel" th:each="c : ${channel}"
-						th:if='${c.channelSeparator eq "V"}'><input
-						class="chatInput" type="hidden" th:value="${c.channelNo}" />
+						th:if='${c.channelSeparator eq "V"}'><input class="chatInput"
+						type="hidden" th:value="${c.channelNo}" />
 						<div class="channel-info-main">
 							<b
 								th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|"><img
@@ -47,29 +51,30 @@
 						</div>
 						<div class="voice-memberList">
 							<ul></ul>
-						</div>
-					</li>
+						</div></li>
 				</ul>
 			</div>
 
 			<div class="textChat-div">
 				<div class="channel-title">
-<!--					<h4>-->
-<!--						<img src="/image/Dropdown.png" alt="text-dropdown"-->
-<!--							onclick="textDropdown()" />채팅 채널-->
-<!--					</h4>-->
-					<svg xmlns="http://www.w3.org/2000/svg" class="channel-icon icon" id="textIcon" viewBox="0 0 24 24"
-						 fill="none" stroke="currentColor" stroke-width="1.5" onclick="textDropdown()">
-						<path d="M7.41 8.59 12 13.17 16.59 8.59" stroke-linecap="round" stroke-linejoin="round"/>
+					<!--					<h4>-->
+					<!--						<img src="/image/Dropdown.png" alt="text-dropdown"-->
+					<!--							onclick="textDropdown()" />채팅 채널-->
+					<!--					</h4>-->
+					<svg xmlns="http://www.w3.org/2000/svg" class="channel-icon icon"
+						id="textIcon" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="1.5" onclick="textDropdown()">
+						<path d="M7.41 8.59 12 13.17 16.59 8.59" stroke-linecap="round"
+							stroke-linejoin="round" />
 					</svg>
-					<h4> 채팅 채널</h4>
+					<h4>채팅 채널</h4>
 					<button th:if="${admin}" class="add-channel">+</button>
 					<input type="hidden" value="T" />
 				</div>
 				<ul class="textChat-ul">
 					<li class="textChat channel" th:each="c : ${channel}"
-						th:if="${c.channelSeparator == 'T'}"><input
-						class="chatInput" type="hidden" th:value="${c.channelNo}" />
+						th:if="${c.channelSeparator == 'T'}"><input class="chatInput"
+						type="hidden" th:value="${c.channelNo}" />
 						<div class="channel-info-main">
 							<b
 								th:onclick="|location.href='/chat/main/' + ${serverNo} + '/' + ${c.channelNo}|"><img
@@ -166,6 +171,10 @@
               if(newNameInput!=null){
                 newNameInput.remove("channel-menu-show");
               }
+              const channelNameInput = c.querySelector(".channel-name-input");
+              if(channelNameInput != null){
+                c.remove();
+              }
             });
           }
         });
@@ -179,9 +188,9 @@
         .querySelectorAll(".profile-1")[0]
         .querySelector("b").innerText;
 
-      //       const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
-       const socket = new SockJS("https://localhost:8080/stomp/channel");
-      //const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
+//             const channelSocket = new SockJS("https://192.168.40.6:9090/stomp/channel");
+//        const socket = new SockJS("https://localhost:8080/stomp/channel");
+      const socket = new SockJS("https://192.168.140.22:9090/stomp/channel");
 
       const channelStompClient = Stomp.over(socket);
 

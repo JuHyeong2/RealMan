@@ -117,7 +117,8 @@
 
 
     function createChatRoom(element) {
-        let friendMemberNo = element.getAttribute("data-friendMemberNo");
+//         let friendMemberNo = element.getAttribute("data-friendMemberNo");
+        let friendMemberNo = element.getAttribute("data-memberNo");
         console.log("friendMemberNo"+friendMemberNo);
         fetch("/dm/createDM", {
             method: "POST",

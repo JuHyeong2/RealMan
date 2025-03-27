@@ -17,11 +17,13 @@ public interface ChatMapper {
 
     ArrayList<DM> selectDmList(int memberNo);
 
-    DM findDMByMembers(int memberNo, int otherMemberNo);
+    
 
     int createDM(Map<String, Integer> map);
 
     DM selectDmUseNickname(HashMap<String, Integer> map);
+
+	DM findDMByMembers(HashMap<String, Integer> map);
 
 
 }

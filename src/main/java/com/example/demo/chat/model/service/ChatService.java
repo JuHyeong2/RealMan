@@ -224,13 +224,16 @@ public class ChatService {
 	}
 
 
-	public DM findDMByMembers(int memberNo, int otherMemberNo) {
-		return mapper.findDMByMembers(memberNo, otherMemberNo);
-	}
-
 
 	public DM selectDmUseNickname(HashMap<String, Integer> map) {
 		return mapper.selectDmUseNickname(map);
+	}
+
+
+
+	public DM findDMByMembers(HashMap<String, Integer> map) {
+		// TODO Auto-generated method stub
+		return mapper.findDMByMembers(map);
 	}
 
 
