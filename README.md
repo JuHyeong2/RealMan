@@ -56,5 +56,5 @@
 
 
 ## Introduce
-[📂 PPT 파일 다운로드](https://github.com/JuHyeong2/HobbyBoard-springboot/raw/main/src/main/resources/static/ppt/Real_Man_Full33.pdf)
+[📂 PPT 파일 다운로드](https://github.com/JuHyeong2/RealMan/raw/main/src/main/resources/static/ppt/Real_Man_Full33.pdf)
 
